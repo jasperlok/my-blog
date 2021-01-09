@@ -15,5 +15,22 @@
     "preview": {},
     "last_modified": "2021-01-09T09:36:03+08:00",
     "input_file": {}
+  },
+  {
+    "path": "posts/2021-01-09-testing-on-second-post/",
+    "title": "testing on second post",
+    "description": "A short description of the post.",
+    "author": [
+      {
+        "name": "Nora Jones",
+        "url": "https://example.com/norajones"
+      }
+    ],
+    "date": "2021-01-09",
+    "categories": [],
+    "contents": "\r\nDistill is a publication format for scientific and technical writing, native to the web.\r\nLearn more about using Distill at https://rstudio.github.io/distill.\r\n\r\n [1] \"mpg\"  \"cyl\"  \"disp\" \"hp\"   \"drat\" \"wt\"   \"qsec\" \"vs\"   \"am\"  \r\n[10] \"gear\" \"carb\"\r\n\r\n\r\n\r\n\r\n\r\nTable 1: Data summary\r\nName\r\nmtcars\r\nNumber of rows\r\n32\r\nNumber of columns\r\n11\r\n_______________________\r\n\r\nColumn type frequency:\r\n\r\nnumeric\r\n11\r\n________________________\r\n\r\nGroup variables\r\nNone\r\nVariable type: numeric\r\nskim_variable\r\nn_missing\r\ncomplete_rate\r\nmean\r\nsd\r\np0\r\np25\r\np50\r\np75\r\np100\r\nhist\r\nmpg\r\n0\r\n1\r\n20.09\r\n6.03\r\n10.40\r\n15.43\r\n19.20\r\n22.80\r\n33.90\r\n▃▇▅▁▂\r\ncyl\r\n0\r\n1\r\n6.19\r\n1.79\r\n4.00\r\n4.00\r\n6.00\r\n8.00\r\n8.00\r\n▆▁▃▁▇\r\ndisp\r\n0\r\n1\r\n230.72\r\n123.94\r\n71.10\r\n120.83\r\n196.30\r\n326.00\r\n472.00\r\n▇▃▃▃▂\r\nhp\r\n0\r\n1\r\n146.69\r\n68.56\r\n52.00\r\n96.50\r\n123.00\r\n180.00\r\n335.00\r\n▇▇▆▃▁\r\ndrat\r\n0\r\n1\r\n3.60\r\n0.53\r\n2.76\r\n3.08\r\n3.70\r\n3.92\r\n4.93\r\n▇▃▇▅▁\r\nwt\r\n0\r\n1\r\n3.22\r\n0.98\r\n1.51\r\n2.58\r\n3.33\r\n3.61\r\n5.42\r\n▃▃▇▁▂\r\nqsec\r\n0\r\n1\r\n17.85\r\n1.79\r\n14.50\r\n16.89\r\n17.71\r\n18.90\r\n22.90\r\n▃▇▇▂▁\r\nvs\r\n0\r\n1\r\n0.44\r\n0.50\r\n0.00\r\n0.00\r\n0.00\r\n1.00\r\n1.00\r\n▇▁▁▁▆\r\nam\r\n0\r\n1\r\n0.41\r\n0.50\r\n0.00\r\n0.00\r\n0.00\r\n1.00\r\n1.00\r\n▇▁▁▁▆\r\ngear\r\n0\r\n1\r\n3.69\r\n0.74\r\n3.00\r\n3.00\r\n4.00\r\n4.00\r\n5.00\r\n▇▁▆▁▂\r\ncarb\r\n0\r\n1\r\n2.81\r\n1.62\r\n1.00\r\n2.00\r\n2.00\r\n4.00\r\n8.00\r\n▇▂▅▁▁\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2021-01-09T09:51:46+08:00",
+    "input_file": "testing-on-second-post.utf8.md"
   }
 ]
