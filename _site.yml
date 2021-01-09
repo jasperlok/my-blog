@@ -1,7 +1,7 @@
 name: "my-blog"
 title: "When Actuarial Science Collides with Data Science"
 description: |
-  My Blog
+  Jasper Lok
 output_dir: "_site"
 navbar:
   right:
