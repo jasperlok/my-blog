@@ -1,0 +1,14 @@
+---
+title: "Past Projects"
+---
+
+Below are omse of my past projects:
+
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/data_idea.jpg")
+
+```
+
+
+
