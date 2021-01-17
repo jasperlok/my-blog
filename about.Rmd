@@ -1,5 +1,7 @@
 ---
 title: "About this blog"
+site: about.hmtl
+
 ---
 
 My name is Jasper Lok. I am currently working as an actuary and in process of becoming a data scientist. I am passionate about making a difference in people lives through my actuarial and data science knowledge (eg. solving poverty issues).
