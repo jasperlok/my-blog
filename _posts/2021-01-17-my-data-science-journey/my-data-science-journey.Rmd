@@ -10,23 +10,53 @@ output:
     self_contained: false
 ---
 
-During a stormy night in 2018, it was raining cats and dogs outside. Suddenly there was thunder and lightning. Jeng jeng jeng, I suddenly decided to take up the master degree in Singapore Management University to study more on data science.
-
-Nah, how I decided to embark this data science journey is not so dramatic. I always wish it is that simple to make such a big decision in life. 
-
-
-
-
 ```{r, echo = FALSE}
 knitr::include_graphics("image/journey.JPG")
 
 ```
 
 
+During a stormy night in 2018, it was raining cats and dogs outside. Suddenly there was thunder and lightning. Jeng jeng jeng, I suddenly decided to take up the master degree in Singapore Management University to study more on data science.
+
+Nah, how I decided to embark this data science journey is not so dramatic. I always wish it is that simple to make such a big decision in life. 
+
+When I decided to study data science, I have encountered so many "Why" from others.
+
+
+"Why would you still want to study, given that you have been studying for your actuarial exams after graudating from university?"
+
+
+"Why are you still studying this when you hold an actuarial science degree?"
+
+
+"Why are you studying when your working hours can be quite bad?"
+
+
+"Why are you spending so much money on getting another degree? Are you sure you can earn back the money?"
+
+
+"Just why??"
+
+
+In my life, I have taken quite a few unconventional paths. Am I scared? Oh absolutely. 
+
+
+- It took me about 5 years to decide that I would obtain a data science master degree.
+
+
+- It took me 2.5 years to make the decision to change job scope in the 1st time. 
 
 
 
 
+
+
+**Change in Job Scope**
+About 1.5 years later, I was being offered to change my job scope again in my work. However, the change was even more drastic. I was being offered to change my job scope from life insurance to general insurance. Am I scared? Still as worried as usual. However, it took me about 1 day to make up my mind and take the challenge despite of the uncertainty. Within less 3 months, I was once again being "arrowed" to cover group insurance while my colleague was on maternity leave. At the moment, I was worried as my expertise was never in short term insurance business and I was expecting to guide one of the junior on this piece of work. Fast forward one month down, it was better than what I initially imagined. These has nevertheless given more confidence in myself.
+
+
+
+It is also these unconventional paths that I have discovered amazing things, similar to the photo below. It was taken with no filter during my Japan trip. Instead of walking along the main road like what other tourists were doing, I followed another path that is less taken and discovered this awesome view.
 
 ```{r, echo = FALSE}
 knitr::include_graphics("image/unconventional_path.jpg")
@@ -34,6 +64,6 @@ knitr::include_graphics("image/unconventional_path.jpg")
 ```
 
 
-
+Nevertheless, this is my journey. Hope it would inspire you to follow your unconventional path :)
 
 
