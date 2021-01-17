@@ -5,21 +5,21 @@
       "title": "About this blog",
       "author": [],
       "contents": "\r\nMy name is Jasper Lok. I am currently working as an actuary and in process of becoming a data scientist. I am passionate about making a difference in people lives through my actuarial and data science knowledge (eg. solving poverty issues).\r\nI did my undergraduate in The Australian National University back in 2009. Since then, I have been working in both life insurance and general insurance as an actuary. My experience includes product pricing, experience analysis and participating fund management. I am also involved in product pricing for new business models.\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
-      "last_modified": "2021-01-17T10:13:23+08:00"
+      "last_modified": "2021-01-17T10:15:36+08:00"
     },
     {
       "path": "index.html",
       "title": "When Actuarial Science Collides with Data Science",
       "author": [],
       "contents": "\r\n\r\n\r\n\r\n",
-      "last_modified": "2021-01-17T10:14:05+08:00"
+      "last_modified": "2021-01-17T10:15:37+08:00"
     },
     {
       "path": "past_proj.html",
       "title": "Past Projects",
       "author": [],
       "contents": "\r\nBelow are omse of my past projects:\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
-      "last_modified": "2021-01-17T10:13:26+08:00"
+      "last_modified": "2021-01-17T10:15:39+08:00"
     }
   ],
   "collections": ["posts/posts.json"]
