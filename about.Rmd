@@ -1,19 +1,44 @@
 ---
-title: "About this blog"
+title: "Jasper Lok"
 site: about.hmtl
 
 ---
 
-My name is Jasper Lok. I am currently working as an actuary and in process of becoming a data scientist. I am passionate about making a difference in people lives through my actuarial and data science knowledge (eg. solving poverty issues).
+### About The Author
+
+```{r, echo = FALSE, fig.width = 2}
+knitr::include_graphics("image/jasper.jpg")
+
+```
+
+Hi there, welcome to my blog! I am currently working as an actuary and in process of becoming a data scientist. I am passionate about transforming business through my actuarial and data science knowledge.
 
 
-I did my undergraduate in The Australian National University back in 2009. Since then, I have been working in both life insurance and general insurance as an actuary. My experience includes product pricing, experience analysis and participating fund management. I am also involved in product pricing for new business models.
+### Academic Background
+I did my actuarial science undergraduate degree in The Australian National University back in 2009. Ironically I had no clue what actuarial science or statistics is about when I entered into university. It was one of my final year GLM project sparked my interest in statistics and data science.
 
+Fast forward to now, I am currently pursuing Master of IT in Business (Analytics) in Singapore Management University.
 
 ```{r, echo = FALSE}
 knitr::include_graphics("image/data_idea.jpg")
 
 ```
+*Photo by Franki Chamaki on Unsplash*
 
 
+### Work Experience
+I have been working in both life insurance and general insurance as an actuary since my first job. Since that, I have worked on the following: <br   />
+- Product pricing on various life, general, group insurance products <br   />
+- Experience analysis <br   />
+- Participating fund management <br   />
+- Distribution compensation <br   />
+- New business model <br   />
+
+
+Do visit my [LinkedIn page](https://www.linkedin.com/in/jasper-l-13426232/) if you are interested to find out more on my work experience!
+
+
+### Contact
+
+Feel free to contact me on [email](mailto:junhaur.lok.2019@mitb.smu.edu.sg) or [LinkedIn](https://www.linkedin.com/in/jasper-l-13426232/).
 
