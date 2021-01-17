@@ -1,0 +1,39 @@
+---
+title: "The Unconventional Path"
+description: |
+  Journey of Joining the "Dark" Side
+author:
+  - name: Jasper Lok 
+date: "2021-01-17"
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+During a stormy night in 2018, it was raining cats and dogs outside. Suddenly there was thunder and lightning. Jeng jeng jeng, I suddenly decided to take up the master degree in Singapore Management University to study more on data science.
+
+Nah, how I decided to embark this data science journey is not so dramatic. I always wish it is that simple to make such a big decision in life. 
+
+
+
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/journey.JPG")
+
+```
+
+
+
+
+
+
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/unconventional_path.jpg")
+
+```
+
+
+
+
+
