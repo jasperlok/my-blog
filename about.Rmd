@@ -7,7 +7,7 @@ site: about.hmtl
 ### About The Author
 
 ```{r, echo = FALSE, fig.width = 2}
-knitr::include_graphics("image/jasper.jpg")
+knitr::include_graphics("image/jasper_2.jpg")
 
 ```
 
@@ -24,6 +24,12 @@ knitr::include_graphics("image/data_idea.jpg")
 
 ```
 *Photo by Franki Chamaki on Unsplash*
+
+
+Throughout my study in SMU, I study various types of analytics, including customer analytics, social analytics, visual analytics, and operation analytics, to gain a broad understanding of various analytics techniques. 
+
+
+I also specialize in digital transformation strategy in my master course. During the middle of the pandemic, I also did a consulting job for a local SME that is in the oil & gas industry. The task involves preparing a business proposal on how the SME could leverage its current strength to pivot the current business to venture into a new business market. This would help the SME to ensure its revised business model is more resilient to external market forces.
 
 
 ### Work Experience

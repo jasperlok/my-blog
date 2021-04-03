@@ -31,7 +31,7 @@ Below are the details of the event:
 - **Date:** 22 April 2021
 
 
-- **Time:** 10 - 11am
+- **Time:** 10 - 11.30 am
 
 
 - **Event Link:** [Link](https://www.actuaries.org.sg/events/how-modern-data-science-could-complement-actuarial-science-claim-cost-estimation)
