@@ -1,0 +1,17 @@
+name: "Jasper Lok"
+title: "When Actuarial Science Collides with Data Science"
+description: |
+  Jasper Lok
+output_dir: "_site"
+navbar:
+  right:
+    - text: "Home"
+      href: index.html
+    - text: "About"
+      href: about.html
+    - text: "Past Project"
+      href: past_proj.html
+output: distill::distill_article
+collections:
+  posts:
+    subscribe: _subscribe.html

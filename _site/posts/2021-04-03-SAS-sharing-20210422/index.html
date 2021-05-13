@@ -20,19 +20,19 @@
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css" data-origin="pandoc">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -52,7 +52,7 @@ pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-le
 div.sourceCode
   {   }
 @media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ad0000; } /* Alert */
 code span.an { color: #5e5e5e; } /* Annotation */
@@ -117,7 +117,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["image/SAS Talk.jpg","sas-sharing_files/anchor-4.2.2/anchor.min.js","sas-sharing_files/bowser-1.9.3/bowser.min.js","sas-sharing_files/distill-2.2.21/template.v2.js","sas-sharing_files/jquery-1.11.3/jquery.min.js","sas-sharing_files/popper-2.6.0/popper.min.js","sas-sharing_files/tippy-6.2.7/tippy-bundle.umd.min.js","sas-sharing_files/tippy-6.2.7/tippy-light-border.css","sas-sharing_files/tippy-6.2.7/tippy.css","sas-sharing_files/tippy-6.2.7/tippy.umd.min.js","sas-sharing_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["image/SAS Talk.jpg","Presentation/css/aml-fonts.css","Presentation/figs/anova.png","Presentation/figs/Apple card discreminate.PNG","Presentation/figs/Classical Machine Learning.png","Presentation/figs/Comparison between decision tree and random forest.png","Presentation/figs/Comparison between decision tree and xgboost.png","Presentation/figs/comparison of traditional actuary and actuarial data scientist.png","Presentation/figs/conventional method store data.png","Presentation/figs/Data Science Blog.png","Presentation/figs/data science process with R package.png","Presentation/figs/data science with R package.png","Presentation/figs/Different machine learning functions.png","Presentation/figs/example of chi-square.png","Presentation/figs/example of cross_plot.png","Presentation/figs/example of mosaic plot.png","Presentation/figs/example of plotar.png","Presentation/figs/feature selection.png","Presentation/figs/gen_recipe_output.png","Presentation/figs/ggbetweenstats_explain.png","Presentation/figs/ggstatsplot functions.png","Presentation/figs/github issue page.png","Presentation/figs/grammar of graphics.png","Presentation/figs/Graph on Different Machine Learning.png","Presentation/figs/grid_search_workflow.png","Presentation/figs/infer_workflow.png","Presentation/figs/Is data science an existential threat for actuaries.png","Presentation/figs/kfoldcv.png","Presentation/figs/kmeans_1.jpg","Presentation/figs/kmeans_10.jpg","Presentation/figs/kmeans_11.jpg","Presentation/figs/kmeans_12.jpg","Presentation/figs/kmeans_2.jpg","Presentation/figs/kmeans_3.jpg","Presentation/figs/kmeans_4.jpg","Presentation/figs/kmeans_5.jpg","Presentation/figs/kmeans_6.jpg","Presentation/figs/kmeans_7.jpg","Presentation/figs/kmeans_8.jpg","Presentation/figs/kmeans_9.jpg","Presentation/figs/Link function (extraction from Effective Statistical Learning Methods for Actuaries I).png","Presentation/figs/list of parsnip models.png","Presentation/figs/machine learning_stick man.png","Presentation/figs/Model Comparison_metrics.png","Presentation/figs/Modeling Process.png","Presentation/figs/Modeling Process_Package.png","Presentation/figs/parsnip.png","Presentation/figs/producibility survey.png","Presentation/figs/PWC model explainability.png","Presentation/figs/R icon.png","Presentation/figs/R icon.webp","Presentation/figs/R Packages Icon/blogdown.png","Presentation/figs/R Packages Icon/broom.png","Presentation/figs/R Packages Icon/dials.png","Presentation/figs/R Packages Icon/distill.png","Presentation/figs/R Packages Icon/dplyr.png","Presentation/figs/R Packages Icon/forcats.png","Presentation/figs/R Packages Icon/funmodeling.png","Presentation/figs/R Packages Icon/ggplot.png","Presentation/figs/R Packages Icon/ggstatplot.png","Presentation/figs/R Packages Icon/haven.png","Presentation/figs/R Packages Icon/knitr.png","Presentation/figs/R Packages Icon/lubridate.png","Presentation/figs/R Packages Icon/magrittr.png","Presentation/figs/R Packages Icon/parsnip.png","Presentation/figs/R Packages Icon/pdp.png","Presentation/figs/R Packages Icon/plotly.png","Presentation/figs/R Packages Icon/purrr.jpg","Presentation/figs/R Packages Icon/readr.png","Presentation/figs/R Packages Icon/readxl.png","Presentation/figs/R Packages Icon/recipes.jpg","Presentation/figs/R Packages Icon/rmarkdown.png","Presentation/figs/R Packages Icon/rsample.png","Presentation/figs/R Packages Icon/skimr.png","Presentation/figs/R Packages Icon/stringr.png","Presentation/figs/R Packages Icon/textrecipe.png","Presentation/figs/R Packages Icon/tibble.png","Presentation/figs/R Packages Icon/tidymodels.png","Presentation/figs/R Packages Icon/tidyr.png","Presentation/figs/R Packages Icon/tidytext.png","Presentation/figs/R Packages Icon/tidyverse.png","Presentation/figs/R Packages Icon/tune.png","Presentation/figs/R Packages Icon/vip.png","Presentation/figs/R Packages Icon/workflow.png","Presentation/figs/R Packages Icon/xaringan.png","Presentation/figs/R Packages Icon/yardstick.jpg","Presentation/figs/recipe_datapreprocessing.png","Presentation/figs/recipe_prep.png","Presentation/figs/recipe_specifyvariables.png","Presentation/figs/recipes - Copy.png","Presentation/figs/recipes.png","Presentation/figs/recommend approach in structuring folder_code.png","Presentation/figs/recommend approach in structuring folder_folder.png","Presentation/figs/rmarkdown_rockstar.png","Presentation/figs/rmarkdown_wizards.png","Presentation/figs/Sample presentation slides.png","Presentation/figs/SAS Talk.jpg","Presentation/figs/SMUlogo.png","Presentation/figs/speaker bio.png","Presentation/figs/textmining.png","Presentation/figs/tidydata.png","Presentation/figs/tidydata_automation.jpg","Presentation/figs/tidydata_dataset.jpg","Presentation/figs/tidydata_process.jpg","Presentation/figs/tidydata_workbench.jpg","Presentation/figs/tidydata_wrangle.jpg","Presentation/figs/tidymodels_slides.png","Presentation/figs/tidyverse blog.png","Presentation/figs/time series cross validation.png","Presentation/figs/tip of ice berg.png","Presentation/figs/typical data science process.png","Presentation/figs/Unreasonable Value.png","Presentation/figs/user_model output.png","Presentation/figs/wordcloud.png","Presentation/figs/Zoom Scatter Plot.png","Presentation/libs/crosstalk/css/crosstalk.css","Presentation/libs/crosstalk/js/crosstalk.js","Presentation/libs/crosstalk/js/crosstalk.js.map","Presentation/libs/crosstalk/js/crosstalk.min.js","Presentation/libs/crosstalk/js/crosstalk.min.js.map","Presentation/libs/datatables-binding/datatables.js","Presentation/libs/datatables-css/datatables-crosstalk.css","Presentation/libs/dt-core/css/jquery.dataTables.extra.css","Presentation/libs/dt-core/css/jquery.dataTables.min.css","Presentation/libs/dt-core/js/jquery.dataTables.min.js","Presentation/libs/dt-ext-fixedcolumns/css/fixedColumns.dataTables.min.css","Presentation/libs/dt-ext-fixedcolumns/js/dataTables.fixedColumns.min.js","Presentation/libs/header-attrs/header-attrs.js","Presentation/libs/htmlwidgets/htmlwidgets.js","Presentation/libs/jquery/jquery.min.js","Presentation/libs/jquery/LICENSE.txt","Presentation/libs/kePrint/kePrint.js","Presentation/libs/leaflet-binding/leaflet.js","Presentation/libs/leaflet/images/layers-2x.png","Presentation/libs/leaflet/images/layers.png","Presentation/libs/leaflet/images/marker-icon-2x.png","Presentation/libs/leaflet/images/marker-icon.png","Presentation/libs/leaflet/images/marker-shadow.png","Presentation/libs/leaflet/leaflet.css","Presentation/libs/leaflet/leaflet.js","Presentation/libs/leafletfix/leafletfix.css","Presentation/libs/lightable/lightable.css","Presentation/libs/proj4/proj4.min.js","Presentation/libs/Proj4Leaflet/proj4leaflet.js","Presentation/libs/remark-css/default.css","Presentation/libs/rstudio_leaflet/images/1px.png","Presentation/libs/rstudio_leaflet/rstudio_leaflet.css","Presentation/MITB_Capstone_Lok-Jun-Haur_Slides.html","Presentation/MITB_Capstone_Lok-Jun-Haur_Slides_files/figure-html/unnamed-chunk-67-1.png","Presentation/MITB_Capstone_Lok-Jun-Haur_Slides_files/figure-html/unnamed-chunk-72-1.png","Presentation/MITB_Capstone_Lok-Jun-Haur_Slides_files/figure-html/unnamed-chunk-74-1.png","Presentation/MITB_Capstone_Lok Jun Haur_Slides.html","Presentation/MITB_Capstone_Lok Jun Haur_Slides.pdf","Presentation/MITB_Capstone_Lok Jun Haur_Slides.Rmd","sas-sharing_files/anchor-4.2.2/anchor.min.js","sas-sharing_files/bowser-1.9.3/bowser.min.js","sas-sharing_files/distill-2.2.21/template.v2.js","sas-sharing_files/header-attrs-2.7/header-attrs.js","sas-sharing_files/jquery-1.11.3/jquery.min.js","sas-sharing_files/popper-2.6.0/popper.min.js","sas-sharing_files/tippy-6.2.7/tippy-bundle.umd.min.js","sas-sharing_files/tippy-6.2.7/tippy-light-border.css","sas-sharing_files/tippy-6.2.7/tippy.css","sas-sharing_files/tippy-6.2.7/tippy.umd.min.js","sas-sharing_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
 <meta name="distill:offset" content="../.."/>
@@ -2041,6 +2041,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <!--/radix_placeholder_distill-->
+  <script src="../../site_libs/header-attrs-2.7/header-attrs.js"></script>
   <script src="../../site_libs/jquery-1.11.3/jquery.min.js"></script>
   <script src="../../site_libs/popper-2.6.0/popper.min.js"></script>
   <link href="../../site_libs/tippy-6.2.7/tippy.css" rel="stylesheet" />
@@ -2101,6 +2102,8 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 
 <div class="d-article">
+<p><em>Updated on 13 May 2021</em></p>
+<p><em>Summary of update:</em> <br  /> <em>- Include link to the presentation video, slides and documents</em></p>
 <div class="layout-chunk" data-layout="l-body">
 <p><img src="image/SAS%20Talk.jpg" width="864" /></p>
 </div>
@@ -2113,7 +2116,12 @@ document.addEventListener('DOMContentLoaded', function() {
 <li><p><strong>Event Link:</strong> <a href="https://www.actuaries.org.sg/events/how-modern-data-science-could-complement-actuarial-science-claim-cost-estimation">Link</a></p></li>
 </ul>
 <p>While this research project focus on the end to end of data science project process (ie. from data wrangling, pre-processing, modeling and communication), this sharing will only be focusing on the modeling part due to the time constraint.</p>
-<p>Neverthless, do check out this post as I will post the paper, code &amp; poster once they are completed if you would like to find out more on this project!</p>
+<p>Following is the links to the various documents from the presentations:</p>
+<ul>
+<li><p><strong>Presentation video:</strong> <a href="https://youtu.be/CKPRjkiKqbQ">https://youtu.be/CKPRjkiKqbQ</a>.</p></li>
+<li><p><strong>Presentation slides:</strong> <a href="Presentation\MITB_Capstone_Lok-Jun-Haur_Slides.html">link</a></p></li>
+<li><p><strong>Other documents (eg. R codes, research report):</strong> <a href="https://github.com/jasperlok/SAS-Sharing_20210422">https://github.com/jasperlok/SAS-Sharing_20210422</a></p></li>
+</ul>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->

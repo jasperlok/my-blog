@@ -13,10 +13,10 @@
     "categories": [
       "talks"
     ],
-    "contents": "\r\n\r\n\r\n\r\nAnd finally after months preparations, I will be sharing at Singapore Actuarial Society on how actuaries could leverage on modern data science packages in R to perform necessary actuarial analysis.\r\nBelow are the details of the event:\r\nEvent Organizer: Singapore Actuarial Society\r\nDate: 22 April 2021\r\nTime: 10 - 11.30 am\r\nEvent Link: Link\r\nWhile this research project focus on the end to end of data science project process (ie. from data wrangling, pre-processing, modeling and communication), this sharing will only be focusing on the modeling part due to the time constraint.\r\nNeverthless, do check out this post as I will post the paper, code & poster once they are completed if you would like to find out more on this project!\r\n\r\n\r\n\r\n",
-    "preview": {},
-    "last_modified": "2021-04-03T16:14:05+08:00",
-    "input_file": {}
+    "contents": "\r\nUpdated on 13 May 2021\r\nSummary of update: - Include link to the presentation video, slides and documents\r\n\r\n\r\n\r\nAnd finally after months preparations, I will be sharing at Singapore Actuarial Society on how actuaries could leverage on modern data science packages in R to perform necessary actuarial analysis.\r\nBelow are the details of the event:\r\nEvent Organizer: Singapore Actuarial Society\r\nDate: 22 April 2021\r\nTime: 10 - 11.30 am\r\nEvent Link: Link\r\nWhile this research project focus on the end to end of data science project process (ie. from data wrangling, pre-processing, modeling and communication), this sharing will only be focusing on the modeling part due to the time constraint.\r\nFollowing is the links to the various documents from the presentations:\r\nPresentation video: https://youtu.be/CKPRjkiKqbQ.\r\nPresentation slides: link\r\nOther documents (eg. R codes, research report): https://github.com/jasperlok/SAS-Sharing_20210422\r\n\r\n\r\n\r\n",
+    "preview": "posts/2021-04-03-SAS-sharing-20210422/image/SAS Talk.jpg",
+    "last_modified": "2021-05-14T00:56:55+08:00",
+    "input_file": "sas-sharing.utf8.md"
   },
   {
     "path": "posts/2021-01-22-data-wrangling/",

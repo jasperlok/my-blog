@@ -1,0 +1,1529 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Sharing at Singapore Actuarial Society</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Jasper LOK" />
+    <meta name="author" content="Professor KAM Tin Seong" />
+    <meta name="date" content="2021-04-22" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets/htmlwidgets.js"></script>
+    <script src="libs/jquery/jquery.min.js"></script>
+    <link href="libs/datatables-css/datatables-crosstalk.css" rel="stylesheet" />
+    <script src="libs/datatables-binding/datatables.js"></script>
+    <link href="libs/dt-core/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="libs/dt-core/css/jquery.dataTables.extra.css" rel="stylesheet" />
+    <script src="libs/dt-core/js/jquery.dataTables.min.js"></script>
+    <link href="libs/crosstalk/css/crosstalk.css" rel="stylesheet" />
+    <script src="libs/crosstalk/js/crosstalk.min.js"></script>
+    <link rel="stylesheet" href="css/aml-fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Sharing at Singapore Actuarial Society
+## When 1 + 1 &gt; 2: How Modern Data Science could Complement Actuarial Science in Claim Cost Estimation
+### Jasper LOK
+### Professor KAM Tin Seong
+### Singapore Management University
+### 22 Apr 2021
+
+---
+
+
+
+
+
+
+
+# Speakers' Bio
+
+&lt;img src="figs/speaker bio.png" width="80%" /&gt;
+
+
+---
+
+class: center, middle
+&lt;img src="figs/machine learning_stick man.png" width="40%" /&gt;
+
+---
+
+# Are data scientists taking over actuaries?
+
+&lt;img src="figs/Is data science an existential threat for actuaries.png" width="70%" /&gt;
+
+*Source: [Contingencies Volume 32 No 1](https://contingencies.org/data-science/)*
+
+---
+
+# Should actuaries start looking for other jobs in other industries?
+
+--
+
+**Relax!** Most articles agree that data scientists are not likely to take over actuaries due to the complexity of actuarial science.
+
+--
+
+In general, these articles also pointed out there are much more actuaries could learn from data scientists to assist us in our actuarial analysis.
+
+
+---
+
+# List of benefits data science could bring to actuarial task
+
+
+|Benefits                     |Descriptions                                                                                                               |
+|:----------------------------|:--------------------------------------------------------------------------------------------------------------------------|
+|Improved data quality        |Machine learning is a key driver for companies to improve data capture and storage                                         |
+|New data sources             |Machine learning potentially opens up opportunities for actuaries to explore alternative data sources                      |
+|Speed of analysis            |Machine learning models can generally be fitted and validated in a short space of time                                     |
+|New modeling techniques      |Utilising alternative modeling approaches allows different perspectives to be gained on data                               |
+|New Approaches to Problems   |Produce a wider variety of models quickly - better ability to select the appropriate modeling approach for a given problem |
+|Improved Data Visualisations |Increasing power to produce stunning visualisations of data which can itself provide new perspectives on a task            |
+
+
+---
+
+# Additional Skillset for Actuaries to acquire
+
+&lt;img src="figs/comparison of traditional actuary and actuarial data scientist.png" width="70%" /&gt;
+
+*Modified the graph by [Quantee](https://quantee.ai/actuarial-data-science/)*
+
+--
+
+It is not just about learning the programming language, but also what are the best practice of performing machine learning tasks (eg. what is the suitable package to use to perform the necessary analysis).
+
+
+
+---
+
+# Typical Data Science Project
+
+&lt;img src="figs/tidymodels_slides.png" width="80%" /&gt;
+
+
+--
+
+
+The packages shown above are designed to work together, instead of some loosely designed packages.
+
+
+---
+
+# Typical Modeling Process
+
+&lt;img src="figs/Modeling Process.png" width="85%" /&gt;
+
+*Source: [Chapter 3.3 of Tidy Modeling with R](https://www.tmwr.org/base-r.html#formula)*
+
+
+
+
+
+
+---
+
+# Issue with open-source software
+
+&lt;img src="figs/Different machine learning functions.png" width="70%" /&gt;
+
+*Source: [Chapter 3.3 of Tidy Modeling with R](https://www.tmwr.org/base-r.html#formula)*
+
+
+This can be a stumbling block for users to use R to perform machine learning analysis.
+
+
+---
+
+# Sometimes the issues can happen within the same package as well 🤮
+
+
+Over here, we will take a look at this **glmnet** example shared by Max Kuhn during his [**tidymodels** sharing at Cleveland R User Group](https://www.youtube.com/watch?v=kAZe9UpMx_s).
+
+--
+
+**glmnet** is a package that allows one to fit a regularized generalized linear models. The prediction output from this package can come in various forms.
+
+---
+
+
+
+
+## **glmnet** Class Predictions
+
+
+```r
+predict(two_class_mod, newx = new_x, type = "class")
+```
+
+```
+##          s0  s1  s2 
+## sample_1 "a" "b" "b"
+## sample_2 "a" "b" "b"
+```
+
+
+
+
+---
+
+## **glmnet** Class Probabilities (Two Classes)
+
+
+```r
+predict(two_class_mod, newx = new_x, type = "response")
+```
+
+```
+##           s0  s1        s2
+## sample_1 0.5 0.5 0.5059110
+## sample_2 0.5 0.5 0.5261249
+```
+
+Now, the **predict** function returns a matrix of probability for the second level of outcome factor.
+
+
+---
+
+## **glmnet** Class Probabilities (Three Classes)
+
+.pull-left[
+
+```r
+predict(three_class_mod, newx = new_x, 
+        type = "response")
+```
+
+```
+## , , s0
+## 
+##                  a         b         c
+## sample_1 0.3333333 0.3333333 0.3333333
+## sample_2 0.3333333 0.3333333 0.3333333
+## 
+## , , s1
+## 
+##                  a         b         c
+## sample_1 0.3333333 0.3333333 0.3333333
+## sample_2 0.3333333 0.3333333 0.3333333
+## 
+## , , s2
+## 
+##                  a         b         c
+## sample_1 0.3727891 0.2441238 0.3830872
+## sample_2 0.3269560 0.3388499 0.3341941
+```
+]
+
+.pull-right[
+The output is no longer in matrix format. It is a 3D array format. Fainted. Often, the users would spend quite a fair bit of time in transforming the output into the required format of the next function.
+
+Perhaps illustrating the output in such format would be better?
+
+```
+## # A tibble: 6 x 4
+##       a     b     c lambda
+##   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+## 1 0.333 0.333 0.333   1   
+## 2 0.333 0.333 0.333   1   
+## 3 0.333 0.333 0.333   0.1 
+## 4 0.333 0.333 0.333   0.1 
+## 5 0.373 0.244 0.383   0.01
+## 6 0.327 0.339 0.334   0.01
+```
+]
+
+
+---
+
+# Tidymodels to the rescue!
+
+The author of **caret** package (ie. Max Kuhn) felt that there should be a better approach to perform machine learning tasks.
+
+--
+
+&lt;img src="figs/R Packages Icon/tidymodels.png" width="20%" /&gt;
+
+--
+
+**Tidymodels** is a collection of various machine learning packages, from data pre-processing to model building &amp; model comparison. The package provides an unified interface to perform machine learning tasks.
+
+
+Instead of reinventing the "wheels", the package functions as a wrapper to wrap around existing package.
+
+
+---
+
+
+&lt;img src="figs/Modeling Process_package.png" width="80%" /&gt;
+
+*Source: [A Gentle Introduction to tidymodels](https://rviews.rstudio.com/2019/06/19/a-gentle-intro-to-tidymodels/)*
+
+
+Above are the various key packages that assist us in our various machine learning activities.
+
+
+These packages are recent project by RStudio to look into how the packages could better support users in the machine learning analysis.
+
+
+
+The cool thing about these packages are following *tidy data* concepts.
+
+
+---
+
+# What do you mean by tidy data?
+
+A concept introduced by Hadley Wickham, Chief Scientist at R Studio.
+
+Below are the definition of tidy data:
+
+- Each variable must have its column
+
+- Each observation must have its row
+
+- Each value must have its cell
+
+&lt;img src="figs/tidydata.png" width="70%" /&gt;
+
+*Source: [Chapter 12.2 of R for Data Science](https://r4ds.had.co.nz/tidy-data.html)*
+
+---
+
+# Hmmm, but why is this important?
+
+&lt;img src="figs/tidydata_workbench.jpg" width="65%" /&gt;
+
+*Source: [stats-illustrations](https://github.com/allisonhorst/stats-illustrations) by Allison Horst*
+
+
+---
+
+# Setting Context for the Actuarial Use Case
+
+For the demonstration, I will be using the worker compensation insurance claim dataset from Kaggle [https://www.kaggle.com/c/actuarial-loss-estimation/](https://www.kaggle.com/c/actuarial-loss-estimation/).
+
+
+Below is the snapshot of the dataset:
+
+
+
+
+<div id="htmlwidget-339de505709a142d9fd9" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-339de505709a142d9fd9">{"x":{"filter":"none","data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59","60","61","62","63","64","65","66","67","68","69","70","71","72","73","74","75","76","77","78","79","80","81","82","83","84","85","86","87","88","89","90","91","92","93","94","95","96","97","98","99","100"],["WC8285054","WC6982224","WC5481426","WC9775968","WC2634037","WC6828422","WC8058150","WC7539849","WC4427179","WC9907636","WC3053943","WC6193926","WC2826510","WC5428872","WC4129793","WC8342953","WC3379929","WC2798133","WC4302308","WC5202252","WC1719057","WC2329458","WC7344916","WC3735596","WC7038776","WC8595173","WC6049270","WC2633986","WC8668542","WC8127373","WC1766625","WC9952259","WC7589744","WC7181544","WC7908834","WC3203795","WC2986786","WC7463736","WC6411527","WC2300375","WC7096816","WC1649877","WC2934983","WC4994856","WC2132771","WC4910973","WC5287454","WC2972922","WC8420762","WC2429450","WC4547669","WC9981112","WC9004661","WC9446411","WC4374792","WC6516231","WC8663944","WC6926560","WC4196336","WC3561629","WC8144962","WC4944048","WC5933900","WC3056558","WC1977842","WC4878605","WC4923605","WC8931146","WC2194697","WC3188940","WC3701990","WC4391808","WC5643058","WC3000056","WC3671512","WC5042885","WC2165534","WC7315792","WC5293753","WC4542975","WC9167947","WC6683299","WC6189721","WC9012006","WC7368681","WC9460707","WC6468335","WC4352080","WC1630835","WC2638160","WC3732662","WC6515164","WC4698245","WC2448314","WC7639313","WC6321967","WC2845426","WC7437942","WC3106534","WC9073054"],["2002-04-09T07:00:00Z","1999-01-07T11:00:00Z","1996-03-25T00:00:00Z","2005-06-22T13:00:00Z","1990-08-29T08:00:00Z","1999-06-21T11:00:00Z","2001-07-13T11:00:00Z","2000-03-09T09:00:00Z","1994-03-24T16:00:00Z","2005-12-07T11:00:00Z","1991-04-11T17:00:00Z","1997-07-09T13:00:00Z","1990-11-13T11:00:00Z","1996-12-09T08:00:00Z","1993-09-23T06:00:00Z","2002-01-30T09:00:00Z","1991-05-08T11:00:00Z","1990-08-28T15:00:00Z","1993-01-18T11:00:00Z","1995-03-15T13:00:00Z","1988-07-18T14:00:00Z","1989-06-20T11:00:00Z","2000-03-10T18:00:00Z","1992-04-23T08:00:00Z","1999-07-07T10:00:00Z","2002-12-04T10:00:00Z","1997-02-12T16:00:00Z","1990-01-21T11:00:00Z","2003-03-06T16:00:00Z","2002-09-23T15:00:00Z","1988-03-16T18:00:00Z","2005-08-31T11:00:00Z","2000-10-03T09:00:00Z","1999-10-27T13:00:00Z","2001-03-20T10:00:00Z","1991-11-05T16:00:00Z","1990-04-26T11:00:00Z","2000-11-16T11:00:00Z","1998-04-29T12:00:00Z","1989-05-01T10:00:00Z","1999-07-20T14:00:00Z","1988-06-20T10:00:00Z","1990-08-01T12:00:00Z","1995-02-28T09:00:00Z","1989-08-01T06:00:00Z","1995-04-13T14:00:00Z","1995-05-30T11:00:00Z","1990-06-19T12:00:00Z","2002-04-19T16:00:00Z","1989-09-26T08:00:00Z","1994-05-02T13:00:00Z","2005-11-26T06:00:00Z","2003-03-12T13:00:00Z","2004-09-30T11:00:00Z","1993-03-24T14:00:00Z","1998-02-12T12:00:00Z","2003-05-23T11:00:00Z","1999-04-19T04:00:00Z","1993-08-26T08:00:00Z","1992-05-28T09:00:00Z","2002-04-17T09:00:00Z","1995-11-10T15:00:00Z","1997-03-10T10:00:00Z","1991-10-12T15:00:00Z","1988-02-04T15:00:00Z","1994-09-19T16:00:00Z","1995-05-20T07:00:00Z","2003-09-22T20:00:00Z","1989-10-18T08:00:00Z","1991-08-16T13:00:00Z","1992-10-23T09:00:00Z","1993-02-02T12:00:00Z","1996-05-30T08:00:00Z","1991-11-07T16:00:00Z","1992-02-28T07:00:00Z","1995-07-14T14:00:00Z","1989-12-12T09:00:00Z","2000-11-23T10:00:00Z","1995-06-15T09:00:00Z","1994-12-12T09:00:00Z","2004-04-15T09:00:00Z","1998-06-19T08:00:00Z","1997-07-23T12:00:00Z","2003-05-19T06:00:00Z","2000-02-21T13:00:00Z","2004-06-19T20:00:00Z","1998-07-09T12:00:00Z","1993-08-10T16:00:00Z","1988-02-05T16:00:00Z","1990-03-21T18:00:00Z","1992-06-19T13:00:00Z","1998-07-27T13:00:00Z","1994-01-11T11:00:00Z","1989-09-19T15:00:00Z","2000-11-13T09:00:00Z","1998-04-06T12:00:00Z","1990-06-11T11:00:00Z","2000-02-18T10:00:00Z","1991-07-29T11:00:00Z","2004-08-03T15:00:00Z"],["2002-07-05T00:00:00Z","1999-01-20T00:00:00Z","1996-04-14T00:00:00Z","2005-07-22T00:00:00Z","1990-09-27T00:00:00Z","1999-09-09T00:00:00Z","2001-07-23T00:00:00Z","2000-04-16T00:00:00Z","1994-04-26T00:00:00Z","2005-12-22T00:00:00Z","1991-04-22T00:00:00Z","1997-07-25T00:00:00Z","1990-11-21T00:00:00Z","1996-12-17T00:00:00Z","1993-10-25T00:00:00Z","2002-02-07T00:00:00Z","1991-05-10T00:00:00Z","1990-09-29T00:00:00Z","1993-02-09T00:00:00Z","1995-05-01T00:00:00Z","1988-10-02T00:00:00Z","1989-06-30T00:00:00Z","2000-03-20T00:00:00Z","1992-06-10T00:00:00Z","2000-06-29T00:00:00Z","2002-12-14T00:00:00Z","1997-02-27T00:00:00Z","1990-03-13T00:00:00Z","2003-03-19T00:00:00Z","2002-10-20T00:00:00Z","1988-03-31T00:00:00Z","2005-09-08T00:00:00Z","2000-10-24T00:00:00Z","1999-11-04T00:00:00Z","2001-04-03T00:00:00Z","1991-11-19T00:00:00Z","1990-06-05T00:00:00Z","2000-11-25T00:00:00Z","1998-07-11T00:00:00Z","1989-05-15T00:00:00Z","1999-10-12T00:00:00Z","1988-07-03T00:00:00Z","1990-08-23T00:00:00Z","1995-03-14T00:00:00Z","1989-09-06T00:00:00Z","1995-04-29T00:00:00Z","1995-08-29T00:00:00Z","1990-07-20T00:00:00Z","2002-05-13T00:00:00Z","1989-10-14T00:00:00Z","1994-05-17T00:00:00Z","2006-01-07T00:00:00Z","2003-04-10T00:00:00Z","2004-10-23T00:00:00Z","1993-04-19T00:00:00Z","1998-03-04T00:00:00Z","2003-07-14T00:00:00Z","1999-05-11T00:00:00Z","1993-09-18T00:00:00Z","1992-06-08T00:00:00Z","2002-05-12T00:00:00Z","1995-11-21T00:00:00Z","1997-03-20T00:00:00Z","1992-01-02T00:00:00Z","1988-03-08T00:00:00Z","1994-10-02T00:00:00Z","1995-08-03T00:00:00Z","2003-10-30T00:00:00Z","1989-10-27T00:00:00Z","1991-09-06T00:00:00Z","1992-11-23T00:00:00Z","1993-03-02T00:00:00Z","1996-06-18T00:00:00Z","1991-12-07T00:00:00Z","1992-03-09T00:00:00Z","1995-07-28T00:00:00Z","1990-02-03T00:00:00Z","2000-12-09T00:00:00Z","1995-06-24T00:00:00Z","1995-06-18T00:00:00Z","2004-04-18T00:00:00Z","1998-06-29T00:00:00Z","1998-03-05T00:00:00Z","2003-06-03T00:00:00Z","2000-03-06T00:00:00Z","2004-11-07T00:00:00Z","1998-08-01T00:00:00Z","1993-08-17T00:00:00Z","1988-02-22T00:00:00Z","1990-04-12T00:00:00Z","1992-09-08T00:00:00Z","1998-08-16T00:00:00Z","1994-01-21T00:00:00Z","1989-11-21T00:00:00Z","2000-11-28T00:00:00Z","1998-05-11T00:00:00Z","1990-07-15T00:00:00Z","2000-03-14T00:00:00Z","1991-09-08T00:00:00Z","2004-08-31T00:00:00Z"],[48,43,30,41,36,50,39,56,49,30,20,22,29,25,17,58,52,17,17,27,43,30,50,34,33,23,17,42,56,42,58,34,43,53,37,19,47,19,51,37,22,28,16,22,29,23,36,18,38,38,24,21,32,44,21,50,21,25,19,61,61,34,43,18,49,21,43,20,25,27,36,54,19,45,48,32,20,34,21,24,24,52,19,47,30,38,33,26,34,49,27,21,51,38,24,61,38,61,48,34],["M","F","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","F","F","M","M","M","M","M","M","M","M","M","M","F","M","M","M","M","F","M","M","M","M","M","M","M","M","F","M","M","M","M","M","F","F","M","M","F","F","M","M","M","M","F","M","M","M","M","M","M","F","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","F","M","F","F","M","M","M","F","M","M","F"],["M","M","U","S","M","M","M","M","M","S","S","S","S","S","S","M","M","S","S","S","M","U","S","S","S","S","S","S","S","M","M","M","M","M","M","M","M","S","M","M","S","S","S","S","M","S","M","S","M","M","S","S","M","M","S","M","S","S","S","U","M","U","M","S","M","S","M","S","S","S","M","M","S","M","M","U","S","M","S","S","S","M","S","M","M","S","S","S","M","M","S","S","M","M","U","M","M","S","S","S"],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,2,0,0,0,0,0,3,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[500,509.34,709.1,555.46,377.1,200,200,200,623.6,857.28,480.77,200,391.8,386.18,515,525,347.15,200,320,200,300,443.95,200,200,539.97,500,251.08,276.6,500,802.92,350,650,511.5,673.2,714.4,359.23,673.1,181.83,200,375,200,308.9,200,308.89,283.5,364.6,437.75,200,500,350,487.5,431.62,480.5,612,318.44,200,176.15,440,304,350.9,400,528.94,200,307.65,300,336.15,200,500,322.5,307.65,350,240,375.03,450,458.28,671,480,500,200,200,831.79,764.4,200,1000,297.16,692.31,492.78,485,388.6,410,463.8,382.6,264.81,709.5,1246.15,760,400,200,395.94,1084.5],["F","F","F","F","F","F","F","F","F","F","F","F","F","F","F","F","F","F","F","F","F","F","F","F","F","F","F","P","F","F","F","F","F","F","F","F","F","F","F","F","F","F","F","F","F","F","F","F","F","P","F","F","F","F","F","F","P","F","F","P","P","F","F","F","F","F","F","F","F","F","F","P","F","F","F","F","F","F","F","F","F","F","F","F","F","F","F","F","F","F","F","P","F","F","F","F","F","F","F","F"],[38,37.5,38,38,38,38,38,40,38,37,40,38,38,38,38,40,36,38,40,38,38,40,38,38,37,38,38,12.5,38,40,40,38,38,35,40,34,43.9,38,38,38,35,40,38,38,30,38,38,38,40,29.75,38,40,38,40,40,38,16,38,40,38,25,38,38,38,38,40,38,44,40,38,38,30,30,38,40,35,38,38,38,38,40,38,38,38,38,40,38,38,38,40,40,32,38,38,40,35,40,16,38,40],[5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,2,5,5,5,5,5,5,5,5,3,5,5,5,4,5,5,5,5,5,5,5,5,4,5,5,5,5,5,5,3,5,5,4,4,7,5,5,5,5,5,5,5,5,5,3,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,6],["LIFTING TYRE INJURY TO RIGHT ARM AND WRIST INJURY","STEPPED AROUND CRATES AND TRUCK TRAY FRACTURE LEFT FOREARM","CUT ON SHARP EDGE CUT LEFT THUMB","DIGGING LOWER BACK LOWER BACK STRAIN","REACHING ABOVE SHOULDER LEVEL ACUTE MUSCLE STRAIN LEFT SIDE OF STOMACH","STRUCK HEAD ON HEAD LACERATED HEAD","FINGER BRUISED AND SWOLLEN LEFT ARM","CLEANING LEFT SHOULDER SPLINTER LEFT HAND","JACK SLIPPED CATCHING FINGER CUT LEFT LITTLE FINGER","STRUCK PINE DUST ABRASION LEFT EYE IRRITATION","STRAINED MUSCLE IN BACK STRAINED LOWER BACK PAIN","TO RIGHT LEG RIGHT KNEE","PICKING UP PARCELS BACK","STRUCK TIMBER RIGHT WRIST","EMPTYING BIN FISH BONE FOREIGN BODY EYE","FALL FROM A LADDER STRAIN RIGHT SHOULDER","STRUCK HOT WATER BURN RIGHT HAND LEFT SHOULDER","HAND SLID ONTO BLADE LACERATION RIGHT HAND MIDDLE FINGER","CUTTING MATERIAL CUT FINGER","WHILST USING KNIFE LACERATION LEFT INDEX FINGER","STEPPED OFF FORKLIFT TWISTED KNEE LEFT KNEE AND WRIST","SLIPPED ON ROLLER TENDONITIS RIGHT SHOULDER","BENDING LOWER BACK STRAIN","HIT ELBOW ON FIBREGLASS EDGE LEFT ELBOW","LIFTING BOXES OF FURNITURE MUSCLE STRAIN LEFT WRIST","TRAP BETWEEN COUPLING AND BRACKET FRACTURE RIGHT RIGHT FINGER","STRUCK LADDER BRUISED RIGHT KNEE MUSCLE RIGHT","TRANSFERRING PATIENT SHOULDER STRAIN","FELL PULLING ROPE BROKE SPRAIN KNEE","LIFTING DOOR STRAINED BACK","CUTTING DOWN A SMALL STEP SPRAINED TWISTED RIGHT FOOT","STRUCK HAMMER BRUISED LEFT INDEX FINGER","HIT AIR HOSE LACERATED LIP","PUSHING SKIP BIN STRAIN LOWER BACK STRAIN SOFT TISSUE INJURY","LIFTING FURNITURE STRAIN NECK","WALKING SOFT TISSUE INJURY BACK","STRIKING AGAINST FORKLIFT PRONGS BRUISED RIGHT RING FINGER","CAUGHT BETWEEN STEEL LACERATED LEFT RING FINGER","LIFTING COUCH STRAIN LEFT SHOULDER STRAIN","BENDING REPETATIVE BENDING STRAIN LOWER BACK STRAIN","LIFTING TABLE STRAIN BACK LOWER BACK STRAIN","LIFTING TRAILER STRAIN LOWER BACK STRAIN","STRUCK DUST FROM GRINDING FOREIGN BODY LEFT EYE","FELL AND HIT CHEST ON VESSEL BRUISED RIGHT FOOT","STRUCK ROLLER BRUISED RIGHT FOOT BRUISED RIGHT HAND","STRUCK PIECE OF METAL EYE","LIFTING VINES LOWER BACK STRAIN LOWER BACK STRAIN","FINGER CAUGHT IN FABRIC SLIPPED LACERATED LEFT FINGER","STRUCK VALVES ABRASIONS LEFT LEG LACERATED LEFT INDEX FINGER","LIFTING PATIENT PAIN IN LOWER BACK LEG","LIFTING BOXES LOWER BACK BACK INJURY","STRUCK LADDER BRUISED RIGHT KNEE MUSCLE RIGHT","FELL OFF LADDER FRACTURE RIGHT WRIST","NORMAL WORK DUTIES TENNIS ELBOW RIGHT ELBOW","CUTTING MATERIAL CUT FINGER","LIFTING BOX OF METAL STRAINED UPPER BACK","SLIPPED OVER SPRAIN LEFT ARM","JAMMED RIGHT HAND PUNCTURE WOUND RIGHT ARM","PLAYING VOLLEYBALL STRAIN RIGHT ARM RIGHT","STRAINED MUSCLE LIFTING CARTONS LOWER BACK","FELL INTO BOAT HATCH BRUISED RIGHT EYE","STRUCK BLADE OF CUTTER CUT FINGER LACERATION LEFT INDEX FINGER","SLIPPED STRAINED LOWER BACK PAIN","CAUGHT BETWEEN SPANNER AND BENCH BRUISE LEFT INDEX FINGER","FELL BACK AND HIT GLASS BROKEN DAMAGED GLASSES","CAUGHT FINGER UNDER TRAY CRUSH INJURY TO LEFT HAND","HANDLING LARGE WIRES STRAINED UPPER BACK","BRUISING TO RIGHT SIDE STRAIN RIGHT SHOULDER","SORTING ALUMINIUM BARS STRAIN SHOULDER NECK","WELDING FLASH FOREIGN BODY CORNEA","STRUCK WITH KNIFE KNIFE CUT RIGHT INDEX FINGER","LIFTING STEEL BEAM BRUISING CHEST","LIFTING KG METAL STRAIN LOWER BACK STRAIN","HEAD STRUCK ENGINE INJURED LEFT ANKLE","BENDING AND REACHING OVER STRAIN LEFT CALF MUSCLE","CAUGHT BETWEEN SPANNER AND TRUCK LACERATED LEFT THUMB NAIL","GRINDING SPARK ENTERED EYE FOREIGN BODY EYE","PARTICLE WHILST GRINDING FOREIGN BODY LEFT EYE","ATIENT UPPER ARM WHILST LIFTING FRACTURED RIGHT FOOT","WELDING FLASH EYE DAMAGE","ARMS TRUNK AND LEGS RASH AND ITCHES RESIDENT SCABIES","STRUCK ROLLER SHUTTER SOFT TISSUE INJURY NECK","HIT CROWBAR BRUISED RIGHT HEEL LACERATED RIGHT INDEX FINGER","CUT FINGER ON DOOR BRUISING TO RIGHT FOREARM","CARRYING RACK LOWER BACK STRAIN LOWER BACK STRAIN","SLIPPED ON WET FLOOR SOFT TISSUE INJURY RIGHT KNEE","MOTOR FELL ON FOOT LEFT FOOT","LIFTING PASSENGER LOWER BACK PAIN TO LOWER BACK","INFECTED RIGHT INDEX FINGER LACERATION LEFT INDEX FINGER","LIFTING PATIENT PULLED MUSCLE IN BACK AND SHOULDER STRAIN","DRILL GRABBED DRILL BRUISING HAND","CHISEL SLIPPED STRUCK EXHAUST LACERATION TO UPPER LEFT BACK AND NECK","LIFTING FILING CABINET STRAINED LOWER BACK STRAINED","SPILLED HOT WATER BURN RIGHT FOREARM BURN","CRUSHED STEEL DOOR BRUISED BACK","BACK LIFTING RUBBISH BIN LOWER BACK INJURY","SPLINTER IN FINGER INFECTED FINGER RIGHT HAND","CLEANING LOWER BACK STRAIN","LACERATED WITH KNIFE LACERATED LEFT FINGER","LOWER BACK LOWER BACK STRAIN"],[1500,5500,1700,15000,2800,500,500,500,925,1500,3500,1000,250,1300,735,25000,3500,1000,3500,500,7000,500,10000,9000,5000,1000,600,67000,1000,9500,2000,1500,12000,5500,10000,2520,2000,1000,10000,6000,10000,3500,320,400,315,500,12600,320,1000,3500,7500,1000,111077,136612,850,1000,1500,5000,1452,3500,1000,400,7500,500,2000,3200,7500,1000,630,370,800,250,7800,3800,3500,6500,300,500,6100,100,10000,42500,500,20000,10000,10000,3000,7500,2000,2000,800,10000,7500,500,100000,16000,500,40000,600,18212],[4748.203388,6326.285819,2293.949087,17786.48717,4014.002925,598.762315,279.0681777,1877.172243,1254.129811,1031.603044,4464.016322,1343.513498,736.0350142,945.3955319,407.0919153,105285.1486,1888.450077,566.8833073,2054.868515,230.6169182,5767.945492,48983.53666,6134.940918,3391.502025,5505.791461,1668.363969,495.3312548,53122.90481,2474.859785,10854.46364,1538.284078,1693.156412,7247.727422,11657.95227,9289.082073,6745.656286,1701.953836,559.3663692,4730.341666,7054.43045,28766.62234,6761.570142,305.2426549,494.5927218,316.9430102,500.1438922,11322.77218,347.1955382,509.6593532,6045.593242,12093.11978,1374.886453,111405.8214,173722.3948,736.4593065,1696.717419,3784.235854,3772.153935,1662.367073,4277.550355,895.012971,357.5220431,4935.174998,1012.817589,4175.629096,2842.805563,3647.412721,2568.912875,1582.500124,427.9129466,579.2278018,1451.915796,4773.014107,19777.69959,4272.110878,5082.155922,168.7708653,320.7084024,3951.858327,467.3052644,9235.866712,40519.71789,292.2699336,32179.09203,17916.25999,12203.25471,3160.640596,10840.27949,13022.53386,13500.37069,964.0178849,4567.195985,6036.515037,431.2256496,59868.41404,19544.76112,408.2387141,26878.99963,453.3396261,25472.49946]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>ClaimNumber<\/th>\n      <th>DateTimeOfAccident<\/th>\n      <th>DateReported<\/th>\n      <th>Age<\/th>\n      <th>Gender<\/th>\n      <th>MaritalStatus<\/th>\n      <th>DependentChildren<\/th>\n      <th>DependentsOther<\/th>\n      <th>WeeklyWages<\/th>\n      <th>PartTimeFullTime<\/th>\n      <th>HoursWorkedPerWeek<\/th>\n      <th>DaysWorkedPerWeek<\/th>\n      <th>ClaimDescription<\/th>\n      <th>InitialIncurredCalimsCost<\/th>\n      <th>UltimateIncurredClaimCost<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":3,"autoWidth":true,"scrollX":true,"initComplete":"function(settings, json) {\n$(this.api().table().container()).css({'font-size': '10pt'});\n}","columnDefs":[{"className":"dt-right","targets":[4,7,8,9,11,12,14,15]},{"orderable":false,"targets":0}],"order":[],"orderClasses":false,"lengthMenu":[3,10,25,50,100]}},"evals":["options.initComplete"],"jsHooks":[]}</script>
+
+---
+
+# Data Splitting
+
+One of the initial steps for any machine learning analysis is to split the dataset into training &amp; testing dataset.
+
+First, read in the clean dataset.
+
+
+```r
+df &lt;- read_csv("data/data_eda_actLoss_3.csv") %&gt;%
+  drop_na()
+```
+
+--
+Next, use **initial_split** function to create a binary split of the data into training and testing set. 
+
+
+```r
+df_split &lt;- initial_split(df,
+                            prop = 0.6,
+                            strata = init_ult_diff)
+```
+
+--
+
+**training** function &amp; **testing** function are used to extract the relevant data.
+
+
+```r
+df_train &lt;- training(df_split)
+df_test &lt;- testing(df_split)
+```
+
+---
+
+# Data Pre-processing
+
+&lt;img src="figs/recipes.png" width="65%" /&gt;
+
+*Source: [stats-illustrations](https://github.com/allisonhorst/stats-illustrations) by Allison Horst*
+
+---
+
+Following is the example of how the **recipe** looks like in **tidymodels**:
+
+.pull-left[![recipe_specify](figs/recipe_specifyvariables.png)]
+
+.pull-right[
+In line 1, I have specified the formula &amp; dataset.
+
+
+```r
+*gen_recipe &lt;- recipe(init_ult_diff ~ .,
+*                    data = df_train)
+```
+]
+
+---
+Following is the example of how the **recipe** looks like in **tidymodels**:
+
+.pull-left[![recipe_specify](figs/recipe_datapreprocessing.png)]
+
+**Step_date** function allows users to extract year, month and day of the week from the date variable.
+
+
+```r
+gen_recipe &lt;- recipe(init_ult_diff ~ ., 
+                     data = df_train) %&gt;%
+* step_date(c(DateTimeOfAccident,
+*             DateReported))
+```
+
+--
+
+
+One also could perform data wrangling by using **step_mutate** function as shown under line 3 &amp; line 4
+
+
+```r
+gen_recipe &lt;- recipe(init_ult_diff ~ ., 
+                     data = df_train) %&gt;%
+  step_date(c(DateTimeOfAccident, 
+              DateReported)) %&gt;%
+* step_mutate(DateTimeOfAccident_hr =
+*               hour(DateTimeOfAccident),
+*             DateTimeOfAccident_hr =
+*               factor(DateTimeOfAccident_hr,
+*                      order = TRUE))
+```
+
+
+---
+Following is the example of how the **recipe** looks like in **tidymodels**:
+
+.pull-left[![recipe_specify](figs/recipe_prep.png)]
+
+Indicating the correct data type is also very important as incorrect data type would affect the model performance.
+
+
+```r
+gen_recipe &lt;- recipe(init_ult_diff ~ ., 
+                     data = df_train) %&gt;%
+  step_date(c(DateTimeOfAccident, 
+              DateReported)) %&gt;%
+  step_mutate(DateTimeOfAccident_hr = 
+                hour(DateTimeOfAccident),
+              DateTimeOfAccident_hr = 
+                factor(DateTimeOfAccident_hr, 
+                       order = TRUE)) %&gt;%
+* update_role(c(DateTimeOfAccident,
+*               DateReported),
+*             new_role = "id") %&gt;%
+* prep()
+```
+
+
+--
+This modeling approach has effectively allowed to modularize the different functions and chain them together. 
+
+
+
+
+---
+# A Peek into the Created Recipe
+
+The code will show us the different steps we have specified under recipe step by calling the recipe object we have created.
+
+
+```r
+gen_recipe
+```
+
+&lt;img src="figs/gen_recipe_output.png" width="90%" /&gt;
+
+
+---
+
+Checking the data type is also a very crucial step before the modeling as inappropriate variable types might affect the performance of the models.
+
+
+```r
+gen_recipe %&gt;% 
+  summary()
+```
+
+```
+## # A tibble: 26 x 4
+##    variable           type    role      source  
+##    &lt;chr&gt;              &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;   
+##  1 DateTimeOfAccident date    id        original
+##  2 DateReported       date    id        original
+##  3 Age                numeric predictor original
+##  4 Gender             nominal predictor original
+##  5 MaritalStatus      nominal predictor original
+##  6 DependentChildren  numeric predictor original
+##  7 DependentsOther    numeric predictor original
+##  8 WeeklyWages        numeric predictor original
+##  9 PartTimeFullTime   nominal predictor original
+## 10 HoursWorkedPerWeek numeric predictor original
+## # ... with 16 more rows
+```
+
+The **summary** function provides the users a quick overview of the data type.
+
+
+---
+
+The modularise structure allows us to effectively reuse the model components. For example, GLM model is unable to use categorical variables to fit the model.
+
+
+So, to resolve this, we can add on additional data preprocessing step.
+
+
+```r
+glmnet_recipe &lt;- gen_recipe %&gt;%
+  step_dummy(all_nominal())
+```
+
+The code above indicates that one-hot ecoding method to be applied on all the categorical variables .
+
+
+---
+
+# Wait! Don't throw away the text fields
+
+Remember there is a claim description field within the data?
+
+This is where **tidytext** package and **textrecipe** comes very handy. 
+
+![recipe_specify](figs/textmining.png)
+
+
+---
+
+## **tidytext**
+
+To extract the text, I will first split the words into tokens by using **unnest_token**.
+
+
+```r
+tidy_clm_unigram &lt;- data_1 %&gt;%
+  unnest_tokens(word, ClaimDescription, 
+                token = "ngrams", 
+                n = 1)
+```
+
+--
+
+I will also remove the stopwords (eg. above, onto, and) from the tokens since they are not meaningful in the analysis.
+
+
+```r
+tidy_clm_unigram &lt;- data_1 %&gt;%
+  unnest_tokens(word, ClaimDescription, 
+                token = "ngrams", 
+                n = 1) %&gt;%
+  anti_join(get_stopwords())
+```
+
+
+---
+
+Once the words are tokenized, we can perform frequency count on the words to understand which are the words tend to appear more frequent than the rest.
+
+
+```r
+tidy_clm_unigram %&gt;%
+  count(word, sort = TRUE)
+```
+
+```
+## # A tibble: 3,449 x 2
+##    word        n
+##    &lt;chr&gt;   &lt;int&gt;
+##  1 right   19839
+##  2 left    18470
+##  3 back    13438
+##  4 strain  12124
+##  5 lower    8170
+##  6 finger   7884
+##  7 hand     7145
+##  8 struck   6868
+##  9 lifting  6774
+## 10 eye      5155
+## # ... with 3,439 more rows
+```
+
+After that, we can create indicators for the more frequently appeared words to see whether the model performance would improve by including these features.
+
+
+---
+
+Once they are extracted, we can visualize the extracted texts by using word cloud.
+
+
+
+```r
+cleaned_clm_unigram %&gt;%
+  filter(n &gt; 2000) %&gt;%
+  ggplot(aes(label = word, 
+             size = n, 
+             color = n)) +
+  geom_text_wordcloud() +
+  scale_size_area(max_size = 20) +
+  theme_minimal()
+```
+
+--
+
+&lt;img src="figs/wordcloud.png" width="60%" /&gt;
+
+
+---
+
+## **textrecipe**
+
+Alternatively, we can perform text mining through specifying the steps in the recipe.
+
+--
+
+Same as the previous recipe created, after specifying the 'recipe' for the machine learning model, we will specify what are the pre-processing steps the model should perform.
+
+.pull-left[
+
+```r
+ranger_recipe_clmdesc &lt;- 
+  recipe(formula = init_ult_diff ~ ., 
+         data = df_wClmDesc_train) %&gt;%
+  step_tokenize(ClaimDescription) %&gt;%
+  step_stopwords(ClaimDescription) %&gt;% 
+  step_tokenfilter(ClaimDescription, 
+                   max_tokens = 20) %&gt;%
+  step_tfidf(ClaimDescription)
+```
+]
+
+--
+.pull-right[
+- This approach is consistent with recipe to "prepare" the text data for modeling
+
+
+- It is easier to understand and clear at first glance what are we "preparing"
+]
+
+--
+
+More explanation on the different text mining techniques and how they work, do check this [website](https://www.tidytextmining.com/).
+
+
+---
+
+# Model Selection - Model X, I choose you!
+
+&lt;img src="figs/parsnip.png" width="70%" /&gt;
+
+*Source: [stats-illustrations](https://github.com/allisonhorst/stats-illustrations) by Allison Horst*
+
+---
+
+# Back to Actuaries' Most Beloved Model - GLM
+
+
+.pull-left[
+**Convention Approach**
+
+```r
+x &lt;- df_train %&gt;% 
+  dplyr::select(-init_ult_diff) %&gt;% 
+  data.matrix()
+
+y &lt;- df_train$init_ult_diff
+
+
+glmnet(x, 
+       y, 
+       family = "gaussian",
+       nlambda = 10,
+       alpha = 0.5)
+```
+]
+
+--
+
+.pull-right[
+**Tidymodels Approach**
+
+```r
+glmnet_spec &lt;- 
+  linear_reg(penalty = tune(), 
+             mixture = tune()) %&gt;% 
+  set_mode("regression") %&gt;% 
+  set_engine("glmnet", family = "gaussian") 
+```
+]
+
+
+
+--
+**parsnip** package provides users a more unified model interface without sacrificing the flexibility.
+
+
+---
+
+**parsnip** package do support a wide range of machine learning models.
+
+.pull-left[
+Random Forest
+
+```r
+ranger_spec &lt;- 
+  rand_forest(mtry = tune(), 
+              min_n = tune(), 
+              trees = 50) %&gt;% 
+  set_mode("regression") %&gt;% 
+  set_engine("ranger", 
+             importance = "impurity")
+```
+
+
+XGBoost
+
+```r
+xgboost_spec &lt;- 
+  boost_tree(trees = tune(), 
+             min_n = tune(), 
+             tree_depth = tune(), 
+             learn_rate = tune(), 
+             loss_reduction = tune(),
+             sample_size = tune()) %&gt;% 
+  set_mode("regression") %&gt;% 
+  set_engine("xgboost") 
+```
+
+
+
+]
+
+
+.pull-right[
+Linear Regression
+
+```r
+lm_spec &lt;- linear_reg() %&gt;%
+  set_mode("regression") %&gt;%
+  set_engine("lm")
+```
+
+
+MARS
+
+```r
+earth_spec &lt;- 
+  mars(num_terms = tune(), 
+       prod_degree = tune(), 
+       prune_method = "none") %&gt;% 
+  set_mode("regression") %&gt;% 
+  set_engine("earth") 
+```
+
+
+KNN
+
+```r
+kknn_spec &lt;- 
+  nearest_neighbor(neighbors = tune(), 
+                   weight_func = tune()) %&gt;%
+  set_mode("regression") %&gt;% 
+  set_engine("kknn") 
+```
+
+]
+
+
+---
+
+# Model Tuning
+
+.pull-left[
+Cross validation is commonly used to:
+- Find the best set of parameters that would give us best model performance
+- Prevent models from overfitting
+]
+
+--
+.pull-left[
+Over here, I will be using k-fold validation to perform model tuning.
+]
+
+.pull-right[
+&lt;img src="figs/kfoldcv.png" width="100%" /&gt;
+
+*Source: [Section 3.1 of Scikit-learn](https://scikit-learn.org/stable/modules/cross_validation.html)*
+]
+
+---
+
+
+To do so, we will create the dataset for k-fold cross validation by using **vfold_cv** function as shown below.
+
+
+```r
+df_folds &lt;- vfold_cv(df_train, strata = init_ult_diff)
+df_folds 
+```
+
+--
+
+And yes we are almost there!
+
+
+--
+
+Over here, **grid search** is used to find the best parameters fit a given model.
+
+
+
+```r
+ranger_tune &lt;-
+  tune_grid(ranger_workflow, 
+            resamples = df_folds, 
+            grid = 5)
+```
+
+
+---
+
+
+```r
+ranger_fit &lt;- ranger_workflow %&gt;%
+  finalize_workflow(select_best(ranger_tune)) %&gt;%
+  last_fit(df_split)
+```
+
+Once the model is tuned, **select_best** function is used to select the best parameters. Then, finalise the workflow &amp; run the fitted model on testing data by using **last_fit** function.
+
+
+--
+
+If we were to visualize the flow, the modeling steps mentioned above would look something as following....
+
+
+&lt;img src="figs/grid_search_workflow.png" width="50%" /&gt;
+
+*Source: [Section 3.1 of Scikit-learn](https://scikit-learn.org/stable/modules/cross_validation.html)*
+
+
+---
+
+# Now, we can "chain" the different components as a workflow
+
+
+Once the necessary parameters are setup, we will join the different steps together to form a workflow.
+
+.pull-left[
+**Conventional Approach**
+
+```r
+x &lt;- df_train %&gt;% 
+  dplyr::select(-init_ult_diff) %&gt;% 
+  data.matrix()
+
+y &lt;- df_train$init_ult_diff
+
+
+glmnet(x, 
+       y, 
+       family = "gaussian",
+       nlambda = 10,
+       alpha = 0.5)
+```
+]
+
+
+
+--
+.pull-right[
+**tidymodels Approach**
+
+```r
+glmnet_workflow &lt;- 
+  workflow() %&gt;% 
+  add_recipe(glmnet_recipe) %&gt;%
+  add_model(glmnet_spec) 
+```
+]
+
+
+---
+
+# Need another workflow? Not an issue, sir
+
+
+
+```r
+glmnet_workflow_ult &lt;- 
+  glmnet_workflow %&gt;%
+  update_formula(UltimateIncurredClaimCost ~ .)
+```
+
+
+---
+
+The created workflow can only be visualised by calling the workflow item.
+
+
+```r
+glmnet_workflow
+```
+
+```
+## == Workflow ====================================================================
+## Preprocessor: Recipe
+## Model: linear_reg()
+## 
+## -- Preprocessor ----------------------------------------------------------------
+## 3 Recipe Steps
+## 
+## * step_date()
+## * step_mutate()
+## * step_dummy()
+## 
+## -- Model -----------------------------------------------------------------------
+## Linear Regression Model Specification (regression)
+## 
+## Main Arguments:
+##   penalty = tune()
+##   mixture = tune()
+## 
+## Computational engine: glmnet
+```
+
+Such modularized modeling method allows us to reuse the different machine learning parts through the analysis.
+
+
+---
+
+# Confused?? Worry not
+
+**usemodels** package can be used to generate all the necessary modeling templates for the users.
+
+
+```r
+use_ranger(formula, data)
+```
+
+&lt;img src="figs/user_model output.png" width="130%" /&gt;
+
+
+
+---
+
+# Model Comparison
+
+
+To facilitate the model comparison, **yardstick** is being used to compare the different models.
+
+
+&lt;img src="figs/R Packages Icon/yardstick.jpg" width="25%" /&gt;
+
+
+Same as other packages under **tidymodels**, various model performance metrics under **yardstick** also have same interface, which allows us to loop through the various syntax to calculate the model performance.
+
+
+---
+
+First, I have defined the different measurements I need.
+
+
+I will be using *root mean square error*, *R squared* and *mean absolute scaled error*.
+
+
+--
+&lt;img src="figs/Model Comparison_metrics.png" width="70%" /&gt;
+
+
+As shown above, the metric interfaces look very similar. This allows to calculate the model performance by looping through the different metrics.
+
+---
+
+
+```r
+model_metrics &lt;- metric_set(rmse, rsq, mase)
+```
+
+
+
+```r
+ranger_pred &lt;- ranger_fit %&gt;%
+  collect_predictions()
+
+ranger_metric &lt;- model_metrics(ranger_pred, 
+                               truth = init_ult_diff, 
+                               estimate = .pred) %&gt;%
+  mutate(model = "ranger") %&gt;%
+  pivot_wider(names_from = .metric,
+              values_from = .estimate)
+```
+
+
+
+Next, I will join these model results into a tibble table so that I can compare how does the different models perform under different scenarios.
+
+---
+
+# Showdown by Different Models
+
+Following are the performance metrics of ddifferent models:
+
+
+```
+## # A tibble: 6 x 5
+##   .estimator model    rmse   rsq  mase
+##   &lt;chr&gt;      &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 standard   ranger  1537. 0.457 0.490
+## 2 standard   xgboost 1577. 0.441 0.511
+## 3 standard   glmnet  1656. 0.368 0.564
+## 4 standard   lm      1695. 0.338 0.569
+## 5 standard   earth   1708. 0.328 0.593
+## 6 standard   kknn    1758. 0.288 0.581
+```
+
+In general, the different model performance results are quite consistent with one another.
+
+
+Out of all the models, random forest has the highest accuracy.
+
+
+---
+
+# Is Performing Data Cleaning Waste Time?
+
+First, let's look at what if we build two models, one *without* data cleaning (ie. ranger_org_metric) &amp; the other *with* data cleaning (ie. ranger_ult_metric).
+
+
+```
+## # A tibble: 2 x 5
+##   .estimator model        rmse    rsq  mase
+##   &lt;chr&gt;      &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+## 1 standard   ranger_org 35532. 0.0405 0.680
+## 2 standard   ranger_ult  1604. 0.405  0.521
+```
+
+
+Overall, it seems to indicate that the model performance improves after data cleaning is performed
+
+
+--
+
+There are unreasonable values &amp; outliers within the dataset. Below is one example of the unreasonable value:
+
+&lt;img src="figs/Unreasonable Value.png" width="70%" /&gt;
+
+```
+## [1] "One week only has max 168 hours."
+```
+
+
+---
+
+# Different Way of Looking at The Problem
+
+In this dataset, we are interested in finding out what is the ultimate claim cost to us.
+
+
+--
+Another way to look at this problem is how far off is the initial estimate from the actual claim amount.
+
+
+--
+So, with that, I have built two models over here. 
+
+
+- *ranger_ult* is the model directly predicting on ultimate claim cost
+
+
+- *ranger* is predicting how far off is the initial estimate from the actual claim amount.
+
+
+```
+## # A tibble: 2 x 5
+##   .estimator model       rmse   rsq  mase
+##   &lt;chr&gt;      &lt;chr&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 standard   ranger_ult 1604. 0.405 0.521
+## 2 standard   ranger     1537. 0.457 0.490
+```
+
+
+The model performance actually improves when I have modeled on the claim difference.
+
+--
+
+**Important Note:** This does not imply that we should always modeled on the claim differences. Just use different methods to predict the claim costs and see which methods give the best results.
+
+
+---
+
+# Is simpler model better?
+
+
+```
+## # A tibble: 2 x 5
+##   .estimator model       rmse   rsq  mase
+##   &lt;chr&gt;      &lt;chr&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 standard   ranger     1537. 0.457 0.490
+## 2 standard   ranger_vip 1541. 0.454 0.495
+```
+
+
+The simpler model can perform almost on par as the full model although the simpler model is only using 10 variables (based on variable importance) to fit the model (where the full model is using 19 variables).
+
+
+In other words, the simpler model requires less inputs to have similar level of model accuracy.
+
+
+---
+
+# Model Performance under Different Text Mining Approach
+
+
+```
+## # A tibble: 2 x 5
+##   .estimator model           rmse   rsq  mase
+##   &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 standard   ranger         1537. 0.457 0.490
+## 2 standard   ranger_clmdesc 1492. 0.485 0.463
+```
+
+
+The model that use **textrecipe** has a better model performance than the one uses **tidytext**. This is probably due to the penalty function that I used (ie. tf-idf) under **textrecipe**.
+
+--
+
+
+```r
+ranger_recipe_clmdesc &lt;- 
+  recipe(formula = init_ult_diff ~ ., 
+         data = df_wClmDesc_train) %&gt;%
+  step_tokenize(ClaimDescription) %&gt;%
+  step_stopwords(ClaimDescription) %&gt;% 
+  step_tokenfilter(ClaimDescription, 
+                   max_tokens = 20) %&gt;%
+* step_tfidf(ClaimDescription)
+```
+
+
+
+---
+
+# Model Explainability - The Journey Uncover the Black Box
+
+There is an increasing recognition on model explainability.
+
+
+--
+
+Without understanding why the model predicts the way it did, it can be dangerous.
+
+--
+
+Below is one of the famous case that the machine learning "went wrong":
+
+&lt;img src="figs/Apple card discreminate.png" width="30%" /&gt;
+
+*Source: [The New York Times](https://www.nytimes.com/2019/11/10/business/Apple-credit-card-investigation.html)*
+
+---
+
+# Variable Importance
+
+
+```r
+ranger_vip_clmdesc &lt;- pull_workflow_fit(ranger_fit_clmdesc$.workflow[[1]]) %&gt;%
+  vi()
+
+ranger_vip_graph_clmdesc &lt;- ranger_vip_clmdesc %&gt;%
+  slice_max(abs(Importance), n = 10) %&gt;%
+  ungroup() %&gt;%
+  mutate(
+    Importance = abs(Importance),
+    Variable = fct_reorder(Variable, Importance),
+  ) %&gt;%
+  ggplot(aes(Importance, Variable)) +
+  geom_col(show.legend = FALSE) +
+  labs(y = NULL, title = "Random Forest Model with TidyText")
+```
+
+
+--
+First, pull the info and pass to variable importance function
+
+
+--
+Next, plot out the variable importance by using **ggplot** function.
+
+
+--
+The benefit of using such approach is it still provides the users some flexibility on the visualization of the results.
+
+
+---
+
+&lt;img src="Rmd_Final-Slides_20210422_files/figure-html/unnamed-chunk-67-1.png" width="50%" /&gt;
+
+
+It is easier to illustrate in graph format so that its clear on how the "importance" of each variable differs by one another. 
+
+
+---
+
+# Partial Regression Plot
+
+
+```r
+ranger_fit_pdp &lt;- fit(ranger_final_wf, df_train)
+
+ranger_pdp &lt;- 
+  recipe(init_ult_diff ~ ., data = df_train) %&gt;%
+  step_profile(all_predictors(), -num_week_paid_init, profile = vars(num_week_paid_init)) %&gt;%
+  prep() %&gt;%
+  juice()
+```
+
+
+
+
+
+- Use **step_profile** function from **recipe** package to create the dataset with permutation over number of weeks paid initially estimated (ie. num_week_paid_init)
+
+
+- **juice** function allows us to extract the dataset from the recipe
+
+
+---
+
+Dataset we have created for the partial regression plot:
+
+
+<div id="htmlwidget-bac379db0e1c589ca493" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-bac379db0e1c589ca493">{"x":{"filter":"none","data":[["1","2","3","4","5","6","7","8","9","10"],["WC1593727","WC1593727","WC1593727","WC1593727","WC1593727","WC1593727","WC1593727","WC1593727","WC1593727","WC1593727"],["1996-06-18T10:30:00Z","1996-06-18T10:30:00Z","1996-06-18T10:30:00Z","1996-06-18T10:30:00Z","1996-06-18T10:30:00Z","1996-06-18T10:30:00Z","1996-06-18T10:30:00Z","1996-06-18T10:30:00Z","1996-06-18T10:30:00Z","1996-06-18T10:30:00Z"],["1996-07-23T00:00:00Z","1996-07-23T00:00:00Z","1996-07-23T00:00:00Z","1996-07-23T00:00:00Z","1996-07-23T00:00:00Z","1996-07-23T00:00:00Z","1996-07-23T00:00:00Z","1996-07-23T00:00:00Z","1996-07-23T00:00:00Z","1996-07-23T00:00:00Z"],[31,31,31,31,31,31,31,31,31,31],["F","F","F","F","F","F","F","F","F","F"],["M","M","M","M","M","M","M","M","M","M"],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[383.86,383.86,383.86,383.86,383.86,383.86,383.86,383.86,383.86,383.86],["F","F","F","F","F","F","F","F","F","F"],[38,38,38,38,38,38,38,38,38,38],[5,5,5,5,5,5,5,5,5,5],["A BRICK FELL ON BACK RAMP STRAIN NECK AND UPPER BACK","A BRICK FELL ON BACK RAMP STRAIN NECK AND UPPER BACK","A BRICK FELL ON BACK RAMP STRAIN NECK AND UPPER BACK","A BRICK FELL ON BACK RAMP STRAIN NECK AND UPPER BACK","A BRICK FELL ON BACK RAMP STRAIN NECK AND UPPER BACK","A BRICK FELL ON BACK RAMP STRAIN NECK AND UPPER BACK","A BRICK FELL ON BACK RAMP STRAIN NECK AND UPPER BACK","A BRICK FELL ON BACK RAMP STRAIN NECK AND UPPER BACK","A BRICK FELL ON BACK RAMP STRAIN NECK AND UPPER BACK","A BRICK FELL ON BACK RAMP STRAIN NECK AND UPPER BACK"],[1500,1500,1500,1500,1500,1500,1500,1500,1500,1500],[2339.87427,2339.87427,2339.87427,2339.87427,2339.87427,2339.87427,2339.87427,2339.87427,2339.87427,2339.87427],[22,22,22,22,22,22,22,22,22,22],[1996,1996,1996,1996,1996,1996,1996,1996,1996,1996],[3,3,3,3,3,3,3,3,3,3],[7,7,7,7,7,7,7,7,7,7],[27,27,27,27,27,27,27,27,27,27],[1996,1996,1996,1996,1996,1996,1996,1996,1996,1996],[3,3,3,3,3,3,3,3,3,3],[7,7,7,7,7,7,7,7,7,7],[27,27,27,27,27,27,27,27,27,27],[11,11,11,11,11,11,11,11,11,11],[0.00127779197546639,0.480879837989718,0.625,0.725104380438168,0.790261282015668,0.872254509217058,0.955076643014371,1,1.05,1.11111111111111],[6.39019067776882,6.39019067776882,6.39019067776882,6.39019067776882,6.39019067776882,6.39019067776882,6.39019067776882,6.39019067776882,6.39019067776882,6.39019067776882],["ankle","ankle","ankle","ankle","ankle","ankle","ankle","ankle","ankle","ankle"],["left","left","left","left","left","left","left","left","left","left"],["box","box","box","box","box","box","box","box","box","box"],["accident","accident","accident","accident","accident","accident","accident","accident","accident","accident"],["bruise","bruise","bruise","bruise","bruise","bruise","bruise","bruise","bruise","bruise"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>ClaimNumber<\/th>\n      <th>DateTimeOfAccident<\/th>\n      <th>DateReported<\/th>\n      <th>Age<\/th>\n      <th>Gender<\/th>\n      <th>MaritalStatus<\/th>\n      <th>DependentChildren<\/th>\n      <th>DependentsOther<\/th>\n      <th>WeeklyWages<\/th>\n      <th>PartTimeFullTime<\/th>\n      <th>HoursWorkedPerWeek<\/th>\n      <th>DaysWorkedPerWeek<\/th>\n      <th>ClaimDescription<\/th>\n      <th>InitialIncurredClaimCost<\/th>\n      <th>UltimateIncurredClaimCost<\/th>\n      <th>day_diff<\/th>\n      <th>acc_yr<\/th>\n      <th>acc_qtr<\/th>\n      <th>acc_mth<\/th>\n      <th>acc_week<\/th>\n      <th>report_yr<\/th>\n      <th>report_qtr<\/th>\n      <th>report_mth<\/th>\n      <th>report_week<\/th>\n      <th>acc_hr<\/th>\n      <th>num_week_paid_init<\/th>\n      <th>num_week_paid_ult<\/th>\n      <th>injury_body<\/th>\n      <th>injury_side<\/th>\n      <th>injury_item<\/th>\n      <th>injury_cause<\/th>\n      <th>injury_type<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":3,"autoWidth":true,"scrollX":true,"initComplete":"function(settings, json) {\n$(this.api().table().container()).css({'font-size': '10pt'});\n}","columnDefs":[{"className":"dt-right","targets":[4,7,8,9,11,12,14,15,16,17,18,19,20,21,22,23,24,25,26,27]},{"orderable":false,"targets":0}],"order":[],"orderClasses":false,"lengthMenu":[3,10,25,50,100]}},"evals":["options.initComplete"],"jsHooks":[]}</script>
+
+
+---
+
+
+Once the dataset is created, we will pass the information into the **predict** function to perform the prediction and visulize the partial regression plot.
+
+
+
+```r
+predict(ranger_fit_pdp, ranger_pdp) %&gt;%
+  bind_cols(ranger_pdp) %&gt;%
+  ggplot(aes(x = num_week_paid_init, y = .pred)) +
+    xlab(sym(i)) +
+    labs(title = "Partial Regression Plot on Number of Weeks Paid Inititally Estimated") +
+  geom_path()
+```
+
+---
+
+&lt;img src="Rmd_Final-Slides_20210422_files/figure-html/unnamed-chunk-72-1.png" width="50%" /&gt;
+
+
+Overall, the initial estimated claim seems to be overstated if the number of weeks paid initially estimated is longer than 15 weeks
+
+
+
+---
+
+# Partial Dependent Plot
+
+
+```r
+pdp_pred_fun &lt;- function(object, newdata) {
+  predict(object, newdata, type = "numeric")$.pred
+}
+
+workflow_partial_num_week_paid_init &lt;- 
+  pdp::partial(ranger_fit_pdp,
+        pred.var = "num_week_paid_init",
+        ice = TRUE,
+        center = TRUE,
+        plot.engine = "ggplot2",
+        pred.fun = pdp_pred_fun,
+        train = df_train %&gt;% dplyr::select(-init_ult_diff))
+
+plotPartial(workflow_partial_num_week_paid_init)
+```
+
+The key idea of partial dependent plot is similar to partial regression plot. 
+
+
+The main difference is the partial dependent plot permutates over many combinations, the result from this function is less bias.
+
+
+
+---
+.pull-left[
+The red line represents the average effect of the selected variables.
+
+
+On average, we would expect the total claim amount to be overestimated when the number of weeks paid initially estimated increases.
+]
+
+.pull-right[
+
+&lt;img src="Rmd_Final-Slides_20210422_files/figure-html/unnamed-chunk-74-1.png" width="100%" /&gt;
+]
+
+
+---
+
+# This is just a very small subset of the entire research
+
+
+.pull-left[![iceberg](figs/tip of ice berg.png)]
+
+.pull-right[
+The full research paper and R code will be posted on SAS website [https://www.actuaries.org.sg/](https://www.actuaries.org.sg/).
+
+This deck of interactive slides will be shared on my data science blog, [When Actuarial Science Collides with Data Science](https://jasperlok.netlify.app/).
+
+
+&lt;img src="figs/Data Science Blog.png" width="90%" /&gt;
+
+
+]
+---
+
+class: center, middle
+# FAQ
+
+---
+
+class: left
+
+# Thank you!
+
+
+&lt;img src="figs/SMUlogo.png" width="45%" /&gt;
+
+
+Speaker details:
+
+
+
+**Jasper LOK**
+
+Email: [junhaur.lok.2019@mitb.smu.edu.sg](mailto:junhaur.lok.2019@mitb.smu.edu.sg) &lt;br  /&gt;
+Profile: [linkedin.com/in/jasper-l-13426232/](https://www.linkedin.com/in/jasper-l-13426232/) &lt;br  /&gt;
+Blog: [https://jasperlok.netlify.app/](https://jasperlok.netlify.app/) &lt;br  /&gt;
+
+
+**Professor KAM Tin Seong**
+
+Email: [tskam@smu.edu.sg](mailto:tskam@smu.edu.sg) &lt;br  /&gt;
+Profile: [www.smu.edu.sg/faculty/profile/9618/KAM-Tin-Seong](https://www.smu.edu.sg/faculty/profile/9618/KAM-Tin-Seong)
+
+
+---
+
+class: center, middle
+# Appendix
+
+---
+
+# Link to the relevant R packages
+
+
+Tidyverse
+https://www.tidyverse.org/
+
+
+
+Tidymodels
+https://www.tidymodels.org/
+
+
+
+Variable Importance Plot
+https://koalaverse.github.io/vip/index.html
+
+
+
+Partial Depedence Plot
+https://bgreenwell.github.io/pdp/index.html
+
+
+---
+# Overview of Machine Learning
+
+&lt;img src="figs/Graph on Different Machine Learning.png" width="32%" /&gt;
+
+*Source: [xkcd blog](https://xkcd.com/1838/)*
+
+---
+# Overview of Classical Machine Learning
+
+&lt;img src="figs/Classical Machine Learning.png" width="60%" /&gt;
+
+*Source: [xkcd blog](https://xkcd.com/1838/)*
+
+---
+
+# Further reading
+
+
+R for Data Science
+
+
+https://r4ds.had.co.nz/
+
+
+Tidymodeling with R
+
+
+https://www.tmwr.org/
+
+
+Text Mining
+
+
+https://www.tidytextmining.com/
+
+
+Interpretable Machine Learning
+
+
+https://christophm.github.io/interpretable-ml-book/
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

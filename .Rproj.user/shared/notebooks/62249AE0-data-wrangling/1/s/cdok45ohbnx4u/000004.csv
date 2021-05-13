@@ -1,0 +1,4 @@
+"0","df_1 <- df %>%"
+"0","  mutate(Year = factor(Year),"
+"0","         LicenceNb = factor(LicenceNb))"
+"0",""
