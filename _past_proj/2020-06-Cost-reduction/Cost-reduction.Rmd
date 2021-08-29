@@ -1,0 +1,37 @@
+---
+title: "Cost Reduction by Improving Order Distribution and Process"
+description: |
+  Understanding the order frequency by using various concepts from inventory theory and how the company could influence the customer ordering patterns and distribution management, achieving cost reduction
+url: {}
+author:
+  - name: Jasper Lok
+date: 08-31-2020
+output:
+  distill::distill_article
+categories:
+  - Past Project
+  - Inventory Theory
+  - Optimization
+
+---
+
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/warehouse.jpg")
+
+```
+
+*Photo by <a href="https://unsplash.com/@ruchindra?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Ruchindra Gunasekara</a> on <a href="https://unsplash.com/s/photos/warehouse?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>*
+
+
+## Brief Description of Project
+
+In this challenge, my teammates and I have attempted to improve the ordering process of a distribution and logistics provider based on the sample order frequency of over a period. The objective is to reduce the overall cost of deliveries.
+
+
+To do so, we first inferred the ordering policy under each retailer based on the sample order data by using various statistical tests. Then these insights were combined with other business strategies, such as how to structure delivery requirements, minimum order requirements and so on, to achieve operational efficiency, resulting in a cost reduction.
+
+
+
+
+

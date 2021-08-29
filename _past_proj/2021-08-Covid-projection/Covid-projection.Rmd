@@ -1,0 +1,39 @@
+---
+title: "Covid-19: How will this landscape evolve?"
+description: |
+  Build Covid projection model and perform scenario testing to understand how the infected cases would change under different scenarios
+url: {}
+author:
+  - name: Jasper Lok
+date: 08-31-2021
+output:
+  distill::distill_article
+bibliography: ["ref.bib"]
+categories:
+  - Past Project
+  - Simulation
+  - Social Diffusion
+
+---
+
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/covid.jpg")
+
+```
+
+*Photo by CDC from Pexels*
+
+
+## Brief Description of Project
+
+A year and a half into the onset of the Covid-19 pandemic, control and recovery efforts as well as subsequent economic effects have varied substantially across each country. Three metrics are commonly utilized as a measure of how well a country is coping with the coronavirus: number of new cases, number of deaths (due to infection), and number of recovered cases.
+
+
+The performance of each country with regard to these metrics have been demonstrated to vary in line with the availability of national and local healthcare resources. In countries that struggled with capacity of hospital beds or equipment, significant increases in Covid-19 attributed mortality rates were observed for the duration of hospital capacity shortages [@Sen-Crowe2020], [@Zhou2020]. These shortages of hospital capacity were preceded by spikes in the rate of infection, possibly indicating insufficient preparation by healthcare administrators. Hence, forecasting and allocating for sufficient hospital and healthcare infrastructure in advance of spikes in pandemic infections is vital to controlling and reducing the mortality rate from any given disease. In this project, we intend to model the projected infection rate for a given country, as well as their requirements for healthcare preparedness, based on provided inputs.
+
+
+
+
+
+

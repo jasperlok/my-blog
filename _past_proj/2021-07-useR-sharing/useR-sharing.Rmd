@@ -1,0 +1,37 @@
+---
+title: "Sharing at useR Conference 2021"
+description: >
+  A short sharing at useR Conference
+url: {}
+author:
+  - name: Jasper Lok
+date: 07-31-2021
+output:
+  distill::distill_article
+categories:
+  - Past Talk
+  - Machine Learning
+  - Actuarial Science
+  - Insurance
+
+---
+
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/useR_conference.png")
+
+```
+
+*Screen shot of useR! Conference 2021*
+
+
+## Brief Description of the Sharing
+
+I was honored to be selected to do a short sharing together with my professor at the useR! Conference 2021 on how `tidymodels` can used to complement conventional actuarial analysis.
+
+
+## Technical Note
+
+The submitted technical note can be found this [link](technical note\technical_note.html).
+
+

@@ -1,0 +1,37 @@
+---
+title: "Sharing at Future of Insurance"
+description: >
+  Sharing at the Joint Webinar by Singapore Actuarial Society and Actuarial Association of Sri Lanka
+url: {}
+author:
+  - name: Jasper Lok
+date: 08-31-2021
+output:
+  distill::distill_article
+categories:
+  - Past Talk
+  - Machine Learning
+  - Actuarial Science
+  - Insurance
+
+---
+
+
+```{r, echo = FALSE, out.width = "120%"}
+knitr::include_graphics("image/SAS_AASL.png")
+
+```
+
+*Screen shot of SAS-AASL Webinar*
+
+
+## Brief Description of the Sharing
+
+I was honored to be invited to do a sharing together at a joint webinar organized by Singapore Actuarial Society and Actuarial Association of Sri Lanka to share how data science can be used to analyze insurance claims data.
+
+
+## Presentation Slides
+
+The presentation slides can be found this [link](presentation\AASL-Sharing.html).
+
+

@@ -5,7 +5,7 @@ description: |
 author:
   - name: Jasper Lok
     url: {}
-date: 05-22-2021
+date: 05-23-2021
 output:
   distill::distill_article:
     toc: true
@@ -251,7 +251,7 @@ df <- read_csv("data/data_eda_actLoss_3.csv") %>%
   dplyr::select(-starts_with(c("acc", "report"))) %>%
   filter(Gender != "U") %>%
   drop_na() %>%
-  sample_frac(0.2)
+  sample_frac(0.3)
 
 ```
 
@@ -259,7 +259,7 @@ df <- read_csv("data/data_eda_actLoss_3.csv") %>%
 While importing the data, I have also:
 
 
-- Drop 'ClaimNumber', 'num_week_paid_ult', 'InitialIncurredClaim Cost', 'UltimateIncurredClaimCost' & column headers that starts with 'acc' & 'report' since I am not using them later
+- Drop 'ClaimNumber', 'num_week_paid_ult' & column headers that starts with 'acc' & 'report' since I am not using them later
 
 
 - Filter out gender 'U' as according to data dictionary, indicator 'U' means missing values
@@ -268,7 +268,7 @@ While importing the data, I have also:
 - Drop the data with missing values
 
 
-- Sample a subset of the data to use for the analysis, otherwise it would take forever to run on my laptop `r emo::ji("cry")`
+- Sample 30% of the data to use for the analysis, otherwise it would take forever to run on my laptop `r emo::ji("cry")`
 
 
 ### Data Splitting
@@ -309,24 +309,30 @@ gen_recipe <- recipe(init_ult_diff ~ ., data = df_train) %>%
 ```
 
 
+
+Basically, I try to perform the following in the code chunk above:
+
+
+- Extract the date information from date variable by using **step_date** & **step_mutate** functions
+
+
+- Convert the extracted date features into ordinal variables by using **factor** function
+
+
+- Update the roles for 'DateTimeOfAccident' & 'Date Reported' to 'id' so that they will not be used in fitting the model
+
+
 ### Fitting Individual Machine Learning Models
 
-Before fitting a stack model, let's fit individual models first. To shorten the running time, I will skip the parameters tuning in this post.
+Before fitting a stack model, let's fit individual models first.
 
-
-Also as the focus of this post is on model stacking, hence I won't be going through the model building steps below. For more information on the model building steps, you can refer to my previous presentations on the [model building](https://jasperlok.netlify.app/posts/2021-04-03-sas-sharing-20210422/presentation/mitb_capstone_lok-jun-haur_slides#1) or the documentation page of [tidymodels](https://www.tidymodels.org/).
-
-
-
-Nevertheless, let's start building the different machine learning models!
-
-
-**Random Forest**
-
-
+Random Forest
 ```{r}
 ranger_spec <- 
   rand_forest() %>%
+  #mtry = tune(), 
+  #            min_n = tune(), 
+  #            trees = 1000) %>% 
   set_mode("regression") %>% 
   set_engine("ranger", importance = "impurity")
 
@@ -346,15 +352,17 @@ ranger_tune <-
 
 
 
-**XGBoost**
 
 
+XGBoost
 ```{r}
 xgboost_recipe <- gen_recipe %>%
   step_dummy(all_nominal())
 
 xgboost_spec <- 
   boost_tree() %>%
+  #trees = 1000, min_n = tune(), tree_depth = 50, learn_rate = 0.01, 
+  #  loss_reduction = tune(), sample_size = tune()) %>%
   set_mode("regression") %>% 
   set_engine("xgboost") 
 
@@ -375,9 +383,7 @@ xgboost_tune <-
 
 
 
-**MARS**
-
-
+MARS
 ```{r}
 earth_recipe <- gen_recipe %>% 
   step_novel(all_nominal(), -all_outcomes()) %>% 
@@ -386,6 +392,9 @@ earth_recipe <- gen_recipe %>%
 
 earth_spec <- 
   mars() %>%
+  #num_terms = tune(), 
+  #     prod_degree = tune(), 
+  #     prune_method = "none") %>% 
   set_mode("regression") %>% 
   set_engine("earth") 
 
@@ -405,13 +414,35 @@ earth_tune <-
 ```
 
 
+KNN
+```{r}
+kknn_spec <- 
+  nearest_neighbor() %>%
+  #neighbors = tune(), 
+  #                 weight_func = tune()) %>% 
+  set_mode("regression") %>% 
+  set_engine("kknn") 
+
+kknn_workflow <- 
+  workflow() %>% 
+  add_recipe(gen_recipe) %>%
+  add_model(kknn_spec) 
+
+set.seed(96032)
+kknn_tune <-
+  tune_grid(kknn_workflow, 
+            resamples = df_folds, 
+            grid = grid_num,
+            control = ctrl_grid)
+
+```
 
 ### Stack the Models!
 
 Okay, we have fitted all the individual models. I will move on and fit a stack model.
 
 
-To do so, I will use **stack** function to create an empty stack model. Then the individual models are being added to empty stack model so that we can fit a stack model later.
+To do so, I will use **stack** function to create an empty 
 
 
 ```{r}
@@ -419,20 +450,12 @@ stack_model <-
   stacks() %>%
   add_candidates(ranger_tune) %>%
   add_candidates(xgboost_tune) %>%
-  add_candidates(earth_tune)
+  add_candidates(earth_tune) #%>%
+#  add_candidates(kknn_tune)
 
 ```
 
 
-We can also call the stack model object we have just created to review the details of the models will be used for stacking.
-
-```{r}
-stack_model
-
-```
-
-
-Next, **blend_predictions** function is used to determine the weights of the individual models. 
 
 
 ```{r}
@@ -443,35 +466,6 @@ stack_model_pred <-
 ```
 
 
-Although we could use different machine learning algorithms to stack the models, **stacks** seems to only support regularized linear model to stack the model at the moment according to the documentation page.
-
-
-**Worry not!** 
-
-
-It's not the end of the world. With a few simple tricks, we would be able to get around this.
-
-
-If we want to use other machine learning algorithms to stack the models, we could merge the predicted values into a tibble table and find the optimal weight that would give us the best model performance. In other words, we will just perform the usual model fitting on the predicted values from the different individual models against the target value.
-
-
-
-Instead of use the stack model to perform the predictions, the new predicted value from the stack model will be calculated by taking the weighted average of the predicted values from the selected individual models from the model stacking steps.
-
-
-Therefore, if we were to visualize the steps, it would look something like this:
-
-
-```{r, echo = FALSE, out.width = "135%"}
-knitr::include_graphics("image/model stacking on predictions.png")
-
-```
-
-
-
-Anyway, back to our analysis!
-
-
 To see the weights of the models, we can call the object we have created in the previous step.
 
 ```{r}
@@ -479,7 +473,7 @@ stack_model_pred
 
 ```
 
-As the results shown above, random forest, xgboost and mars are used to create the stacked model. The relevant weights of each model also can be found in the table above.
+As the results shown above, random forest, xgboost and mars are used to create the stacked model.
 
 
 We can also use the **autoplot** function to visualize the weight for different models.
@@ -496,47 +490,29 @@ Once the weights of the different models are determined, I will prepare the fitt
 stack_model_fit <- stack_model_pred %>%
   fit_members()
 
-stack_model_fit
-
 ```
 
 
-**Done!** 
-
-
-With the few simple steps above, we have successfully created a stack model.
-
-
-```{r, echo = FALSE, out.width = "70%"}
-knitr::include_graphics("image/successful.jpg")
-
-```
-
-*Photo by Andrea Piacquadio from Pexels*
 
 
 ### Compare the Model Performance
 
-To check whether the stack model is better than the individual models, I will calculate the model performance for both individual models and stack model. 
-
 
 #### Performance Metric of Individual Models
 
-To calculate the model performance from the different models, I will do the following:
+To compare the model performance from different models, I will do the following:
 
 
-- First, finalize the workflow by selecting the best parameters & perform **last_fit** on the model
+- First, finalize the workflow by selecting the best parameters & perform last_fit on the model
 
 
-- Then, collect the model predictions by using **collect_predictions**
+- Then, collect the model predictions by using collect_predictions
 
 
 - Lastly, calculate the model performance, create a column named 'model' and pivot the columns
 
 
-**Random Forest**
-
-
+Ranger metrics
 ```{r}
 # Finalize the workflow by selecting the best parameters
 ranger_fit <- ranger_workflow %>%
@@ -559,9 +535,7 @@ ranger_metric <- model_metrics(ranger_pred,
 
 
 
-**XGBoost**
-
-
+XGBoost
 ```{r}
 # Finalize the workflow by selecting the best parameters
 xgboost_fit <- xgboost_workflow %>%
@@ -583,9 +557,7 @@ xgboost_metric <- model_metrics(xgboost_pred,
 ```
 
 
-**MARS**
-
-
+MARS
 ```{r}
 # Finalize the workflow by selecting the best parameters
 earth_fit <- earth_workflow %>%
@@ -607,6 +579,28 @@ earth_metric <- model_metrics(earth_pred,
 ```
 
 
+KNN
+```{r}
+# Finalize the workflow by selecting the best parameters
+kknn_fit <- kknn_workflow %>%
+  finalize_workflow(select_best(kknn_tune)) %>%
+  last_fit(df_split)
+
+# Extract the predictions from the fitted model
+kknn_pred <- kknn_fit %>%
+  collect_predictions()
+
+# Calculate the model performance metric
+kknn_metric <- model_metrics(kknn_pred, 
+                               truth = init_ult_diff, 
+                               estimate = .pred) %>%
+  mutate(model = "kknn") %>%
+  pivot_wider(names_from = .metric,
+              values_from = .estimate)
+
+```
+
+
 
 #### Performance Metric of Stack Model
 
@@ -615,11 +609,11 @@ Next, I will calculate the model performance for the stack model.
 
 ```{r}
 stack_metric <- predict(stack_model_fit, df_test) %>%
-  bind_cols(init_ult_diff = df_test$init_ult_diff) %>%
-  model_metrics(truth = init_ult_diff, estimate = .pred) %>%
-  mutate(model = "stack") %>%
-  pivot_wider(names_from = .metric,
-              values_from = .estimate)
+  bind_cols(init_ult_diff = df_test$init_ult_diff) #%>%
+#  model_metrics(truth = init_ult_diff, estimate = .pred) %>%
+#  mutate(model = "stack") %>%
+#  pivot_wider(names_from = .metric,
+#              values_from = .estimate)
 
 ```
 
@@ -633,11 +627,13 @@ tibble() %>%
   bind_rows(stack_metric) %>%
   bind_rows(ranger_metric) %>%
   bind_rows(xgboost_metric) %>%
-  bind_rows(earth_metric)
+  bind_rows(earth_metric) %>%
+  bind_rows(kknn_metric)
 
 ```
 
-As shown above, both RMSE and R square did improve after we stacked the models, showing that the combination of the different models could outperform the individual models.
+As shown above, both model performance metrics improved after we stacked the models. 
+
 
 
 ## Conclusion

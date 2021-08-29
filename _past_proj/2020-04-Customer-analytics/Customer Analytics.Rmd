@@ -1,0 +1,68 @@
+---
+title: "Customer Analytics in Retail Industry"
+description: |
+  Various customer analytics techniques were used to assess the effectiveness of past campaigns run by a retail company and how the company could improve their campaigns going forward
+url: {}
+author:
+  - name: Jasper Lok
+date: 04-30-2020
+output:
+  distill::distill_article
+categories:
+  - Past Project
+  - Customer Analytics
+  - Market Basket Analysis
+
+---
+
+
+```{r, echo = FALSE, out.width = "80%"}
+knitr::include_graphics("image/grocery.jpg")
+
+```
+
+*Photo by Sarah Chai from Pexels*
+
+
+## Brief Description of Project
+
+With the rise of technology and the advent of data analytics, retailers now have access to large amounts of customer data. The challenge currently faced is how to utilise the data to come up with actionable insights and improve on fundamental processes such as customer acquisition and development to eventually boost sales. My classmates and I have demonstrated how retailers can go about this process by using a dataset from Dunnhumby – The Complete Journey.
+
+
+Each of us has focused on one part of the customer journey. I am responsible to build a simple recommender system. This is to help the company to increase the sales and profits through potential cross-selling and up-selling.
+
+
+With the rise of technology and the advent of data analytics, retailers now have access to large amounts of customer data. The challenge currently faced is how to utilise the data to come up with actionable insights and improve on fundamental processes such as customer acquisition and development to eventually boost sales. Our project aims to demonstrate how retailers can go about this process by using a dataset from Dunnhumby – The Complete Journey.
+
+
+Our chosen dataset contains household level transactions at a retailer over 2 years from 2,500 households. Demographic information such as age range, marital status, etc. are available for some of the households. Other key items in the dataset include the campaigns received by each household, the time period for each campaign, the coupons sent during each campaign and the date of redemption for each coupon.
+
+
+We will conduct exploratory data analysis (EDA) and construct the relevant customer signature to give a snapshot of the customer profile and behaviour. Through the EDA, we will understand:
+
+
+- Who is buying?
+
+    - A summary of the customer demographics
+
+- What are the customers buying?
+
+    - The categories/products purchased by the customers
+
+- When are the customers buying?
+
+    - The shopping frequency of the customers
+
+- Why are the customers buying?
+
+    - Gain insight into the households who respond positively to campaigns and identify any other key observations related to each campaign
+
+- How much does the customer buy?
+
+    - The total amount of a customer’s shopping basket
+
+
+Next, we carry out customer segmentation at household level to break down the large number of households into homogenous segments to identify the most valuable customers and the segment most likely to respond to marketing campaigns and purchase more. Targeted strategies will be formulated according to the customer profile and this will lead to more effective marketing campaigns which will boost the retailer’s overall sales. Market basket analysis will be conducted to provide generic recommendations and a recommender system will be constructed to come up with personalised recommendations for customers. The aim is to further boost response rate to marketing campaigns and make good use of the resources invested.
+
+
+

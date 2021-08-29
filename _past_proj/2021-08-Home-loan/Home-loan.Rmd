@@ -1,0 +1,38 @@
+---
+title: "Home aLoan - Predicting Home Loan Payment Difficulties"
+description: |
+  A use case on credit scoring model and the potential cost saving from adopting such approach
+url: {}
+author:
+  - name: Jasper Lok
+date: 08-31-2021
+output:
+  distill::distill_article
+bibliography: ["ref.bib"]
+categories:
+  - Past Project
+  - Machine Learning
+  - Credit Risk Scoring
+  - Model Explainability
+
+---
+
+
+```{r, echo = FALSE, out.width = "80%"}
+knitr::include_graphics("image/home_loan.jpg")
+
+```
+
+*Photo by Alexandr Podvalny from Pexels*
+
+
+## Brief Description of Project
+
+Conventionally, mortgage lenders rely on customers’ standard information, such as credit history and current bank balance to determine whether home loan applications should be accepted. However, this poses a challenge in assessing the creditworthiness of unbanked individuals who do not use official finance institutions to save or borrow money. More than 2.5 billion adults worldwide are unbanked, representing a large population with little or no credit history [@Alberto2010] and are thus unable to apply for home loans from authorized lenders. Promoting greater financial inclusion to unbanked populations will allow mortgage lenders to tap into this largely overlooked market segment. Studies have been conducted to explore how financial institutions can leverage alternative data such as transactional data to evaluate the creditworthiness of their customers. In 2020, the Hong Kong Monetary Authority published a white paper on how banks could rely on transaction-based behavioural data for alternative credit scoring [@HKMonetary].
+
+
+Besides integrating alternative credit scoring methods to expand their clientele pool, mortgage lenders stand to benefit from incorporating machine learning (ML) models in their credit risk predictions to reduce manual underwriting processing time and potentially bring down overall business costs. According to recent U.S. data, we estimate that it takes on average 43.7 man-hours to process a single home loan application (computed from total number of applications [@ConsumerFin], number of staff required [@USBureau], and working hours per week [@Kolakowski2019])
+
+
+
+
