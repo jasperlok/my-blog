@@ -10,7 +10,7 @@ output:
   distill::distill_article:
     self_contained: false
 categories:
-  - dataWrangling
+  - Data Wrangling
 ---
 ```{r, echo = FALSE}
 knitr::include_graphics("image/data_cowboy.png")

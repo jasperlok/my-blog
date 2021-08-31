@@ -15,7 +15,7 @@ bibliography: ["ref.bib"]
 biblio-style: "apa"
 link-citations: true
 categories:
-  - machineLearning
+  - Machine Learning
 ---
 
 ```{r setup, include=FALSE}
