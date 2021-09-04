@@ -2140,7 +2140,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <p>In this post, I will explore an alternative popular machine learning algorithms, i.e. naive bayes classifier to solve classification problems.</p>
 <p>Before diving into naive bayes classifier, let’s understand the difference between discriminative model and generative model.</p>
 <h2 id="discriminative-model-vs-generative-model">Discriminative Model vs Generative Model</h2>
-<p>Discriminative models directly model the posterior probability <span class="math inline">\(Pr(Y|X)\)</span>. One good example of such model is discriminative models.</p>
+<p>Discriminative models directly model the posterior probability <span class="math inline">\(Pr(Y|X)\)</span>. One good example of such model is logistic regression models.</p>
 <p>For generative models, instead of directly model the posterior probability, this type of model will model the join distribution of X &amp; Y before predicting the posterior probability given as <span class="math inline">\(Pr(Y|X)\)</span> <span class="citation" data-cites="Ottesen2017">(<a href="#ref-Ottesen2017" role="doc-biblioref">Ottesen 2017</a>)</span>. Naive bayes classifier is an example of such model.</p>
 <h2 id="naive-bayes-classifier">Naive Bayes Classifier</h2>
 <p>In this algorithm, the prior knowledge is being included when making predictions. Essentially the idea for this algorithm is given the features we observed in the predictors, what is likelihood the ‘y’ belong to the particular class?</p>
@@ -2411,7 +2411,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </code></pre>
 </div>
 </div>
-<p>Next, I use bar chart to plot the claim proportion by Continent.</p>
+<p>Next, I use bar chart to plot the claim proportion by continent.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>df</span>, <span class='fu'>aes</span><span class='op'>(</span><span class='va'>Continent</span>, fill <span class='op'>=</span> <span class='va'>Claim</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
@@ -2422,7 +2422,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 <p><img src="NaiveBayes_files/figure-html5/unnamed-chunk-8-1.png" width="80%" /></p>
 </div>
-<p>As the proportion of claim policies is rather low, it is hard to compare the claim proportion across different continent.</p>
+<p>As the proportion of claim policies is rather low, it is hard to compare the claim proportion across different continents.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>df</span> <span class='op'>%&gt;%</span>
@@ -2538,7 +2538,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 <p><img src="NaiveBayes_files/figure-html5/unnamed-chunk-14-1.png" width="80%" /></p>
 </div>
-<p>It seems like the average duration of the policies with no claim is shorter than the average duration of the duration with claim. This is logical since the duration is likely to represent the coverage duration of the travel insurance. Typically the coverage of the travel insurance starts from the day the insurance is purchased till the day the trip is being completed.</p>
+<p>It seems like the average duration of the policies with no claim is shorter than the average duration of the duration with claim. This is logical since the duration is likely to represent the coverage duration of the travel insurance. Typically the coverage of the travel insurance starts from the day the insurance is purchased till the day the trip is being completed. Therefore, with a higher duration, it is more likely the customers would make a claim during the coverage period.</p>
 <p>Meanwhile, I do note that there are negative values within this variable, which the values do not seem to be reasonable. Therefore, I will remove them from the dataset.</p>
 <p><em>Sales</em></p>
 <p>In the earlier data summary, there are some policies with sales with zero or even negative. This is not logical as the sales of insurance policies would be positive. As lack of information, I would remove these policies from the dataset so that it will not affect the model performance.</p>
@@ -2674,7 +2674,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </code></pre>
 </div>
 </div>
-<p>Okay, let’s start our classic machine learning model for classification problem - logistic regression!</p>
+<p>Okay, let’s start the analysis by using our classic machine learning model for classification problem - logistic regression!</p>
 <h4 id="logistic-regression">Logistic Regression</h4>
 <p>To record how long it takes to build a logistic regression model, I use <strong>tic</strong> &amp; <strong>toc</strong> functions from <strong>tictoc</strong> package to capture the time spent in building model.</p>
 <div class="layout-chunk" data-layout="l-body">
@@ -2745,7 +2745,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>toc</span><span class='op'>(</span><span class='op'>)</span>
 </code></pre>
 </div>
-<pre><code>Time to Build Logistic Regression: 158.74 sec elapsed</code></pre>
+<pre><code>Time to Build Logistic Regression: 196.01 sec elapsed</code></pre>
 </div>
 <p>Accuracy is typically used to measure classification model.</p>
 <div class="layout-chunk" data-layout="l-body">
@@ -2837,7 +2837,7 @@ Prediction    No   Yes
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>toc</span><span class='op'>(</span><span class='op'>)</span>
 </code></pre>
 </div>
-<pre><code>Time to Build Naive Bayes Classifier: 20.59 sec elapsed</code></pre>
+<pre><code>Time to Build Naive Bayes Classifier: 36.62 sec elapsed</code></pre>
 </div>
 <p>Note that the naive bayes classifier takes lesser time to build the model. In fact, it took less time to build naive bayes classifier than build logistic regression.</p>
 <p>This is consistent with what we have discussed in the earlier section of this post.</p>

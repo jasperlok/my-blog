@@ -63,7 +63,7 @@ Before diving into naive bayes classifier, let's understand the difference betwe
 
 ## Discriminative Model vs Generative Model
 
-Discriminative models directly model the posterior probability $Pr(Y|X)$. One good example of such model is discriminative models. 
+Discriminative models directly model the posterior probability $Pr(Y|X)$. One good example of such model is logistic regression models. 
 
 
 For generative models, instead of directly model the posterior probability, this type of model will model the join distribution of X & Y before predicting the posterior probability given as $Pr(Y|X)$ [@Ottesen2017]. Naive bayes classifier is an example of such model.
@@ -194,7 +194,7 @@ df <- df %>%
 ```
 
 
-Next, I use bar chart to plot the claim proportion by Continent.
+Next, I use bar chart to plot the claim proportion by continent.
 
 ```{r}
 ggplot(df, aes(Continent, fill = Claim)) +
@@ -204,7 +204,7 @@ ggplot(df, aes(Continent, fill = Claim)) +
 
 ```
 
-As the proportion of claim policies is rather low, it is hard to compare the claim proportion across different continent. 
+As the proportion of claim policies is rather low, it is hard to compare the claim proportion across different continents. 
 
 
 ```{r}
@@ -326,7 +326,7 @@ df %>%
 
 ```
 
-It seems like the average duration of the policies with no claim is shorter than the average duration of the duration with claim. This is logical since the duration is likely to represent the coverage duration of the travel insurance. Typically the coverage of the travel insurance starts from the day the insurance is purchased till the day the trip is being completed.
+It seems like the average duration of the policies with no claim is shorter than the average duration of the duration with claim. This is logical since the duration is likely to represent the coverage duration of the travel insurance. Typically the coverage of the travel insurance starts from the day the insurance is purchased till the day the trip is being completed. Therefore, with a higher duration, it is more likely the customers would make a claim during the coverage period.
 
 
 Meanwhile, I do note that there are negative values within this variable, which the values do not seem to be reasonable. Therefore, I will remove them from the dataset.
@@ -486,7 +486,7 @@ gen_recipe <- recipe(Claim ~ ., data = df_train)
 ```
 
 
-Okay, let's start our classic machine learning model for classification problem - logistic regression!
+Okay, let's start the analysis by using our classic machine learning model for classification problem - logistic regression!
 
 
 #### Logistic Regression
