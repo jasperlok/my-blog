@@ -16,6 +16,8 @@ biblio-style: "apa"
 link-citations: true
 categories:
   - Machine Learning
+  - Supervised Learning
+  
 ---
 
 ```{r setup, include=FALSE}
@@ -326,13 +328,13 @@ Basically, I try to perform the following in the code chunk above:
 
 Before fitting a stack model, let's fit individual models first.
 
+
 Random Forest
+
+
 ```{r}
 ranger_spec <- 
   rand_forest() %>%
-  #mtry = tune(), 
-  #            min_n = tune(), 
-  #            trees = 1000) %>% 
   set_mode("regression") %>% 
   set_engine("ranger", importance = "impurity")
 
@@ -352,17 +354,16 @@ ranger_tune <-
 
 
 
-
-
 XGBoost
+
+
+
 ```{r}
 xgboost_recipe <- gen_recipe %>%
   step_dummy(all_nominal())
 
 xgboost_spec <- 
   boost_tree() %>%
-  #trees = 1000, min_n = tune(), tree_depth = 50, learn_rate = 0.01, 
-  #  loss_reduction = tune(), sample_size = tune()) %>%
   set_mode("regression") %>% 
   set_engine("xgboost") 
 
@@ -384,6 +385,8 @@ xgboost_tune <-
 
 
 MARS
+
+
 ```{r}
 earth_recipe <- gen_recipe %>% 
   step_novel(all_nominal(), -all_outcomes()) %>% 
@@ -392,9 +395,6 @@ earth_recipe <- gen_recipe %>%
 
 earth_spec <- 
   mars() %>%
-  #num_terms = tune(), 
-  #     prod_degree = tune(), 
-  #     prune_method = "none") %>% 
   set_mode("regression") %>% 
   set_engine("earth") 
 
@@ -414,35 +414,14 @@ earth_tune <-
 ```
 
 
-KNN
-```{r}
-kknn_spec <- 
-  nearest_neighbor() %>%
-  #neighbors = tune(), 
-  #                 weight_func = tune()) %>% 
-  set_mode("regression") %>% 
-  set_engine("kknn") 
 
-kknn_workflow <- 
-  workflow() %>% 
-  add_recipe(gen_recipe) %>%
-  add_model(kknn_spec) 
-
-set.seed(96032)
-kknn_tune <-
-  tune_grid(kknn_workflow, 
-            resamples = df_folds, 
-            grid = grid_num,
-            control = ctrl_grid)
-
-```
 
 ### Stack the Models!
 
 Okay, we have fitted all the individual models. I will move on and fit a stack model.
 
 
-To do so, I will use **stack** function to create an empty 
+To do so, I will use **stack** function to create an empty stack model and add on the individual fitted models earlier on.
 
 
 ```{r}
@@ -450,12 +429,12 @@ stack_model <-
   stacks() %>%
   add_candidates(ranger_tune) %>%
   add_candidates(xgboost_tune) %>%
-  add_candidates(earth_tune) #%>%
-#  add_candidates(kknn_tune)
+  add_candidates(earth_tune)
 
 ```
 
 
+Next, I will use blend_predictions function to find the coefficient of individual models.
 
 
 ```{r}
@@ -467,6 +446,7 @@ stack_model_pred <-
 
 
 To see the weights of the models, we can call the object we have created in the previous step.
+
 
 ```{r}
 stack_model_pred
@@ -513,6 +493,8 @@ To compare the model performance from different models, I will do the following:
 
 
 Ranger metrics
+
+
 ```{r}
 # Finalize the workflow by selecting the best parameters
 ranger_fit <- ranger_workflow %>%
@@ -536,6 +518,8 @@ ranger_metric <- model_metrics(ranger_pred,
 
 
 XGBoost
+
+
 ```{r}
 # Finalize the workflow by selecting the best parameters
 xgboost_fit <- xgboost_workflow %>%
@@ -558,6 +542,8 @@ xgboost_metric <- model_metrics(xgboost_pred,
 
 
 MARS
+
+
 ```{r}
 # Finalize the workflow by selecting the best parameters
 earth_fit <- earth_workflow %>%
@@ -579,29 +565,6 @@ earth_metric <- model_metrics(earth_pred,
 ```
 
 
-KNN
-```{r}
-# Finalize the workflow by selecting the best parameters
-kknn_fit <- kknn_workflow %>%
-  finalize_workflow(select_best(kknn_tune)) %>%
-  last_fit(df_split)
-
-# Extract the predictions from the fitted model
-kknn_pred <- kknn_fit %>%
-  collect_predictions()
-
-# Calculate the model performance metric
-kknn_metric <- model_metrics(kknn_pred, 
-                               truth = init_ult_diff, 
-                               estimate = .pred) %>%
-  mutate(model = "kknn") %>%
-  pivot_wider(names_from = .metric,
-              values_from = .estimate)
-
-```
-
-
-
 #### Performance Metric of Stack Model
 
 
@@ -609,11 +572,11 @@ Next, I will calculate the model performance for the stack model.
 
 ```{r}
 stack_metric <- predict(stack_model_fit, df_test) %>%
-  bind_cols(init_ult_diff = df_test$init_ult_diff) #%>%
-#  model_metrics(truth = init_ult_diff, estimate = .pred) %>%
-#  mutate(model = "stack") %>%
-#  pivot_wider(names_from = .metric,
-#              values_from = .estimate)
+  bind_cols(init_ult_diff = df_test$init_ult_diff) %>%
+  model_metrics(truth = init_ult_diff, estimate = .pred) %>%
+  mutate(model = "stack") %>%
+  pivot_wider(names_from = .metric,
+              values_from = .estimate)
 
 ```
 
@@ -627,8 +590,7 @@ tibble() %>%
   bind_rows(stack_metric) %>%
   bind_rows(ranger_metric) %>%
   bind_rows(xgboost_metric) %>%
-  bind_rows(earth_metric) %>%
-  bind_rows(kknn_metric)
+  bind_rows(earth_metric)
 
 ```
 
