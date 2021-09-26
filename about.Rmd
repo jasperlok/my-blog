@@ -17,19 +17,19 @@ Hi there, welcome to my blog! I am currently working as an actuary and in proces
 ### Academic Background
 I did my actuarial science undergraduate degree in The Australian National University back in 2009. Ironically I had no clue what actuarial science or statistics is about when I entered into university. It was one of my final year GLM project sparked my interest in statistics and data science.
 
-Fast forward to now, I am currently pursuing Master of IT in Business (Analytics) in Singapore Management University.
+In 2018, I have enrolled myself into Master of IT in Business (Analytics) in Singapore Management University.
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, out.width = "80%"}
 knitr::include_graphics("image/data_idea.jpg")
 
 ```
 *Photo by Franki Chamaki on Unsplash*
 
 
-Throughout my study in SMU, I study various types of analytics, including customer analytics, social analytics, visual analytics, and operation analytics, to gain a broad understanding of various analytics techniques. 
+Throughout my study in SMU, I studied various types of analytics, including customer analytics, social analytics, visual analytics, and operation analytics, to gain a broad understanding of various analytics techniques. 
 
 
-I also specialize in digital transformation strategy in my master course. During the middle of the pandemic, I also did a consulting job for a local SME that is in the oil & gas industry. The task involves preparing a business proposal on how the SME could leverage its current strength to pivot the current business to venture into a new business market. This would help the SME to ensure its revised business model is more resilient to external market forces.
+I also specialized in digital transformation strategy in my master course. During the middle of the pandemic, I also did a consulting job for a local SME that is in the oil & gas industry under the guidance of my SMU professors. The task involved preparing a business proposal on how the SME could leverage its current strength to pivot the current business to venture into a new business market. This would help the SME to ensure its revised business model is more resilient to external market forces.
 
 
 ### Work Experience
@@ -42,10 +42,47 @@ I have been working in both life insurance and general insurance as an actuary s
 - New business model <br   />
 
 
-Do visit my [LinkedIn page](https://www.linkedin.com/in/jasper-l-13426232/) if you are interested to find out more on my work experience!
+In conclusion, my background & experience can be summarized as following:
+
+```{r, echo = FALSE}
+library(cronologia)
+
+jasper_df <- data.frame(
+  event = c("Bachelor of Actuarial Studies",
+            "Actuarial Pricing Senior Executive",
+            "Actuarial Pricing Senior Executive",
+            "Actuarial Life Pricing Assistant Manager",
+            "Actuarial Life Reporting Assistant Manager",
+            "Actuarial Data Analytics Manager",
+            "Master of IT in Business"),
+  desc = c("The Australian National University",
+           "Prudential Assurance Company Singapore",
+           "Great Eastern Life Assurance Co Ltd",
+           "NTUC Income Insurance Co-operative Limited",
+           "NTUC Income Insurance Co-operative Limited",
+           "NTUC Income Insurance Co-operative Limited",
+           "Singapore Management University"),
+  desc_2 = c("Dec 2019", 
+             "Mar 2012 - Oct 2014",
+             "Oct 2014 - Jun 2014",
+             "Jul 2015 - Jul 2018",
+             "Jul 2018 - May 2020",
+             "May 2020 - Present",
+             "Aug 2021"))
+
+create_tml_2(df = jasper_df, 
+           smr = "event",  
+           dsc = "desc",
+           dsc_size = "16px",
+           dsc2 = "desc_2",
+           open = TRUE)
+```
+
+
+Do visit my [LinkedIn page](https://www.linkedin.com/in/jasper-l-13426232/) or contact me if you are interested to find out more on my work experience!
 
 
 ### Contact
 
-Feel free to contact me on [email](mailto:junhaur.lok.2019@mitb.smu.edu.sg) or [LinkedIn](https://www.linkedin.com/in/jasper-l-13426232/).
+Feel free to contact me on [email](mailto:jasper.jh.lok@gmail.com) or [LinkedIn](https://www.linkedin.com/in/jasper-l-13426232/).
 
