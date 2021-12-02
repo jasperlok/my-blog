@@ -1,0 +1,2748 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <meta name="generator" content="distill" />
+
+  <style type="text/css">
+  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
+  body {
+    visibility: hidden;
+  }
+  </style>
+
+ <!--radix_placeholder_import_source-->
+ <!--/radix_placeholder_import_source-->
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ad0000; } /* Alert */
+code span.an { color: #5e5e5e; } /* Annotation */
+code span.at { color: #20794d; } /* Attribute */
+code span.bn { color: #ad0000; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007ba5; } /* ControlFlow */
+code span.ch { color: #20794d; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #5e5e5e; } /* Comment */
+code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+code span.dt { color: #ad0000; } /* DataType */
+code span.dv { color: #ad0000; } /* DecVal */
+code span.er { color: #ad0000; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #ad0000; } /* Float */
+code span.fu { color: #4758ab; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #5e5e5e; } /* Information */
+code span.kw { color: #007ba5; } /* Keyword */
+code span.op { color: #5e5e5e; } /* Operator */
+code span.ot { color: #007ba5; } /* Other */
+code span.pp { color: #ad0000; } /* Preprocessor */
+code span.sc { color: #20794d; } /* SpecialChar */
+code span.ss { color: #20794d; } /* SpecialString */
+code span.st { color: #20794d; } /* String */
+code span.va { color: #111111; } /* Variable */
+code span.vs { color: #20794d; } /* VerbatimString */
+code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+</style>
+
+  <!--radix_placeholder_meta_tags-->
+<title>When Actuarial Science Collides with Data Science: Text Analytics 101</title>
+
+<meta property="description" itemprop="description" content="Finding the &quot;gold&quot; within the text"/>
+
+
+<!--  https://schema.org/Article -->
+<meta property="article:published" itemprop="datePublished" content="2021-12-02"/>
+<meta property="article:created" itemprop="dateCreated" content="2021-12-02"/>
+<meta name="article:author" content="Jasper Lok"/>
+
+<!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
+<meta property="og:title" content="When Actuarial Science Collides with Data Science: Text Analytics 101"/>
+<meta property="og:type" content="article"/>
+<meta property="og:description" content="Finding the &quot;gold&quot; within the text"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:site_name" content="When Actuarial Science Collides with Data Science"/>
+
+<!--  https://dev.twitter.com/cards/types/summary -->
+<meta property="twitter:card" content="summary"/>
+<meta property="twitter:title" content="When Actuarial Science Collides with Data Science: Text Analytics 101"/>
+<meta property="twitter:description" content="Finding the &quot;gold&quot; within the text"/>
+
+<!--/radix_placeholder_meta_tags-->
+  
+  <meta name="citation_reference" content="citation_title=Mining for gold: Text analytics in insurance: Natural language processing provides insurers tools for using text data;citation_publication_date=2021;citation_author=Liam McGrath"/>
+  <meta name="citation_reference" content="citation_title=Is it time for text analytics in financial services?;citation_publication_date=2016;citation_author=Alan D. Duncan"/>
+  <meta name="citation_reference" content="citation_title=Decoding the hidden value of unstructured text data;citation_publication_date=2019;citation_author=Jason Rodriguez"/>
+  <meta name="citation_reference" content="citation_title=The art of natural language processing: Classical, modern and contemporary approaches to text document classification;citation_publication_date=2020;citation_author=Andrea Ferrario;citation_author=Mara Naegelin"/>
+  <meta name="citation_reference" content="citation_title=An introduction to information retrieval;citation_publication_date=2009;citation_publisher=Cambridge University Press;citation_author=Christopher D. Manning;citation_author=Prabhakar Raghavan;citation_author=Hinrich SchÃ¼tze"/>
+  <meta name="citation_reference" content="citation_title=When (not) to lemmatize or remove stop words in text preprocessing;citation_publication_date=2019;citation_author=Alex Schumacher"/>
+  <meta name="citation_reference" content="citation_title=Text analytics with python a practical real- world approach to gaining actionable insights from your datal;citation_publication_date=2016;citation_publisher=Apress;citation_author=Dipanjan Sarkar"/>
+  <meta name="citation_reference" content="citation_title=Chapter 4 stemming;citation_publication_date=2021;citation_author=Emil Hvitfeldt;citation_author=Julia Silge"/>
+  <meta name="citation_reference" content="citation_title=What is the difference between stemming and lemmatization?;citation_publication_date=2021;citation_author=What is the difference between stemming and lemmatization?"/>
+  <!--radix_placeholder_rmarkdown_metadata-->
+
+<script type="text/json" id="radix-rmarkdown-metadata">
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","bibliography","biblio-style","link-citations","categories"]}},"value":[{"type":"character","attributes":{},"value":["Text Analytics 101"]},{"type":"character","attributes":{},"value":["Finding the \"gold\" within the text"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Jasper Lok"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":[]}},"value":[]}]}]},{"type":"character","attributes":{},"value":["12-02-2021"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","toc_depth","self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[4]},{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["ref.bib"]},{"type":"character","attributes":{},"value":["apa"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["Text Analytics"]}]}
+</script>
+<!--/radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["data/WikiQA.tsv","image/bookshelf.jpg","image/quanteda.png","image/regex_cheatsheet.png","image/textanalytics_with_r.png","image/typewriter.jpg","ref.bib","text-analytics_files/anchor/anchor.min.js","text-analytics_files/bowser/bowser.min.js","text-analytics_files/distill/template.v2.js","text-analytics_files/figure-html5/unnamed-chunk-13-1.png","text-analytics_files/figure-html5/unnamed-chunk-16-1.png","text-analytics_files/figure-html5/unnamed-chunk-17-1.png","text-analytics_files/figure-html5/unnamed-chunk-20-1.png","text-analytics_files/figure-html5/unnamed-chunk-21-1.png","text-analytics_files/figure-html5/unnamed-chunk-22-1.png","text-analytics_files/figure-html5/unnamed-chunk-23-1.png","text-analytics_files/figure-html5/unnamed-chunk-25-1.png","text-analytics_files/figure-html5/unnamed-chunk-26-1.png","text-analytics_files/figure-html5/unnamed-chunk-27-1.png","text-analytics_files/figure-html5/unnamed-chunk-30-1.png","text-analytics_files/header-attrs/header-attrs.js","text-analytics_files/jquery/jquery.min.js","text-analytics_files/kePrint/kePrint.js","text-analytics_files/lightable/lightable.css","text-analytics_files/popper/popper.min.js","text-analytics_files/tippy/tippy-bundle.umd.min.js","text-analytics_files/tippy/tippy-light-border.css","text-analytics_files/tippy/tippy.css","text-analytics_files/tippy/tippy.umd.min.js","text-analytics_files/webcomponents/webcomponents.js"]}
+  </script>
+  <!--radix_placeholder_navigation_in_header-->
+<meta name="distill:offset" content="../.."/>
+
+<script type="application/javascript">
+
+  window.headroom_prevent_pin = false;
+
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+
+    // initialize headroom for banner
+    var header = $('header').get(0);
+    var headerHeight = header.offsetHeight;
+    var headroom = new Headroom(header, {
+      tolerance: 5,
+      onPin : function() {
+        if (window.headroom_prevent_pin) {
+          window.headroom_prevent_pin = false;
+          headroom.unpin();
+        }
+      }
+    });
+    headroom.init();
+    if(window.location.hash)
+      headroom.unpin();
+    $(header).addClass('headroom--transition');
+
+    // offset scroll location for banner on hash change
+    // (see: https://github.com/WickyNilliams/headroom.js/issues/38)
+    window.addEventListener("hashchange", function(event) {
+      window.scrollTo(0, window.pageYOffset - (headerHeight + 25));
+    });
+
+    // responsive menu
+    $('.distill-site-header').each(function(i, val) {
+      var topnav = $(this);
+      var toggle = topnav.find('.nav-toggle');
+      toggle.on('click', function() {
+        topnav.toggleClass('responsive');
+      });
+    });
+
+    // nav dropdowns
+    $('.nav-dropbtn').click(function(e) {
+      $(this).next('.nav-dropdown-content').toggleClass('nav-dropdown-active');
+      $(this).parent().siblings('.nav-dropdown')
+         .children('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $("body").click(function(e){
+      $('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $(".nav-dropdown").click(function(e){
+      e.stopPropagation();
+    });
+  });
+</script>
+
+<style type="text/css">
+
+/* Theme (user-documented overrideables for nav appearance) */
+
+.distill-site-nav {
+  color: rgba(255, 255, 255, 0.8);
+  background-color: #0F2E3D;
+  font-size: 15px;
+  font-weight: 300;
+}
+
+.distill-site-nav a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.distill-site-nav a:hover {
+  color: white;
+}
+
+@media print {
+  .distill-site-nav {
+    display: none;
+  }
+}
+
+.distill-site-header {
+
+}
+
+.distill-site-footer {
+
+}
+
+
+/* Site Header */
+
+.distill-site-header {
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 3;
+}
+
+.distill-site-header .nav-left {
+  display: inline-block;
+  margin-left: 8px;
+}
+
+@media screen and (max-width: 768px) {
+  .distill-site-header .nav-left {
+    margin-left: 0;
+  }
+}
+
+
+.distill-site-header .nav-right {
+  float: right;
+  margin-right: 8px;
+}
+
+.distill-site-header a,
+.distill-site-header .title {
+  display: inline-block;
+  text-align: center;
+  padding: 14px 10px 14px 10px;
+}
+
+.distill-site-header .title {
+  font-size: 18px;
+  min-width: 150px;
+}
+
+.distill-site-header .logo {
+  padding: 0;
+}
+
+.distill-site-header .logo img {
+  display: none;
+  max-height: 20px;
+  width: auto;
+  margin-bottom: -4px;
+}
+
+.distill-site-header .nav-image img {
+  max-height: 18px;
+  width: auto;
+  display: inline-block;
+  margin-bottom: -3px;
+}
+
+
+
+@media screen and (min-width: 1000px) {
+  .distill-site-header .logo img {
+    display: inline-block;
+  }
+  .distill-site-header .nav-left {
+    margin-left: 20px;
+  }
+  .distill-site-header .nav-right {
+    margin-right: 20px;
+  }
+  .distill-site-header .title {
+    padding-left: 12px;
+  }
+}
+
+
+.distill-site-header .nav-toggle {
+  display: none;
+}
+
+.nav-dropdown {
+  display: inline-block;
+  position: relative;
+}
+
+.nav-dropdown .nav-dropbtn {
+  border: none;
+  outline: none;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 16px 10px;
+  background-color: transparent;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  margin: 0;
+  margin-top: 1px;
+  z-index: 2;
+}
+
+.nav-dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 200px;
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 4px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+  z-index: 1;
+  margin-top: 2px;
+  white-space: nowrap;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.nav-dropdown-content hr {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.nav-dropdown-active {
+  display: block;
+}
+
+.nav-dropdown-content a, .nav-dropdown-content .nav-dropdown-header {
+  color: black;
+  padding: 6px 24px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.nav-dropdown-content .nav-dropdown-header {
+  display: block;
+  padding: 5px 24px;
+  padding-bottom: 0;
+  text-transform: uppercase;
+  font-size: 14px;
+  color: #999999;
+  white-space: nowrap;
+}
+
+.nav-dropdown:hover .nav-dropbtn {
+  color: white;
+}
+
+.nav-dropdown-content a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.nav-right .nav-dropdown-content {
+  margin-left: -45%;
+  right: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .distill-site-header a, .distill-site-header .nav-dropdown  {display: none;}
+  .distill-site-header a.nav-toggle {
+    float: right;
+    display: block;
+  }
+  .distill-site-header .title {
+    margin-left: 0;
+  }
+  .distill-site-header .nav-right {
+    margin-right: 0;
+  }
+  .distill-site-header {
+    overflow: hidden;
+  }
+  .nav-right .nav-dropdown-content {
+    margin-left: 0;
+  }
+}
+
+
+@media screen and (max-width: 768px) {
+  .distill-site-header.responsive {position: relative; min-height: 500px; }
+  .distill-site-header.responsive a.nav-toggle {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .distill-site-header.responsive a,
+  .distill-site-header.responsive .nav-dropdown {
+    display: block;
+    text-align: left;
+  }
+  .distill-site-header.responsive .nav-left,
+  .distill-site-header.responsive .nav-right {
+    width: 100%;
+  }
+  .distill-site-header.responsive .nav-dropdown {float: none;}
+  .distill-site-header.responsive .nav-dropdown-content {position: relative;}
+  .distill-site-header.responsive .nav-dropdown .nav-dropbtn {
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+}
+
+/* Site Footer */
+
+.distill-site-footer {
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  z-index: 3;
+  margin-top: 30px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  text-align: center;
+}
+
+/* Headroom */
+
+d-title {
+  padding-top: 6rem;
+}
+
+@media print {
+  d-title {
+    padding-top: 4rem;
+  }
+}
+
+.headroom {
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.headroom--transition {
+  transition: all .4s ease-in-out;
+}
+
+.headroom--unpinned {
+  top: -100px;
+}
+
+.headroom--pinned {
+  top: 0;
+}
+
+/* adjust viewport for navbar height */
+/* helps vertically center bootstrap (non-distill) content */
+.min-vh-100 {
+  min-height: calc(100vh - 100px) !important;
+}
+
+</style>
+
+<script src="../../site_libs/jquery-1.11.3/jquery.min.js"></script>
+<link href="../../site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet"/>
+<link href="../../site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet"/>
+<script src="../../site_libs/headroom-0.9.4/headroom.min.js"></script>
+<script src="../../site_libs/autocomplete-0.37.1/autocomplete.min.js"></script>
+<script src="../../site_libs/fuse-6.4.1/fuse.min.js"></script>
+
+<script type="application/javascript">
+
+function getMeta(metaName) {
+  var metas = document.getElementsByTagName('meta');
+  for (let i = 0; i < metas.length; i++) {
+    if (metas[i].getAttribute('name') === metaName) {
+      return metas[i].getAttribute('content');
+    }
+  }
+  return '';
+}
+
+function offsetURL(url) {
+  var offset = getMeta('distill:offset');
+  return offset ? offset + '/' + url : url;
+}
+
+function createFuseIndex() {
+
+  // create fuse index
+  var options = {
+    keys: [
+      { name: 'title', weight: 20 },
+      { name: 'categories', weight: 15 },
+      { name: 'description', weight: 10 },
+      { name: 'contents', weight: 5 },
+    ],
+    ignoreLocation: true,
+    threshold: 0
+  };
+  var fuse = new window.Fuse([], options);
+
+  // fetch the main search.json
+  return fetch(offsetURL('search.json'))
+    .then(function(response) {
+      if (response.status == 200) {
+        return response.json().then(function(json) {
+          // index main articles
+          json.articles.forEach(function(article) {
+            fuse.add(article);
+          });
+          // download collections and index their articles
+          return Promise.all(json.collections.map(function(collection) {
+            return fetch(offsetURL(collection)).then(function(response) {
+              if (response.status === 200) {
+                return response.json().then(function(articles) {
+                  articles.forEach(function(article) {
+                    fuse.add(article);
+                  });
+                })
+              } else {
+                return Promise.reject(
+                  new Error('Unexpected status from search index request: ' +
+                            response.status)
+                );
+              }
+            });
+          })).then(function() {
+            return fuse;
+          });
+        });
+
+      } else {
+        return Promise.reject(
+          new Error('Unexpected status from search index request: ' +
+                      response.status)
+        );
+      }
+    });
+}
+
+window.document.addEventListener("DOMContentLoaded", function (event) {
+
+  // get search element (bail if we don't have one)
+  var searchEl = window.document.getElementById('distill-search');
+  if (!searchEl)
+    return;
+
+  createFuseIndex()
+    .then(function(fuse) {
+
+      // make search box visible
+      searchEl.classList.remove('hidden');
+
+      // initialize autocomplete
+      var options = {
+        autoselect: true,
+        hint: false,
+        minLength: 2,
+      };
+      window.autocomplete(searchEl, options, [{
+        source: function(query, callback) {
+          const searchOptions = {
+            isCaseSensitive: false,
+            shouldSort: true,
+            minMatchCharLength: 2,
+            limit: 10,
+          };
+          var results = fuse.search(query, searchOptions);
+          callback(results
+            .map(function(result) { return result.item; })
+          );
+        },
+        templates: {
+          suggestion: function(suggestion) {
+            var img = suggestion.preview && Object.keys(suggestion.preview).length > 0
+              ? `<img src="${offsetURL(suggestion.preview)}"</img>`
+              : '';
+            var html = `
+              <div class="search-item">
+                <h3>${suggestion.title}</h3>
+                <div class="search-item-description">
+                  ${suggestion.description || ''}
+                </div>
+                <div class="search-item-preview">
+                  ${img}
+                </div>
+              </div>
+            `;
+            return html;
+          }
+        }
+      }]).on('autocomplete:selected', function(event, suggestion) {
+        window.location.href = offsetURL(suggestion.path);
+      });
+      // remove inline display style on autocompleter (we want to
+      // manage responsive display via css)
+      $('.algolia-autocomplete').css("display", "");
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+
+});
+
+</script>
+
+<style type="text/css">
+
+.nav-search {
+  font-size: x-small;
+}
+
+/* Algolioa Autocomplete */
+
+.algolia-autocomplete {
+  display: inline-block;
+  margin-left: 10px;
+  vertical-align: sub;
+  background-color: white;
+  color: black;
+  padding: 6px;
+  padding-top: 8px;
+  padding-bottom: 0;
+  border-radius: 6px;
+  border: 1px #0F2E3D solid;
+  width: 180px;
+}
+
+
+@media screen and (max-width: 768px) {
+  .distill-site-nav .algolia-autocomplete {
+    display: none;
+    visibility: hidden;
+  }
+  .distill-site-nav.responsive .algolia-autocomplete {
+    display: inline-block;
+    visibility: visible;
+  }
+  .distill-site-nav.responsive .algolia-autocomplete .aa-dropdown-menu {
+    margin-left: 0;
+    width: 400px;
+    max-height: 400px;
+  }
+}
+
+.algolia-autocomplete .aa-input, .algolia-autocomplete .aa-hint {
+  width: 90%;
+  outline: none;
+  border: none;
+}
+
+.algolia-autocomplete .aa-hint {
+  color: #999;
+}
+.algolia-autocomplete .aa-dropdown-menu {
+  width: 550px;
+  max-height: 70vh;
+  overflow-x: visible;
+  overflow-y: scroll;
+  padding: 5px;
+  margin-top: 3px;
+  margin-left: -150px;
+  background-color: #fff;
+  border-radius: 5px;
+  border: 1px solid #999;
+  border-top: none;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion {
+  cursor: pointer;
+  padding: 5px 4px;
+  border-bottom: 1px solid #eee;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion:last-of-type {
+  border-bottom: none;
+  margin-bottom: 2px;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item {
+  overflow: hidden;
+  font-size: 0.8em;
+  line-height: 1.4em;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item h3 {
+  font-size: 1rem;
+  margin-block-start: 0;
+  margin-block-end: 5px;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-description {
+  display: inline-block;
+  overflow: hidden;
+  height: 2.8em;
+  width: 80%;
+  margin-right: 4%;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview {
+  display: inline-block;
+  width: 15%;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview img {
+  height: 3em;
+  width: auto;
+  display: none;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview img[src] {
+  display: initial;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion.aa-cursor {
+  background-color: #eee;
+}
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion em {
+  font-weight: bold;
+  font-style: normal;
+}
+
+</style>
+
+
+<!--/radix_placeholder_navigation_in_header-->
+  <!--radix_placeholder_distill-->
+
+<style type="text/css">
+
+body {
+  background-color: white;
+}
+
+.pandoc-table {
+  width: 100%;
+}
+
+.pandoc-table>caption {
+  margin-bottom: 10px;
+}
+
+.pandoc-table th:not([align]) {
+  text-align: left;
+}
+
+.pagedtable-footer {
+  font-size: 15px;
+}
+
+d-byline .byline {
+  grid-template-columns: 2fr 2fr;
+}
+
+d-byline .byline h3 {
+  margin-block-start: 1.5em;
+}
+
+d-byline .byline .authors-affiliations h3 {
+  margin-block-start: 0.5em;
+}
+
+.authors-affiliations .orcid-id {
+  width: 16px;
+  height:16px;
+  margin-left: 4px;
+  margin-right: 4px;
+  vertical-align: middle;
+  padding-bottom: 2px;
+}
+
+d-title .dt-tags {
+  margin-top: 1em;
+  grid-column: text;
+}
+
+.dt-tags .dt-tag {
+  text-decoration: none;
+  display: inline-block;
+  color: rgba(0,0,0,0.6);
+  padding: 0em 0.4em;
+  margin-right: 0.5em;
+  margin-bottom: 0.4em;
+  font-size: 70%;
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 3px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+d-article table.gt_table td,
+d-article table.gt_table th {
+  border-bottom: none;
+}
+
+.html-widget {
+  margin-bottom: 2.0em;
+}
+
+.l-screen-inset {
+  padding-right: 16px;
+}
+
+.l-screen .caption {
+  margin-left: 10px;
+}
+
+.shaded {
+  background: rgb(247, 247, 247);
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.shaded .html-widget {
+  margin-bottom: 0;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.shaded .shaded-content {
+  background: white;
+}
+
+.text-output {
+  margin-top: 0;
+  line-height: 1.5em;
+}
+
+.hidden {
+  display: none !important;
+}
+
+d-article {
+  padding-top: 2.5rem;
+  padding-bottom: 30px;
+}
+
+d-appendix {
+  padding-top: 30px;
+}
+
+d-article>p>img {
+  width: 100%;
+}
+
+d-article h2 {
+  margin: 1rem 0 1.5rem 0;
+}
+
+d-article h3 {
+  margin-top: 1.5rem;
+}
+
+d-article iframe {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  margin-bottom: 2.0em;
+  width: 100%;
+}
+
+/* Tweak code blocks */
+
+d-article div.sourceCode code,
+d-article pre code {
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+}
+
+d-article pre,
+d-article div.sourceCode,
+d-article div.sourceCode pre {
+  overflow: auto;
+}
+
+d-article div.sourceCode {
+  background-color: white;
+}
+
+d-article div.sourceCode pre {
+  padding-left: 10px;
+  font-size: 12px;
+  border-left: 2px solid rgba(0,0,0,0.1);
+}
+
+d-article pre {
+  font-size: 12px;
+  color: black;
+  background: none;
+  margin-top: 0;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+d-article pre a {
+  border-bottom: none;
+}
+
+d-article pre a:hover {
+  border-bottom: none;
+  text-decoration: underline;
+}
+
+d-article details {
+  grid-column: text;
+  margin-bottom: 0.8em;
+}
+
+@media(min-width: 768px) {
+
+d-article pre,
+d-article div.sourceCode,
+d-article div.sourceCode pre {
+  overflow: visible !important;
+}
+
+d-article div.sourceCode pre {
+  padding-left: 18px;
+  font-size: 14px;
+}
+
+d-article pre {
+  font-size: 14px;
+}
+
+}
+
+figure img.external {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+/* CSS for d-contents */
+
+.d-contents {
+  grid-column: text;
+  color: rgba(0,0,0,0.8);
+  font-size: 0.9em;
+  padding-bottom: 1em;
+  margin-bottom: 1em;
+  padding-bottom: 0.5em;
+  margin-bottom: 1em;
+  padding-left: 0.25em;
+  justify-self: start;
+}
+
+@media(min-width: 1000px) {
+  .d-contents.d-contents-float {
+    height: 0;
+    grid-column-start: 1;
+    grid-column-end: 4;
+    justify-self: center;
+    padding-right: 3em;
+    padding-left: 2em;
+  }
+}
+
+.d-contents nav h3 {
+  font-size: 18px;
+  margin-top: 0;
+  margin-bottom: 1em;
+}
+
+.d-contents li {
+  list-style-type: none
+}
+
+.d-contents nav > ul {
+  padding-left: 0;
+}
+
+.d-contents ul {
+  padding-left: 1em
+}
+
+.d-contents nav ul li {
+  margin-top: 0.6em;
+  margin-bottom: 0.2em;
+}
+
+.d-contents nav a {
+  font-size: 13px;
+  border-bottom: none;
+  text-decoration: none
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.d-contents nav a:hover {
+  text-decoration: underline solid rgba(0, 0, 0, 0.6)
+}
+
+.d-contents nav > ul > li > a {
+  font-weight: 600;
+}
+
+.d-contents nav > ul > li > ul {
+  font-weight: inherit;
+}
+
+.d-contents nav > ul > li > ul > li {
+  margin-top: 0.2em;
+}
+
+
+.d-contents nav ul {
+  margin-top: 0;
+  margin-bottom: 0.25em;
+}
+
+.d-article-with-toc h2:nth-child(2) {
+  margin-top: 0;
+}
+
+
+/* Figure */
+
+.figure {
+  position: relative;
+  margin-bottom: 2.5em;
+  margin-top: 1.5em;
+}
+
+.figure img {
+  width: 100%;
+}
+
+.figure .caption {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 12px;
+  line-height: 1.5em;
+}
+
+.figure img.external {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+.figure .caption a {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.figure .caption b,
+.figure .caption strong, {
+  font-weight: 600;
+  color: rgba(0, 0, 0, 1.0);
+}
+
+/* Citations */
+
+d-article .citation {
+  color: inherit;
+  cursor: inherit;
+}
+
+div.hanging-indent{
+  margin-left: 1em; text-indent: -1em;
+}
+
+/* Citation hover box */
+
+.tippy-box[data-theme~=light-border] {
+  background-color: rgba(250, 250, 250, 0.95);
+}
+
+.tippy-content > p {
+  margin-bottom: 0;
+  padding: 2px;
+}
+
+
+/* Tweak 1000px media break to show more text */
+
+@media(min-width: 1000px) {
+  .base-grid,
+  distill-header,
+  d-title,
+  d-abstract,
+  d-article,
+  d-appendix,
+  distill-appendix,
+  d-byline,
+  d-footnote-list,
+  d-citation-list,
+  distill-footer {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start] 80px [middle-start] 50px [text-start kicker-end] 65px 65px 65px 65px 65px 65px 65px 65px [text-end gutter-start] 65px [middle-end] 65px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 16px;
+  }
+
+  .grid {
+    grid-column-gap: 16px;
+  }
+
+  d-article {
+    font-size: 1.06rem;
+    line-height: 1.7em;
+  }
+  figure .caption, .figure .caption, figure figcaption {
+    font-size: 13px;
+  }
+}
+
+@media(min-width: 1180px) {
+  .base-grid,
+  distill-header,
+  d-title,
+  d-abstract,
+  d-article,
+  d-appendix,
+  distill-appendix,
+  d-byline,
+  d-footnote-list,
+  d-citation-list,
+  distill-footer {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 32px;
+  }
+
+  .grid {
+    grid-column-gap: 32px;
+  }
+}
+
+
+/* Get the citation styles for the appendix (not auto-injected on render since
+   we do our own rendering of the citation appendix) */
+
+d-appendix .citation-appendix,
+.d-appendix .citation-appendix {
+  font-size: 11px;
+  line-height: 15px;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  padding-left: 18px;
+  border: 1px solid rgba(0,0,0,0.1);
+  background: rgba(0, 0, 0, 0.02);
+  padding: 10px 18px;
+  border-radius: 3px;
+  color: rgba(150, 150, 150, 1);
+  overflow: hidden;
+  margin-top: -12px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* Include appendix styles here so they can be overridden */
+
+d-appendix {
+  contain: layout style;
+  font-size: 0.8em;
+  line-height: 1.7em;
+  margin-top: 60px;
+  margin-bottom: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  color: rgba(0,0,0,0.5);
+  padding-top: 60px;
+  padding-bottom: 48px;
+}
+
+d-appendix h3 {
+  grid-column: page-start / text-start;
+  font-size: 15px;
+  font-weight: 500;
+  margin-top: 1em;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.65);
+}
+
+d-appendix h3 + * {
+  margin-top: 1em;
+}
+
+d-appendix ol {
+  padding: 0 0 0 15px;
+}
+
+@media (min-width: 768px) {
+  d-appendix ol {
+    padding: 0 0 0 30px;
+    margin-left: -30px;
+  }
+}
+
+d-appendix li {
+  margin-bottom: 1em;
+}
+
+d-appendix a {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+d-appendix > * {
+  grid-column: text;
+}
+
+d-appendix > d-footnote-list,
+d-appendix > d-citation-list,
+d-appendix > distill-appendix {
+  grid-column: screen;
+}
+
+/* Include footnote styles here so they can be overridden */
+
+d-footnote-list {
+  contain: layout style;
+}
+
+d-footnote-list > * {
+  grid-column: text;
+}
+
+d-footnote-list a.footnote-backlink {
+  color: rgba(0,0,0,0.3);
+  padding-left: 0.5em;
+}
+
+
+
+/* Anchor.js */
+
+.anchorjs-link {
+  /*transition: all .25s linear; */
+  text-decoration: none;
+  border-bottom: none;
+}
+*:hover > .anchorjs-link {
+  margin-left: -1.125em !important;
+  text-decoration: none;
+  border-bottom: none;
+}
+
+/* Social footer */
+
+.social_footer {
+  margin-top: 30px;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.67);
+}
+
+.disqus-comments {
+  margin-right: 30px;
+}
+
+.disqus-comment-count {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+}
+
+#disqus_thread {
+  margin-top: 30px;
+}
+
+.article-sharing a {
+  border-bottom: none;
+  margin-right: 8px;
+}
+
+.article-sharing a:hover {
+  border-bottom: none;
+}
+
+.sidebar-section.subscribe {
+  font-size: 12px;
+  line-height: 1.6em;
+}
+
+.subscribe p {
+  margin-bottom: 0.5em;
+}
+
+
+.article-footer .subscribe {
+  font-size: 15px;
+  margin-top: 45px;
+}
+
+
+.sidebar-section.custom {
+  font-size: 12px;
+  line-height: 1.6em;
+}
+
+.custom p {
+  margin-bottom: 0.5em;
+}
+
+/* Styles for listing layout (hide title) */
+.layout-listing d-title, .layout-listing .d-title {
+  display: none;
+}
+
+/* Styles for posts lists (not auto-injected) */
+
+
+.posts-with-sidebar {
+  padding-left: 45px;
+  padding-right: 45px;
+}
+
+.posts-list .description h2,
+.posts-list .description p {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+}
+
+.posts-list .description h2 {
+  font-weight: 700;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.posts-list h2.post-tag {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  padding-bottom: 12px;
+}
+.posts-list {
+  margin-top: 60px;
+  margin-bottom: 24px;
+}
+
+.posts-list .post-preview {
+  text-decoration: none;
+  overflow: hidden;
+  display: block;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 24px 0;
+}
+
+.post-preview-last {
+  border-bottom: none !important;
+}
+
+.posts-list .posts-list-caption {
+  grid-column: screen;
+  font-weight: 400;
+}
+
+.posts-list .post-preview h2 {
+  margin: 0 0 6px 0;
+  line-height: 1.2em;
+  font-style: normal;
+  font-size: 24px;
+}
+
+.posts-list .post-preview p {
+  margin: 0 0 12px 0;
+  line-height: 1.4em;
+  font-size: 16px;
+}
+
+.posts-list .post-preview .thumbnail {
+  box-sizing: border-box;
+  margin-bottom: 24px;
+  position: relative;
+  max-width: 500px;
+}
+.posts-list .post-preview img {
+  width: 100%;
+  display: block;
+}
+
+.posts-list .metadata {
+  font-size: 12px;
+  line-height: 1.4em;
+  margin-bottom: 18px;
+}
+
+.posts-list .metadata > * {
+  display: inline-block;
+}
+
+.posts-list .metadata .publishedDate {
+  margin-right: 2em;
+}
+
+.posts-list .metadata .dt-authors {
+  display: block;
+  margin-top: 0.3em;
+  margin-right: 2em;
+}
+
+.posts-list .dt-tags {
+  display: block;
+  line-height: 1em;
+}
+
+.posts-list .dt-tags .dt-tag {
+  display: inline-block;
+  color: rgba(0,0,0,0.6);
+  padding: 0.3em 0.4em;
+  margin-right: 0.2em;
+  margin-bottom: 0.4em;
+  font-size: 60%;
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 3px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.posts-list img {
+  opacity: 1;
+}
+
+.posts-list img[data-src] {
+  opacity: 0;
+}
+
+.posts-more {
+  clear: both;
+}
+
+
+.posts-sidebar {
+  font-size: 16px;
+}
+
+.posts-sidebar h3 {
+  font-size: 16px;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.sidebar-section {
+  margin-bottom: 30px;
+}
+
+.categories ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.categories li {
+  color: rgba(0, 0, 0, 0.8);
+  margin-bottom: 0;
+}
+
+.categories li>a {
+  border-bottom: none;
+}
+
+.categories li>a:hover {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+}
+
+.categories .active {
+  font-weight: 600;
+}
+
+.categories .category-count {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+
+@media(min-width: 768px) {
+  .posts-list .post-preview h2 {
+    font-size: 26px;
+  }
+  .posts-list .post-preview .thumbnail {
+    float: right;
+    width: 30%;
+    margin-bottom: 0;
+  }
+  .posts-list .post-preview .description {
+    float: left;
+    width: 45%;
+  }
+  .posts-list .post-preview .metadata {
+    float: left;
+    width: 20%;
+    margin-top: 8px;
+  }
+  .posts-list .post-preview p {
+    margin: 0 0 12px 0;
+    line-height: 1.5em;
+    font-size: 16px;
+  }
+  .posts-with-sidebar .posts-list {
+    float: left;
+    width: 75%;
+  }
+  .posts-with-sidebar .posts-sidebar {
+    float: right;
+    width: 20%;
+    margin-top: 60px;
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+}
+
+
+/* Improve display for browsers without grid (IE/Edge <= 15) */
+
+.downlevel {
+  line-height: 1.6em;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  margin: 0;
+}
+
+.downlevel .d-title {
+  padding-top: 6rem;
+  padding-bottom: 1.5rem;
+}
+
+.downlevel .d-title h1 {
+  font-size: 50px;
+  font-weight: 700;
+  line-height: 1.1em;
+  margin: 0 0 0.5rem;
+}
+
+.downlevel .d-title p {
+  font-weight: 300;
+  font-size: 1.2rem;
+  line-height: 1.55em;
+  margin-top: 0;
+}
+
+.downlevel .d-byline {
+  padding-top: 0.8em;
+  padding-bottom: 0.8em;
+  font-size: 0.8rem;
+  line-height: 1.8em;
+}
+
+.downlevel .section-separator {
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.downlevel .d-article {
+  font-size: 1.06rem;
+  line-height: 1.7em;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+}
+
+
+.downlevel .d-appendix {
+  padding-left: 0;
+  padding-right: 0;
+  max-width: none;
+  font-size: 0.8em;
+  line-height: 1.7em;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.5);
+  padding-top: 40px;
+  padding-bottom: 48px;
+}
+
+.downlevel .footnotes ol {
+  padding-left: 13px;
+}
+
+.downlevel .base-grid,
+.downlevel .distill-header,
+.downlevel .d-title,
+.downlevel .d-abstract,
+.downlevel .d-article,
+.downlevel .d-appendix,
+.downlevel .distill-appendix,
+.downlevel .d-byline,
+.downlevel .d-footnote-list,
+.downlevel .d-citation-list,
+.downlevel .distill-footer,
+.downlevel .appendix-bottom,
+.downlevel .posts-container {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+@media(min-width: 768px) {
+  .downlevel .base-grid,
+  .downlevel .distill-header,
+  .downlevel .d-title,
+  .downlevel .d-abstract,
+  .downlevel .d-article,
+  .downlevel .d-appendix,
+  .downlevel .distill-appendix,
+  .downlevel .d-byline,
+  .downlevel .d-footnote-list,
+  .downlevel .d-citation-list,
+  .downlevel .distill-footer,
+  .downlevel .appendix-bottom,
+  .downlevel .posts-container {
+  padding-left: 150px;
+  padding-right: 150px;
+  max-width: 900px;
+}
+}
+
+.downlevel pre code {
+  display: block;
+  border-left: 2px solid rgba(0, 0, 0, .1);
+  padding: 0 0 0 20px;
+  font-size: 14px;
+}
+
+.downlevel code, .downlevel pre {
+  color: black;
+  background: none;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+.downlevel .posts-list .post-preview {
+  color: inherit;
+}
+
+
+
+</style>
+
+<script type="application/javascript">
+
+function is_downlevel_browser() {
+  if (bowser.isUnsupportedBrowser({ msie: "12", msedge: "16"},
+                                 window.navigator.userAgent)) {
+    return true;
+  } else {
+    return window.load_distill_framework === undefined;
+  }
+}
+
+// show body when load is complete
+function on_load_complete() {
+
+  // add anchors
+  if (window.anchors) {
+    window.anchors.options.placement = 'left';
+    window.anchors.add('d-article > h2, d-article > h3, d-article > h4, d-article > h5');
+  }
+
+
+  // set body to visible
+  document.body.style.visibility = 'visible';
+
+  // force redraw for leaflet widgets
+  if (window.HTMLWidgets) {
+    var maps = window.HTMLWidgets.findAll(".leaflet");
+    $.each(maps, function(i, el) {
+      var map = this.getMap();
+      map.invalidateSize();
+      map.eachLayer(function(layer) {
+        if (layer instanceof L.TileLayer)
+          layer.redraw();
+      });
+    });
+  }
+
+  // trigger 'shown' so htmlwidgets resize
+  $('d-article').trigger('shown');
+}
+
+function init_distill() {
+
+  init_common();
+
+  // create front matter
+  var front_matter = $('<d-front-matter></d-front-matter>');
+  $('#distill-front-matter').wrap(front_matter);
+
+  // create d-title
+  $('.d-title').changeElementType('d-title');
+
+  // create d-byline
+  var byline = $('<d-byline></d-byline>');
+  $('.d-byline').replaceWith(byline);
+
+  // create d-article
+  var article = $('<d-article></d-article>');
+  $('.d-article').wrap(article).children().unwrap();
+
+  // move posts container into article
+  $('.posts-container').appendTo($('d-article'));
+
+  // create d-appendix
+  $('.d-appendix').changeElementType('d-appendix');
+
+  // flag indicating that we have appendix items
+  var appendix = $('.appendix-bottom').children('h3').length > 0;
+
+  // replace footnotes with <d-footnote>
+  $('.footnote-ref').each(function(i, val) {
+    appendix = true;
+    var href = $(this).attr('href');
+    var id = href.replace('#', '');
+    var fn = $('#' + id);
+    var fn_p = $('#' + id + '>p');
+    fn_p.find('.footnote-back').remove();
+    var text = fn_p.html();
+    var dtfn = $('<d-footnote></d-footnote>');
+    dtfn.html(text);
+    $(this).replaceWith(dtfn);
+  });
+  // remove footnotes
+  $('.footnotes').remove();
+
+  // move refs into #references-listing
+  $('#references-listing').replaceWith($('#refs'));
+
+  $('h1.appendix, h2.appendix').each(function(i, val) {
+    $(this).changeElementType('h3');
+  });
+  $('h3.appendix').each(function(i, val) {
+    var id = $(this).attr('id');
+    $('.d-contents a[href="#' + id + '"]').parent().remove();
+    appendix = true;
+    $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
+  });
+
+  // show d-appendix if we have appendix content
+  $("d-appendix").css('display', appendix ? 'grid' : 'none');
+
+  // localize layout chunks to just output
+  $('.layout-chunk').each(function(i, val) {
+
+    // capture layout
+    var layout = $(this).attr('data-layout');
+
+    // apply layout to markdown level block elements
+    var elements = $(this).children().not('details, div.sourceCode, pre, script');
+    elements.each(function(i, el) {
+      var layout_div = $('<div class="' + layout + '"></div>');
+      if (layout_div.hasClass('shaded')) {
+        var shaded_content = $('<div class="shaded-content"></div>');
+        $(this).wrap(shaded_content);
+        $(this).parent().wrap(layout_div);
+      } else {
+        $(this).wrap(layout_div);
+      }
+    });
+
+
+    // unwrap the layout-chunk div
+    $(this).children().unwrap();
+  });
+
+  // remove code block used to force  highlighting css
+  $('.distill-force-highlighting-css').parent().remove();
+
+  // remove empty line numbers inserted by pandoc when using a
+  // custom syntax highlighting theme
+  $('code.sourceCode a:empty').remove();
+
+  // load distill framework
+  load_distill_framework();
+
+  // wait for window.distillRunlevel == 4 to do post processing
+  function distill_post_process() {
+
+    if (!window.distillRunlevel || window.distillRunlevel < 4)
+      return;
+
+    // hide author/affiliations entirely if we have no authors
+    var front_matter = JSON.parse($("#distill-front-matter").html());
+    var have_authors = front_matter.authors && front_matter.authors.length > 0;
+    if (!have_authors)
+      $('d-byline').addClass('hidden');
+
+    // article with toc class
+    $('.d-contents').parent().addClass('d-article-with-toc');
+
+    // strip links that point to #
+    $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
+
+    // add orcid ids
+    $('.authors-affiliations').find('.author').each(function(i, el) {
+      var orcid_id = front_matter.authors[i].orcidID;
+      if (orcid_id) {
+        var a = $('<a></a>');
+        a.attr('href', 'https://orcid.org/' + orcid_id);
+        var img = $('<img></img>');
+        img.addClass('orcid-id');
+        img.attr('alt', 'ORCID ID');
+        img.attr('src','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==');
+        a.append(img);
+        $(this).append(a);
+      }
+    });
+
+    // hide elements of author/affiliations grid that have no value
+    function hide_byline_column(caption) {
+      $('d-byline').find('h3:contains("' + caption + '")').parent().css('visibility', 'hidden');
+    }
+
+    // affiliations
+    var have_affiliations = false;
+    for (var i = 0; i<front_matter.authors.length; ++i) {
+      var author = front_matter.authors[i];
+      if (author.affiliation !== "&nbsp;") {
+        have_affiliations = true;
+        break;
+      }
+    }
+    if (!have_affiliations)
+      $('d-byline').find('h3:contains("Affiliations")').css('visibility', 'hidden');
+
+    // published date
+    if (!front_matter.publishedDate)
+      hide_byline_column("Published");
+
+    // document object identifier
+    var doi = $('d-byline').find('h3:contains("DOI")');
+    var doi_p = doi.next().empty();
+    if (!front_matter.doi) {
+      // if we have a citation and valid citationText then link to that
+      if ($('#citation').length > 0 && front_matter.citationText) {
+        doi.html('Citation');
+        $('<a href="#citation"></a>')
+          .text(front_matter.citationText)
+          .appendTo(doi_p);
+      } else {
+        hide_byline_column("DOI");
+      }
+    } else {
+      $('<a></a>')
+         .attr('href', "https://doi.org/" + front_matter.doi)
+         .html(front_matter.doi)
+         .appendTo(doi_p);
+    }
+
+     // change plural form of authors/affiliations
+    if (front_matter.authors.length === 1) {
+      var grid = $('.authors-affiliations');
+      grid.children('h3:contains("Authors")').text('Author');
+      grid.children('h3:contains("Affiliations")').text('Affiliation');
+    }
+
+    // remove d-appendix and d-footnote-list local styles
+    $('d-appendix > style:first-child').remove();
+    $('d-footnote-list > style:first-child').remove();
+
+    // move appendix-bottom entries to the bottom
+    $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
+    $('.appendix-bottom').remove();
+
+    // hoverable references
+    $('span.citation[data-cites]').each(function() {
+      var refHtml = $('#ref-' + $(this).attr('data-cites')).html();
+      window.tippy(this, {
+        allowHTML: true,
+        content: refHtml,
+        maxWidth: 500,
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'light-border',
+        placement: 'bottom-start'
+      });
+    });
+
+    // clear polling timer
+    clearInterval(tid);
+
+    // show body now that everything is ready
+    on_load_complete();
+  }
+
+  var tid = setInterval(distill_post_process, 50);
+  distill_post_process();
+
+}
+
+function init_downlevel() {
+
+  init_common();
+
+   // insert hr after d-title
+  $('.d-title').after($('<hr class="section-separator"/>'));
+
+  // check if we have authors
+  var front_matter = JSON.parse($("#distill-front-matter").html());
+  var have_authors = front_matter.authors && front_matter.authors.length > 0;
+
+  // manage byline/border
+  if (!have_authors)
+    $('.d-byline').remove();
+  $('.d-byline').after($('<hr class="section-separator"/>'));
+  $('.d-byline a').remove();
+
+  // remove toc
+  $('.d-contents').remove();
+
+  // move appendix elements
+  $('h1.appendix, h2.appendix').each(function(i, val) {
+    $(this).changeElementType('h3');
+  });
+  $('h3.appendix').each(function(i, val) {
+    $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('.d-appendix'));
+  });
+
+
+  // inject headers into references and footnotes
+  var refs_header = $('<h3></h3>');
+  refs_header.text('References');
+  $('#refs').prepend(refs_header);
+
+  var footnotes_header = $('<h3></h3');
+  footnotes_header.text('Footnotes');
+  $('.footnotes').children('hr').first().replaceWith(footnotes_header);
+
+  // move appendix-bottom entries to the bottom
+  $('.appendix-bottom').appendTo('.d-appendix').children().unwrap();
+  $('.appendix-bottom').remove();
+
+  // remove appendix if it's empty
+  if ($('.d-appendix').children().length === 0)
+    $('.d-appendix').remove();
+
+  // prepend separator above appendix
+  $('.d-appendix').before($('<hr class="section-separator" style="clear: both"/>'));
+
+  // trim code
+  $('pre>code').each(function(i, val) {
+    $(this).html($.trim($(this).html()));
+  });
+
+  // move posts-container right before article
+  $('.posts-container').insertBefore($('.d-article'));
+
+  $('body').addClass('downlevel');
+
+  on_load_complete();
+}
+
+
+function init_common() {
+
+  // jquery plugin to change element types
+  (function($) {
+    $.fn.changeElementType = function(newType) {
+      var attrs = {};
+
+      $.each(this[0].attributes, function(idx, attr) {
+        attrs[attr.nodeName] = attr.nodeValue;
+      });
+
+      this.replaceWith(function() {
+        return $("<" + newType + "/>", attrs).append($(this).contents());
+      });
+    };
+  })(jQuery);
+
+  // prevent underline for linked images
+  $('a > img').parent().css({'border-bottom' : 'none'});
+
+  // mark non-body figures created by knitr chunks as 100% width
+  $('.layout-chunk').each(function(i, val) {
+    var figures = $(this).find('img, .html-widget');
+    if ($(this).attr('data-layout') !== "l-body") {
+      figures.css('width', '100%');
+    } else {
+      figures.css('max-width', '100%');
+      figures.filter("[width]").each(function(i, val) {
+        var fig = $(this);
+        fig.css('width', fig.attr('width') + 'px');
+      });
+
+    }
+  });
+
+  // auto-append index.html to post-preview links in file: protocol
+  // and in rstudio ide preview
+  $('.post-preview').each(function(i, val) {
+    if (window.location.protocol === "file:")
+      $(this).attr('href', $(this).attr('href') + "index.html");
+  });
+
+  // get rid of index.html references in header
+  if (window.location.protocol !== "file:") {
+    $('.distill-site-header a[href]').each(function(i,val) {
+      $(this).attr('href', $(this).attr('href').replace("index.html", "./"));
+    });
+  }
+
+  // add class to pandoc style tables
+  $('tr.header').parent('thead').parent('table').addClass('pandoc-table');
+  $('.kable-table').children('table').addClass('pandoc-table');
+
+  // add figcaption style to table captions
+  $('caption').parent('table').addClass("figcaption");
+
+  // initialize posts list
+  if (window.init_posts_list)
+    window.init_posts_list();
+
+  // implmement disqus comment link
+  $('.disqus-comment-count').click(function() {
+    window.headroom_prevent_pin = true;
+    $('#disqus_thread').toggleClass('hidden');
+    if (!$('#disqus_thread').hasClass('hidden')) {
+      var offset = $(this).offset();
+      $(window).resize();
+      $('html, body').animate({
+        scrollTop: offset.top - 35
+      });
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  if (is_downlevel_browser())
+    init_downlevel();
+  else
+    window.addEventListener('WebComponentsReady', init_distill);
+});
+
+</script>
+
+<!--/radix_placeholder_distill-->
+  <script src="../../site_libs/header-attrs/header-attrs.js"></script>
+  <script src="../../site_libs/kePrint/kePrint.js"></script>
+  <link href="../../site_libs/lightable/lightable.css" rel="stylesheet" />
+  <script src="../../site_libs/jquery/jquery.min.js"></script>
+  <script src="../../site_libs/popper/popper.min.js"></script>
+  <link href="../../site_libs/tippy/tippy.css" rel="stylesheet" />
+  <link href="../../site_libs/tippy/tippy-light-border.css" rel="stylesheet" />
+  <script src="../../site_libs/tippy/tippy.umd.min.js"></script>
+  <script src="../../site_libs/anchor/anchor.min.js"></script>
+  <script src="../../site_libs/bowser/bowser.min.js"></script>
+  <script src="../../site_libs/webcomponents/webcomponents.js"></script>
+  <script src="../../site_libs/distill/template.v2.js"></script>
+  <!--radix_placeholder_site_in_header-->
+<!--/radix_placeholder_site_in_header-->
+
+
+</head>
+
+<body>
+
+<!--radix_placeholder_front_matter-->
+
+<script id="distill-front-matter" type="text/json">
+{"title":"Text Analytics 101","description":"Finding the \"gold\" within the text","authors":[{"author":"Jasper Lok","authorURL":{},"affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2021-12-02T00:00:00.000+08:00","citationText":"Lok, 2021"}
+</script>
+
+<!--/radix_placeholder_front_matter-->
+<!--radix_placeholder_navigation_before_body-->
+<header class="header header--fixed" role="banner">
+<nav class="distill-site-nav distill-site-header">
+<div class="nav-left">
+<a href="../../index.html" class="title">When Actuarial Science Collides with Data Science</a>
+<input id="distill-search" class="nav-search hidden" type="text" placeholder="Search..."/>
+</div>
+<div class="nav-right">
+<a href="../../index.html">Home</a>
+<a href="../../about.html">About</a>
+<a href="../../past_proj.html">Past Projects &amp; Talks</a>
+<a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
+</div>
+</nav>
+</header>
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="d-title">
+<h1>Text Analytics 101</h1>
+<!--radix_placeholder_categories-->
+<div class="dt-tags">
+  <a href="../../index.html#category:Text_Analytics" class="dt-tag">Text Analytics</a>
+</div>
+<!--/radix_placeholder_categories-->
+<p><p>Finding the “gold” within the text</p></p>
+</div>
+
+<div class="d-byline">
+  Jasper Lok true 
+  
+<br/>12-02-2021
+</div>
+
+<div class="d-article">
+<div class="d-contents d-contents-float">
+<nav class="l-text toc figcaption" id="TOC">
+<h3>Contents</h3>
+<ul>
+<li><a href="#text-analytics">Text Analytics</a></li>
+<li><a href="#potential-opportunities-in-text-analytics">Potential Opportunities in Text Analytics</a></li>
+<li><a href="#text-pre-processing">Text pre-processing</a>
+<ul>
+<li><a href="#import-of-raw-text-and-formating">Import of Raw Text and Formating</a>
+<ul>
+<li><a href="#removing-unwanted-characters-eg.-special-characters-and-symbols">Removing unwanted characters (eg. special characters and symbols)</a></li>
+<li><a href="#misspelling">Misspelling</a></li>
+</ul></li>
+<li><a href="#converting-into-lowercases">Converting into lowercases</a></li>
+<li><a href="#tokenization">Tokenization</a></li>
+<li><a href="#stopwords">Stopwords</a></li>
+<li><a href="#part-of-speech-tagging">Part of Speech Tagging</a></li>
+<li><a href="#stemming-lemmatization">Stemming &amp; lemmatization</a></li>
+</ul></li>
+<li><a href="#feature-engineering-techniques-for-text-analytics">Feature engineering techniques for text analytics</a>
+<ul>
+<li><a href="#bag-of-words-bow">Bag of words (BoW)</a></li>
+<li><a href="#term-frequency-inverse-document-frequency">Term frequency &amp; inverse document frequency</a></li>
+<li><a href="#word-embedding">Word embedding</a></li>
+</ul></li>
+<li><a href="#how-different-r-packages-work-together">How different R packages work together</a></li>
+<li><a href="#demonstration">Demonstration</a>
+<ul>
+<li><a href="#setup-the-environment">Setup the environment</a></li>
+<li><a href="#import-data">Import data</a></li>
+<li><a href="#clean-text">Clean text</a>
+<ul>
+<li><a href="#convert-to-lower-letters">Convert to lower letters</a></li>
+<li><a href="#remove-stopwords-unwanted-characters">Remove stopwords &amp; unwanted characters</a></li>
+<li><a href="#replace-words">Replace words</a></li>
+<li><a href="#stemming">Stemming</a></li>
+<li><a href="#lemmatization">Lemmatization</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#conclusion">Conclusion</a></li>
+</ul>
+</nav>
+</div>
+<p>In this post, I will be exploring different text analytics.</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="image/typewriter.jpg" width="90%" /></p>
+</div>
+<p><em>Photo by Leah Kelley from Pexels</em></p>
+<p>This is one of the topics I wanted to explore while I was pursuing my master degree.</p>
+<p>While I was reading through the different materials on text analytics and natural language processing, I realized the more I read about text analytics, the more I realized it is not as simple as what I initially imagined so.</p>
+<figure>
+<img src="https://media.giphy.com/media/SACoDGYTvVNhZYNb5a/giphy.gif" alt="Mind blown" /><figcaption aria-hidden="true">Mind blown</figcaption>
+</figure>
+<p><em>Taken from giphy</em></p>
+<p>Hence I have spent quite a fair bit of time reading through different books and articles to understand more about text analytics.</p>
+<p>Hope this would help you in understanding more about text analytics.</p>
+<h1 id="text-analytics">Text Analytics</h1>
+<p>As the name suggested, this technique focuses on cleaning and drawing insights out from the text data. Often, the text data are not ‘structured’ in a way that could be easily understood by the models/algorithms.</p>
+<p>Once the texts are processed, further techniques can be applied to the pre-processed text data to draw insights or even build a machine learning model on the text data.</p>
+<p>Let’s look at how text analytics could add value to the insurance business.</p>
+<h1 id="potential-opportunities-in-text-analytics">Potential Opportunities in Text Analytics</h1>
+<p>There are articles on how text data can be used in the insurance context. <span class="citation" data-cites="Rodriguez2019">(<a href="#ref-Rodriguez2019" role="doc-biblioref">Rodriguez 2019</a>)</span> discussed the benefits unstructured data (eg. text data) could provide, including how text data could assist insurers in improving decision making and so on.</p>
+<p>The author also provided an example of how insurers could tap onto text data is how the various text analytics and natural language processing can be used to process the volume of the texts, assisting claim adjusters potentially to make a more accurate decision with a shorter amount of time spent.</p>
+<p>Apart from using text data in claim analysis, <span class="citation" data-cites="Duncan2016">(<a href="#ref-Duncan2016" role="doc-biblioref">Duncan 2016</a>)</span> also listed some of the financial service use cases where text analytics is being applied.</p>
+<p>While the actual usage of text data in insurance day-to-day operation is somewhat lower than expected, the insurers seem to remain optimistic on the potential of using text data <span class="citation" data-cites="Mcgrath2021">(<a href="#ref-Mcgrath2021" role="doc-biblioref">McGrath 2021</a>)</span>.</p>
+<h1 id="text-pre-processing">Text pre-processing</h1>
+<p><span class="citation" data-cites="Ferrario2020">(<a href="#ref-Ferrario2020" role="doc-biblioref">Ferrario and Naegelin 2020</a>)</span> The typical steps of text pre-processing include the following:</p>
+<ul>
+<li><p>Import of raw text and formatting</p></li>
+<li><p>Conversion of text to lowercase</p></li>
+<li><p>Tokenization, i.e. split of all strings of text into tokens</p></li>
+<li><p>Stopwords removal</p></li>
+<li><p>Part-of-speech (POS) tagging of tokenized text</p></li>
+<li><p>Stemming or lemmatization</p></li>
+</ul>
+<p>Let’s look at what does each step does in text analytics.</p>
+<h2 id="import-of-raw-text-and-formating">Import of Raw Text and Formating</h2>
+<p>After importing the text into the environment, it is common that we will perform some levels of “text cleaning” to remove or correct some of the texts before performing the analysis.</p>
+<p>Following are some considerations while performing “text cleaning”:</p>
+<h3 id="removing-unwanted-characters-eg.-special-characters-and-symbols">Removing unwanted characters (eg. special characters and symbols)</h3>
+<p>Within the text, we might have characters we wanted to remove from the analysis. For example, we might want to exclude the reference link from the text analysis.</p>
+<p>Most of the modern packages would have included some pre-defined functions to remove the unwanted characters within the text data. For example, below is the function to tokenize text data in <code>quanteda</code> package:</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="image/quanteda.png" width="90%" /></p>
+</div>
+<p><em>Screen shot from <a href="https://quanteda.io/reference/tokens.html"><code>quanteda</code> documentation</a> page</em></p>
+<p>As shown in the screenshot above, there are options for the users to indicate whether they would like to remove the necessary text within the data.</p>
+<p>However, there are scenarios where the pre-defined functions are unable to “clean” the data. For example, we might have the same words but spell differently within the data (eg. color vs colour).</p>
+<p>This is where regular expression (a.k.a. regex) comes in very handy. Regex can be used to extract, remove, replace or even find a string within the text.</p>
+<p>Personally, I find <a href="https://regexr.com/">this regex website</a> is very helpful. It helps me to visualize whether the regex is working (i.e. finding the relevant words) as intended.</p>
+<p>Below are some of the common syntax in regex:</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="image/regex_cheatsheet.png" width="90%" /></p>
+</div>
+<p><em>Extracted from <a href="https://regexr.com/">this website</a></em></p>
+<p>This is another <a href="https://docs.python.org/3/library/re.html">great resource</a> of the different regex syntax to extract the necessary info from the text.</p>
+<h3 id="misspelling">Misspelling</h3>
+<p>Often the texts are unlikely to be clean. Misspelling of words is one of the common problems to tackle when analyzing texts.</p>
+<p>To fix the misspelling, there are two approaches. One is to use existing packages to fix the typos.</p>
+<p>Another method is to create a manual listing of typos. The downside of such an approach is that we are limited to correct words we have observed within the dataset.</p>
+<h2 id="converting-into-lowercases">Converting into lowercases</h2>
+<p>As the usual text analytics algorithm is case-sensitive, the same words with different lower cases and/or upper cases will be treated as different words. For example, “TEXT,” “Text” and “text” will be treated as different words.</p>
+<p>Hence, the usual approach is to convert all the words into lowercase so that the algorithm would not treat the same words as different words due to the difference in letter cases.</p>
+<h2 id="tokenization">Tokenization</h2>
+<p>Tokenization is the process of chopping character streams into tokens <span class="citation" data-cites="Manning2008">(<a href="#ref-Manning2008" role="doc-biblioref">Manning, Raghavan, and Schütze 2009</a>)</span>. The authors also further explained that a token is an instance of a sequence of characters in some particular document that is grouped as a useful semantic unit for processing.</p>
+<p>In general, tokenization consists of following two types and their relevant descriptions <span class="citation" data-cites="Sarkar2016">(<a href="#ref-Sarkar2016" role="doc-biblioref">Sarkar 2016</a>)</span>:</p>
+<div class="layout-chunk" data-layout="l-body">
+<table class=" lightable-paper lightable-hover" style="font-size: 15px; font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Types
+</th>
+<th style="text-align:left;">
+Descriptions
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Sentence Tokenization
+</td>
+<td style="text-align:left;">
+Split text into sentences
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Word Tokenization
+</td>
+<td style="text-align:left;">
+Split text into words
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="stopwords">Stopwords</h2>
+<p>Stopwords are the most common words in any natural language <span class="citation" data-cites="Singh2019">(<a href="#ref-Singh2019" role="doc-biblioref">Singh 2019</a>)</span>. Often these stopwords do not carry much value in helping us in understanding the context of the documents/articles.</p>
+<p>In general, the stopwords can be categorized into following groups <span class="citation" data-cites="Hvitfeldt2021">(<a href="#ref-Hvitfeldt2021" role="doc-biblioref">Hvitfeldt and Silge 2021a</a>)</span>:</p>
+<div class="layout-chunk" data-layout="l-body">
+<table class=" lightable-paper lightable-hover" style="font-size: 15px; font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Grouping
+</th>
+<th style="text-align:left;">
+Descriptions
+</th>
+<th style="text-align:left;">
+Recommendation
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Global stopwords
+</td>
+<td style="text-align:left;">
+Words that are almost always low in meaning in a given language
+</td>
+<td style="text-align:left;">
+Use pre-made stopwords lists to remove them
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Subject-specific stopwords
+</td>
+<td style="text-align:left;">
+Words that are uninformative for a given a subject area
+</td>
+<td style="text-align:left;">
+May improve performance if we have domain expertise to create a good list to remove them. But likely require us to create the list manually as these words are generally not considered as stopwords in a given language
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Document-level stopwords
+</td>
+<td style="text-align:left;">
+Words that do not provide any or much information for a given document
+</td>
+<td style="text-align:left;">
+Difficult to classify and would not be worth the effort to identify
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>While the common approach is to remove stopwords while performing text analytics, removal stopwords would not be appropriate in some of the NLP tasks such as machine translation and so on.</p>
+<p>This is because the meaning of the text could change when we remove stopwords. <span class="citation" data-cites="Schumacher2019">(<a href="#ref-Schumacher2019" role="doc-biblioref">Schumacher 2019</a>)</span> provided an example to illustrate a scenario where removing stopwords is a bad idea.</p>
+<p>Considering the following example by <span class="citation" data-cites="Schumacher2019">(<a href="#ref-Schumacher2019" role="doc-biblioref">Schumacher 2019</a>)</span>:</p>
+<p>Original statement: Stacy gave her doll to the puppy</p>
+<p>After removing stopwords: Stacy gave doll puppy</p>
+<p>Without the stopwords, we are unable to interpret whether the doll was given to the puppy or the puppy was given to the doll. Hence, this illustrates that the importance of stopwords in this context.</p>
+<h2 id="part-of-speech-tagging">Part of Speech Tagging</h2>
+<p>Parts of speech (POS) are specific lexical categories to which words are assigned based on their syntactic context and role <span class="citation" data-cites="Sarkar2016">(<a href="#ref-Sarkar2016" role="doc-biblioref">Sarkar 2016</a>)</span>. In other words, the words in the text are being analyzed and tagged to a role in a sentence (eg. is the word a noun or a verb).</p>
+<p>Some of the natural language processing tasks (eg. named entity recognition) would require the tokens to be tagged first.</p>
+<h2 id="stemming-lemmatization">Stemming &amp; lemmatization</h2>
+<p>Often within the texts, there might be similar words. For example, the text might contain words like ‘cave’ and ‘caves,’ where both of the words are referring to the same thing.</p>
+<p>Hence, it would be better for us to “clean” the words before performing any analysis. Otherwise, the algorithm will be treating these words as separate words. <span class="citation" data-cites="Hvitfeldt2021Stem">(<a href="#ref-Hvitfeldt2021Stem" role="doc-biblioref">Hvitfeldt and Silge 2021b</a>)</span> The author also mentioned through this process, we reduce the sparsity of the test data, which can be very helpful when training models.</p>
+<p>Following is the comparison of stemming and lemmatization <span class="citation" data-cites="bitext2021">(<a href="#ref-bitext2021" role="doc-biblioref">bitext 2021</a>)</span>:</p>
+<div class="layout-chunk" data-layout="l-body">
+<table class=" lightable-paper lightable-hover" style="font-size: 15px; font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Category
+</th>
+<th style="text-align:left;">
+Descriptions
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Stemming
+</td>
+<td style="text-align:left;">
+<ul>
+<li><p>Rule-based</p></li>
+<li><p>Work by cutting off the end or the beginning of the words</p>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<p>Lemmatization</p>
+</td>
+<td style="text-align:left;">
+<ul>
+<li>Linguistics-based</li>
+</ul></li>
+<li><p>Normalize the words based on language structure and how words are used in their context</p></li>
+<li><p>Take the morphological analysis of the words into considerations</p></li>
+<li><p>Generally, longer runtime than stemming</p>
+</td>
+</tr>
+</tbody>
+</table></li>
+</ul>
+</div>
+<h1 id="feature-engineering-techniques-for-text-analytics">Feature engineering techniques for text analytics</h1>
+<p>As the machine learning algorithm is unable to work with the text directly, different feature engineering techniques can be used in preparing the text data before passing it into the algorithm.</p>
+<p>Following are some of the feature engineering techniques for text analytics:</p>
+<h2 id="bag-of-words-bow">Bag of words (BoW)</h2>
+<p><span class="citation" data-cites="Brownlee2019">(<a href="#ref-Brownlee2019" role="doc-biblioref">Brownlee 2019</a>)</span> explained that BoW is a representation of text that describes the occurrence of words within a document. Essentially we will split the texts into either individual text or a group of texts.</p>
+<p>Also, this technique is called ‘bag of words’ as under this technique, the sequence of the words does not matter.</p>
+<h2 id="term-frequency-inverse-document-frequency">Term frequency &amp; inverse document frequency</h2>
+<p><span class="citation" data-cites="Stecanella2019">(<a href="#ref-Stecanella2019" role="doc-biblioref">Stecanella 2019</a>)</span> explained that term frequency is calculating the frequency of the words in a document, where the inverse document frequency is measuring how common or a rare a word is in the entire document.</p>
+<p>Alternatively, the inverse document frequency can be thought as a “penalty function” imposed on term frequency to measure how frequently the words appear in the document. If the words appear more frequently in the document, the higher the “penalty” is.</p>
+<h2 id="word-embedding">Word embedding</h2>
+<p>This is a more advanced technique, which I won’t be covering in this post. For more info, please refer to <a href="https://www.tensorflow.org/text/guide/word_embeddings">this link</a> or <a href="https://smltar.com/embeddings.html">this link</a>.</p>
+<h1 id="how-different-r-packages-work-together">How different R packages work together</h1>
+<p>In R, many packages work with text analytics and natural language processing.</p>
+<p>In this post, I will be exploring the different R packages mentioned in the Text Mining with R book.</p>
+<p>Following are how the different text analytics R packages could work together <span class="citation" data-cites="Silge2021">(<a href="#ref-Silge2021" role="doc-biblioref">Silge and Robinson 2021</a>)</span>:</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="image/textanalytics_with_r.png" width="90%" /></p>
+</div>
+<p><em>Screenshot from Chapter 6 of Text Mining with R book</em></p>
+<h1 id="demonstration">Demonstration</h1>
+<p>In this demonstration, I will be using a dataset from Microsoft. This dataset contains a publicly available set of question and sentence pairs.</p>
+<p>This is the link to download the <a href="https://www.microsoft.com/en-us/download/details.aspx?id=52419">dataset</a>.</p>
+<h2 id="setup-the-environment">Setup the environment</h2>
+<p>First, I will set up the environment by calling all the packages I need for the analysis later.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>packages</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'tidyverse'</span>, <span class='st'>'readr'</span>, <span class='st'>'skimr'</span>, <span class='st'>'tidytext'</span>, <span class='st'>'quanteda'</span>, 
+              <span class='st'>'ggwordcloud'</span>, <span class='st'>'lexicon'</span><span class='op'>)</span>
+
+<span class='kw'>for</span><span class='op'>(</span><span class='va'>p</span> <span class='kw'>in</span> <span class='va'>packages</span><span class='op'>)</span><span class='op'>{</span>
+  <span class='kw'>if</span><span class='op'>(</span><span class='op'>!</span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span> <span class='op'>(</span><span class='va'>p</span>, character.only <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span><span class='op'>)</span><span class='op'>{</span>
+    <span class='fu'><a href='https://rdrr.io/r/utils/install.packages.html'>install.packages</a></span><span class='op'>(</span><span class='va'>p</span><span class='op'>)</span>
+  <span class='op'>}</span>
+  <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>p</span>, character.only <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>
+<span class='op'>}</span>
+</code></pre>
+</div>
+</div>
+<h2 id="import-data">Import data</h2>
+<p>Next, I will import the dataset into the environment.</p>
+<p>Note that the dataset is in tsv format, hence I will be using <code>read_tsv</code> function to import the dataset into the environment.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'>read_tsv</span><span class='op'>(</span><span class='st'>"data/WikiQA.tsv"</span>,
+               quote <span class='op'>=</span> <span class='st'>"\t"</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<h2 id="clean-text">Clean text</h2>
+<p>Once the data is imported into the environment, <code>tokens</code> function is used to tokenize the words.</p>
+<p>Meanwhile, I have also indicated that punctuation, numbers, symbols, and separators should be removed when the words are being tokenized.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df</span> <span class='op'>&lt;-</span> <span class='fu'>tokens</span><span class='op'>(</span><span class='va'>df</span><span class='op'>$</span><span class='va'>Sentence</span>, 
+                  remove_punct <span class='op'>=</span> <span class='cn'>TRUE</span>,
+                  remove_numbers <span class='op'>=</span> <span class='cn'>TRUE</span>,
+                  remove_symbols <span class='op'>=</span> <span class='cn'>TRUE</span>,
+                  remove_separators <span class='op'>=</span> <span class='cn'>TRUE</span>,
+                  split_hyphens <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<h3 id="convert-to-lower-letters">Convert to lower letters</h3>
+<p>As discussed in the post earlier, the common text cleaning also involves converting the token into the lower case as the algorithm is case-sensitive. Same words with the different cases will be treated as different words.</p>
+<p>Hence, I have used <code>tokens_tolower</code> function to convert all the words to lower case.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df</span> <span class='op'>&lt;-</span> <span class='va'>text_df</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>tokens_tolower</span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<h3 id="remove-stopwords-unwanted-characters">Remove stopwords &amp; unwanted characters</h3>
+<p>Next, I will remove the stopwords from the text data. To do so, I wrap <code>stopwords</code> function with <code>tokens_remove</code> function.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df</span> <span class='op'>&lt;-</span> <span class='va'>text_df</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>tokens_remove</span><span class='op'>(</span><span class='fu'>stopwords</span><span class='op'>(</span>language <span class='op'>=</span> <span class='st'>"en"</span>, source <span class='op'>=</span> <span class='st'>"smart"</span><span class='op'>)</span>, padding <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>Note that I have also indicated that <code>padding</code> to be false so that the function will not replace the stopwords with an empty string. In other words, the stopwords will be dropped from the dataset.</p>
+<p>Also, note that I have indicated the source for stopwords should be <code>smart</code>, where the list of stopwords within this source can be found under <a href="http://www.ai.mit.edu/projects/jmlr/papers/volume5/lewis04a/a11-smart-stop-list/english.stop">this link</a>.</p>
+<p>There are also other sources for the English stopwords. Following are the different sources that are currently supported:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>stopwords</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/stopwords/man/stopwords_getsources.html'>stopwords_getsources</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>[1] &quot;snowball&quot;      &quot;stopwords-iso&quot; &quot;misc&quot;          &quot;smart&quot;        
+[5] &quot;marimo&quot;        &quot;ancient&quot;       &quot;nltk&quot;          &quot;perseus&quot;      </code></pre>
+</div>
+<p>Next, I will perform a quick check on the cleaned text data. I have noted a few issues within the text data.</p>
+<p>For example, there are some digits with alphabets as shown below.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df</span><span class='op'>[[</span><span class='fl'>51</span><span class='op'>]</span><span class='op'>]</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span>
+</code></pre>
+</div>
+<pre><code>[1] &quot;21a&quot;</code></pre>
+</div>
+<p>If we were to go back to the original text data, we will realize this string seems to be the robot version number, which may not add much value/insight to the analysis later.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>df</span><span class='op'>$</span><span class='va'>Sentence</span><span class='op'>[</span><span class='fl'>51</span><span class='op'>]</span>
+</code></pre>
+</div>
+<pre><code>[1] &quot;The Beretta 21A Bobcat is a small pocket-sized semi-automatic pistol designed by Beretta in Italy.&quot;</code></pre>
+</div>
+<p>Hence, I will remove this string from the text data. To do so, I have used <code>tokens_replace</code> and the relevant regex to remove the words.</p>
+<p>Note that in the regex, I have indicated that I want to find all the matching strings that start with a digit and continue by letters. The asterisk means there are 0 or more letters after the digits.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df</span> <span class='op'>&lt;-</span> <span class='va'>text_df</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>tokens_replace</span><span class='op'>(</span>pattern <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"\\d\\w*"</span><span class='op'>)</span>, replacement <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>""</span><span class='op'>)</span>, valuetype <span class='op'>=</span> <span class='st'>"regex"</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>Below is another issue found in the text data. Somehow there is a hyphen before some of the words.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>df</span><span class='op'>$</span><span class='va'>Sentence</span><span class='op'>[</span><span class='fl'>2735</span><span class='op'>]</span>
+</code></pre>
+</div>
+<pre><code>[1] &quot;The bar was a staple of the Chicago -based company for some seven decades.&quot;</code></pre>
+</div>
+<p>Therefore, during the tokenization, I have indicated that the words should be split by hyphens. According to the <a href="https://quanteda.io/reference/tokens.html">documentation</a>, hyphens will be treated as a separate token.</p>
+<p>To remove the hyphens after splitting the words, I will use regex to remove the hyphens.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df</span> <span class='op'>&lt;-</span> <span class='va'>text_df</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>tokens_replace</span><span class='op'>(</span>pattern <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"\\-"</span><span class='op'>)</span>, replacement <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>""</span><span class='op'>)</span>, valuetype <span class='op'>=</span> <span class='st'>"regex"</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>These are common issues one might face when cleaning the text data. Therefore, it is always a good practice to double the output to check whether the output is as expected based on the pre-processing steps indicated earlier.</p>
+<h3 id="replace-words">Replace words</h3>
+<p>Some words may have different spelling. Without any cleaning, the algorithm will these words with a different spelling as different words.</p>
+<p>For example, within the text data, I noted that “united state” can also be spelled as “united st” or “u.s” although both of the words refer to “united state.”</p>
+<p>Therefore, I will list the words to be replaced within <code>tokens_replace</code> function.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df</span> <span class='op'>&lt;-</span> <span class='va'>text_df</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>tokens_replace</span><span class='op'>(</span>pattern <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"united st"</span>, <span class='st'>"u.s"</span><span class='op'>)</span>, 
+                 replacement <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"united state"</span>, <span class='st'>"united state"</span><span class='op'>)</span>, 
+                 valuetype <span class='op'>=</span> <span class='st'>"fixed"</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>Note that as I am finding the exact match of the words, hence the <code>valuetype</code> should be indicated as “fixed.”</p>
+<h3 id="stemming">Stemming</h3>
+<p>As mentioned in the earlier section, often we may perform some further cleaning to find the root words, otherwise the algorithm will treat these words as separate words by themselves.</p>
+<p>For example, if I were to extract the text that contains “tree,” we will note that “trees” are just the plural form of “tree” and we may not want to differentiate “tree” and “trees” in the analysis.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>temp</span> <span class='op'>&lt;-</span> <span class='va'>text_df</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dfm</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>tidy</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>term</span> <span class='op'>!=</span> <span class='st'>""</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='fu'>str_detect</span><span class='op'>(</span><span class='va'>term</span>, <span class='st'>"\\b(tree)"</span><span class='op'>)</span> <span class='op'>==</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+
+<span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span><span class='op'>(</span><span class='va'>temp</span><span class='op'>$</span><span class='va'>term</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>[1] &quot;tree&quot;      &quot;trees&quot;     &quot;treedome&quot;  &quot;treener&quot;   &quot;treehouse&quot;</code></pre>
+</div>
+<p>Therefore, one of the common approaches is to use stemming to find the root words.</p>
+<p>To do so, I will use <code>tokens_wordstem</code> function to perform stemming on the words.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df_stem</span> <span class='op'>&lt;-</span> <span class='va'>text_df</span> <span class='op'>%&gt;%</span>
+   <span class='fu'>tokens_wordstem</span><span class='op'>(</span>language <span class='op'>=</span> <span class='st'>"english"</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>Next, I will <code>dfm</code> function to create a document-feature matrix so that later I could use <code>tidy</code> function to convert the object to conform to tidy data format.</p>
+<p>Also, I will trim away all the term frequency that is lesser than 8.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df_stem_1</span> <span class='op'>&lt;-</span> <span class='va'>text_df_stem</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dfm</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dfm_trim</span><span class='op'>(</span>min_termfreq <span class='op'>=</span> <span class='fl'>8</span><span class='op'>)</span>
+
+<span class='va'>text_df_stem_1_tidy</span> <span class='op'>&lt;-</span> <span class='fu'>tidy</span><span class='op'>(</span><span class='va'>text_df_stem_1</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>term</span> <span class='op'>!=</span> <span class='st'>""</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>Once the object is converted into tidy data format, we could use our usual dplyr to transform for the necessary analysis.</p>
+<p>I will perform a frequency count on each word in the entire dataset, regardless of which documents they appear on.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df_stem_1_tidy_count</span> <span class='op'>&lt;-</span> <span class='va'>text_df_stem_1_tidy</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>term</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>summarise</span><span class='op'>(</span>tot_count <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>count</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>I will further sort the count descending. From the results, we can see that some of the words appear more frequently than the rest.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df_stem_1_tidy_count</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>arrange</span><span class='op'>(</span><span class='fu'>desc</span><span class='op'>(</span><span class='va'>tot_count</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code># A tibble: 5,398 x 2
+   term     tot_count
+   &lt;chr&gt;        &lt;dbl&gt;
+ 1 state         2810
+ 2 unit          2076
+ 3 includ        1416
+ 4 american      1305
+ 5 world         1267
+ 6 year          1154
+ 7 nation        1047
+ 8 war           1037
+ 9 time           928
+10 film           862
+# ... with 5,388 more rows</code></pre>
+</div>
+<p>However, it would be quite difficult to compare the frequency count of different words by looking at the data above.</p>
+<p>Hence, I will pass the output into <code>ggwordcloud</code> to visualize the output in wordcloud. As there are too many unique words within the data and the graph will be cluttered with different words if we were to visualize all the words in wordcloud, the graph will be cluttered with words.</p>
+<p>Hence, to overcome this, I will filer out those words with less than 350 count to lower the number of word counts.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df_stem_1_tidy_count</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>tot_count</span> <span class='op'>&gt;=</span> <span class='fl'>350</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>label <span class='op'>=</span> <span class='va'>term</span>, size <span class='op'>=</span> <span class='va'>tot_count</span>, color <span class='op'>=</span> <span class='va'>tot_count</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_text_wordcloud_area</span><span class='op'>(</span>shape  <span class='op'>=</span> <span class='st'>"circle"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>scale_size_area</span><span class='op'>(</span>max_size <span class='op'>=</span> <span class='fl'>18</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>theme_minimal</span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="text-analytics_files/figure-html5/unnamed-chunk-25-1.png" width="100%" /></p>
+</div>
+<p>While this stemming could assist us in finding the root words, but it also fails to identify the root words for some of the words.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df_stem_1_tidy_count</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='fu'>str_detect</span><span class='op'>(</span><span class='va'>term</span>, <span class='st'>"(young)"</span><span class='op'>)</span> <span class='op'>==</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code># A tibble: 3 x 2
+  term     tot_count
+  &lt;chr&gt;        &lt;dbl&gt;
+1 young          123
+2 younger         24
+3 youngest        24</code></pre>
+</div>
+<h3 id="lemmatization">Lemmatization</h3>
+<p>Recall in the earlier section, I have discussed that lemmatization is another method to find the root words.</p>
+<p>This method is linguistics-based and could potentially overcome the issue we face when using stemming.</p>
+<p>To perform lemmatization, I have referred to this <a href="https://stackoverflow.com/questions/62329148/lemmatize-using-quanteda">Stack Overflow post</a> on how to perform lemmatization by using <code>tokens_replace</code> function.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df_lemma</span> <span class='op'>&lt;-</span> <span class='va'>text_df</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>tokens_replace</span><span class='op'>(</span>pattern <span class='op'>=</span> <span class='fu'>lexicon</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/lexicon/man/hash_lemmas.html'>hash_lemmas</a></span><span class='op'>$</span><span class='va'>token</span>, 
+                 replacement <span class='op'>=</span> <span class='fu'>lexicon</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/lexicon/man/hash_lemmas.html'>hash_lemmas</a></span><span class='op'>$</span><span class='va'>lemma</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>Once the lemmatization is done, let’s us check whether lemmatization has successfully finding the root words of “younger” and “youngest.”</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df_lemma</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dfm</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>tidy</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>term</span> <span class='op'>!=</span> <span class='st'>""</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='fu'>str_detect</span><span class='op'>(</span><span class='va'>term</span>, <span class='st'>"(young)"</span><span class='op'>)</span> <span class='op'>==</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>term</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>tally</span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code># A tibble: 3 x 2
+  term           n
+  &lt;chr&gt;      &lt;int&gt;
+1 young        163
+2 young&#39;s        4
+3 youngblood     1</code></pre>
+</div>
+<p>At least now the original words for “younger” &amp; “youngest” are found through lemmatization. The rest of the words which contain “young” are unlikely to have “young” as the root word.</p>
+<p>Next, I will follow similar steps to create the document-feature matrix and convert the data into tidy data format.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df_lemma_1</span> <span class='op'>&lt;-</span> <span class='va'>text_df_lemma</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dfm</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dfm_trim</span><span class='op'>(</span>min_termfreq <span class='op'>=</span> <span class='fl'>8</span><span class='op'>)</span>
+
+<span class='va'>text_df_lemma_1_tidy</span> <span class='op'>&lt;-</span> <span class='fu'>tidy</span><span class='op'>(</span><span class='va'>text_df_lemma_1</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>term</span> <span class='op'>!=</span> <span class='st'>""</span><span class='op'>)</span>
+
+<span class='va'>text_df_lemma_1_tidy_count</span> <span class='op'>&lt;-</span> <span class='va'>text_df_lemma_1_tidy</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>term</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>summarise</span><span class='op'>(</span>tot_count <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>count</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>Once the frequency count is computed, I will pass the data into word cloud function to visualize the words in the word cloud format.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df_lemma_1_tidy_count</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>tot_count</span> <span class='op'>&gt;=</span> <span class='fl'>350</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>label <span class='op'>=</span> <span class='va'>term</span>, size <span class='op'>=</span> <span class='va'>tot_count</span>, color <span class='op'>=</span> <span class='va'>tot_count</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_text_wordcloud_area</span><span class='op'>(</span>shape  <span class='op'>=</span> <span class='st'>"square"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>scale_size_area</span><span class='op'>(</span>max_size <span class='op'>=</span> <span class='fl'>18</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>theme_minimal</span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="text-analytics_files/figure-html5/unnamed-chunk-30-1.png" width="90%" /></p>
+</div>
+<h1 id="conclusion">Conclusion</h1>
+<p>That’s all for the day!</p>
+<p>Thanks for reading the post until the end.</p>
+<p>Feel free to contact me through <a href="mailto:jasper.jh.lok@gmail.com">email</a> or <a href="https://www.linkedin.com/in/jasper-l-13426232/">LinkedIn</a> if you have any suggestions on future topics to share.</p>
+<p>Till next time, happy learning!</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="image/bookshelf.jpg" width="90%" /></p>
+</div>
+<p><em>Photo by Emre Can Acer from Pexels</em></p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="ref-bitext2021" class="csl-entry" role="doc-biblioentry">
+bitext. 2021. <span>“What Is the Difference Between Stemming and Lemmatization?”</span> <a href="https://blog.bitext.com/what-is-the-difference-between-stemming-and-lemmatization/">https://blog.bitext.com/what-is-the-difference-between-stemming-and-lemmatization/</a>.
+</div>
+<div id="ref-Brownlee2019" class="csl-entry" role="doc-biblioentry">
+Brownlee, Jason. 2019. <span>“A Gentle Introduction to the Bag-of-Words Model.”</span> <a href="https://machinelearningmastery.com/gentle-introduction-bag-words-model/">https://machinelearningmastery.com/gentle-introduction-bag-words-model/</a>.
+</div>
+<div id="ref-Duncan2016" class="csl-entry" role="doc-biblioentry">
+Duncan, Alan D. 2016. <span>“Is It Time for Text Analytics in Financial Services?”</span> <a href="https://blogs.gartner.com/alan-duncan/2016/09/21/time-come-text-analytics-financial-services/">https://blogs.gartner.com/alan-duncan/2016/09/21/time-come-text-analytics-financial-services/</a>.
+</div>
+<div id="ref-Ferrario2020" class="csl-entry" role="doc-biblioentry">
+Ferrario, Andrea, and Mara Naegelin. 2020. <span>“The Art of Natural Language Processing: Classical, Modern and Contemporary Approaches to Text Document Classification.”</span> <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3547887">https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3547887</a>.
+</div>
+<div id="ref-Hvitfeldt2021" class="csl-entry" role="doc-biblioentry">
+Hvitfeldt, Emil, and Julia Silge. 2021a. <span>“Chapter 3 Stop Words.”</span> <a href="https://smltar.com/stopwords.html#stopwordssummary">https://smltar.com/stopwords.html#stopwordssummary</a>.
+</div>
+<div id="ref-Hvitfeldt2021Stem" class="csl-entry" role="doc-biblioentry">
+———. 2021b. <span>“Chapter 4 Stemming.”</span> <a href="https://smltar.com/stemming.html#how-to-stem-text-in-r">https://smltar.com/stemming.html#how-to-stem-text-in-r</a>.
+</div>
+<div id="ref-Manning2008" class="csl-entry" role="doc-biblioentry">
+Manning, Christopher D., Prabhakar Raghavan, and Hinrich Schütze. 2009. <em>An Introduction to Information Retrieval</em>. Cambridge University Press.
+</div>
+<div id="ref-Mcgrath2021" class="csl-entry" role="doc-biblioentry">
+McGrath, Liam. 2021. <span>“Mining for Gold: Text Analytics in Insurance: Natural Language Processing Provides Insurers Tools for Using Text Data.”</span> <a href="https://www.willistowerswatson.com/en-US/Insights/2021/03/mining-for-gold-text-analytics-in-insurance">https://www.willistowerswatson.com/en-US/Insights/2021/03/mining-for-gold-text-analytics-in-insurance</a>.
+</div>
+<div id="ref-Rodriguez2019" class="csl-entry" role="doc-biblioentry">
+Rodriguez, Jason. 2019. <span>“Decoding the Hidden Value of Unstructured Text Data.”</span> <a href="https://www.willistowerswatson.com/en-US/Insights/2019/02/decoding-the-hidden-value-of-unstructured-text-data">https://www.willistowerswatson.com/en-US/Insights/2019/02/decoding-the-hidden-value-of-unstructured-text-data</a>.
+</div>
+<div id="ref-Sarkar2016" class="csl-entry" role="doc-biblioentry">
+Sarkar, Dipanjan. 2016. <em>Text Analytics with Python a Practical Real- World Approach to Gaining Actionable Insights from Your Datal</em>. Apress.
+</div>
+<div id="ref-Schumacher2019" class="csl-entry" role="doc-biblioentry">
+Schumacher, Alex. 2019. <span>“When (Not) to Lemmatize or Remove Stop Words in Text Preprocessing.”</span> <a href="https://opendatagroup.github.io/data%20science/2019/03/21/preprocessing-text.html">https://opendatagroup.github.io/data%20science/2019/03/21/preprocessing-text.html</a>.
+</div>
+<div id="ref-Silge2021" class="csl-entry" role="doc-biblioentry">
+Silge, Julia, and David Robinson. 2021. <span>“6 Topic Modeling.”</span> <a href="https://www.tidytextmining.com/topicmodeling.html">https://www.tidytextmining.com/topicmodeling.html</a>.
+</div>
+<div id="ref-Singh2019" class="csl-entry" role="doc-biblioentry">
+Singh, Shubham. 2019. <span>“NLP Essentials: Removing Stopwords and Performing Text Normalization Using NLTK and spaCy in Python.”</span> <a href="https://www.analyticsvidhya.com/blog/2019/08/how-to-remove-stopwords-text-normalization-nltk-spacy-gensim-python/">https://www.analyticsvidhya.com/blog/2019/08/how-to-remove-stopwords-text-normalization-nltk-spacy-gensim-python/</a>.
+</div>
+<div id="ref-Stecanella2019" class="csl-entry" role="doc-biblioentry">
+Stecanella, Bruno. 2019. <span>“Understanding TF-ID: A Simple Introduction.”</span> <a href="https://monkeylearn.com/blog/what-is-tf-idf/">https://monkeylearn.com/blog/what-is-tf-idf/</a>.
+</div>
+</div>
+<!--radix_placeholder_article_footer-->
+<!--/radix_placeholder_article_footer-->
+</div>
+
+<div class="d-appendix">
+</div>
+
+
+<!--radix_placeholder_site_after_body-->
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_appendices-->
+<div class="appendix-bottom">
+  <h3 id="references">References</h3>
+  <div id="references-listing"></div>
+</div>
+<!--/radix_placeholder_appendices-->
+<!--radix_placeholder_navigation_after_body-->
+<!--/radix_placeholder_navigation_after_body-->
+
+</body>
+
+</html>
