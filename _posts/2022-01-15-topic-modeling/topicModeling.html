@@ -1,0 +1,1881 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <meta name="generator" content="distill" />
+
+  <style type="text/css">
+  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
+  body {
+    visibility: hidden;
+  }
+  </style>
+
+ <!--radix_placeholder_import_source-->
+ <!--/radix_placeholder_import_source-->
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ad0000; } /* Alert */
+code span.an { color: #5e5e5e; } /* Annotation */
+code span.at { color: #20794d; } /* Attribute */
+code span.bn { color: #ad0000; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007ba5; } /* ControlFlow */
+code span.ch { color: #20794d; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #5e5e5e; } /* Comment */
+code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+code span.dt { color: #ad0000; } /* DataType */
+code span.dv { color: #ad0000; } /* DecVal */
+code span.er { color: #ad0000; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #ad0000; } /* Float */
+code span.fu { color: #4758ab; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #5e5e5e; } /* Information */
+code span.kw { color: #007ba5; } /* Keyword */
+code span.op { color: #5e5e5e; } /* Operator */
+code span.ot { color: #007ba5; } /* Other */
+code span.pp { color: #ad0000; } /* Preprocessor */
+code span.sc { color: #20794d; } /* SpecialChar */
+code span.ss { color: #20794d; } /* SpecialString */
+code span.st { color: #20794d; } /* String */
+code span.va { color: #111111; } /* Variable */
+code span.vs { color: #20794d; } /* VerbatimString */
+code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+</style>
+
+  <!--radix_placeholder_meta_tags-->
+  <title>Topic Modeling</title>
+
+  <meta property="description" itemprop="description" content="Discovering the topics within the text data"/>
+
+
+  <!--  https://schema.org/Article -->
+  <meta property="article:published" itemprop="datePublished" content="2022-01-15"/>
+  <meta property="article:created" itemprop="dateCreated" content="2022-01-15"/>
+  <meta name="article:author" content="Jasper Lok"/>
+
+  <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
+  <meta property="og:title" content="Topic Modeling"/>
+  <meta property="og:type" content="article"/>
+  <meta property="og:description" content="Discovering the topics within the text data"/>
+  <meta property="og:locale" content="en_US"/>
+
+  <!--  https://dev.twitter.com/cards/types/summary -->
+  <meta property="twitter:card" content="summary"/>
+  <meta property="twitter:title" content="Topic Modeling"/>
+  <meta property="twitter:description" content="Discovering the topics within the text data"/>
+
+  <!--/radix_placeholder_meta_tags-->
+  
+  <meta name="citation_reference" content="citation_title=6 topic modeling;citation_publication_date=2021;citation_author=Julia Silge;citation_author=David Robinson"/>
+  <meta name="citation_reference" content="citation_title=Day 11: Topic models: ME314: Introduction to data science and machine learning;citation_publication_date=2021;citation_author=Jack Blumenau"/>
+  <meta name="citation_reference" content="citation_title=Topic modeling: An introduction;citation_publication_date=2019;citation_author=Federico Pascual"/>
+  <meta name="citation_reference" content="citation_title=Dirichlet distribution: Motivating LDA;citation_publication_date=2019;citation_author=Sue Liu"/>
+  <!--radix_placeholder_rmarkdown_metadata-->
+
+  <script type="text/json" id="radix-rmarkdown-metadata">
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","bibliography","biblio-style","link-citations","categories"]}},"value":[{"type":"character","attributes":{},"value":["Topic Modeling"]},{"type":"character","attributes":{},"value":["Discovering the topics within the text data\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Jasper Lok"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":[]}},"value":[]}]}]},{"type":"character","attributes":{},"value":["01-15-2022"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","toc_depth","self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[4]},{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["ref.bib"]},{"type":"character","attributes":{},"value":["apa"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["Text Analytics"]}]}
+  </script>
+  <!--/radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["image/books.jpg","image/lda_results.png","image/mapping_topicModeling.png","image/Notation of Topic Modeling.png","image/question mark.jpg","image/reading.jpg","image/textanalytics_with_r.png","ref.bib","topicModeling_files/anchor/anchor.min.js","topicModeling_files/bowser/bowser.min.js","topicModeling_files/distill/template.v2.js","topicModeling_files/figure-html5/unnamed-chunk-10-1.png","topicModeling_files/figure-html5/unnamed-chunk-12-1.png","topicModeling_files/figure-html5/unnamed-chunk-14-1.png","topicModeling_files/figure-html5/unnamed-chunk-16-1.png","topicModeling_files/figure-html5/unnamed-chunk-17-1.png","topicModeling_files/figure-html5/unnamed-chunk-19-1.png","topicModeling_files/figure-html5/unnamed-chunk-20-1.png","topicModeling_files/figure-html5/unnamed-chunk-21-1.png","topicModeling_files/figure-html5/unnamed-chunk-22-1.png","topicModeling_files/figure-html5/unnamed-chunk-23-1.png","topicModeling_files/figure-html5/unnamed-chunk-24-1.png","topicModeling_files/figure-html5/unnamed-chunk-26-1.png","topicModeling_files/figure-html5/unnamed-chunk-28-1.png","topicModeling_files/figure-html5/unnamed-chunk-29-1.png","topicModeling_files/figure-html5/unnamed-chunk-30-1.png","topicModeling_files/header-attrs/header-attrs.js","topicModeling_files/jquery/jquery.min.js","topicModeling_files/popper/popper.min.js","topicModeling_files/tippy/tippy-bundle.umd.min.js","topicModeling_files/tippy/tippy-light-border.css","topicModeling_files/tippy/tippy.css","topicModeling_files/tippy/tippy.umd.min.js","topicModeling_files/webcomponents/webcomponents.js"]}
+  </script>
+  <!--radix_placeholder_navigation_in_header-->
+  <!--/radix_placeholder_navigation_in_header-->
+  <!--radix_placeholder_distill-->
+
+  <style type="text/css">
+
+  body {
+    background-color: white;
+  }
+
+  .pandoc-table {
+    width: 100%;
+  }
+
+  .pandoc-table>caption {
+    margin-bottom: 10px;
+  }
+
+  .pandoc-table th:not([align]) {
+    text-align: left;
+  }
+
+  .pagedtable-footer {
+    font-size: 15px;
+  }
+
+  d-byline .byline {
+    grid-template-columns: 2fr 2fr;
+  }
+
+  d-byline .byline h3 {
+    margin-block-start: 1.5em;
+  }
+
+  d-byline .byline .authors-affiliations h3 {
+    margin-block-start: 0.5em;
+  }
+
+  .authors-affiliations .orcid-id {
+    width: 16px;
+    height:16px;
+    margin-left: 4px;
+    margin-right: 4px;
+    vertical-align: middle;
+    padding-bottom: 2px;
+  }
+
+  d-title .dt-tags {
+    margin-top: 1em;
+    grid-column: text;
+  }
+
+  .dt-tags .dt-tag {
+    text-decoration: none;
+    display: inline-block;
+    color: rgba(0,0,0,0.6);
+    padding: 0em 0.4em;
+    margin-right: 0.5em;
+    margin-bottom: 0.4em;
+    font-size: 70%;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  d-article table.gt_table td,
+  d-article table.gt_table th {
+    border-bottom: none;
+  }
+
+  .html-widget {
+    margin-bottom: 2.0em;
+  }
+
+  .l-screen-inset {
+    padding-right: 16px;
+  }
+
+  .l-screen .caption {
+    margin-left: 10px;
+  }
+
+  .shaded {
+    background: rgb(247, 247, 247);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .shaded .html-widget {
+    margin-bottom: 0;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .shaded .shaded-content {
+    background: white;
+  }
+
+  .text-output {
+    margin-top: 0;
+    line-height: 1.5em;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  d-article {
+    padding-top: 2.5rem;
+    padding-bottom: 30px;
+  }
+
+  d-appendix {
+    padding-top: 30px;
+  }
+
+  d-article>p>img {
+    width: 100%;
+  }
+
+  d-article h2 {
+    margin: 1rem 0 1.5rem 0;
+  }
+
+  d-article h3 {
+    margin-top: 1.5rem;
+  }
+
+  d-article iframe {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 2.0em;
+    width: 100%;
+  }
+
+  /* Tweak code blocks */
+
+  d-article div.sourceCode code,
+  d-article pre code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  d-article pre,
+  d-article div.sourceCode,
+  d-article div.sourceCode pre {
+    overflow: auto;
+  }
+
+  d-article div.sourceCode {
+    background-color: white;
+  }
+
+  d-article div.sourceCode pre {
+    padding-left: 10px;
+    font-size: 12px;
+    border-left: 2px solid rgba(0,0,0,0.1);
+  }
+
+  d-article pre {
+    font-size: 12px;
+    color: black;
+    background: none;
+    margin-top: 0;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+
+  d-article pre a {
+    border-bottom: none;
+  }
+
+  d-article pre a:hover {
+    border-bottom: none;
+    text-decoration: underline;
+  }
+
+  d-article details {
+    grid-column: text;
+    margin-bottom: 0.8em;
+  }
+
+  @media(min-width: 768px) {
+
+  d-article pre,
+  d-article div.sourceCode,
+  d-article div.sourceCode pre {
+    overflow: visible !important;
+  }
+
+  d-article div.sourceCode pre {
+    padding-left: 18px;
+    font-size: 14px;
+  }
+
+  d-article pre {
+    font-size: 14px;
+  }
+
+  }
+
+  figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+
+  /* CSS for d-contents */
+
+  .d-contents {
+    grid-column: text;
+    color: rgba(0,0,0,0.8);
+    font-size: 0.9em;
+    padding-bottom: 1em;
+    margin-bottom: 1em;
+    padding-bottom: 0.5em;
+    margin-bottom: 1em;
+    padding-left: 0.25em;
+    justify-self: start;
+  }
+
+  @media(min-width: 1000px) {
+    .d-contents.d-contents-float {
+      height: 0;
+      grid-column-start: 1;
+      grid-column-end: 4;
+      justify-self: center;
+      padding-right: 3em;
+      padding-left: 2em;
+    }
+  }
+
+  .d-contents nav h3 {
+    font-size: 18px;
+    margin-top: 0;
+    margin-bottom: 1em;
+  }
+
+  .d-contents li {
+    list-style-type: none
+  }
+
+  .d-contents nav > ul {
+    padding-left: 0;
+  }
+
+  .d-contents ul {
+    padding-left: 1em
+  }
+
+  .d-contents nav ul li {
+    margin-top: 0.6em;
+    margin-bottom: 0.2em;
+  }
+
+  .d-contents nav a {
+    font-size: 13px;
+    border-bottom: none;
+    text-decoration: none
+    color: rgba(0, 0, 0, 0.8);
+  }
+
+  .d-contents nav a:hover {
+    text-decoration: underline solid rgba(0, 0, 0, 0.6)
+  }
+
+  .d-contents nav > ul > li > a {
+    font-weight: 600;
+  }
+
+  .d-contents nav > ul > li > ul {
+    font-weight: inherit;
+  }
+
+  .d-contents nav > ul > li > ul > li {
+    margin-top: 0.2em;
+  }
+
+
+  .d-contents nav ul {
+    margin-top: 0;
+    margin-bottom: 0.25em;
+  }
+
+  .d-article-with-toc h2:nth-child(2) {
+    margin-top: 0;
+  }
+
+
+  /* Figure */
+
+  .figure {
+    position: relative;
+    margin-bottom: 2.5em;
+    margin-top: 1.5em;
+  }
+
+  .figure img {
+    width: 100%;
+  }
+
+  .figure .caption {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 12px;
+    line-height: 1.5em;
+  }
+
+  .figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+
+  .figure .caption a {
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  .figure .caption b,
+  .figure .caption strong, {
+    font-weight: 600;
+    color: rgba(0, 0, 0, 1.0);
+  }
+
+  /* Citations */
+
+  d-article .citation {
+    color: inherit;
+    cursor: inherit;
+  }
+
+  div.hanging-indent{
+    margin-left: 1em; text-indent: -1em;
+  }
+
+  /* Citation hover box */
+
+  .tippy-box[data-theme~=light-border] {
+    background-color: rgba(250, 250, 250, 0.95);
+  }
+
+  .tippy-content > p {
+    margin-bottom: 0;
+    padding: 2px;
+  }
+
+
+  /* Tweak 1000px media break to show more text */
+
+  @media(min-width: 1000px) {
+    .base-grid,
+    distill-header,
+    d-title,
+    d-abstract,
+    d-article,
+    d-appendix,
+    distill-appendix,
+    d-byline,
+    d-footnote-list,
+    d-citation-list,
+    distill-footer {
+      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 80px [middle-start] 50px [text-start kicker-end] 65px 65px 65px 65px 65px 65px 65px 65px [text-end gutter-start] 65px [middle-end] 65px [page-end gutter-end] 1fr [screen-end];
+      grid-column-gap: 16px;
+    }
+
+    .grid {
+      grid-column-gap: 16px;
+    }
+
+    d-article {
+      font-size: 1.06rem;
+      line-height: 1.7em;
+    }
+    figure .caption, .figure .caption, figure figcaption {
+      font-size: 13px;
+    }
+  }
+
+  @media(min-width: 1180px) {
+    .base-grid,
+    distill-header,
+    d-title,
+    d-abstract,
+    d-article,
+    d-appendix,
+    distill-appendix,
+    d-byline,
+    d-footnote-list,
+    d-citation-list,
+    distill-footer {
+      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
+      grid-column-gap: 32px;
+    }
+
+    .grid {
+      grid-column-gap: 32px;
+    }
+  }
+
+
+  /* Get the citation styles for the appendix (not auto-injected on render since
+     we do our own rendering of the citation appendix) */
+
+  d-appendix .citation-appendix,
+  .d-appendix .citation-appendix {
+    font-size: 11px;
+    line-height: 15px;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    padding-left: 18px;
+    border: 1px solid rgba(0,0,0,0.1);
+    background: rgba(0, 0, 0, 0.02);
+    padding: 10px 18px;
+    border-radius: 3px;
+    color: rgba(150, 150, 150, 1);
+    overflow: hidden;
+    margin-top: -12px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  /* Include appendix styles here so they can be overridden */
+
+  d-appendix {
+    contain: layout style;
+    font-size: 0.8em;
+    line-height: 1.7em;
+    margin-top: 60px;
+    margin-bottom: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    color: rgba(0,0,0,0.5);
+    padding-top: 60px;
+    padding-bottom: 48px;
+  }
+
+  d-appendix h3 {
+    grid-column: page-start / text-start;
+    font-size: 15px;
+    font-weight: 500;
+    margin-top: 1em;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.65);
+  }
+
+  d-appendix h3 + * {
+    margin-top: 1em;
+  }
+
+  d-appendix ol {
+    padding: 0 0 0 15px;
+  }
+
+  @media (min-width: 768px) {
+    d-appendix ol {
+      padding: 0 0 0 30px;
+      margin-left: -30px;
+    }
+  }
+
+  d-appendix li {
+    margin-bottom: 1em;
+  }
+
+  d-appendix a {
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  d-appendix > * {
+    grid-column: text;
+  }
+
+  d-appendix > d-footnote-list,
+  d-appendix > d-citation-list,
+  d-appendix > distill-appendix {
+    grid-column: screen;
+  }
+
+  /* Include footnote styles here so they can be overridden */
+
+  d-footnote-list {
+    contain: layout style;
+  }
+
+  d-footnote-list > * {
+    grid-column: text;
+  }
+
+  d-footnote-list a.footnote-backlink {
+    color: rgba(0,0,0,0.3);
+    padding-left: 0.5em;
+  }
+
+
+
+  /* Anchor.js */
+
+  .anchorjs-link {
+    /*transition: all .25s linear; */
+    text-decoration: none;
+    border-bottom: none;
+  }
+  *:hover > .anchorjs-link {
+    margin-left: -1.125em !important;
+    text-decoration: none;
+    border-bottom: none;
+  }
+
+  /* Social footer */
+
+  .social_footer {
+    margin-top: 30px;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.67);
+  }
+
+  .disqus-comments {
+    margin-right: 30px;
+  }
+
+  .disqus-comment-count {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+  }
+
+  #disqus_thread {
+    margin-top: 30px;
+  }
+
+  .article-sharing a {
+    border-bottom: none;
+    margin-right: 8px;
+  }
+
+  .article-sharing a:hover {
+    border-bottom: none;
+  }
+
+  .sidebar-section.subscribe {
+    font-size: 12px;
+    line-height: 1.6em;
+  }
+
+  .subscribe p {
+    margin-bottom: 0.5em;
+  }
+
+
+  .article-footer .subscribe {
+    font-size: 15px;
+    margin-top: 45px;
+  }
+
+
+  .sidebar-section.custom {
+    font-size: 12px;
+    line-height: 1.6em;
+  }
+
+  .custom p {
+    margin-bottom: 0.5em;
+  }
+
+  /* Styles for listing layout (hide title) */
+  .layout-listing d-title, .layout-listing .d-title {
+    display: none;
+  }
+
+  /* Styles for posts lists (not auto-injected) */
+
+
+  .posts-with-sidebar {
+    padding-left: 45px;
+    padding-right: 45px;
+  }
+
+  .posts-list .description h2,
+  .posts-list .description p {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  }
+
+  .posts-list .description h2 {
+    font-weight: 700;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .posts-list h2.post-tag {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    padding-bottom: 12px;
+  }
+  .posts-list {
+    margin-top: 60px;
+    margin-bottom: 24px;
+  }
+
+  .posts-list .post-preview {
+    text-decoration: none;
+    overflow: hidden;
+    display: block;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 24px 0;
+  }
+
+  .post-preview-last {
+    border-bottom: none !important;
+  }
+
+  .posts-list .posts-list-caption {
+    grid-column: screen;
+    font-weight: 400;
+  }
+
+  .posts-list .post-preview h2 {
+    margin: 0 0 6px 0;
+    line-height: 1.2em;
+    font-style: normal;
+    font-size: 24px;
+  }
+
+  .posts-list .post-preview p {
+    margin: 0 0 12px 0;
+    line-height: 1.4em;
+    font-size: 16px;
+  }
+
+  .posts-list .post-preview .thumbnail {
+    box-sizing: border-box;
+    margin-bottom: 24px;
+    position: relative;
+    max-width: 500px;
+  }
+  .posts-list .post-preview img {
+    width: 100%;
+    display: block;
+  }
+
+  .posts-list .metadata {
+    font-size: 12px;
+    line-height: 1.4em;
+    margin-bottom: 18px;
+  }
+
+  .posts-list .metadata > * {
+    display: inline-block;
+  }
+
+  .posts-list .metadata .publishedDate {
+    margin-right: 2em;
+  }
+
+  .posts-list .metadata .dt-authors {
+    display: block;
+    margin-top: 0.3em;
+    margin-right: 2em;
+  }
+
+  .posts-list .dt-tags {
+    display: block;
+    line-height: 1em;
+  }
+
+  .posts-list .dt-tags .dt-tag {
+    display: inline-block;
+    color: rgba(0,0,0,0.6);
+    padding: 0.3em 0.4em;
+    margin-right: 0.2em;
+    margin-bottom: 0.4em;
+    font-size: 60%;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .posts-list img {
+    opacity: 1;
+  }
+
+  .posts-list img[data-src] {
+    opacity: 0;
+  }
+
+  .posts-more {
+    clear: both;
+  }
+
+
+  .posts-sidebar {
+    font-size: 16px;
+  }
+
+  .posts-sidebar h3 {
+    font-size: 16px;
+    margin-top: 0;
+    margin-bottom: 0.5em;
+    font-weight: 400;
+    text-transform: uppercase;
+  }
+
+  .sidebar-section {
+    margin-bottom: 30px;
+  }
+
+  .categories ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .categories li {
+    color: rgba(0, 0, 0, 0.8);
+    margin-bottom: 0;
+  }
+
+  .categories li>a {
+    border-bottom: none;
+  }
+
+  .categories li>a:hover {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  }
+
+  .categories .active {
+    font-weight: 600;
+  }
+
+  .categories .category-count {
+    color: rgba(0, 0, 0, 0.4);
+  }
+
+
+  @media(min-width: 768px) {
+    .posts-list .post-preview h2 {
+      font-size: 26px;
+    }
+    .posts-list .post-preview .thumbnail {
+      float: right;
+      width: 30%;
+      margin-bottom: 0;
+    }
+    .posts-list .post-preview .description {
+      float: left;
+      width: 45%;
+    }
+    .posts-list .post-preview .metadata {
+      float: left;
+      width: 20%;
+      margin-top: 8px;
+    }
+    .posts-list .post-preview p {
+      margin: 0 0 12px 0;
+      line-height: 1.5em;
+      font-size: 16px;
+    }
+    .posts-with-sidebar .posts-list {
+      float: left;
+      width: 75%;
+    }
+    .posts-with-sidebar .posts-sidebar {
+      float: right;
+      width: 20%;
+      margin-top: 60px;
+      padding-top: 24px;
+      padding-bottom: 24px;
+    }
+  }
+
+
+  /* Improve display for browsers without grid (IE/Edge <= 15) */
+
+  .downlevel {
+    line-height: 1.6em;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+  }
+
+  .downlevel .d-title {
+    padding-top: 6rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .downlevel .d-title h1 {
+    font-size: 50px;
+    font-weight: 700;
+    line-height: 1.1em;
+    margin: 0 0 0.5rem;
+  }
+
+  .downlevel .d-title p {
+    font-weight: 300;
+    font-size: 1.2rem;
+    line-height: 1.55em;
+    margin-top: 0;
+  }
+
+  .downlevel .d-byline {
+    padding-top: 0.8em;
+    padding-bottom: 0.8em;
+    font-size: 0.8rem;
+    line-height: 1.8em;
+  }
+
+  .downlevel .section-separator {
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .downlevel .d-article {
+    font-size: 1.06rem;
+    line-height: 1.7em;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+  }
+
+
+  .downlevel .d-appendix {
+    padding-left: 0;
+    padding-right: 0;
+    max-width: none;
+    font-size: 0.8em;
+    line-height: 1.7em;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.5);
+    padding-top: 40px;
+    padding-bottom: 48px;
+  }
+
+  .downlevel .footnotes ol {
+    padding-left: 13px;
+  }
+
+  .downlevel .base-grid,
+  .downlevel .distill-header,
+  .downlevel .d-title,
+  .downlevel .d-abstract,
+  .downlevel .d-article,
+  .downlevel .d-appendix,
+  .downlevel .distill-appendix,
+  .downlevel .d-byline,
+  .downlevel .d-footnote-list,
+  .downlevel .d-citation-list,
+  .downlevel .distill-footer,
+  .downlevel .appendix-bottom,
+  .downlevel .posts-container {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  @media(min-width: 768px) {
+    .downlevel .base-grid,
+    .downlevel .distill-header,
+    .downlevel .d-title,
+    .downlevel .d-abstract,
+    .downlevel .d-article,
+    .downlevel .d-appendix,
+    .downlevel .distill-appendix,
+    .downlevel .d-byline,
+    .downlevel .d-footnote-list,
+    .downlevel .d-citation-list,
+    .downlevel .distill-footer,
+    .downlevel .appendix-bottom,
+    .downlevel .posts-container {
+    padding-left: 150px;
+    padding-right: 150px;
+    max-width: 900px;
+  }
+  }
+
+  .downlevel pre code {
+    display: block;
+    border-left: 2px solid rgba(0, 0, 0, .1);
+    padding: 0 0 0 20px;
+    font-size: 14px;
+  }
+
+  .downlevel code, .downlevel pre {
+    color: black;
+    background: none;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+
+  .downlevel .posts-list .post-preview {
+    color: inherit;
+  }
+
+
+
+  </style>
+
+  <script type="application/javascript">
+
+  function is_downlevel_browser() {
+    if (bowser.isUnsupportedBrowser({ msie: "12", msedge: "16"},
+                                   window.navigator.userAgent)) {
+      return true;
+    } else {
+      return window.load_distill_framework === undefined;
+    }
+  }
+
+  // show body when load is complete
+  function on_load_complete() {
+
+    // add anchors
+    if (window.anchors) {
+      window.anchors.options.placement = 'left';
+      window.anchors.add('d-article > h2, d-article > h3, d-article > h4, d-article > h5');
+    }
+
+
+    // set body to visible
+    document.body.style.visibility = 'visible';
+
+    // force redraw for leaflet widgets
+    if (window.HTMLWidgets) {
+      var maps = window.HTMLWidgets.findAll(".leaflet");
+      $.each(maps, function(i, el) {
+        var map = this.getMap();
+        map.invalidateSize();
+        map.eachLayer(function(layer) {
+          if (layer instanceof L.TileLayer)
+            layer.redraw();
+        });
+      });
+    }
+
+    // trigger 'shown' so htmlwidgets resize
+    $('d-article').trigger('shown');
+  }
+
+  function init_distill() {
+
+    init_common();
+
+    // create front matter
+    var front_matter = $('<d-front-matter></d-front-matter>');
+    $('#distill-front-matter').wrap(front_matter);
+
+    // create d-title
+    $('.d-title').changeElementType('d-title');
+
+    // create d-byline
+    var byline = $('<d-byline></d-byline>');
+    $('.d-byline').replaceWith(byline);
+
+    // create d-article
+    var article = $('<d-article></d-article>');
+    $('.d-article').wrap(article).children().unwrap();
+
+    // move posts container into article
+    $('.posts-container').appendTo($('d-article'));
+
+    // create d-appendix
+    $('.d-appendix').changeElementType('d-appendix');
+
+    // flag indicating that we have appendix items
+    var appendix = $('.appendix-bottom').children('h3').length > 0;
+
+    // replace footnotes with <d-footnote>
+    $('.footnote-ref').each(function(i, val) {
+      appendix = true;
+      var href = $(this).attr('href');
+      var id = href.replace('#', '');
+      var fn = $('#' + id);
+      var fn_p = $('#' + id + '>p');
+      fn_p.find('.footnote-back').remove();
+      var text = fn_p.html();
+      var dtfn = $('<d-footnote></d-footnote>');
+      dtfn.html(text);
+      $(this).replaceWith(dtfn);
+    });
+    // remove footnotes
+    $('.footnotes').remove();
+
+    // move refs into #references-listing
+    $('#references-listing').replaceWith($('#refs'));
+
+    $('h1.appendix, h2.appendix').each(function(i, val) {
+      $(this).changeElementType('h3');
+    });
+    $('h3.appendix').each(function(i, val) {
+      var id = $(this).attr('id');
+      $('.d-contents a[href="#' + id + '"]').parent().remove();
+      appendix = true;
+      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
+    });
+
+    // show d-appendix if we have appendix content
+    $("d-appendix").css('display', appendix ? 'grid' : 'none');
+
+    // localize layout chunks to just output
+    $('.layout-chunk').each(function(i, val) {
+
+      // capture layout
+      var layout = $(this).attr('data-layout');
+
+      // apply layout to markdown level block elements
+      var elements = $(this).children().not('details, div.sourceCode, pre, script');
+      elements.each(function(i, el) {
+        var layout_div = $('<div class="' + layout + '"></div>');
+        if (layout_div.hasClass('shaded')) {
+          var shaded_content = $('<div class="shaded-content"></div>');
+          $(this).wrap(shaded_content);
+          $(this).parent().wrap(layout_div);
+        } else {
+          $(this).wrap(layout_div);
+        }
+      });
+
+
+      // unwrap the layout-chunk div
+      $(this).children().unwrap();
+    });
+
+    // remove code block used to force  highlighting css
+    $('.distill-force-highlighting-css').parent().remove();
+
+    // remove empty line numbers inserted by pandoc when using a
+    // custom syntax highlighting theme
+    $('code.sourceCode a:empty').remove();
+
+    // load distill framework
+    load_distill_framework();
+
+    // wait for window.distillRunlevel == 4 to do post processing
+    function distill_post_process() {
+
+      if (!window.distillRunlevel || window.distillRunlevel < 4)
+        return;
+
+      // hide author/affiliations entirely if we have no authors
+      var front_matter = JSON.parse($("#distill-front-matter").html());
+      var have_authors = front_matter.authors && front_matter.authors.length > 0;
+      if (!have_authors)
+        $('d-byline').addClass('hidden');
+
+      // article with toc class
+      $('.d-contents').parent().addClass('d-article-with-toc');
+
+      // strip links that point to #
+      $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
+
+      // add orcid ids
+      $('.authors-affiliations').find('.author').each(function(i, el) {
+        var orcid_id = front_matter.authors[i].orcidID;
+        if (orcid_id) {
+          var a = $('<a></a>');
+          a.attr('href', 'https://orcid.org/' + orcid_id);
+          var img = $('<img></img>');
+          img.addClass('orcid-id');
+          img.attr('alt', 'ORCID ID');
+          img.attr('src','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==');
+          a.append(img);
+          $(this).append(a);
+        }
+      });
+
+      // hide elements of author/affiliations grid that have no value
+      function hide_byline_column(caption) {
+        $('d-byline').find('h3:contains("' + caption + '")').parent().css('visibility', 'hidden');
+      }
+
+      // affiliations
+      var have_affiliations = false;
+      for (var i = 0; i<front_matter.authors.length; ++i) {
+        var author = front_matter.authors[i];
+        if (author.affiliation !== "&nbsp;") {
+          have_affiliations = true;
+          break;
+        }
+      }
+      if (!have_affiliations)
+        $('d-byline').find('h3:contains("Affiliations")').css('visibility', 'hidden');
+
+      // published date
+      if (!front_matter.publishedDate)
+        hide_byline_column("Published");
+
+      // document object identifier
+      var doi = $('d-byline').find('h3:contains("DOI")');
+      var doi_p = doi.next().empty();
+      if (!front_matter.doi) {
+        // if we have a citation and valid citationText then link to that
+        if ($('#citation').length > 0 && front_matter.citationText) {
+          doi.html('Citation');
+          $('<a href="#citation"></a>')
+            .text(front_matter.citationText)
+            .appendTo(doi_p);
+        } else {
+          hide_byline_column("DOI");
+        }
+      } else {
+        $('<a></a>')
+           .attr('href', "https://doi.org/" + front_matter.doi)
+           .html(front_matter.doi)
+           .appendTo(doi_p);
+      }
+
+       // change plural form of authors/affiliations
+      if (front_matter.authors.length === 1) {
+        var grid = $('.authors-affiliations');
+        grid.children('h3:contains("Authors")').text('Author');
+        grid.children('h3:contains("Affiliations")').text('Affiliation');
+      }
+
+      // remove d-appendix and d-footnote-list local styles
+      $('d-appendix > style:first-child').remove();
+      $('d-footnote-list > style:first-child').remove();
+
+      // move appendix-bottom entries to the bottom
+      $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
+      $('.appendix-bottom').remove();
+
+      // hoverable references
+      $('span.citation[data-cites]').each(function() {
+        var refHtml = $('#ref-' + $(this).attr('data-cites')).html();
+        window.tippy(this, {
+          allowHTML: true,
+          content: refHtml,
+          maxWidth: 500,
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'light-border',
+          placement: 'bottom-start'
+        });
+      });
+
+      // clear polling timer
+      clearInterval(tid);
+
+      // show body now that everything is ready
+      on_load_complete();
+    }
+
+    var tid = setInterval(distill_post_process, 50);
+    distill_post_process();
+
+  }
+
+  function init_downlevel() {
+
+    init_common();
+
+     // insert hr after d-title
+    $('.d-title').after($('<hr class="section-separator"/>'));
+
+    // check if we have authors
+    var front_matter = JSON.parse($("#distill-front-matter").html());
+    var have_authors = front_matter.authors && front_matter.authors.length > 0;
+
+    // manage byline/border
+    if (!have_authors)
+      $('.d-byline').remove();
+    $('.d-byline').after($('<hr class="section-separator"/>'));
+    $('.d-byline a').remove();
+
+    // remove toc
+    $('.d-contents').remove();
+
+    // move appendix elements
+    $('h1.appendix, h2.appendix').each(function(i, val) {
+      $(this).changeElementType('h3');
+    });
+    $('h3.appendix').each(function(i, val) {
+      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('.d-appendix'));
+    });
+
+
+    // inject headers into references and footnotes
+    var refs_header = $('<h3></h3>');
+    refs_header.text('References');
+    $('#refs').prepend(refs_header);
+
+    var footnotes_header = $('<h3></h3');
+    footnotes_header.text('Footnotes');
+    $('.footnotes').children('hr').first().replaceWith(footnotes_header);
+
+    // move appendix-bottom entries to the bottom
+    $('.appendix-bottom').appendTo('.d-appendix').children().unwrap();
+    $('.appendix-bottom').remove();
+
+    // remove appendix if it's empty
+    if ($('.d-appendix').children().length === 0)
+      $('.d-appendix').remove();
+
+    // prepend separator above appendix
+    $('.d-appendix').before($('<hr class="section-separator" style="clear: both"/>'));
+
+    // trim code
+    $('pre>code').each(function(i, val) {
+      $(this).html($.trim($(this).html()));
+    });
+
+    // move posts-container right before article
+    $('.posts-container').insertBefore($('.d-article'));
+
+    $('body').addClass('downlevel');
+
+    on_load_complete();
+  }
+
+
+  function init_common() {
+
+    // jquery plugin to change element types
+    (function($) {
+      $.fn.changeElementType = function(newType) {
+        var attrs = {};
+
+        $.each(this[0].attributes, function(idx, attr) {
+          attrs[attr.nodeName] = attr.nodeValue;
+        });
+
+        this.replaceWith(function() {
+          return $("<" + newType + "/>", attrs).append($(this).contents());
+        });
+      };
+    })(jQuery);
+
+    // prevent underline for linked images
+    $('a > img').parent().css({'border-bottom' : 'none'});
+
+    // mark non-body figures created by knitr chunks as 100% width
+    $('.layout-chunk').each(function(i, val) {
+      var figures = $(this).find('img, .html-widget');
+      if ($(this).attr('data-layout') !== "l-body") {
+        figures.css('width', '100%');
+      } else {
+        figures.css('max-width', '100%');
+        figures.filter("[width]").each(function(i, val) {
+          var fig = $(this);
+          fig.css('width', fig.attr('width') + 'px');
+        });
+
+      }
+    });
+
+    // auto-append index.html to post-preview links in file: protocol
+    // and in rstudio ide preview
+    $('.post-preview').each(function(i, val) {
+      if (window.location.protocol === "file:")
+        $(this).attr('href', $(this).attr('href') + "index.html");
+    });
+
+    // get rid of index.html references in header
+    if (window.location.protocol !== "file:") {
+      $('.distill-site-header a[href]').each(function(i,val) {
+        $(this).attr('href', $(this).attr('href').replace("index.html", "./"));
+      });
+    }
+
+    // add class to pandoc style tables
+    $('tr.header').parent('thead').parent('table').addClass('pandoc-table');
+    $('.kable-table').children('table').addClass('pandoc-table');
+
+    // add figcaption style to table captions
+    $('caption').parent('table').addClass("figcaption");
+
+    // initialize posts list
+    if (window.init_posts_list)
+      window.init_posts_list();
+
+    // implmement disqus comment link
+    $('.disqus-comment-count').click(function() {
+      window.headroom_prevent_pin = true;
+      $('#disqus_thread').toggleClass('hidden');
+      if (!$('#disqus_thread').hasClass('hidden')) {
+        var offset = $(this).offset();
+        $(window).resize();
+        $('html, body').animate({
+          scrollTop: offset.top - 35
+        });
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    if (is_downlevel_browser())
+      init_downlevel();
+    else
+      window.addEventListener('WebComponentsReady', init_distill);
+  });
+
+  </script>
+
+  <!--/radix_placeholder_distill-->
+  <script src="topicModeling_files/header-attrs/header-attrs.js"></script>
+  <script src="topicModeling_files/jquery/jquery.min.js"></script>
+  <script src="topicModeling_files/popper/popper.min.js"></script>
+  <link href="topicModeling_files/tippy/tippy.css" rel="stylesheet" />
+  <link href="topicModeling_files/tippy/tippy-light-border.css" rel="stylesheet" />
+  <script src="topicModeling_files/tippy/tippy.umd.min.js"></script>
+  <script src="topicModeling_files/anchor/anchor.min.js"></script>
+  <script src="topicModeling_files/bowser/bowser.min.js"></script>
+  <script src="topicModeling_files/webcomponents/webcomponents.js"></script>
+  <script src="topicModeling_files/distill/template.v2.js"></script>
+  <!--radix_placeholder_site_in_header-->
+  <!--/radix_placeholder_site_in_header-->
+
+
+</head>
+
+<body>
+
+<!--radix_placeholder_front_matter-->
+
+<script id="distill-front-matter" type="text/json">
+{"title":"Topic Modeling","description":"Discovering the topics within the text data","authors":[{"author":"Jasper Lok","authorURL":{},"affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2022-01-15T00:00:00.000+08:00","citationText":"Lok, 2022"}
+</script>
+
+<!--/radix_placeholder_front_matter-->
+<!--radix_placeholder_navigation_before_body-->
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="d-title">
+<h1>Topic Modeling</h1>
+<!--radix_placeholder_categories-->
+<div class="dt-tags">
+<div class="dt=tag">Text Analytics</div>
+</div>
+<!--/radix_placeholder_categories-->
+<p><p>Discovering the topics within the text data</p></p>
+</div>
+
+<div class="d-byline">
+  Jasper Lok true 
+  
+<br/>01-15-2022
+</div>
+
+<div class="d-article">
+<div class="d-contents d-contents-float">
+<nav class="l-text toc figcaption" id="TOC">
+<h3>Contents</h3>
+<ul>
+<li><a href="#categorizing-documents">Categorizing documents</a></li>
+<li><a href="#what-is-topic-modeling">What is topic modeling?</a></li>
+<li><a href="#application-of-topic-modeling">Application of topic modeling</a></li>
+<li><a href="#methods-to-perform-topic-modeling">Methods to perform topic modeling</a></li>
+<li><a href="#latent-dirichlet-allocation-lda">Latent Dirichlet Allocation (LDA)</a>
+<ul>
+<li><a href="#what-is-dirichlet-distribution">What is Dirichlet distribution?</a></li>
+</ul></li>
+<li><a href="#r-package">R package</a></li>
+<li><a href="#demonstration">Demonstration</a>
+<ul>
+<li><a href="#setup-the-environment">Setup the environment</a></li>
+<li><a href="#document-feature-matrix">Document-feature matrix</a>
+<ul>
+<li><a href="#word-cloud">Word Cloud</a></li>
+</ul></li>
+<li><a href="#n-gram">N-gram</a>
+<ul>
+<li><a href="#word-cloud-1">Word Cloud</a></li>
+</ul></li>
+<li><a href="#lda">LDA</a></li>
+</ul></li>
+<li><a href="#conclusion">Conclusion</a></li>
+</ul>
+</nav>
+</div>
+<p>I have discussed the basics of text analytics and the pre-processing for text data in the previous post.</p>
+<p>Therefore, in this post, I will explore topic modeling, i.e. one of the techniques under text analytics.</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="image/books.jpg" width="90%" /></p>
+</div>
+<p>Photo by <a href="https://unsplash.com/@prateekkatyal?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Prateek Katyal</a> on <a href="https://unsplash.com/s/photos/stack-of-books?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a></p>
+<h1 id="categorizing-documents">Categorizing documents</h1>
+<p>Categorizing documents is one of the commonly used techniques in text analytics.</p>
+<p><span class="citation" data-cites="Blumenau2021">(<a href="#ref-Blumenau2021" role="doc-biblioref">Blumenau 2021</a>)</span> summarizes the suitable technique to categorize the documents depending on the situation.</p>
+<p>In general, the two considerations of which methods are appropriate to be used to categorize the documents are as follows:</p>
+<ul>
+<li><p>Are the categories of the documents known?</p></li>
+<li><p>Do we know the rules of categorizing the documents?</p></li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="image/mapping_topicModeling.png" width="90%" /></p>
+</div>
+<p>However, the categories within the documents may not be so straightforward some of the time. For example, how granular should we split the actuarial topics within the documents? Should I split by the broader topics within the documents? How do we define the broader topic?</p>
+<p>This is where the topic modeling technique becomes very handy.</p>
+<h1 id="what-is-topic-modeling">What is topic modeling?</h1>
+<p>Topic modeling is a statistical method for identifying words in a corpus of documents that tend to co-occur together and as a result, share some sort of semantic relationship <span class="citation" data-cites="Jockers2020">(<a href="#ref-Jockers2020" role="doc-biblioref">Jockers and Thalken 2020</a>)</span>.</p>
+<p>In other words, topic modeling can also be thought of as an exercise to perform clustering on the documents based on the keywords in the documents.</p>
+<h1 id="application-of-topic-modeling">Application of topic modeling</h1>
+<p>In a report by Milliman <span class="citation" data-cites="Pouget2021">(<a href="#ref-Pouget2021" role="doc-biblioref">Pouget et al. 2021</a>)</span>, the authors provided a use case on how topic modeling could help in claim management. In the use case, the author mentioned that the topic modeling technique can be used to categorize the emails into different topics. This could greatly reduce the number of variables for the classification tasks.</p>
+<p>Apart from that, the following are the other possible applications of topic modeling <span class="citation" data-cites="Valput2020">(<a href="#ref-Valput2020" role="doc-biblioref">Valput 2020</a>)</span>:</p>
+<ul>
+<li><p>Text summarization</p></li>
+<li><p>Query expansion</p></li>
+<li><p>Sentiment analysis</p></li>
+<li><p>Recommender systems</p></li>
+</ul>
+<p>Next, we will look at how to perform topic modeling.</p>
+<h1 id="methods-to-perform-topic-modeling">Methods to perform topic modeling</h1>
+<p><span class="citation" data-cites="Sarkar2016">(<a href="#ref-Sarkar2016" role="doc-biblioref">Sarkar 2016</a>)</span> There are three methods in extracting the topics from the text data:</p>
+<ul>
+<li><p>Latent Semantic Indexing (LSA)</p></li>
+<li><p>Latent Dirichlet Allocation (LDA)</p></li>
+<li><p>Non-negative Matrix Factorization (NNMF)</p></li>
+</ul>
+<p>Over here, I will be using the second method, where it is one of the popular methods to perform topic modeling.</p>
+<h1 id="latent-dirichlet-allocation-lda">Latent Dirichlet Allocation (LDA)</h1>
+<p>After reading through a few different materials, personally, I think is below explanation is easier to understand.</p>
+<p><span class="citation" data-cites="Bansal2016">(<a href="#ref-Bansal2016" role="doc-biblioref">Bansal 2016</a>)</span> LDA assumes documents are produced from a mixture of topics. Those topics then generate words based on their probability distribution. Given a dataset of documents, LDA backtracks and tries to figure out what topics would create those documents in the first place.</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="image/Notation%20of%20Topic%20Modeling.png" width="90%" /></p>
+</div>
+<p>This method is quite similar to LSA. The main difference between LSA and LDA is that LDA assumes that the distribution of topics in a document and the distribution of words in topics are Dirichlet distributions <span class="citation" data-cites="Pascuall2019">(<a href="#ref-Pascuall2019" role="doc-biblioref">Pascual 2019</a>)</span>.</p>
+<h2 id="what-is-dirichlet-distribution">What is Dirichlet distribution?</h2>
+<p>The Dirichlet distribution Dir(α) is a family of continuous multivariate probability distributions parameterized by a vector α of positive reals <span class="citation" data-cites="Liu2019">(<a href="#ref-Liu2019" role="doc-biblioref">Liu 2019</a>)</span>. It is a multivariate generalization of the Beta distribution. Dirichlet distributions are commonly used as prior distributions in Bayesian statistics.</p>
+<p>The author also provided the explanation of using Dirichlet distribution used as a prior distribution in Bayesian statistics, i.e. this distribution is the conjugate before the categorical distribution and multinomial distribution, and making it the prior would simplify the maths.</p>
+<h1 id="r-package">R package</h1>
+<p>Just to recap how the different R packages work together with <code>tidytext</code> package <span class="citation" data-cites="Silge2021">(<a href="#ref-Silge2021" role="doc-biblioref">Silge and Robinson 2021</a>)</span>:</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="image/textanalytics_with_r.png" width="100%" /></p>
+</div>
+<p><em>Screenshot from Chapter 6 of Text Mining with R book</em></p>
+<p>I will be using <code>topicmodels</code> package and <code>tidytext</code> package to perform topic modeling.</p>
+<h1 id="demonstration">Demonstration</h1>
+<p>In this demonstration, I will be using the same dataset as the previous post. This is the link to download the <a href="https://www.microsoft.com/en-us/download/details.aspx?id=52419">dataset</a>.</p>
+<p>The data consists of a publicly available set of question and sentence pairs from an open domain question.</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="image/question%20mark.jpg" width="100%" /></p>
+</div>
+<p>Photo by Olya Kobruseva from Pexels</p>
+<h2 id="setup-the-environment">Setup the environment</h2>
+<p>First, I will set up the environment by calling all the packages I need for the analysis later.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>packages</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'tidyverse'</span>, <span class='st'>'readr'</span>, <span class='st'>'skimr'</span>, <span class='st'>'tidytext'</span>, <span class='st'>'quanteda'</span>, 
+              <span class='st'>'ggwordcloud'</span>, <span class='st'>'lexicon'</span>, <span class='st'>'topicmodels'</span><span class='op'>)</span>
+
+<span class='kw'>for</span><span class='op'>(</span><span class='va'>p</span> <span class='kw'>in</span> <span class='va'>packages</span><span class='op'>)</span><span class='op'>{</span>
+  <span class='kw'>if</span><span class='op'>(</span><span class='op'>!</span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span> <span class='op'>(</span><span class='va'>p</span>, character.only <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span><span class='op'>)</span><span class='op'>{</span>
+    <span class='fu'><a href='https://rdrr.io/r/utils/install.packages.html'>install.packages</a></span><span class='op'>(</span><span class='va'>p</span><span class='op'>)</span>
+  <span class='op'>}</span>
+  <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>p</span>, character.only <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>
+<span class='op'>}</span>
+</code></pre>
+</div>
+</div>
+<p>I will also be using the pre-processing steps as <a href="https://jasperlok.netlify.app/posts/2021-12-02-text-analytics/">previous post</a>. I will be also using the output from lemmatization to perform topic modeling.</p>
+<p>Hence, I will skip the pre-processing steps in this post so that this post is not too lengthy.</p>
+<h2 id="document-feature-matrix">Document-feature matrix</h2>
+<p>To perform topic modeling, first, we will need to convert the token into the document-feature matrix (dfm).</p>
+<p>According to the <code>quanteda</code> <a href="https://cran.r-project.org/web/packages/quanteda/vignettes/quickstart.html#:~:text=%E2%80%9Cdfm%E2%80%9D%20is%20short%20for%20document,to%20each%20unit%20as%20columns.">documentation page</a>, <code>dfm</code> refers to documents in rows and “features” as columns, where we can understand the tokens as the “features” in this context.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df_lemma_1</span> <span class='op'>&lt;-</span> <span class='va'>text_df_lemma</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dfm</span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>I will also trim away the terms that appear 10 times or less across the document since it is unlikely the terms will carry much meaning to the analysis.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df_lemma_1</span> <span class='op'>&lt;-</span> <span class='va'>text_df_lemma_1</span>  <span class='op'>%&gt;%</span>
+  <span class='fu'>dfm_trim</span><span class='op'>(</span>min_termfreq <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>Then, <code>topfeatures</code> function is used to extract the top 20 features from the dfm object.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>topfeatures</span><span class='op'>(</span><span class='va'>text_df_lemma_1</span>, <span class='fl'>20</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>                    state        unite      include     american 
+        8588         2782         1842         1416         1304 
+        year        world          war         time        large 
+        1132         1087         1032          927          910 
+        film         make       series       system         city 
+         832          767          759          755          730 
+        form united state         term      country         call 
+         702          694          686          681          667 </code></pre>
+</div>
+<h3 id="word-cloud">Word Cloud</h3>
+<p>Next, I will illustrate the result in word cloud format so that it’s easier to visualize how frequently the words appear in the documents relative to one another.</p>
+<p>To do so, first I will convert the dfm object to a tidy object by using <code>tidy</code> function.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df_lemma_1_tidy</span> <span class='op'>&lt;-</span> <span class='fu'>tidy</span><span class='op'>(</span><span class='va'>text_df_lemma_1</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>Next, I will perform <code>group_by</code> to sum up the total count of the different words in the documents.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df_lemma_1_tidy_count</span> <span class='op'>&lt;-</span> <span class='va'>text_df_lemma_1_tidy</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>term</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>summarise</span><span class='op'>(</span>tot_count <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>count</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>Once that is done, I will use <code>ggplot</code> function to visualize the word cloud.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df_lemma_1_tidy_count</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>tot_count</span> <span class='op'>&gt;=</span> <span class='fl'>500</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>label <span class='op'>=</span> <span class='va'>term</span>, size <span class='op'>=</span> <span class='va'>tot_count</span>, color <span class='op'>=</span> <span class='va'>tot_count</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_text_wordcloud_area</span><span class='op'>(</span>shape  <span class='op'>=</span> <span class='st'>"square"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>scale_size_area</span><span class='op'>(</span>max_size <span class='op'>=</span> <span class='fl'>500</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>theme_minimal</span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="topicModeling_files/figure-html5/unnamed-chunk-20-1.png" width="90%" /></p>
+</div>
+<p>From the graph, it seems like some unigram tokens may not carry much meaning. The algorithm has treated each word as a token by itself. However, sometimes we need multiple words to convey the message.</p>
+<p>For example, if we refer to the graph, we will note “unite,” where “unite” could mean a lot of things. If we were to refer to the raw data, we will realize that “unite” is from the “united states.”</p>
+<h2 id="n-gram">N-gram</h2>
+<p>To overcome this, instead of performing a uni-gram, I will specify 2:3 in the function so that both bi-gram and tri-gram will be generated.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df_lemma_3</span> <span class='op'>&lt;-</span> <span class='va'>text_df_lemma</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>tokens_ngrams</span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>2</span><span class='op'>:</span><span class='fl'>3</span>, concatenator <span class='op'>=</span> <span class='st'>" "</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dfm</span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p><code>topfeatures</code> function is being used to extract the top features from the term frequency.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>topfeatures</span><span class='op'>(</span><span class='va'>text_df_lemma_3</span>, <span class='fl'>20</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>          unite state             world war         unite kingdom 
+                 1538                   228                   178 
+        north america            super bowl                war ii 
+                  157                   138                   121 
+         world war ii             civil war           los angeles 
+                  119                   110                    96 
+            york city            video game       president unite 
+                   90                    88                    80 
+president unite state          unite nation    federal government 
+                   80                    76                    75 
+        academy award     television series    united state state 
+                   73                    72                    68 
+    metropolitan area          sell million 
+                   68                    66 </code></pre>
+</div>
+<p>Note that the term “unite state” appears much more frequent than the rest of the words. After some trial and error, it seems like the topic modeling result seems to be more satisfying after I drop the word “unite state.”</p>
+<p>Hence in the <code>dfm_trim</code> function, I have specified I would like to drop the term that has more than 1000 counts.</p>
+<p>I will be dropping terms with a count of 30 or less, otherwise, the dfm will be too huge.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df_lemma_3</span> <span class='op'>&lt;-</span> <span class='va'>text_df_lemma_3</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dfm_trim</span><span class='op'>(</span>min_termfreq <span class='op'>=</span> <span class='fl'>30</span>,
+           max_termfreq <span class='op'>=</span> <span class='fl'>1000</span>, 
+           termfreq_type <span class='op'>=</span> <span class='st'>"count"</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p><code>dfm_trim</code> function also supports other trimming methods, eg. drop by proportion, rank and, quantile. Refer to this <a href="https://quanteda.io/reference/dfm_trim.html">documentation page</a> for the different trimming methods.</p>
+<h3 id="word-cloud-1">Word Cloud</h3>
+<p>Next, I will convert the dfm object into a tidy object so that I could use <code>ggplot</code> function to visualize the word cloud.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df_lemma_3_tidy</span> <span class='op'>&lt;-</span> <span class='fu'>tidy</span><span class='op'>(</span><span class='va'>text_df_lemma_3</span><span class='op'>)</span>
+
+<span class='va'>text_df_lemma_3_tidy_count</span> <span class='op'>&lt;-</span> <span class='va'>text_df_lemma_3_tidy</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>term</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>summarise</span><span class='op'>(</span>tot_count <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>count</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='va'>text_df_lemma_3_tidy_count</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>tot_count</span> <span class='op'>&gt;=</span> <span class='fl'>45</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>label <span class='op'>=</span> <span class='va'>term</span>, size <span class='op'>=</span> <span class='va'>tot_count</span>, color <span class='op'>=</span> <span class='va'>tot_count</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_text_wordcloud_area</span><span class='op'>(</span>shape  <span class='op'>=</span> <span class='st'>"square"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>scale_size_area</span><span class='op'>(</span>max_size <span class='op'>=</span> <span class='fl'>14</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>theme_minimal</span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="topicModeling_files/figure-html5/unnamed-chunk-24-1.png" width="90%" /></p>
+</div>
+<h2 id="lda">LDA</h2>
+<p>Once that is done, I will pass the dfm object into <code>LDA</code> function. I have specified that I would like to have 5 topics in the result. Also, I will stick with the default fitting method, which is “VEM.”</p>
+<p>Before that, I will perform a check to ensure there is no presence of all 0 rows within the dfm object. Otherwise, the algorithm would not work.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>rowTotals</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span><span class='op'>(</span><span class='va'>text_df_lemma_3</span>, <span class='fl'>1</span>, <span class='va'>sum</span><span class='op'>)</span>
+
+<span class='va'>text_df_lemma_3_new</span> <span class='op'>&lt;-</span> <span class='va'>text_df_lemma_3</span><span class='op'>[</span><span class='va'>rowTotals</span> <span class='op'>&gt;</span> <span class='fl'>0</span>, <span class='op'>]</span>
+</code></pre>
+</div>
+</div>
+<p>Once the check is done, I will pass the updated dfm object into the <code>LDA</code> function.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>df_lda_lemma_3</span> <span class='op'>&lt;-</span> <span class='fu'>LDA</span><span class='op'>(</span><span class='va'>text_df_lemma_3_new</span>, 
+              k <span class='op'>=</span> <span class='fl'>5</span>, 
+              control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>seed <span class='op'>=</span> <span class='fl'>0</span>,
+                             nstart <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>If we were to call the LDA object, you could see that we have fitted a LDA model with VEM fitting method. There are 5 topics within the fitted model.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>df_lda_lemma_3</span>
+</code></pre>
+</div>
+<pre><code>A LDA_VEM topic model with 5 topics.</code></pre>
+</div>
+<p>To visualize the result, I will use <code>tidy</code> function to convert the object into tidy data format so that <code>ggplot</code> function can be used.</p>
+<p>This is where we can use the <code>tidy</code> function within <code>tidytext</code> package to help us to convert the dfm object into a tidy object. Note that I have not passed in another argument, so the default matrix would be “beta” as shown in the result below.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>df_lda_lemma_3_tidy</span> <span class='op'>&lt;-</span> <span class='fu'>tidy</span><span class='op'>(</span><span class='va'>df_lda_lemma_3</span><span class='op'>)</span>
+
+<span class='va'>df_lda_lemma_3_tidy</span>
+</code></pre>
+</div>
+<pre><code># A tibble: 545 x 3
+   topic term             beta
+   &lt;int&gt; &lt;chr&gt;           &lt;dbl&gt;
+ 1     1 world war     0.182  
+ 2     2 world war     0.00268
+ 3     3 world war     0.00311
+ 4     4 world war     0.00651
+ 5     5 world war     0.00471
+ 6     1 unite kingdom 0.0255 
+ 7     2 unite kingdom 0.0554 
+ 8     3 unite kingdom 0.0341 
+ 9     4 unite kingdom 0.0120 
+10     5 unite kingdom 0.0289 
+# ... with 535 more rows</code></pre>
+</div>
+<p>Recall beta is the parameter for per-topic word distribution. The way we could understand the beta is the probability of being generated from a necessary topic.</p>
+<p>Once the results are being converted into tidy data format, I will find the top 10 terms under each topic. I will also sort the term based on their beta values in descending order.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>df_lda_lemma_3_tidy_terms</span> <span class='op'>&lt;-</span> <span class='va'>df_lda_lemma_3_tidy</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>topic</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>slice_max</span><span class='op'>(</span><span class='va'>beta</span>, n <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>ungroup</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>arrange</span><span class='op'>(</span><span class='va'>topic</span>, <span class='op'>-</span><span class='va'>beta</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>Then, I will pass the result to <code>ggplot</code> function to visualize the result in the word cloud.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>df_lda_lemma_3_tidy_terms</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>mutate</span><span class='op'>(</span>term <span class='op'>=</span> <span class='fu'>reorder_within</span><span class='op'>(</span><span class='va'>term</span>, <span class='va'>beta</span>, <span class='va'>topic</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span><span class='va'>beta</span>, <span class='va'>term</span>, fill <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>topic</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_col</span><span class='op'>(</span>show.legend <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>facet_wrap</span><span class='op'>(</span><span class='op'>~</span><span class='va'>topic</span>, scales <span class='op'>=</span> <span class='st'>"free"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>scale_y_reordered</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>theme_minimal</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>theme</span><span class='op'>(</span>text <span class='op'>=</span> <span class='fu'>element_text</span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>20</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="image/lda_results.png" width="120%" /></p>
+</div>
+<p>From the result, below are some of the interesting insights:</p>
+<ul>
+<li><p>Topic 1 has some words that are related to football</p></li>
+<li><p>There are few words related to countries or areas within topic 2, eg. united states, united kingdom and, so on</p></li>
+<li><p>Topic 4 seems to be related to the super bowl</p></li>
+<li><p>Topic 3 &amp; 5 seems to be related to war since there are a few words related to wars</p></li>
+<li><p>Although both topic 3 &amp; 5 seem to be related to wars, topic 3 seems to be related to civil war and topic 5 relates to world war</p></li>
+</ul>
+<h1 id="conclusion">Conclusion</h1>
+<p>That’s all for the day!</p>
+<p>Thanks for reading the post until the end.</p>
+<p>Feel free to contact me through <a href="mailto:jasper.jh.lok@gmail.com">email</a> or <a href="https://www.linkedin.com/in/jasper-l-13426232/">LinkedIn</a> if you have any suggestions on future topics to share.</p>
+<p>Till next time, happy learning!</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="image/reading.jpg" width="90%" /></p>
+</div>
+<p>Photo by <a href="https://unsplash.com/@all_who_wander?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Kinga Cichewicz</a> on <a href="https://unsplash.com/s/photos/read-book?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="ref-Bansal2016" class="csl-entry" role="doc-biblioentry">
+Bansal, Shivam. 2016. <span>“Beginners Guide to Topic Modeling in Pythons.”</span> <a href="https://www.analyticsvidhya.com/blog/2016/08/beginners-guide-to-topic-modeling-in-python/">https://www.analyticsvidhya.com/blog/2016/08/beginners-guide-to-topic-modeling-in-python/</a>.
+</div>
+<div id="ref-Blumenau2021" class="csl-entry" role="doc-biblioentry">
+Blumenau, Jack. 2021. <span>“Day 11: Topic Models: Me314: Introduction to Data Science and Machine Learning.”</span> <a href="https://lse-me314.github.io/lecturenotes/ME314_day11.pdf">https://lse-me314.github.io/lecturenotes/ME314_day11.pdf</a>.
+</div>
+<div id="ref-Jockers2020" class="csl-entry" role="doc-biblioentry">
+Jockers, Matthew L., and Rosamond Thalken. 2020. <em>Text Analysis with r</em>. Springer.
+</div>
+<div id="ref-Liu2019" class="csl-entry" role="doc-biblioentry">
+Liu, Sue. 2019. <span>“Dirichlet Distribution: Motivating LDA.”</span> <a href="https://towardsdatascience.com/dirichlet-distribution-a82ab942a879">https://towardsdatascience.com/dirichlet-distribution-a82ab942a879</a>.
+</div>
+<div id="ref-Pascuall2019" class="csl-entry" role="doc-biblioentry">
+Pascual, Federico. 2019. <span>“Topic Modeling: An Introduction.”</span> <a href="https://monkeylearn.com/blog/introduction-to-topic-modeling/">https://monkeylearn.com/blog/introduction-to-topic-modeling/</a>.
+</div>
+<div id="ref-Pouget2021" class="csl-entry" role="doc-biblioentry">
+Pouget, Fanny, Remi Bellina, Mehdi Echchelh, Karol Maciejewski, Christoph Krischanitz, Bartosz Gaweda, Dominik Sznajder, et al. 2021. <span>“The Use of Artificial Intelligence and Data Analytics in Life Insurance.”</span> Milliman.
+</div>
+<div id="ref-Sarkar2016" class="csl-entry" role="doc-biblioentry">
+Sarkar, Dipanjan. 2016. <em>Text Analytics with Python a Practical Real- World Approach to Gaining Actionable Insights from Your Datal</em>. Apress.
+</div>
+<div id="ref-Silge2021" class="csl-entry" role="doc-biblioentry">
+Silge, Julia, and David Robinson. 2021. <span>“6 Topic Modeling.”</span> <a href="https://www.tidytextmining.com/topicmodeling.html">https://www.tidytextmining.com/topicmodeling.html</a>.
+</div>
+<div id="ref-Valput2020" class="csl-entry" role="doc-biblioentry">
+Valput, Damir. 2020. <span>“Topic Modelling: Interpretability and Applications.”</span> <a href="https://datascience.aero/topic-modelling/">https://datascience.aero/topic-modelling/</a>.
+</div>
+</div>
+<!--radix_placeholder_article_footer-->
+<!--/radix_placeholder_article_footer-->
+</div>
+
+<div class="d-appendix">
+</div>
+
+
+<!--radix_placeholder_site_after_body-->
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_appendices-->
+<div class="appendix-bottom">
+<h3 id="references">References</h3>
+<div id="references-listing"></div>
+</div>
+<!--/radix_placeholder_appendices-->
+<!--radix_placeholder_navigation_after_body-->
+<!--/radix_placeholder_navigation_after_body-->
+
+</body>
+
+</html>
