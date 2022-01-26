@@ -170,49 +170,6 @@
     "input_file": {}
   },
   {
-    "path": "past_proj/2020-06-Cost-reduction/",
-    "title": "Cost Reduction by Improving Order Distribution and Process",
-    "description": "Understanding the order frequency by using various concepts from inventory theory and how the company could influence the customer ordering patterns and distribution management, achieving cost reduction",
-    "author": [
-      {
-        "name": "Jasper Lok",
-        "url": {}
-      }
-    ],
-    "date": "2020-08-31",
-    "categories": [
-      "Past Project",
-      "Inventory Theory",
-      "Optimization"
-    ],
-    "contents": "\r\n\r\n\r\n\r\nPhoto by Ruchindra Gunasekara on Unsplash\r\nBrief Description of Project\r\nIn this challenge, my teammates and I have attempted to improve the ordering process of a distribution and logistics provider based on the sample order frequency of over a period. The objective is to reduce the overall cost of deliveries.\r\nTo do so, we first inferred the ordering policy under each retailer based on the sample order data by using various statistical tests. Then these insights were combined with other business strategies, such as how to structure delivery requirements, minimum order requirements and so on, to achieve operational efficiency, resulting in a cost reduction.\r\n\r\n\r\n\r\n",
-    "preview": "past_proj/2020-06-Cost-reduction/distill-preview.png",
-    "last_modified": "2021-08-29T19:46:02+08:00",
-    "input_file": {}
-  },
-  {
-    "path": "past_proj/2020-08-Demand-forecasting-optimization/",
-    "title": "Case Study - Demand Forecasting & Optimization for a Manufacturing Company",
-    "description": "Forecasting demand and optimizing the amount the manufacturing plants need to produce within a given period to minimize the cost and maximize profit",
-    "author": [
-      {
-        "name": "Jasper Lok",
-        "url": {}
-      }
-    ],
-    "date": "2020-08-31",
-    "categories": [
-      "Past Project",
-      "Inventory Theory",
-      "Forecasting",
-      "Optimization"
-    ],
-    "contents": "\r\n\r\n\r\n\r\nPhoto by Pixabay on pexel\r\nAbstract\r\nOur project explored finding the most cost-efficient way of fulfilling the demand of manifacturing factory’s customers in 2012 by using and maximizing the capacities of the firm’s plants. We first carried out demand forecasting using the in-sample and out-sample method to project the monthly demand for each product type and subsequently the individual components. Based on the in-sample trend plot, we deduced the appropriate forecasting method and compared with the out-sample data. Choosing the method with the least mean square error, we used it to forecast the next 12 months demand.\r\nThe results from demand forecasting provided crucial data for us to build our optimization model. To construct this model, we considered the 3 main costs associated with the supply chain for the firm – production costs, inventory holding costs and transshipment costs. Furthermore, each plant has different production, holding and transshipment limits across the 12 months of the year and these limits formed important constraints in our optimization model.\r\n\r\n\r\n\r\n",
-    "preview": "past_proj/2020-08-Demand-forecasting-optimization/distill-preview.png",
-    "last_modified": "2021-08-29T19:41:52+08:00",
-    "input_file": {}
-  },
-  {
     "path": "past_proj/2020-08-Fake-news/",
     "title": "Network Characteristics of Fake News",
     "description": "Understanding the characteristics of real and fake news by using different social analytics techniques",
