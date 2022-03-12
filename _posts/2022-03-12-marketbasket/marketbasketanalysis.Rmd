@@ -63,7 +63,7 @@ Photo by Joshua Miranda from Pexels
 In my [previous post](https://jasperlok.netlify.app/posts/2021-10-17-clustering/) on clustering, I have briefly touched on the definition of association.
 
 
-Market basket analysis is used in discovering how the different "items" in the dataset are related the one another.
+Market basket analysis is used in discovering how the different "items" in the dataset are related to one another.
 
 This is commonly used in the retail sector to help companies to identify upsell and cross-sell opportunities.
 
@@ -197,7 +197,7 @@ df_main <- read_csv("data/general_data.csv") %>%
 As EmployeeCount, Over18, and StandardHours only contain one single value, I will remove these variables before mining the rules.
 
 
-As we are not told whether the employee ID shown in the survey belongs to the employees or managers, hence I will the employee ID shown in both survey data belong to the employees.
+As we are not told whether the employee ID shown in the survey belongs to the employees or managers, hence I will assume the employee ID shown in both survey data belong to the employees.
 
 
 ```{r}
