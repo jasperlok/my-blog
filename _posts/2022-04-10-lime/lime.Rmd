@@ -1,6 +1,7 @@
 ---
 title: "Local Interpretable Model-Agnostic Explanations (LIME)"
-description: "Don't worry, you won't feel any sourness while using the method"
+description: |
+   Don't worry, you won't feel any sourness while using the method
 author:
   - name: Jasper Lok
     url: {}
@@ -16,12 +17,13 @@ link-citations: true
 categories:
   - Machine Learning
   - Model Explanability
+
 ---
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
 
-packages <- c("captioner", "knitr")
+packages <- c("captioner", "knitr", "kableExtra")
 
 for (p in packages){
   if(!require (p, character.only = T)){
@@ -34,7 +36,7 @@ knitr::opts_chunk$set(fig.retina = 3,
                       echo = TRUE,                       
                       eval = TRUE,                       
                       message = FALSE,                       
-                      warning = TRUE,
+                      warning = FALSE,
                       out.width="100%")
 
 library(captioner)
@@ -491,6 +493,11 @@ knitr::include_graphics("image/lime_water.jpg")
 ```
 
 Photo by Wagner Soares from Pexels
+
+
+
+
+  
 
 
 

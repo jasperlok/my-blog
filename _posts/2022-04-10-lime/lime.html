@@ -140,7 +140,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","bibliography","biblio-style","link-citations","categories"]}},"value":[{"type":"character","attributes":{},"value":["Local Interpretable Model-Agnostic Explanations (LIME)"]},{"type":"character","attributes":{},"value":["Don't worry, you won't feel any sourness while using the method"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Jasper Lok"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":[]}},"value":[]}]}]},{"type":"character","attributes":{},"value":["04-10-2022"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","toc_depth","self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[4]},{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["ref.bib"]},{"type":"character","attributes":{},"value":["apa"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["Machine Learning","Model Explanability"]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","bibliography","biblio-style","link-citations","categories"]}},"value":[{"type":"character","attributes":{},"value":["Local Interpretable Model-Agnostic Explanations (LIME)"]},{"type":"character","attributes":{},"value":["Don't worry, you won't feel any sourness while using the method\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Jasper Lok"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":[]}},"value":[]}]}]},{"type":"character","attributes":{},"value":["04-10-2022"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","toc_depth","self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[4]},{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["ref.bib"]},{"type":"character","attributes":{},"value":["apa"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["Machine Learning","Model Explanability"]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   
@@ -1504,7 +1504,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <div class="dt=tag">Model Explanability</div>
 </div>
 <!--/radix_placeholder_categories-->
-<p>Don’t worry, you won’t feel any sourness while using the method</p>
+<p><p>Don’t worry, you won’t feel any sourness while using the method</p></p>
 </div>
 
 <div class="d-byline">
@@ -1618,12 +1618,6 @@ Below is the graph shown:
 <span class='op'>}</span>
 </code></pre>
 </div>
-<pre><code>Warning: package &#39;tibble&#39; was built under R version 4.1.2</code></pre>
-<pre><code>Warning: package &#39;parsnip&#39; was built under R version 4.1.3</code></pre>
-<pre><code>Warning: package &#39;recipes&#39; was built under R version 4.1.3</code></pre>
-<pre><code>Warning: package &#39;rsample&#39; was built under R version 4.1.3</code></pre>
-<pre><code>Warning: package &#39;themis&#39; was built under R version 4.1.3</code></pre>
-<pre><code>Warning: package &#39;lime&#39; was built under R version 4.1.3</code></pre>
 </div>
 <p>For this demonstration, we will be using a R package called <code>DALEXtra</code>.</p>
 <p>This package provides an interface to different implementations of <code>LIME</code> method. Refer to the <a href="https://cran.r-project.org/web/packages/DALEXtra/DALEXtra.pdf">documentation</a> page for the list of <code>LIME</code> package this function supports.</p>
@@ -1780,24 +1774,6 @@ Below is the graph shown:
                   type <span class='op'>=</span> <span class='st'>"lime"</span><span class='op'>)</span>
 </code></pre>
 </div>
-<pre><code>Warning: Data contains numeric columns with zero variance</code></pre>
-<pre><code>Warning in gower_work(x = x, y = y, pair_x = pair_x, pair_y = pair_y,
-n = NULL, : skipping variable with zero or non-finite range.
-
-Warning in gower_work(x = x, y = y, pair_x = pair_x, pair_y = pair_y,
-n = NULL, : skipping variable with zero or non-finite range.
-
-Warning in gower_work(x = x, y = y, pair_x = pair_x, pair_y = pair_y,
-n = NULL, : skipping variable with zero or non-finite range.
-
-Warning in gower_work(x = x, y = y, pair_x = pair_x, pair_y = pair_y,
-n = NULL, : skipping variable with zero or non-finite range.
-
-Warning in gower_work(x = x, y = y, pair_x = pair_x, pair_y = pair_y,
-n = NULL, : skipping variable with zero or non-finite range.
-
-Warning in gower_work(x = x, y = y, pair_x = pair_x, pair_y = pair_y,
-n = NULL, : skipping variable with zero or non-finite range.</code></pre>
 </div>
 <p>Note that we will need to remove the target variable from the data when running the <code>predict_surrogate</code> function, otherwise the code will return error <span class="citation" data-cites="Lendway">(<a href="#ref-Lendway" role="doc-biblioref">Lendway</a>)</span>.</p>
 <p>One cool thing to note is the output from the <code>plot</code> function above is the object is a ggplot object.</p>
@@ -1849,11 +1825,8 @@ n = NULL, : skipping variable with zero or non-finite range.</code></pre>
                   dist_fun <span class='op'>=</span> <span class='st'>"manhattan"</span>,
                   kernel_width <span class='op'>=</span> <span class='fl'>2</span>,
                   type <span class='op'>=</span> <span class='st'>"lime"</span><span class='op'>)</span>
-</code></pre>
-</div>
-<pre><code>Warning: Data contains numeric columns with zero variance</code></pre>
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'>for</span> <span class='op'>(</span><span class='va'>i</span> <span class='kw'>in</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>)</span><span class='op'>{</span>
+
+<span class='kw'>for</span> <span class='op'>(</span><span class='va'>i</span> <span class='kw'>in</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>)</span><span class='op'>{</span>
   <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span>
     <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>lime_rf_top_3</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>case</span> <span class='op'>==</span> <span class='va'>i</span><span class='op'>)</span><span class='op'>)</span>
     <span class='op'>)</span>
@@ -1874,7 +1847,6 @@ n = NULL, : skipping variable with zero or non-finite range.</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>plot_explanations</span><span class='op'>(</span><span class='va'>lime_rf_top_3</span><span class='op'>)</span>
 </code></pre>
 </div>
-<pre><code>Warning: Unknown or uninitialised column: `label`.</code></pre>
 <p><img src="lime_files/figure-html5/unnamed-chunk-20-1.png" width="100%" /></p>
 </div>
 <p>Similarly to the graphs earlier, we can see that the top 3 employees are all single and works in current company less than 3 years.</p>
@@ -1888,7 +1860,7 @@ n = NULL, : skipping variable with zero or non-finite range.</code></pre>
 <p><img src="image/lime_water.jpg" width="100%" /></p>
 </div>
 <p>Photo by Wagner Soares from Pexels</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
 <div id="ref-Adyatama2019" class="csl-entry" role="doc-biblioentry">
 Adyatama, Arga. 2019. <span>“Interpreting Classification Model with LIME.”</span> <a href="https://algotech.netlify.app/blog/interpreting-classification-model-with-lime/">https://algotech.netlify.app/blog/interpreting-classification-model-with-lime/</a>.
