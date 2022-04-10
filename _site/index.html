@@ -2083,7 +2083,7 @@ function init_posts_list() {
     var src = $(img).attr('data-src');
     if (src) {
       $(img).attr('src', src);
-      $(img).load(function() {
+      $(img).on("load", function() {
         img.removeAttribute('data-src');
       });
     }
@@ -2129,6 +2129,7 @@ function init_posts_list() {
 
       // mark posts that match the category visible
       var page_category = window.location.hash.replace(/^#category:/, "");
+      page_category = decodeURIComponent(page_category)
       var posts = $('.post-metadata').map(function(idx, script) {
         var metadata = $.parseJSON($(script).html());
         var post = null;
@@ -2144,7 +2145,7 @@ function init_posts_list() {
       set_posts_visible(posts, true);
 
       // mark the hash active
-      $('.categories li>a[href="' + window.location.hash + '"]').addClass('active');
+      $('.categories li>a[href="' + decodeURIComponent(window.location.hash) + '"]').addClass('active');
 
       // update the list_caption
       var list_caption = $('.posts-list-caption');
@@ -2207,10 +2208,30 @@ function init_posts_list() {
 <div class="posts-container posts-with-sidebar posts-apply-limit l-screen-inset">
 <div class="posts-list">
 <h1 class="posts-list-caption" data-caption="When Actuarial Science Collides with Data Science">When Actuarial Science Collides with Data Science</h1>
+<a href="posts/2022-04-10-lime/" class="post-preview">
+<script class="post-metadata" type="text/json">{"categories":["Machine Learning","Model Explanability"]}</script>
+<div class="metadata">
+<div class="publishedDate">April 9, 2022</div>
+<div class="dt-authors">
+<div class="dt-author">Jasper Lok</div>
+</div>
+</div>
+<div class="thumbnail">
+<img src="posts/2022-04-10-lime/image/lime.jpg"/>
+</div>
+<div class="description">
+<h2>Local Interpretable Model-Agnostic Explanations (LIME)</h2>
+<div class="dt-tags">
+<div class="dt-tag">Machine Learning</div>
+<div class="dt-tag">Model Explanability</div>
+</div>
+<p>Don't worry, you won't feel any sourness while using the method</p>
+</div>
+</a>
 <a href="posts/2022-03-12-marketbasket/" class="post-preview">
 <script class="post-metadata" type="text/json">{"categories":["Unsupervised Learning","Association Rules"]}</script>
 <div class="metadata">
-<div class="publishedDate">March 11, 2022</div>
+<div class="publishedDate">March 12, 2022</div>
 <div class="dt-authors">
 <div class="dt-author">Jasper Lok</div>
 </div>
@@ -2293,7 +2314,7 @@ function init_posts_list() {
 </div>
 </div>
 <div class="thumbnail">
-<img src="posts/2021-10-30-k-means/image/kmeans_1.jpg"/>
+<img data-src="posts/2021-10-30-k-means/image/kmeans_1.jpg"/>
 </div>
 <div class="description">
 <h2>K-Means Clustering</h2>
@@ -2443,7 +2464,7 @@ Because it's mean.</p>
 <ul>
 <li>
 <a href="#category:Articles">Articles</a>
-<span class="category-count">(11)</span>
+<span class="category-count">(12)</span>
 </li>
 <li>
 <a href="#category:Association_Rules">Association Rules</a>
@@ -2467,7 +2488,11 @@ Because it's mean.</p>
 </li>
 <li>
 <a href="#category:Machine_Learning">Machine Learning</a>
-<span class="category-count">(4)</span>
+<span class="category-count">(5)</span>
+</li>
+<li>
+<a href="#category:Model_Explanability">Model Explanability</a>
+<span class="category-count">(1)</span>
 </li>
 <li>
 <a href="#category:Supervised_Learning">Supervised Learning</a>
@@ -2496,7 +2521,7 @@ Because it's mean.</p>
 <a href="#">More articles &raquo;</a>
 </div>
 </div>
-<!--/radix_placeholder_article_listing-->
+<!--/radix_placeholder_article_listing-->
 
 <div class="d-title">
 <h1>When Actuarial Science Collides with Data Science</h1>
