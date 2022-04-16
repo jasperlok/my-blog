@@ -11,7 +11,7 @@ knitr::include_graphics("image/jasper_2.jpg")
 
 ```
 
-Hi there, welcome to my blog! I am currently working as an actuary and in process of becoming a data scientist. I am passionate about transforming business through my actuarial and data science knowledge.
+Hi there, welcome to my blog! I am currently working as an actuary and a data scientist. I am passionate about transforming business through my actuarial and data science knowledge.
 
 
 ### Academic Background
@@ -32,13 +32,16 @@ Throughout my study in SMU, I studied various types of analytics, including cust
 I also specialized in digital transformation strategy in my master course. During the middle of the pandemic, I also did a consulting job for a local SME that is in the oil & gas industry under the guidance of my SMU professors. The task involved preparing a business proposal on how the SME could leverage its current strength to pivot the current business to venture into a new business market. This would help the SME to ensure its revised business model is more resilient to external market forces.
 
 
+I have also written a paper on how modern data science techniques can be used to complement conventional actuarial analysis together with my professor Kam Tin Seong. I am honored to share my paper & learning at Singapore Actuarial Society and useR conference 2021.
+
+
 ### Work Experience
 I have been working in both life insurance and general insurance as an actuary since my first job. Since that, I have worked on the following: <br   />
-- Product pricing on various life, general, group insurance products <br   />
+- Product pricing on various life, general and group insurance products <br   />
 - Experience analysis <br   />
 - Participating fund management <br   />
 - Distribution compensation <br   />
-- Analytics related project <br   />
+- End to end machine learning related project <br   />
 - New business model <br   />
 
 
