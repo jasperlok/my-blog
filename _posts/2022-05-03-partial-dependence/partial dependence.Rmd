@@ -1,0 +1,326 @@
+---
+title: "Partial Dependence Plot (PDP)"
+description: |
+   If all else being equal, what is the effect of the selected variable?
+author:
+  - name: Jasper Lok 
+    url: https://jasperlok.netlify.app/
+date: 05-07-2022
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 4
+    self_contained: false
+bibliography: ["ref.bib"]
+biblio-style: "apa"
+link-citations: true
+categories:
+  - Machine Learning
+  - Model Explanability
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+packages <- c("captioner", "knitr", "kableExtra")
+
+for (p in packages){
+  if(!require (p, character.only = T)){
+    install.packages(p)
+  }
+  library(p, character.only = T)
+}
+
+knitr::opts_chunk$set(fig.retina = 3,                       
+                      echo = TRUE,                       
+                      eval = TRUE,                       
+                      message = FALSE,                       
+                      warning = FALSE,
+                      out.width="100%")
+
+library(captioner)
+
+```
+
+In this post, I will be exploring another popular model explainability method, i.e. partial dependence.
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/city.jpg")
+
+```
+
+Photo by [Oleg Magni](https://www.pexels.com/photo/person-holding-black-android-smartphone-861126/)
+
+Partial dependence plots (PDP) show the dependence between the target response and a set of input features of interest, marginalizing over the values of all other input features (the 'complement' features). Intuitively, we can interpret the partial dependence as the expected target response as a function of the input features of interest [@scikit].
+
+Before we jump into the partial dependence plot, let's take a look what is a global model-agnostic method.
+
+# What is a global model-agnostic method?
+
+In my previous post, I have discussed how `lime` method can explain the model prediction, where `lime` is a local model-agnostic method.
+
+The local model-agnostic method explains individual predictions, i.e. how the different variables affect the individual predicted outcome.
+
+Instead of focusing on individual predictions, the global model-agnostic method focuses on explaining the overall model predictions.
+
+Unlike the LIME method, partial dependence is a global XAI method. The global method gives a comprehensive explanation of the entire data set, describing the impact of the features(s) on the target variable in the context of the overall data [@Kim2021].
+
+# Partial Dependence
+
+## How does partial dependence work?
+
+Below is how partial dependence works [@SOA2021]:
+
+-   For each level i, of the selected feature (continuous variables are binned):
+
+    -   For all observations, modify the value of the selected feature to i
+
+    -   Using the modified observations and the existing model, predict the response variable value for every observation
+
+    -   Calculate the average predicted values for all observations
+
+-   Plot the average predicted values for each level (y-axis) against the feature levels (x-axis)
+
+## Pros and cons
+
+Some of the advantages of partial dependence are [@Molnar2022]:
+
+-   Computation of partial dependence plots is intuitive
+
+-   Easy to interpret the graph
+
+-   Easy to implement
+
+Unfortunately, partial dependence also comes with limitations. Below are some of the limitations discussed in [@Molnar2022]:
+
+-   The author argued that omitting the distribution can be misleading
+
+-   This method assumes the variables are not correlated with one another, which is unlikely to be true
+
+-   Heterogeneous effects might be hidden in the PD plot as the plot is only showing marginal effects
+
+    -   The author gave an example of how the marginal effects could have averaged out by the different variable values, which can be misleading
+
+In the demonstration below, I will show some of the limitations of partial dependence.
+
+# Demonstration
+
+In this demonstration, I will be using the [employee attrition dataset](https://www.kaggle.com/vjchoudhary7/hr-analytics-case-study) from Kaggle.
+
+Nevertheless, let's begin the demonstration!
+
+## Setup the environment
+
+First, I will set up the environment by calling all the packages I need for the analysis later.
+
+```{r}
+packages <- c('tidyverse', 'readr', 'tidymodels', 'DALEXtra', 'themis', 
+              'ingredients', 'corrplot')
+
+for(p in packages){
+  if(!require (p, character.only = T)){
+    install.packages(p)
+  }
+  library(p, character.only = T)
+}
+
+```
+
+For this demonstration, we will be using an R package called `ingredients`. This package allows producing partial dependence plots with a few lines of code.
+
+Also, this package is part of the model explainability tools developed by MI\^2 DataLab. This allows us to use other model explainability tools without many changes to the codes.
+
+## Import the data
+
+First I will import the data into the environment.
+
+```{r}
+df <- read_csv("https://raw.githubusercontent.com/jasperlok/my-blog/master/_posts/2022-03-12-marketbasket/data/general_data.csv") %>%
+  select(-c(EmployeeCount, StandardHours, EmployeeID))
+
+
+```
+
+I will set the random seed for reproducability.
+
+```{r}
+set.seed(1234)
+
+```
+
+## Build a model
+
+For simplicity, I will reuse the random forest model building code I wrote in my previous post so that we can focus this post on how we apply PDP to interpret the machine learning model results.
+
+You can refer to my previous [post](https://jasperlok.netlify.app/posts/2022-04-16-lime/) on the explanations of the model building.
+
+```{r}
+df_split <- initial_split(df, 
+                          prop = 0.6, 
+                          strata = Attrition)
+
+df_train <- training(df_split)
+df_test <- testing(df_split)
+
+
+ranger_recipe <- 
+  recipe(formula = Attrition ~ ., 
+         data = df_train) %>%
+  step_impute_mean(NumCompaniesWorked,
+                   TotalWorkingYears) %>%
+  step_nzv(all_predictors()) %>%
+  step_dummy(all_nominal_predictors()) %>%
+  step_upsample(Attrition)
+
+ranger_spec <- 
+  rand_forest(trees = 1000) %>% 
+  set_mode("classification") %>% 
+  set_engine("ranger") 
+
+ranger_workflow <- 
+  workflow() %>% 
+  add_recipe(ranger_recipe) %>% 
+  add_model(ranger_spec) 
+
+ranger_fit <- ranger_workflow %>%
+  fit(data = df_train)
+
+```
+
+## Partial Dependence Plot
+
+Now, we will start using partial dependence to explain our model predictions!
+
+### Create explainer objects
+
+Similarly to last post, I will first create the explainer object by using `explain_tidymodels` function.
+
+```{r}
+ranger_explainer <- explain_tidymodels(ranger_fit,
+                   data = select(df_train, -Attrition),
+                   y = df_train$Attrition,
+                   verbose = FALSE)
+
+```
+
+Aside from that, we need the following codes to ensure the right explainers are being used [@Lendway].
+
+```{r}
+model_type.dalex_explainer <- DALEXtra::model_type.dalex_explainer
+predict_model.dalex_explainer <- DALEXtra::predict_model.dalex_explainer
+
+```
+
+Otherwise, the subsequent codes will not be able to run.
+
+### Explaining how the different variables affect the predictions
+
+Next, we will start explaining how the different variables affect the outcome.
+
+To do so, we just need to indicate the interested variable in the `partial_dependence` function as shown below.
+
+```{r}
+pdp_ranger <- partial_dependence(ranger_explainer,
+                                 variables = c("YearsAtCompany"))
+
+```
+
+```{r}
+graph <- plot(pdp_ranger)
+graph
+
+```
+
+As shown in the graph above, below are we can observe from the graph above:
+
+-   Employees who just recently just joined the company are more likely to resign
+
+-   The likelihood of resignation drop significantly when the years of service increase and stay flat around year 8
+
+-   The likelihood will then increase again at around 20 years
+
+    -   This could well be the employees have reached the retirement age
+
+As the graph object is a ggplot object, that allows us to modify the graph object by using `ggplot` functions.
+
+```{r}
+class(graph)
+
+```
+
+Below I have made modifications to the graph by using `ggplot` functions:
+
+```{r}
+graph + 
+  guides(color = "none") +
+  theme(plot.tag = element_blank()) +
+  labs(title = "Partial Dependence Profile", 
+       subtitle = NULL) +
+  theme_light()
+
+```
+
+Alternatively, we could indicate the list of partial dependence plots to be produced by indicating the variable types under `variable_type` argument.
+
+```{r}
+pdp_ranger_num <- partial_dependence(ranger_explainer,
+                                 variable_type = "numerical")
+
+
+plot(pdp_ranger_num)
+
+```
+
+From the graphs above, we could observe the following:
+
+-   It seems like the predictive powers for some variables are low since their partial dependence plots are rather flat
+
+-   There is a spike in the likelihood of resignation for employees who have recently had a much higher percentage of salary hike, which worthwhile to further investigate the reasons
+
+-   It also seems like employees who previously worked for more companies in the past are more likely to resign
+
+As mentioned in the earlier section, one of the assumptions of partial dependence is the variables are not correlated with one another.
+
+To check this assumption, I will plot the correlation matrix of the numeric variables by using the `corrplot` function.
+
+```{r}
+df_num <- df %>%
+  select_if(is.numeric)
+
+corrplot(cor(df_num, use="pairwise.complete.obs"), 
+         method = "number", 
+         type = "upper", 
+         tl.cex = 0.65, 
+         number.cex = 0.65, 
+         diag = FALSE)
+
+```
+
+From the correlation chart above, it is clear that the variables are not independent of one another, which in practice is quite unlikely the predictors are independent of one another.
+
+[@Molnar2022] discussed the issue of using PDP plot when the variables are not independent of one another. When the variables are correlated, we create data points in areas of the feature distribution where the actual probability is very low.
+
+For example, from the correlation matrix above, Age and TotalWorkingYears are positively correlated. This makes sense as in general, we could expect older employees would have more working experience.
+
+But in the PDP calculation, as we permute the data points over different combinations, we could have data points that might not make sense. For example, the algorithm could generate a profile with age = 20 and total working years \> 20.
+
+As the partial dependence algorithm is unable to differentiate these data points from the rest, these unlikely data points will be used in the average feature effect curve in the partial dependence plot as well.
+
+In the future post, I will be exploring other methods that help us to overcome this.
+
+# Conclusion
+
+That's all for the day!
+
+Thanks for reading the post until the end.
+
+Feel free to contact me through [email](mailto:jasper.jh.lok@gmail.com) or [LinkedIn](https://www.linkedin.com/in/jasper-l-13426232/) if you have any suggestions on future topics to share.
+
+Till next time, happy learning!
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/zoom.jpg")
+
+```
+
+Photo by [Jenna Hamra](https://www.pexels.com/photo/person-holding-round-framed-mirror-near-tree-at-daytime-979927/)
