@@ -1,0 +1,429 @@
+---
+title: "Bayes Optimisation"
+description: |
+   When the prior info is put to good use
+author:
+  - name: Jasper Lok 
+    url: https://jasperlok.netlify.app/
+date: 07-09-2022
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 4
+    self_contained: false
+bibliography: ["ref.bib"]
+biblio-style: "apa"
+link-citations: true
+categories:
+  - Machine Learning
+  - Hyperparameter Tuning
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+packages <- c("captioner", "knitr", "kableExtra")
+
+for (p in packages){
+  if(!require (p, character.only = T)){
+    install.packages(p)
+  }
+  library(p, character.only = T)
+}
+
+knitr::opts_chunk$set(fig.retina = 3,                       
+                      echo = TRUE,                       
+                      eval = TRUE,                       
+                      message = FALSE,                       
+                      warning = FALSE,
+                      out.width="100%")
+
+library(captioner)
+
+```
+
+In this post, I will be exploring bayes optimization.
+
+This post is the continuation of my previous post on hyperparameter tuning.
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/button.jpg")
+
+```
+
+Photo by Anne Nygard on Unsplash
+
+# Recap on Hyperparameters tuning
+
+As discussed in my previous post, the hyperparameters tuning task includes the following 4 parts [@Koehrsen2018]:
+
+-   **Objective function:** a function that takes in hyperparameters and returns a score we are trying to minimize or maximize
+
+-   **Domain:** the set of hyperparameter values over which we want to search
+
+-   **Algorithm:** method for selecting the next set of hyperparameters to evaluate in the objective function
+
+-   **Results history:** data structure containing each set of hyperparameters and the resulting score from the objective function
+
+In this post, I will be exploring bayes optimization (i.e. one of the algorithm). 
+
+Meanwhile, I will perform regular grid search so that I can compare how bayes optimization is different from regular grid search.
+
+
+# Optimization Methods
+
+## Regular Grid Search
+
+This is one of the common hyperparameter searches one would learn when he/she embarks on data science journey.
+
+Under this method, all the combinations created in the grid search domain will be run to obtain the model results.
+
+Once this is done, the model results under different hyperparameter sets are compared to obtain the best hyperparameter sets that provide the best model performance.
+
+Note that this is an uninformed searching method. The different model tuning results in each iteration do not affect each other.
+
+The issue with such an approach is the algorithm could be spending unnecessary time testing the hyperparameter regions that are likely to be not accurate based on the previous few attempts.
+
+## Bayes Optimization
+
+Bayes optimization is a sequential method that uses a model to predict new candidate parameters for assessment [@rstudio].
+
+The basic idea is to spend a little more time selecting the next hyperparameters to make fewer calls to the objective function [@Koehrsen2018].
+
+Bayesian optimization approaches this task through a method known as surrogate optimization, where surrogate function is an approximation of the objective function [@Ye2020].
+
+Below are how the bayes optimization works [@Ye2020]:
+
+-   Initialize a Gaussian Process 'surrogate function' prior distribution.
+
+-   Choose several data points x such that the acquisition function a(x) operating on the current prior distribution is maximized.
+
+-   Evaluate the data points x in the objective cost function c(x) and obtain the results, y.
+
+-   Update the Gaussian Process prior distribution with the new data to produce a posterior (which will become the prior in the next step).
+
+-   Repeat steps 2--5 for several iterations.
+
+-   Interpret the current Gaussian Process distribution (which is very cheap to do) to find the global minima.
+
+Later in this post, I will be showing the created grids under different methods.
+
+# Demonstration
+
+In this demonstration, I will be using the [employee attrition dataset](https://www.kaggle.com/vjchoudhary7/hr-analytics-case-study) from Kaggle.
+
+Nevertheless, let's begin the demonstration!
+
+## Setup the environment
+
+First, I will set up the environment by calling all the packages I need for the analysis later.
+
+```{r}
+packages <- c('tidyverse', 'readr', 'tidymodels', 'themis', 'doParallel',
+              'tictoc')
+
+for(p in packages){
+  if(!require (p, character.only = T)){
+    install.packages(p)
+  }
+  library(p, character.only = T)
+}
+
+```
+
+For this demonstration, we will be using an R package called `tune` to tune the hyperparameters.
+
+`tune` package supports both regular grid search method and bayes optimization.
+
+
+## Import the data
+
+First I will import the data into the environment.
+
+```{r}
+df <- read_csv("https://raw.githubusercontent.com/jasperlok/my-blog/master/_posts/2022-03-12-marketbasket/data/general_data.csv") %>%
+  select(-c(EmployeeCount, StandardHours, EmployeeID))
+
+
+```
+
+I will set the random seed for reproducibility.
+
+```{r}
+set.seed(1234)
+
+```
+
+## Build a model
+
+For simplicity, I will reuse the random forest model building code I wrote in my previous post.
+
+You can refer to my previous [post](https://jasperlok.netlify.app/posts/2022-04-16-lime/) for the explanations of the model building.
+
+```{r}
+df_split <- initial_split(df, 
+                          prop = 0.6, 
+                          strata = Attrition)
+
+df_train <- training(df_split)
+df_test <- testing(df_split)
+
+df_folds <- vfold_cv(df_train, strata = Attrition)
+
+```
+
+```{r}
+ranger_recipe <- 
+  recipe(formula = Attrition ~ ., 
+         data = df_train) %>%
+  step_impute_mean(NumCompaniesWorked,
+                   TotalWorkingYears) %>%
+  step_nzv(all_predictors()) %>%
+  step_dummy(all_nominal_predictors()) %>%
+  step_upsample(Attrition)
+
+ranger_spec <- 
+  rand_forest(trees = tune(),
+              mtry = tune()) %>% 
+  set_mode("classification") %>% 
+  set_engine("ranger") 
+
+ranger_workflow <- 
+  workflow() %>% 
+  add_recipe(ranger_recipe) %>% 
+  add_model(ranger_spec) 
+
+
+```
+
+```{r, echo = FALSE}
+# parallel processing
+registerDoParallel(cores = 6)
+
+```
+
+## Creating Grid
+
+Next, I will start creating a grid for the regular grid search later.
+
+```{r}
+dials_regular <- grid_regular(trees(c(1, 2000)),
+                              mtry(c(1, 21)),
+                              levels = 12)
+
+
+```
+
+Refer to [my previous post](https://jasperlok.netlify.app/posts/2022-06-05-grids/) if you want to find more on different ways of creating the grids for hyperparameter tuning.
+
+## Tuning hyperparameters
+
+Once the values of hyperparameters to be tuned are created, we can start tuning the hyperparameters.
+
+In this post, I will be trying both **regular grid search** and **bayes optimization** in searching for the best pairs of hyperparameters.
+
+### Regular Grid Search
+
+In this sub-section, I will perform regular grid search to find the best combinations of hyperparameters.
+
+I will also measure the time taken to find the best hyperparameters.
+
+```{r}
+tic()
+
+```
+
+```{r}
+ranger_tune_regular <- tune_grid(ranger_workflow, 
+                              resample = df_folds,
+                              metrics = metric_set(roc_auc),
+                              grid = dials_regular)
+
+```
+
+```{r}
+results_regular <- toc()
+
+```
+
+`tune` package also offers a function to allow the users to plot the model performance against the parameters.
+
+```{r}
+autoplot(ranger_tune_regular)
+
+```
+
+As shown in the graph, AUC tends to be low when the number of randomly selected predictors and number of trees is low. AUC results are quite comparable when the number of randomly selected predictors and the number of trees increases.
+
+### Bayes Optimization
+
+Next, I will perform bayes optimization so that I can compare how this optimization approach is different from the regular grid search approach.
+
+#### Parameters
+
+To perform Bayes optimization, we need to first define the hyperparameter value range.
+
+```{r}
+rf_param <- 
+  ranger_workflow %>% 
+  parameters() %>%
+  finalize(df_train)
+
+```
+
+We could check the value ranges by calling the `object` item within the `rf_param` we have created earlier.
+
+```{r}
+rf_param$object
+
+```
+
+Instead of using the default values from the function, we can change the value range by using `update` function.
+
+```{r}
+rf_param <- rf_param %>%
+  update(trees = trees(c(1, 5000)))
+
+```
+
+As you can see below, the value range of trees have updated.
+
+```{r}
+rf_param$object
+
+```
+
+#### Tuning Hyperparameters
+
+Once the parameter value ranges are defined, we can start performing bayes optimization.
+
+```{r}
+tic()
+
+```
+
+```{r}
+ranger_tune_bayes <- tune_bayes(ranger_workflow, 
+                              resample = df_folds,
+                              param_info = rf_param,
+                              metrics = metric_set(roc_auc),
+                              initial = 5,
+                              iter = 8,
+                              control = control_bayes(no_improve = 5, 
+                                                      verbose = FALSE, 
+                                                      save_pred = TRUE))
+
+```
+
+Note that the `initial` refers to how many set of hyperparameters should be tried before the iterations.
+
+As recommended by the author on the [documentation page](https://tune.tidymodels.org/reference/tune_bayes.html), the number of initial results is suggested to be greater than the number of parameters being optimized.
+
+Since I am tuning two hyperparameters, hence I have set `initial` to be 5.
+
+```{r}
+results_bayes <- toc()
+
+```
+
+Similarly, we can plot the model performance under different hyperparameters by using `autoplot` function.
+
+```{r}
+autoplot(ranger_tune_bayes)
+
+```
+
+Note that the default value for `type` argument is "marginals".
+
+As we can observe from the graph above, the graph contains fewer dots than the graph for a regular grid search. This is because this approach will stop searching in the region where the hyperparameters do not provide a more accurate result.
+
+For example, as we can see in the graph, the model accuracy tends to be low when the value for number of randomly selected predictors (i.e. mtry) is low regardless of the number of trees.
+
+This would reduce the time taken to obtain the hyperparameter sets that provide the best model results.
+
+On the other hand, the traditional grid search method computes the model performance for every single hyperparameter defined in the created grid as shown below, making this computation method very computation expensive.
+
+To illustrate this, I will first use `collect_metrics` function to gather the model performance and sort the iteration in ascending order.
+
+```{r}
+ranger_tune_bayes %>%
+  collect_metrics() %>%
+  arrange(.iter)
+
+```
+
+I will also collect the model performance under regular grid search.
+
+```{r}
+ranger_tune_regular %>%
+  collect_metrics()
+
+```
+
+Let's take a look at how the model performances differ between regular grid search and bayes optimization.
+
+The model performance also looks quite similar between the regular grid search method and bayes optimization method.
+
+```{r}
+tibble() %>%
+  bind_rows(show_best(ranger_tune_regular, n = 1) %>%
+              mutate(dials_method = "Regular Grid Search")) %>%
+  bind_rows(show_best(ranger_tune_bayes, n = 1) %>%
+              mutate(dials_method = "Bayes Optimization")) %>%
+  arrange(desc(mean)) %>%
+  select(c(dials_method, mean))
+
+```
+
+However, bayes optimization uses lesser time to obtain similar model performance as compared to regular grid search.
+
+There is about `r label_percent()(round(1 - (results_bayes$toc - results_bayes$tic)/(results_regular$toc - results_regular$tic), 2))` reduction in time spent in searching the optimal hyperparameters when bayes optimization is used.
+
+This shows how bayes optimization could spend less time searching the optimal hyperparameters.
+
+Also, if we take a look at the model results from bayes optimization, the results show that the algorithm didn't spend much time in searching the hyperparameters at the region where mtry value is low.
+
+```{r}
+ranger_tune_bayes %>%
+  collect_metrics() %>%
+  arrange(.iter)
+```
+
+The algorithm also tries 5 different sets of hyperparameters before the algorithm iterates on the hyperparameters as the `initial` is set to be 5 in the function.
+
+The `type` argument in `autoplot` function also allows two other values, i.e. parameters and performance.
+
+When "parameters" is selected, the graph shows us how the hyperparameters change over iterations.
+
+```{r}
+autoplot(ranger_tune_bayes, type = "parameters")
+
+```
+
+On the contrary, if the "performance" is being passed into `type` argument, the graph shows the model performance over iterations.
+
+```{r}
+autoplot(ranger_tune_bayes, type = "performance")
+
+```
+
+# Conclusion
+
+That's all for the day!
+
+In this post, the demonstration barely scratched the surface of what we could do with bayes optimization. There is so much more to bayes optimization.
+
+I will leave the remaining functionality of bayes optimization for the next post.
+
+Thanks for reading the post until the end.
+
+Feel free to contact me through [email](mailto:jasper.jh.lok@gmail.com) or [LinkedIn](https://www.linkedin.com/in/jasper-l-13426232/) if you have any suggestions on future topics to share.
+
+Till next time, happy learning!
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/tuning.jpg")
+
+```
+
+Photo by Alexis Baydoun on Unsplash
