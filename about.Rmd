@@ -11,7 +11,7 @@ knitr::include_graphics("image/jasper_2.jpg")
 
 ```
 
-Hi there, welcome to my blog! I am currently working as an actuary and a data scientist. I am passionate about transforming business through my actuarial and data science knowledge.
+Hi there, welcome to my blog! I am currently working as a data scientist. I am passionate about transforming business through my actuarial and data science knowledge.
 
 
 ### Academic Background
@@ -36,7 +36,16 @@ I have also written a paper on how modern data science techniques can be used to
 
 
 ### Work Experience
-I have been working in both life insurance and general insurance as an actuary since my first job. Since that, I have worked on the following: <br   />
+I have worked as an actuary in both life insurance and general insurance for the first 10 years of my career before I decided to do a mid career switch into data science. 
+
+```{r, echo = FALSE, out.width = "75%"}
+knitr::include_graphics("image/last day.jpg")
+
+```
+*My last day at Income + commencement date for my master degree. They happened to be on the same day!*
+
+
+Throughout my career, I have worked on the following: <br   />
 - Product pricing on various life, general and group insurance products <br   />
 - Experience analysis <br   />
 - Participating fund management <br   />
@@ -51,27 +60,24 @@ In conclusion, my background & experience can be summarized as following:
 library(cronologia)
 
 jasper_df <- data.frame(
-  event = c("Bachelor of Actuarial Studies",
+  event = c("Data Scientist",
+            "Master of IT in Business",
+            "Various Actuarial Functions & Roles",
             "Actuarial Pricing Senior Executive",
             "Actuarial Pricing Senior Executive",
-            "Actuarial Life Pricing Assistant Manager",
-            "Actuarial Life Reporting Assistant Manager",
-            "Actuarial Data Analytics Manager",
-            "Master of IT in Business"),
-  desc = c("The Australian National University",
-           "Prudential Assurance Company Singapore",
+            "Bachelor of Actuarial Studies"),
+  desc = c("Partner Re",
+           "Singapore Management University",
+           "NTUC Income Insurance Co-operative Limited",
            "Great Eastern Life Assurance Co Ltd",
-           "NTUC Income Insurance Co-operative Limited",
-           "NTUC Income Insurance Co-operative Limited",
-           "NTUC Income Insurance Co-operative Limited",
-           "Singapore Management University"),
-  desc_2 = c("Dec 2019", 
+           "Prudential Assurance Company Singapore",
+           "The Australian National University"),
+  desc_2 = c("Aug 2022 - Present",
+             "Jul 2022",
+             "Aug 2015 - Jul 2022",
+             "Oct 2014 - Jun 2015",
              "Mar 2012 - Oct 2014",
-             "Oct 2014 - Jun 2014",
-             "Jul 2015 - Jul 2018",
-             "Jul 2018 - May 2020",
-             "May 2020 - Present",
-             "Aug 2021"))
+             "Dec 2019"))
 
 create_tml_2(df = jasper_df, 
            smr = "event",  
