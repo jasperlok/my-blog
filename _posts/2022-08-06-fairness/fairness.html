@@ -134,12 +134,12 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","bibliography","biblio-style","link-citations","categories"]}},"value":[{"type":"character","attributes":{},"value":["Fairness"]},{"type":"character","attributes":{},"value":["Is the model judgement fair?\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Jasper Lok"]},{"type":"character","attributes":{},"value":["https://jasperlok.netlify.app/"]}]}]},{"type":"character","attributes":{},"value":["08-06-2022"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","toc_depth","self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[4]},{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["ref.bib"]},{"type":"character","attributes":{},"value":["apa"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["Machine Learning","Hyperparameter Tuning"]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","bibliography","biblio-style","link-citations","categories"]}},"value":[{"type":"character","attributes":{},"value":["Fairness"]},{"type":"character","attributes":{},"value":["Is the model judgement fair?\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Jasper Lok"]},{"type":"character","attributes":{},"value":["https://jasperlok.netlify.app/"]}]}]},{"type":"character","attributes":{},"value":["08-06-2022"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","toc_depth","self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[4]},{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["ref.bib"]},{"type":"character","attributes":{},"value":["apa"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["Machine Learning","Model Explanability"]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["data/train.csv","fairness_files/figure-html5/unnamed-chunk-16-1.png","fairness_files/figure-html5/unnamed-chunk-17-1.png","fairness_files/figure-html5/unnamed-chunk-18-1.png","fairness_files/figure-html5/unnamed-chunk-22-1.png","fairness_files/figure-html5/unnamed-chunk-23-1.png","fairness_files/figure-html5/unnamed-chunk-24-1.png","image/fair cream.jpg","image/hands.jpg","image/honest.jpg","image/ML_fairness.png","ref.bib"]}
+  {"type":"character","attributes":{},"value":["data/train.csv","fairness_files/anchor/anchor.min.js","fairness_files/bowser/bowser.min.js","fairness_files/distill/template.v2.js","fairness_files/figure-html5/unnamed-chunk-16-1.png","fairness_files/figure-html5/unnamed-chunk-17-1.png","fairness_files/figure-html5/unnamed-chunk-18-1.png","fairness_files/figure-html5/unnamed-chunk-22-1.png","fairness_files/figure-html5/unnamed-chunk-23-1.png","fairness_files/figure-html5/unnamed-chunk-24-1.png","fairness_files/header-attrs/header-attrs.js","fairness_files/jquery/jquery-3.6.0.js","fairness_files/jquery/jquery-3.6.0.min.js","fairness_files/jquery/jquery-3.6.0.min.map","fairness_files/kePrint/kePrint.js","fairness_files/lightable/lightable.css","fairness_files/popper/popper.min.js","fairness_files/tippy/tippy-bundle.umd.min.js","fairness_files/tippy/tippy-light-border.css","fairness_files/tippy/tippy.css","fairness_files/tippy/tippy.umd.min.js","fairness_files/webcomponents/webcomponents.js","image/fair cream.jpg","image/hands.jpg","image/honest.jpg","image/ML_fairness.png","ref.bib"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1497,7 +1497,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--radix_placeholder_categories-->
 <div class="dt-tags">
 <div class="dt=tag">Machine Learning</div>
-<div class="dt=tag">Hyperparameter Tuning</div>
+<div class="dt=tag">Model Explanability</div>
 </div>
 <!--/radix_placeholder_categories-->
 <p><p>Is the model judgement fair?</p></p>
@@ -2009,7 +2009,7 @@ fairness comparison later.</p>
   <span class='fu'>fit</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>df</span><span class='op'>)</span>
 </code></pre>
 </div>
-<pre><code>[12:03:33] WARNING: amalgamation/../src/learner.cc:1115: Starting in XGBoost 1.3.0, the default evaluation metric used with the objective &#39;binary:logistic&#39; was changed from &#39;error&#39; to &#39;logloss&#39;. Explicitly set eval_metric if you&#39;d like to restore the old behavior.</code></pre>
+<pre><code>[13:56:42] WARNING: amalgamation/../src/learner.cc:1115: Starting in XGBoost 1.3.0, the default evaluation metric used with the objective &#39;binary:logistic&#39; was changed from &#39;error&#39; to &#39;logloss&#39;. Explicitly set eval_metric if you&#39;d like to restore the old behavior.</code></pre>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># create explainer</span>
 <span class='va'>xgboost_explainer</span> <span class='op'>&lt;-</span> <span class='fu'>explain_tidymodels</span><span class='op'>(</span><span class='va'>xgboost_fit</span>,

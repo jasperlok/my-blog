@@ -16,7 +16,8 @@ biblio-style: "apa"
 link-citations: true
 categories:
   - Machine Learning
-  - Hyperparameter Tuning
+  - Model Explanability
+  
 ---
 
 ```{r setup, include=FALSE}
