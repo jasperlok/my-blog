@@ -45,7 +45,7 @@ Photo by [Thirdman](https://www.pexels.com/photo/text-5981542/)
 
 Recently I was watching this YouTube video by CrashCourse on ["Algorithmic Bias and Fairness"](https://youtu.be/gV0_raKR2UQ), it has successfully piqued my curiosity on fairness in machine learning context.
 
-This has led me to read more on fairness.
+This has led me to read more about fairness.
 
 # What is fairness?
 
@@ -78,11 +78,11 @@ You may refer to this [link](https://www.mas.gov.sg/~/media/MAS/News%20and%20Pub
 
 # Why is fairness important?
 
-As simple as there are repercussions when there is unitended bias or fairness issue we make decisions based on the predictions from the machine learning models.
+As simple as there are repercussions when there is unintended bias or fairness issue we make decisions based on the predictions from the machine learning models.
 
-One of the famous example is the algorithm that approves credit loan limit for Apple credit card.
+One famous example is the algorithm that approves credit loan limits for Apple credit cards.
 
-There are reports that the algorithm Apple used in approving credit card limit might have fairness issue. This has resulted in complaints and regulators stepping in to investigate on this matter [@BBC].
+There are reports that the algorithm Apple used in approving credit card limits might have fairness issues. This has resulted in complaints and regulators stepping in to investigate this matter [@BBC].
 
 # If fairness is important, would it solve the problem by excluding the sensitive attributes?
 
@@ -94,14 +94,14 @@ For example, in some countries, zip codes can act as a proxy for race.
 
 # Fairness Implementation
 
-In a paper by MIT D lab, the authors suggested implementing several checks (i.e. the green boxes in the screen shot below) along the project cycle to consider "fairness" in the machine learning project [@MIT].
+In a paper by MIT D lab, the authors suggested implementing several checks (i.e. the green boxes in the screenshot below) along the project cycle to consider "fairness" in the machine learning project [@MIT].
 
 ```{r, echo = FALSE}
 knitr::include_graphics("image/ML_fairness.png")
 
 ```
 
-Over here, I will focus on fairness check when building machine learning models.
+Over here, I will focus on fairness checks when building machine learning models.
 
 To do so, I will be using `fairness_check` function in `fairness` package to assist me in checking the fairness in the machine learning model built.
 
@@ -157,9 +157,9 @@ pacman::p_load(tidyverse, readr, tidymodels, janitor, DALEXtra, fairmodels)
 
 I will be using `fairmodels` package to calculate the different fairness metrics discussed earlier.
 
-The beauty of this package is it could "work" directly with `explainer` from `DALEXtra` package and `tidymodels` without requiring much transformation.
+The beauty of this package is it could "work" directly with `explainer` from `DALEXtra` package and `tidymodels` without requiring many transformation.
 
-So, following are the steps to check the fairness of the models:
+So, the following are the steps to check the fairness of the models:
 
 -   First, build the model(s)
 
@@ -216,13 +216,13 @@ df <- df_org %>%
 
 Following are the data wrangling and cleaning I have performed above:
 
--   Clean the column names by using `clean_names` from `janitor` so that all of column names are in small letters
+-   Clean the column names by using `clean_names` from `janitor` so that all of the column names are in small letters
 
 -   Mutate all the logical columns to factor columns
 
 -   Drop all the rows with missing values
 
--   Split the cabin columns into cabin_deck, cabin_num & cabin_side based on the descriptions stated in the Kaggle website
+-   Split the cabin columns into cabin_deck, cabin_num & cabin_side based on the descriptions stated on the Kaggle website
 
 -   Drop passenger ID, name and cabin columns
 
@@ -258,7 +258,7 @@ ranger_fit <- ranger_workflow %>%
 
 Once the model is built, I will proceed and create the explainer object.
 
-Before that, as explainer requires the target variable be in numeric form, so I will convert the target variable into numeric form.
+Before that, as explainer requires the target variable to be in numeric form, so I will convert the target variable into numeric form.
 
 ```{r}
 y_numeric <- df %>%
@@ -291,7 +291,7 @@ privileged_subgrp <- "Earth"
 
 ```
 
-According to the descriptions on the [documentation page](https://modeloriented.github.io/fairmodels/reference/fairness_check.html), the subgroup parity loss will be calculated with regards to the privileged subgroup.
+According to the descriptions on the [documentation page](https://modeloriented.github.io/fairmodels/reference/fairness_check.html), the subgroup parity loss will be calculated with regard to the privileged subgroup.
 
 ```{r}
 ranger_fair <- fairness_check(ranger_explainer,
@@ -318,7 +318,7 @@ According to the [this post](https://github.com/ModelOriented/fairmodels/issues/
 
 **"A picture is worth a thousand words."**
 
-To help us in better understanding the results, we can pass the `fairness_object` into the `plot` function to visualize it.
+To help us better understand the results, we can pass the `fairness_object` into the `plot` function to visualize it.
 
 ```{r}
 plot(ranger_fair)
@@ -327,17 +327,17 @@ plot(ranger_fair)
 
 According to the [documentation page](https://modeloriented.github.io/fairmodels/articles/Basic_tutorial.html), the red color areas show whether the selected metrics have exceeded the fairness thresholds.
 
-If the bars reach the red area on the left, this implies there is bias towards the unprivileged subgroups.
+If the bars reach the red area on the left, this implies there is a bias towards the unprivileged subgroups.
 
-On the other hand, if the bars reach the red area on the right, this implies there is bias towards the privileged groups.
+On the other hand, if the bars reach the red area on the right, this implies there is a bias towards the privileged groups.
 
-Hmmm, it seems Mars and Europa have lower predictive equality ratio.
+Hmmm, it seems Mars and Europa have a lower predictive equality ratio.
 
-This implies they have a lower false positive rate (i.e. less chance that a data point that doesn't transported incorrectly classify as "will be transporting").
+This implies they have a lower false positive rate (i.e. less chance that a data point that doesn't transport incorrectly classify as "will be transporting").
 
-To further check on this, we could also pass the `fairness_object` into `metric_scores` function and extract out the calculated false positive rate under each subgroup.
+To further check on this, we could also pass the `fairness_object` into `metric_scores` function and extract the calculated false positive rate under each subgroup.
 
-After that, I have passed the results into `ggplot` function as shown below.
+After that, I pass the results into `ggplot` function as shown below.
 
 ```{r}
 metric_scores(ranger_fair, fairness_metrics = c("FPR"))$metric_scores_data %>%
@@ -468,7 +468,7 @@ plot(all_fair)
 
 The results of the different models will be plotted together so that its easier to compare.
 
-Or alternatively, we can plot the results in a radar graph format as shown below.
+Alternatively, we can plot the results in a radar graph format as shown below.
 
 ```{r}
 plot(fairness_radar(all_fair))

@@ -2181,7 +2181,7 @@ href="https://www.pexels.com/photo/text-5981542/">Thirdman</a></p>
 href="https://youtu.be/gV0_raKR2UQ">“Algorithmic Bias and Fairness”</a>,
 it has successfully piqued my curiosity on fairness in machine learning
 context.</p>
-<p>This has led me to read more on fairness.</p>
+<p>This has led me to read more about fairness.</p>
 <h1 id="what-is-fairness">What is fairness?</h1>
 <p>So, what is fairness?</p>
 <div class="layout-chunk" data-layout="l-body">
@@ -2213,14 +2213,14 @@ the unintentional bias.</p>
 href="https://www.mas.gov.sg/~/media/MAS/News%20and%20Publications/Monographs%20and%20Information%20Papers/FEAT%20Principles%20Final.pdf">link</a>
 for more info.</p>
 <h1 id="why-is-fairness-important">Why is fairness important?</h1>
-<p>As simple as there are repercussions when there is unitended bias or
+<p>As simple as there are repercussions when there is unintended bias or
 fairness issue we make decisions based on the predictions from the
 machine learning models.</p>
-<p>One of the famous example is the algorithm that approves credit loan
-limit for Apple credit card.</p>
+<p>One famous example is the algorithm that approves credit loan limits
+for Apple credit cards.</p>
 <p>There are reports that the algorithm Apple used in approving credit
-card limit might have fairness issue. This has resulted in complaints
-and regulators stepping in to investigate on this matter <span
+card limits might have fairness issues. This has resulted in complaints
+and regulators stepping in to investigate this matter <span
 class="citation" data-cites="BBC">(<a href="#ref-BBC"
 role="doc-biblioref">BBC 2019</a>)</span>.</p>
 <h1
@@ -2235,7 +2235,7 @@ sensitive attributes.</p>
 race.</p>
 <h1 id="fairness-implementation">Fairness Implementation</h1>
 <p>In a paper by MIT D lab, the authors suggested implementing several
-checks (i.e. the green boxes in the screen shot below) along the project
+checks (i.e. the green boxes in the screenshot below) along the project
 cycle to consider “fairness” in the machine learning project <span
 class="citation" data-cites="MIT">(<a href="#ref-MIT"
 role="doc-biblioref">MIT D-Lab, Comprehensive Initiative on Technology
@@ -2243,7 +2243,7 @@ Evaluation, Massachusetts Institute of Technology 2020</a>)</span>.</p>
 <div class="layout-chunk" data-layout="l-body">
 <p><img src="image/ML_fairness.png" width="100%" /></p>
 </div>
-<p>Over here, I will focus on fairness check when building machine
+<p>Over here, I will focus on fairness checks when building machine
 learning models.</p>
 <p>To do so, I will be using <code>fairness_check</code> function in
 <code>fairness</code> package to assist me in checking the fairness in
@@ -2349,8 +2349,9 @@ need for the analysis later.</p>
 different fairness metrics discussed earlier.</p>
 <p>The beauty of this package is it could “work” directly with
 <code>explainer</code> from <code>DALEXtra</code> package and
-<code>tidymodels</code> without requiring much transformation.</p>
-<p>So, following are the steps to check the fairness of the models:</p>
+<code>tidymodels</code> without requiring many transformation.</p>
+<p>So, the following are the steps to check the fairness of the
+models:</p>
 <ul>
 <li><p>First, build the model(s)</p></li>
 <li><p>Second, create the explainer(s) by using <code>DALEX</code> or
@@ -2403,12 +2404,12 @@ machine learning models.</p>
 above:</p>
 <ul>
 <li><p>Clean the column names by using <code>clean_names</code> from
-<code>janitor</code> so that all of column names are in small
+<code>janitor</code> so that all of the column names are in small
 letters</p></li>
 <li><p>Mutate all the logical columns to factor columns</p></li>
 <li><p>Drop all the rows with missing values</p></li>
 <li><p>Split the cabin columns into cabin_deck, cabin_num &amp;
-cabin_side based on the descriptions stated in the Kaggle
+cabin_side based on the descriptions stated on the Kaggle
 website</p></li>
 <li><p>Drop passenger ID, name and cabin columns</p></li>
 </ul>
@@ -2442,8 +2443,9 @@ website</p></li>
 </div>
 <p>Once the model is built, I will proceed and create the explainer
 object.</p>
-<p>Before that, as explainer requires the target variable be in numeric
-form, so I will convert the target variable into numeric form.</p>
+<p>Before that, as explainer requires the target variable to be in
+numeric form, so I will convert the target variable into numeric
+form.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>y_numeric</span> <span class='op'>&lt;-</span> <span class='va'>df</span> <span class='op'>%&gt;%</span>
@@ -2480,8 +2482,8 @@ as the privileged group.</p>
 </div>
 <p>According to the descriptions on the <a
 href="https://modeloriented.github.io/fairmodels/reference/fairness_check.html">documentation
-page</a>, the subgroup parity loss will be calculated with regards to
-the privileged subgroup.</p>
+page</a>, the subgroup parity loss will be calculated with regard to the
+privileged subgroup.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>ranger_fair</span> <span class='op'>&lt;-</span> <span class='fu'>fairness_check</span><span class='op'>(</span><span class='va'>ranger_explainer</span>,
@@ -2523,7 +2525,7 @@ href="https://github.com/ModelOriented/fairmodels/issues/45">this
 post</a>, if the metric is zero, NaN will be shown for the metrics so
 that false information will not be shown.</p>
 <p><strong>“A picture is worth a thousand words.”</strong></p>
-<p>To help us in better understanding the results, we can pass the
+<p>To help us better understand the results, we can pass the
 <code>fairness_object</code> into the <code>plot</code> function to
 visualize it.</p>
 <div class="layout-chunk" data-layout="l-body">
@@ -2537,21 +2539,20 @@ visualize it.</p>
 href="https://modeloriented.github.io/fairmodels/articles/Basic_tutorial.html">documentation
 page</a>, the red color areas show whether the selected metrics have
 exceeded the fairness thresholds.</p>
-<p>If the bars reach the red area on the left, this implies there is
+<p>If the bars reach the red area on the left, this implies there is a
 bias towards the unprivileged subgroups.</p>
 <p>On the other hand, if the bars reach the red area on the right, this
-implies there is bias towards the privileged groups.</p>
-<p>Hmmm, it seems Mars and Europa have lower predictive equality
+implies there is a bias towards the privileged groups.</p>
+<p>Hmmm, it seems Mars and Europa have a lower predictive equality
 ratio.</p>
 <p>This implies they have a lower false positive rate (i.e. less chance
-that a data point that doesn’t transported incorrectly classify as “will
+that a data point that doesn’t transport incorrectly classify as “will
 be transporting”).</p>
 <p>To further check on this, we could also pass the
 <code>fairness_object</code> into <code>metric_scores</code> function
-and extract out the calculated false positive rate under each
-subgroup.</p>
-<p>After that, I have passed the results into <code>ggplot</code>
-function as shown below.</p>
+and extract the calculated false positive rate under each subgroup.</p>
+<p>After that, I pass the results into <code>ggplot</code> function as
+shown below.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>metric_scores</span><span class='op'>(</span><span class='va'>ranger_fair</span>, fairness_metrics <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"FPR"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>$</span><span class='va'>metric_scores_data</span> <span class='op'>%&gt;%</span>
@@ -2630,7 +2631,7 @@ fairness comparison later.</p>
   <span class='fu'>fit</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>df</span><span class='op'>)</span>
 </code></pre>
 </div>
-<pre><code>[13:56:42] WARNING: amalgamation/../src/learner.cc:1115: Starting in XGBoost 1.3.0, the default evaluation metric used with the objective &#39;binary:logistic&#39; was changed from &#39;error&#39; to &#39;logloss&#39;. Explicitly set eval_metric if you&#39;d like to restore the old behavior.</code></pre>
+<pre><code>[14:20:16] WARNING: amalgamation/../src/learner.cc:1115: Starting in XGBoost 1.3.0, the default evaluation metric used with the objective &#39;binary:logistic&#39; was changed from &#39;error&#39; to &#39;logloss&#39;. Explicitly set eval_metric if you&#39;d like to restore the old behavior.</code></pre>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># create explainer</span>
 <span class='va'>xgboost_explainer</span> <span class='op'>&lt;-</span> <span class='fu'>explain_tidymodels</span><span class='op'>(</span><span class='va'>xgboost_fit</span>,
@@ -2711,7 +2712,7 @@ shown below.</p>
 </div>
 <p>The results of the different models will be plotted together so that
 its easier to compare.</p>
-<p>Or alternatively, we can plot the results in a radar graph format as
+<p>Alternatively, we can plot the results in a radar graph format as
 shown below.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
