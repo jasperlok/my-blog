@@ -144,7 +144,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["data/sim-modeling-dataset.csv","glm_files/anchor/anchor.min.js","glm_files/bowser/bowser.min.js","glm_files/distill/template.v2.js","glm_files/figure-html5/unnamed-chunk-13-1.png","glm_files/figure-html5/unnamed-chunk-14-1.png","glm_files/figure-html5/unnamed-chunk-17-1.png","glm_files/figure-html5/unnamed-chunk-18-1.png","glm_files/figure-html5/unnamed-chunk-19-1.png","glm_files/figure-html5/unnamed-chunk-20-1.png","glm_files/figure-html5/unnamed-chunk-6-1.png","glm_files/figure-html5/unnamed-chunk-7-1.png","glm_files/figure-html5/unnamed-chunk-8-1.png","glm_files/header-attrs/header-attrs.js","glm_files/jquery/jquery.min.js","glm_files/popper/popper.min.js","glm_files/tippy/tippy-bundle.umd.min.js","glm_files/tippy/tippy-light-border.css","glm_files/tippy/tippy.css","glm_files/tippy/tippy.umd.min.js","glm_files/webcomponents/webcomponents.js","image/end.jpg","image/journey.jpg","image/nice car.jpg","image/tiles.jpg","ref.bib"]}
+  {"type":"character","attributes":{},"value":["data/sim-modeling-dataset.csv","glm_files/anchor/anchor.min.js","glm_files/bowser/bowser.min.js","glm_files/distill/template.v2.js","glm_files/figure-html5/unnamed-chunk-13-1.png","glm_files/figure-html5/unnamed-chunk-14-1.png","glm_files/figure-html5/unnamed-chunk-17-1.png","glm_files/figure-html5/unnamed-chunk-18-1.png","glm_files/figure-html5/unnamed-chunk-19-1.png","glm_files/figure-html5/unnamed-chunk-20-1.png","glm_files/figure-html5/unnamed-chunk-6-1.png","glm_files/figure-html5/unnamed-chunk-7-1.png","glm_files/figure-html5/unnamed-chunk-8-1.png","glm_files/header-attrs/header-attrs.js","glm_files/jquery/jquery-3.6.0.js","glm_files/jquery/jquery-3.6.0.min.js","glm_files/jquery/jquery-3.6.0.min.map","glm_files/popper/popper.min.js","glm_files/tippy/tippy-bundle.umd.min.js","glm_files/tippy/tippy-light-border.css","glm_files/tippy/tippy.css","glm_files/tippy/tippy.umd.min.js","glm_files/webcomponents/webcomponents.js","image/end.jpg","image/journey.jpg","image/nice car.jpg","image/tiles.jpg","ref.bib"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1891,20 +1891,20 @@ to read and perform data wrangling.</p>
   <span class='fu'>tidy</span><span class='op'>(</span><span class='op'>)</span>
 </code></pre>
 </div>
-<pre><code># A tibble: 1,707 x 5
+<pre><code># A tibble: 1,714 x 5
    term         step estimate lambda dev.ratio
    &lt;chr&gt;       &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;
- 1 (Intercept)     1    -1.82 0.0280 -1.43e-14
- 2 (Intercept)     2    -1.76 0.0255  3.99e- 3
- 3 (Intercept)     3    -1.72 0.0233  7.31e- 3
- 4 (Intercept)     4    -1.67 0.0212  1.01e- 2
- 5 (Intercept)     5    -1.63 0.0193  1.24e- 2
- 6 (Intercept)     6    -1.60 0.0176  1.43e- 2
- 7 (Intercept)     7    -1.57 0.0160  1.59e- 2
- 8 (Intercept)     8    -1.54 0.0146  1.79e- 2
- 9 (Intercept)     9    -1.52 0.0133  2.02e- 2
-10 (Intercept)    10    -1.51 0.0121  2.21e- 2
-# ... with 1,697 more rows</code></pre>
+ 1 (Intercept)     1    -1.82 0.0263  2.53e-14
+ 2 (Intercept)     2    -1.77 0.0240  3.54e- 3
+ 3 (Intercept)     3    -1.73 0.0218  6.50e- 3
+ 4 (Intercept)     4    -1.69 0.0199  8.96e- 3
+ 5 (Intercept)     5    -1.65 0.0181  1.10e- 2
+ 6 (Intercept)     6    -1.62 0.0165  1.27e- 2
+ 7 (Intercept)     7    -1.59 0.0151  1.41e- 2
+ 8 (Intercept)     8    -1.56 0.0137  1.53e- 2
+ 9 (Intercept)     9    -1.54 0.0125  1.71e- 2
+10 (Intercept)    10    -1.53 0.0114  1.88e- 2
+# ... with 1,704 more rows</code></pre>
 </div>
 <p>The results above show the different lambda values are being used to
 fit the model.</p>
@@ -1945,8 +1945,8 @@ Call:  cv.glmnet(x = x, y = y, offset = log(df_train$exposure), type.measure = &
 Measure: Poisson Deviance 
 
     Lambda Index Measure       SE Nonzero
-min  0.828   100  0.3993 0.005678      43
-1se  7.722    76  0.4050 0.005177      43
+min  0.824   100  0.3988 0.008554      43
+1se 13.429    70  0.4070 0.007821      43
 cv_glmnet_0.25
 
 Call:  cv.glmnet(x = x, y = y, offset = log(df_train$exposure), type.measure = &quot;deviance&quot;,      nfolds = 20, family = &quot;poisson&quot;, intercept = FALSE, alpha = i) 
@@ -1954,8 +1954,8 @@ Call:  cv.glmnet(x = x, y = y, offset = log(df_train$exposure), type.measure = &
 Measure: Poisson Deviance 
 
      Lambda Index Measure       SE Nonzero
-min 0.00331   100  0.3890 0.005189      31
-1se 0.03390    75  0.3937 0.005330       6
+min 0.00330   100  0.3898 0.005572      29
+1se 0.03703    74  0.3949 0.005402       6
 cv_glmnet_0.5
 
 Call:  cv.glmnet(x = x, y = y, offset = log(df_train$exposure), type.measure = &quot;deviance&quot;,      nfolds = 20, family = &quot;poisson&quot;, intercept = FALSE, alpha = i) 
@@ -1963,8 +1963,8 @@ Call:  cv.glmnet(x = x, y = y, offset = log(df_train$exposure), type.measure = &
 Measure: Poisson Deviance 
 
     Lambda Index Measure       SE Nonzero
-min 0.0684    60  0.4036 0.005816       1
-1se 0.8436    33  0.4092 0.005118       1
+min 0.0681    60  0.4026 0.006298       1
+1se 0.8395    33  0.4082 0.005454       2
 cv_glmnet_0.75
 
 Call:  cv.glmnet(x = x, y = y, offset = log(df_train$exposure), type.measure = &quot;deviance&quot;,      nfolds = 20, family = &quot;poisson&quot;, intercept = FALSE, alpha = i) 
@@ -1972,8 +1972,8 @@ Call:  cv.glmnet(x = x, y = y, offset = log(df_train$exposure), type.measure = &
 Measure: Poisson Deviance 
 
     Lambda Index Measure       SE Nonzero
-min 0.0501    59  0.4036 0.005149       1
-1se 0.5624    33  0.4087 0.004545       1
+min 0.0498    59  0.4025 0.005125       1
+1se 0.5100    34  0.4069 0.004504       1
 cv_glmnet_1
 
 Call:  cv.glmnet(x = x, y = y, offset = log(df_train$exposure), type.measure = &quot;deviance&quot;,      nfolds = 20, family = &quot;poisson&quot;, intercept = FALSE, alpha = i) 
@@ -1981,8 +1981,8 @@ Call:  cv.glmnet(x = x, y = y, offset = log(df_train$exposure), type.measure = &
 Measure: Poisson Deviance 
 
     Lambda Index Measure       SE Nonzero
-min 0.0375    59  0.4036 0.005024       1
-1se 0.4218    33  0.4085 0.004416       1</code></pre>
+min 0.0374    59  0.4025 0.006287       1
+1se 0.4607    32  0.4084 0.005440       1</code></pre>
 </div>
 <p>we can pull out the coefficient by calling <code>coef</code>
 function.</p>
@@ -1992,52 +1992,52 @@ function.</p>
 </code></pre>
 </div>
 <pre><code>45 x 1 sparse Matrix of class &quot;dgCMatrix&quot;
-                                 s1
-(Intercept)              .         
-row.id                   .         
-driver.age               .         
-yrs.licensed            -0.03001484
-ncd.level               -0.07940079
-region                   .         
-vehicle.age              .         
-vehicle.value            .         
-seats                    .         
-ccm                      .         
-hp                       .         
-weight                   .         
-length                   .         
-width                    .         
-height                  -0.82895389
-prior.claims             0.05600267
-nb.rb_NB                 .         
-nb.rb_RB                -0.06393684
-driver.gender_Female     .         
-driver.gender_Male       .         
-marital.status_Divorced  .         
-marital.status_Married   .         
-marital.status_Single    .         
-marital.status_Widow     .         
-yrs.lic_X1               0.01090210
-yrs.lic_X2               .         
-yrs.lic_X3               .         
-yrs.lic_X4               .         
-yrs.lic_X5               .         
-yrs.lic_X6               .         
-yrs.lic_X7               .         
-yrs.lic_X8               .         
-yrs.lic_X9               .         
-yrs.lic_X9.              .         
-body.code_A              .         
-body.code_B              .         
-body.code_C              .         
-body.code_D              .         
-body.code_E              .         
-body.code_F              .         
-body.code_G              .         
-body.code_H              .         
-fuel.type_Diesel         .         
-fuel.type_Gasoline       .         
-fuel.type_LPG            .         </code></pre>
+                                   s1
+(Intercept)              .           
+row.id                   .           
+driver.age              -0.0006220311
+yrs.licensed            -0.0268724105
+ncd.level               -0.0720340462
+region                   .           
+vehicle.age              .           
+vehicle.value            .           
+seats                    .           
+ccm                      .           
+hp                       .           
+weight                   .           
+length                   .           
+width                    .           
+height                  -0.8287184062
+prior.claims             0.0342454915
+nb.rb_NB                 .           
+nb.rb_RB                -0.0175072183
+driver.gender_Female     .           
+driver.gender_Male       .           
+marital.status_Divorced  .           
+marital.status_Married   .           
+marital.status_Single    .           
+marital.status_Widow     .           
+yrs.lic_X1               .           
+yrs.lic_X2               .           
+yrs.lic_X3               .           
+yrs.lic_X4               .           
+yrs.lic_X5               .           
+yrs.lic_X6               .           
+yrs.lic_X7               .           
+yrs.lic_X8               .           
+yrs.lic_X9               .           
+yrs.lic_X9.              .           
+body.code_A              .           
+body.code_B              .           
+body.code_C              .           
+body.code_D              .           
+body.code_E              .           
+body.code_F              .           
+body.code_G              .           
+body.code_H              .           
+fuel.type_Diesel         .           
+fuel.type_Gasoline       .           
+fuel.type_LPG            .           </code></pre>
 </div>
 <p>Note that over here, I am pulling the coefficients from the
 regularized model when cross validation error is within one standard
@@ -2053,50 +2053,50 @@ model when cross validation error is the minimum by setting s to be
 <pre><code>45 x 1 sparse Matrix of class &quot;dgCMatrix&quot;
                                    s1
 (Intercept)              .           
-row.id                   2.141219e-06
-driver.age              -3.795587e-03
-yrs.licensed            -6.323389e-02
-ncd.level               -9.893126e-02
-region                  -4.959375e-04
-vehicle.age             -4.058878e-02
-vehicle.value           -1.257083e-02
+row.id                   3.077315e-06
+driver.age              -6.003862e-03
+yrs.licensed            -7.089763e-02
+ncd.level               -9.562086e-02
+region                  -7.018851e-04
+vehicle.age             -1.777227e-02
+vehicle.value           -7.633382e-03
 seats                    .           
 ccm                      .           
-hp                       1.614568e-03
-weight                  -5.202375e-05
-length                   .           
-width                    2.134906e-01
-height                  -6.933923e-01
-prior.claims             1.406854e-01
-nb.rb_NB                 1.868421e-02
-nb.rb_RB                -1.908240e-01
+hp                       6.876185e-04
+weight                   .           
+length                   5.860735e-03
+width                    2.131378e-01
+height                  -7.334423e-01
+prior.claims             1.281979e-01
+nb.rb_NB                 .           
+nb.rb_RB                -1.769263e-01
 driver.gender_Female     .           
-driver.gender_Male      -8.318318e-02
-marital.status_Divorced -2.387892e-01
-marital.status_Married   .           
+driver.gender_Male      -8.771084e-02
+marital.status_Divorced -9.900298e-02
+marital.status_Married  -7.775612e-03
 marital.status_Single    .           
-marital.status_Widow     5.294701e-01
-yrs.lic_X1               6.905843e-02
+marital.status_Widow     5.797761e-01
+yrs.lic_X1               2.569229e-02
 yrs.lic_X2               .           
-yrs.lic_X3              -5.994200e-02
-yrs.lic_X4               4.573466e-02
-yrs.lic_X5              -4.492949e-02
-yrs.lic_X6              -1.529179e-01
+yrs.lic_X3              -4.162422e-02
+yrs.lic_X4               7.175686e-02
+yrs.lic_X5               .           
+yrs.lic_X6              -2.272347e-01
 yrs.lic_X7               .           
-yrs.lic_X8               .           
-yrs.lic_X9               .           
+yrs.lic_X8              -1.465572e-01
+yrs.lic_X9               3.793601e-01
 yrs.lic_X9.              .           
 body.code_A              .           
-body.code_B             -4.032114e-01
-body.code_C              4.686916e-02
-body.code_D             -1.728505e-02
-body.code_E              .           
-body.code_F             -2.703988e-01
-body.code_G              1.015487e-01
-body.code_H              2.250451e-01
-fuel.type_Diesel         1.220438e-02
-fuel.type_Gasoline      -8.526781e-02
-fuel.type_LPG           -8.128223e-02</code></pre>
+body.code_B             -2.891222e-01
+body.code_C              .           
+body.code_D              .           
+body.code_E              8.646049e-03
+body.code_F             -7.096296e-03
+body.code_G              1.862983e-01
+body.code_H              1.299067e-01
+fuel.type_Diesel         .           
+fuel.type_Gasoline      -9.764875e-02
+fuel.type_LPG            .           </code></pre>
 </div>
 <p>Alternatively, we could use <code>tidy</code> function to tidy up the
 objects and extract the output from the steps we are interested in.</p>
@@ -2107,14 +2107,14 @@ objects and extract the output from the steps we are interested in.</p>
 </code></pre>
 </div>
 <pre><code># A tibble: 6 x 5
-  term          step estimate lambda dev.ratio
-  &lt;chr&gt;        &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;
-1 yrs.licensed    75  -0.0300 0.0339     0.589
-2 ncd.level       75  -0.0794 0.0339     0.589
-3 height          75  -0.829  0.0339     0.589
-4 prior.claims    75   0.0560 0.0339     0.589
-5 nb.rb_RB        75  -0.0639 0.0339     0.589
-6 yrs.lic_X1      75   0.0109 0.0339     0.589</code></pre>
+  term          step  estimate lambda dev.ratio
+  &lt;chr&gt;        &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;
+1 driver.age      75 -0.000946 0.0337     0.589
+2 yrs.licensed    75 -0.0309   0.0337     0.589
+3 ncd.level       75 -0.0748   0.0337     0.589
+4 height          75 -0.812    0.0337     0.589
+5 prior.claims    75  0.0424   0.0337     0.589
+6 nb.rb_RB        75 -0.0291   0.0337     0.589</code></pre>
 </div>
 <h2 id="prediction">Prediction</h2>
 <p>To obtain the predictions, I will pass “response” to the type
@@ -2153,16 +2153,16 @@ by default.</p>
 <pre><code># A tibble: 16,304 x 1
    lambda.1se
         &lt;dbl&gt;
- 1     0.0128
- 2     0.163 
- 3     0.153 
- 4     0.0128
- 5     0.153 
- 6     0.125 
- 7     0.181 
- 8     0.199 
- 9     0.133 
-10     0.0194
+ 1     0.121 
+ 2     0.156 
+ 3     0.0130
+ 4     0.158 
+ 5     0.158 
+ 6     0.159 
+ 7     0.194 
+ 8     0.153 
+ 9     0.197 
+10     0.193 
 # ... with 16,294 more rows</code></pre>
 </div>
 <p>I have passed the predictions to <code>as_tibble</code> function to
@@ -2175,6 +2175,9 @@ all the predictions when we call the predictions.</p>
 href="mailto:jasper.jh.lok@gmail.com">email</a> or <a
 href="https://www.linkedin.com/in/jasper-l-13426232/">LinkedIn</a> if
 you have any suggestions on future topics to share.</p>
+<p>Refer to this link for the <a
+href="https://jasperlok.netlify.app/blog_disclaimer.html">blog
+disclaimer</a>.</p>
 <p>Till next time, happy learning!</p>
 <div class="layout-chunk" data-layout="l-body">
 <p><img src="image/end.jpg" width="100%" /></p>
