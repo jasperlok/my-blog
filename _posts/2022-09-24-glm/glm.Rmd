@@ -1,0 +1,588 @@
+---
+title: "Generalized Linear Model"
+description: |
+   Back to Actuaries Most Beloved Model
+author:
+  - name: Jasper Lok
+    url: {}
+date: 09-24-2022
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 4
+    self_contained: false
+bibliography: ["ref.bib"]
+biblio-style: "apa"
+link-citations: true
+categories:
+  - Machine Learning
+  - Supervised Learning
+
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+packages <- c("captioner", "knitr", "tidyverse", "kableExtra")
+
+for (p in packages){
+  if(!require (p, character.only = T)){
+    install.packages(p)
+  }
+  library(p, character.only = T)
+}
+
+knitr::opts_chunk$set(fig.retina = 3,                       
+                      echo = TRUE,                       
+                      eval = TRUE,                       
+                      message = FALSE,                       
+                      warning = FALSE,
+                      out.width="90%")
+
+library(captioner)
+
+```
+
+
+In this post, I will be exploring actuaries' most beloved model, generalized linear model (GLM).
+
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/tiles.jpg")
+
+```
+
+Photo by <a href="https://unsplash.com/@ninjason?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Jason Leung</a> on <a href="https://unsplash.com/collections/2566939/linear?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+
+
+This will set the scene for future sharing on other topics, such as generalized additive model, frequency severity modeling and so on.
+
+
+
+# Generalized Linear Models (GLM)
+
+GLM is an extension of linear model. 
+
+
+In linear model, we assume the relationship between independent and dependent variables are linear.
+
+
+However, this assumption is not appropriate in most of the scenarios (eg. insurance premium setting). This is where GLM could help us in our modeling work.
+
+
+The idea of using GLM is that with appropriate transformation on the target variable, the relationship between independent variables and transformed dependent variable remain linear.
+
+
+[@kjytay] A GLM model consists of following 3 parts:
+
+- Linear predictor $\eta_i=\beta_0+\beta^Tx_i$
+
+- Link function $\eta_i=g(\mu_i)$
+
+- Random component $y_i\sim f(y|\mu_i)$
+
+
+where the general form of GLM formula can be found below:
+
+$$y_i=\beta^Tx_i+\epsilon_i$$
+
+
+
+## Assumptions
+
+Below are some of the assumptions when using GLM models:
+
+
+- The predictors (a.k.a. independent variables) are independent from one another
+
+
+- The dependent variable is assumed to be one of the distribution from an exponential family (eg. normal, Poisson, binomial etc)
+
+
+- Errors are independent from one another
+
+
+The model performance might be affected if any of the assumptions is being violated.
+
+
+## Family
+
+
+Below are some of the families supported under GLM:
+
+- Gaussian
+
+- Binomial
+
+- Poisson
+
+- Multinomial
+
+- Cox
+
+- Tweedie
+
+
+
+[@Molnar2022] summarized down the appropriate families for the different predictions we are trying to make. This is the [link](https://christophm.github.io/interpretable-ml-book/extend-lm.html#more-lm-extension) to the book.
+
+
+## Offset function
+
+
+The offset enters the score in an additive way. 
+
+
+[This post](https://stats.stackexchange.com/questions/11182/when-to-use-an-offset-in-a-poisson-regression) provides a clear example on how the offset function works in a Poisson regression context. 
+
+
+Then you might be asking instead of passing feature into offset function, why can't we just divide the target variable by offset variable? 
+
+
+The short answer is the likelihood function would change if we divide the target variable by using the offset variable. [@tiwari2020] provides the mathematical proof on how the likelihood would change if we divide the target variable by the offset variable.
+
+
+
+One important thing to note when using offset is offset should be in the same scale as the target variable. For example, when using Poisson family, the default link function is log. The offset variable should be log as well.
+
+
+Note that offset function should not be confused with weight function in GLM. 
+
+
+In short, following are the differences between offset & weight:
+
+
+- Offset is to adjust the target so that the targets of the different data points are in same unit of measurements
+
+
+- Weight is to assign different importance to some observations than the rest
+
+
+## Pros and cons of using GLM models
+
+Of course there is not perfect model. Sometimes the advantages of the models bring could be disadvantages of using the relevant models.
+
+
+Following are advantages and disadvantages of using GLM models:
+
+
+**Advantages of using GLM**
+
+- Does not assume the relationship between independent and dependent variables is linear
+
+
+- Easier to interpret than some other models, such as neural network
+
+
+- Less resistant from the business users since GLM can produce rating factors, which has been widely used
+
+
+**Disadvantages of using GLM**
+
+
+- Sensitive to outliers
+
+
+- Unable to handle categorical variables
+
+
+- Model performance will be affected if any of the model assumptions mentioned above is being violated
+
+
+
+# Application of GLM models
+
+
+[@Denuit2019] GLMs were originally introduced to improve the accuracy of motor insurance pricing. Today GLM is being used in many insurance contexts.
+
+
+[@Denuit2019] also listed some of the typical insurance use case by using GLMs in the book:
+
+
+- Claim count modeling
+
+- Claim amount modeling
+
+- Graduation of mortality and morbidity rates
+
+- Elasticity modeling
+
+- Loss reserving
+
+- Competitive analysis
+
+
+Nevertheless, let's start the demonstration!
+
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/journey.jpg")
+
+```
+
+Photo by <a href="https://unsplash.com/@clemensvanlay?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Clemens van Lay</a> on <a href="https://unsplash.com/s/photos/journey?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+
+
+
+# Demonstration
+
+
+## Setup the environment
+
+
+In this demonstration, I will be using `glmnet` package to build the GLM model. The documentation can be found under this [link](https://glmnet.stanford.edu/index.html).
+
+
+At the point of writing, it seems like `tidymodels` package doesn't support all functionalities of `glmnet` package. 
+
+
+According to this [issue ticket](https://github.com/tidymodels/parsnip/issues/195), it seems like `tidymodels` is unable to support  offset function for time being. `glmnet` requires the users to specify the variable to be used as offset in both training and testing datasets. However, `tidymodels` only allows the users to specify offset in training dataset.
+
+Therefore, I will be using `glmnet` package directly in building the model and `tidymodels` package to prepare the data for model building.
+
+
+I will call the relevant packages to setup the environment.
+
+
+```{r}
+pacman::p_load(tidyverse, readr, tidymodels, corrplot, glmnet,
+              glue)
+
+```
+
+
+
+## Dataset
+
+For the demonstration, I will be using the car insurance dataset from Chapter 1 of Predictive Modeling Applications in Actuarial Science - Volume 1. 
+
+
+The dataset can be found from the [book website](https://instruction.bus.wisc.edu/jfrees/jfreesbooks/PredictiveModelingVol1/glm/v2-chapter-1.html).
+
+
+```{r, echo = FALSE, out.width = "100%"}
+knitr::include_graphics("image/nice car.jpg")
+
+```
+
+
+Photo by <a href="https://unsplash.com/@whykei?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">why kei</a> on <a href="https://unsplash.com/s/photos/car-insurance?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+
+
+I will first import the data into environment.
+
+I will also specify that the year of driving licence should be imported as character, instead of continuous variable.
+
+```{r}
+df <- read_csv("data/sim-modeling-dataset.csv",
+               col_types = list(yrs.lic = col_character()))
+
+```
+
+
+This is a rather clean data to work with since there is no missing value.
+
+
+
+## Explotary Data Analysis (EDA)
+
+Before building the model, I will perform some simple EDA to perform simple data cleaning.
+
+
+I will first select all the numeric variables.
+
+```{r, out.width = "180%"}
+df_num <- df %>%
+  select_if(is.numeric)
+
+```
+
+
+Then I will pass them into `corrplot` function.
+
+
+```{r}
+corrplot(cor(df_num, use="pairwise.complete.obs"), 
+         method = "number", 
+         type = "upper", 
+         tl.cex = 0.65, 
+         number.cex = 0.65, 
+         diag = FALSE)
+
+```
+
+
+Note that there are some variables are perfectly correlated. 
+
+
+Based on the variable names, it seems like these variables are measuring the same things. 
+
+
+Hence I will remove the highly correlated variable.
+
+
+```{r}
+df_1 <- df %>%
+  select(-c(year, drv.age, veh.age, clm.incurred))
+
+```
+
+
+Also, GLM is unable to handle non-numeric variables. 
+
+To overcome this, I have used to the `step_dummy` function in recipe package to encode the non-numeric variables by using one hot encoding method. `all_nominal_predictiors` function will tell the function to identify all the nominal independent variables in the dataset.
+
+
+Then I will pass the recipe into the `prep` function. The current dataset will then be passed into `bake` function to generate out the pre-processed data.
+
+```{r}
+df_recoded <- df_1 %>%
+  recipe(clm.count ~ .) %>%
+  step_dummy(all_nominal_predictors(), one_hot = TRUE) %>%
+  prep() %>%
+  bake(df_1)
+
+```
+
+
+Next, I will be building a model to predict the claim count from the various policies.
+
+
+## Model Building
+
+### Data Splitting
+
+I will split the dataset into training and testing dataset.
+
+```{r}
+df_split <- initial_split(df_recoded, prop = 0.6, strata = clm.count)
+
+```
+
+
+As usual, I will use `training` and `testing` function to crave the dataset into training and testing dataset.
+
+```{r}
+df_train <- training(df_split)
+df_test <- testing(df_split)
+
+```
+
+
+### Building Model
+
+
+`glmnet` requires the independent variables to be in matrix format. Hence I will pass the object into `data.matrix` to convert the tibble table into matrix format.
+
+
+```{r}
+# predictors need to be in matrix format
+x <- df_train %>%
+  select(-c(clm.count, exposure)) %>%
+  data.matrix()
+
+
+```
+
+
+Similarly, I will "cut out" the target variable from the training dataset.
+
+```{r}
+y <- df_train$clm.count
+
+```
+
+
+I will also convert the test dataset into matrix format.
+
+```{r}
+newx <- df_test %>%
+  select(-c(clm.count, exposure)) %>%
+  data.matrix()
+
+```
+
+
+Next, I will start building the model.
+
+
+As I am trying to predict the claim count, hence I will specify Poisson to be the family in the GLM function.
+
+
+
+```{r}
+glmnet_model <- glmnet(x, 
+                       y, 
+                       family = "poisson", 
+                       offset = log(df_train$exposure))
+
+```
+
+
+As in the data, we are not told whether the claim counts and claim amounts are being adjusted for the exposure. Hence, I will assume the claim counts and claim amounts are not adjusted for the exposure of the policies.
+
+
+To adjust for the exposure, I will specify what should be the "offset" in the model. 
+
+
+Also, `glmnet` package allows us to fit regularized model. The algorithm will fit a lasso model if we didn't specify the value of alpha.
+
+
+To fit a ridge model, we just need to set the alpha to be 0 as shown below.
+
+
+```{r, eval = FALSE}
+glmnet(x, 
+       y, 
+       family = "poisson", 
+       offset = log(df_train$exposure),
+       alpha = 0)
+
+```
+
+
+
+`tidy` function from `tidymodels` package can be used to convert the output into tidy data format so that its easier to read and perform data wrangling.
+
+
+```{r}
+glmnet_model %>% 
+  tidy()
+
+```
+
+The results above show the different lambda values are being used to fit the model.
+
+
+The model results also contains `dev.ratio`, which represents the proportion of deviance explained.
+
+
+
+
+
+## Cross Validation
+
+Alternatively, `glmnet` package also has functions to help us in performing cross validation.
+
+
+As from the documentation, it doesn't seem like the cross validation function in `glmnet` package allows us to iterate over different alpha values.
+
+
+To overcome this, I will loop the cross validation over different alpha values. 
+
+
+```{r}
+alpha_list <- c(0, 0.25, 0.5, 0.75, 1)
+
+for (i in alpha_list){
+  assign(glue("cv_glmnet_", i), cv.glmnet(x, 
+                       y, 
+                       family = "poisson",
+                       intercept = FALSE,
+                       type.measure = "deviance", 
+                       alpha = i,
+                       nfolds = 20, 
+                       offset = log(df_train$exposure))
+         )
+  
+  print(glue("cv_glmnet_", i))
+  print(get(glue("cv_glmnet_", i)))
+}
+
+
+```
+
+
+we can pull out the coefficient by calling `coef` function.
+
+```{r}
+coef(cv_glmnet_0.25)
+
+```
+
+Note that over here, I am pulling the coefficients from the regularized model when cross validation error is within one standard error of the minimum.
+
+
+Alternatively, we could extract the coefficient of the regularized model when cross validation error is the minimum by setting s to be "lambda.min" in the argument.
+
+
+```{r}
+coef(cv_glmnet_0.25, s = "lambda.min")
+
+```
+
+
+
+
+Alternatively, we could use `tidy` function to tidy up the objects and extract the output from the steps we are interested in.
+
+
+```{r}
+tidy(cv_glmnet_0.25$glmnet.fit) %>%
+  filter(step == 75)
+
+```
+
+
+
+
+## Prediction
+
+
+To obtain the predictions, I will pass "response" to the type augment.
+
+
+Since I have used offset to fit the model, offset needs to be specified in the predict function again based on the documentation [@kjytay2019].
+
+```{r}
+glmnet_predict <- predict(glmnet_model, 
+                          type = "response", 
+                          newx = newx, 
+                          newoffset = log(df_test$exposure))
+
+```
+
+Note that according to this [stack overflow ticket](https://stackoverflow.com/questions/68689368/why-r-glmnet-predict-gives-a-matrix-instead-of-just-one-column), without performing cross validation, the glmnet will generate the predictions under all lambda values.
+
+After performing cross validation, the algorithm will choose the largest lambda which MSE is witin one standard error of the smallest MSE by default.
+
+
+```{r}
+cv_predict_glmnet <- predict(cv_glmnet_0.25, 
+                             newx = newx, 
+                             newoffset = log(df_test$exposure), 
+                             type = "response")
+
+cv_predict_glmnet %>% 
+  as_tibble()
+
+```
+
+I have passed the predictions to `as_tibble` function to convert the object into a tibble table. This is to avoid R to print out all the predictions when we call the predictions.
+
+
+
+
+# Conclusion
+
+That's all for the day!
+
+
+Thanks for reading the post until the end. 
+
+
+Feel free to contact me through [email](mailto:jasper.jh.lok@gmail.com) or [LinkedIn](https://www.linkedin.com/in/jasper-l-13426232/) if you have any suggestions on future topics to share.
+
+
+Till next time, happy learning!
+
+
+
+```{r, echo = FALSE, out.width = "100%"}
+knitr::include_graphics("image/end.jpg")
+
+```
+
+
+Photo by <a href="https://unsplash.com/@markusspiske?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Markus Spiske</a> on <a href="https://unsplash.com/s/photos/end?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+  

@@ -1,0 +1,31 @@
+---
+title: "Jasper Lok"
+site: blog_disclaimer.hmtl
+
+---
+
+### Disclaimer for this blog
+
+```{r, echo = FALSE, fig.width = 2}
+knitr::include_graphics("image/books.jpg")
+
+```
+
+Photo by <a href="https://unsplash.com/@pavstyuk?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Mikhail Pavstyuk</a> on <a href="https://unsplash.com/s/photos/rules?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+  
+
+
+Any views or opinions represented in this blog are personal and belong solely to me and do not represent those of people, institutions or organizations that the owner may or may not be associated with in professional or personal capacity, unless explicitly stated. 
+
+Any views or opinions are not intended to malign any religion, ethnic group, club, organization, company, or individual.
+
+
+All content provided on this blog is for informational purposes only. The owner of this blog makes no representations as to the accuracy or completeness of any information on this site. 
+
+
+The owner will not be liable for any errors or omissions in this information nor for the availability of this information. 
+
+
+The owner will not be liable for any losses, injuries, or damages from the display or use of this information.
+
+

@@ -11,6 +11,8 @@ navbar:
       href: about.html
     - text: "Past Projects & Talks"
       href: past_proj.html
+    - text: "Blog Disclaimer"
+      href: blog_disclaimer.html
 output: distill::distill_article
 collections:
   posts:
