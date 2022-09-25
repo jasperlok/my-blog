@@ -56,7 +56,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 code span.al { color: #ad0000; } /* Alert */
 code span.an { color: #5e5e5e; } /* Annotation */
-code span.at { color: #20794d; } /* Attribute */
+code span.at { } /* Attribute */
 code span.bn { color: #ad0000; } /* BaseN */
 code span.bu { } /* BuiltIn */
 code span.cf { color: #007ba5; } /* ControlFlow */
@@ -77,12 +77,34 @@ code span.kw { color: #007ba5; } /* Keyword */
 code span.op { color: #5e5e5e; } /* Operator */
 code span.ot { color: #007ba5; } /* Other */
 code span.pp { color: #ad0000; } /* Preprocessor */
-code span.sc { color: #20794d; } /* SpecialChar */
+code span.sc { color: #5e5e5e; } /* SpecialChar */
 code span.ss { color: #20794d; } /* SpecialString */
 code span.st { color: #20794d; } /* String */
 code span.va { color: #111111; } /* Variable */
 code span.vs { color: #20794d; } /* VerbatimString */
 code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+</style>
+
+<style>
+  div.csl-bib-body { }
+  div.csl-entry {
+    clear: both;
+    }
+  .hanging div.csl-entry {
+    margin-left:2em;
+    text-indent:-2em;
+  }
+  div.csl-left-margin {
+    min-width:2em;
+    float:left;
+  }
+  div.csl-right-inline {
+    margin-left:2em;
+    padding-left:1em;
+  }
+  div.csl-indent {
+    margin-left: 2em;
+  }
 </style>
 
   <!--radix_placeholder_meta_tags-->
@@ -2047,7 +2069,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <!--/radix_placeholder_distill-->
   <script src="../../site_libs/header-attrs/header-attrs.js"></script>
-  <script src="../../site_libs/jquery/jquery.min.js"></script>
+  <script src="../../site_libs/jquery/jquery-3.6.0.min.js"></script>
   <script src="../../site_libs/popper/popper.min.js"></script>
   <link href="../../site_libs/tippy/tippy.css" rel="stylesheet" />
   <link href="../../site_libs/tippy/tippy-light-border.css" rel="stylesheet" />
@@ -2099,7 +2121,8 @@ document.addEventListener('DOMContentLoaded', function() {
   <a href="../../index.html#category:Supervised_Learning" class="dt-tag">Supervised Learning</a>
 </div>
 <!--/radix_placeholder_categories-->
-<p><p>When the sum of all component is greater than individual component</p></p>
+<p><p>When the sum of all component is greater than individual
+component</p></p>
 </div>
 
 <div class="d-byline">
@@ -2113,84 +2136,149 @@ document.addEventListener('DOMContentLoaded', function() {
 <nav class="l-text toc figcaption" id="TOC">
 <h3>Contents</h3>
 <ul>
-<li><a href="#what-is-ensemble-method">What is Ensemble method?</a></li>
-<li><a href="#so-how-does-stacking-work">So, how does stacking work?</a></li>
-<li><a href="#why-is-this-method-popular">Why is this method popular?</a></li>
-<li><a href="#stacks-r-package">Stacks R Package</a></li>
-<li><a href="#demonstration">Demonstration</a>
+<li><a href="#what-is-ensemble-method"
+id="toc-what-is-ensemble-method">What is Ensemble method?</a></li>
+<li><a href="#so-how-does-stacking-work"
+id="toc-so-how-does-stacking-work">So, how does stacking work?</a></li>
+<li><a href="#why-is-this-method-popular"
+id="toc-why-is-this-method-popular">Why is this method popular?</a></li>
+<li><a href="#stacks-r-package" id="toc-stacks-r-package">Stacks R
+Package</a></li>
+<li><a href="#demonstration" id="toc-demonstration">Demonstration</a>
 <ul>
-<li><a href="#setup-the-environment">Setup the environment</a></li>
-<li><a href="#import-data">Import Data</a></li>
-<li><a href="#data-splitting">Data Splitting</a></li>
-<li><a href="#define-recipe">Define Recipe</a></li>
-<li><a href="#fitting-individual-machine-learning-models">Fitting Individual Machine Learning Models</a></li>
-<li><a href="#stack-the-models">Stack the Models!</a></li>
-<li><a href="#compare-the-model-performance">Compare the Model Performance</a>
+<li><a href="#setup-the-environment"
+id="toc-setup-the-environment">Setup the environment</a></li>
+<li><a href="#import-data" id="toc-import-data">Import Data</a></li>
+<li><a href="#data-splitting" id="toc-data-splitting">Data
+Splitting</a></li>
+<li><a href="#define-recipe" id="toc-define-recipe">Define
+Recipe</a></li>
+<li><a href="#fitting-individual-machine-learning-models"
+id="toc-fitting-individual-machine-learning-models">Fitting Individual
+Machine Learning Models</a></li>
+<li><a href="#stack-the-models" id="toc-stack-the-models">Stack the
+Models!</a></li>
+<li><a href="#compare-the-model-performance"
+id="toc-compare-the-model-performance">Compare the Model Performance</a>
 <ul>
-<li><a href="#performance-metric-of-individual-models">Performance Metric of Individual Models</a></li>
-<li><a href="#performance-metric-of-stack-model">Performance Metric of Stack Model</a></li>
-<li><a href="#summary">Summary</a></li>
+<li><a href="#performance-metric-of-individual-models"
+id="toc-performance-metric-of-individual-models">Performance Metric of
+Individual Models</a></li>
+<li><a href="#performance-metric-of-stack-model"
+id="toc-performance-metric-of-stack-model">Performance Metric of Stack
+Model</a></li>
+<li><a href="#summary" id="toc-summary">Summary</a></li>
 </ul></li>
 </ul></li>
-<li><a href="#conclusion">Conclusion</a></li>
+<li><a href="#conclusion" id="toc-conclusion">Conclusion</a></li>
 </ul>
 </nav>
 </div>
 <div class="layout-chunk" data-layout="l-body">
 <p><img src="image/cup_stack.jpg" width="80%" /></p>
 </div>
-<p><em>Photo by <a href="https://unsplash.com/@crissyjarvis?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Crissy Jarvis</a> on <a href="https://unsplash.com/s/photos/stack?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a></em></p>
+<p><em>Photo by
+<a href="https://unsplash.com/@crissyjarvis?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Crissy
+Jarvis</a> on
+<a href="https://unsplash.com/s/photos/stack?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a></em></p>
 <p>In this series of modeling, I will be exploring model stacking.</p>
-<p>It has gained popularity especially in data science competition as such method could further improve the accuracy of the machine learning models.</p>
-<p>Before jumping straight into model stacking, let’s understand what is ensemble method.</p>
+<p>It has gained popularity especially in data science competition as
+such method could further improve the accuracy of the machine learning
+models.</p>
+<p>Before jumping straight into model stacking, let’s understand what is
+ensemble method.</p>
 <h2 id="what-is-ensemble-method">What is Ensemble method?</h2>
 <div class="layout-chunk" data-layout="l-body">
 <p><img src="image/Graph%20on%20Different%20Machine%20Learning.png" width="80%" /></p>
 </div>
-<p><em>Extracted from vas3k blog</em> <span class="citation" data-cites="vas3k">(<a href="#ref-vas3k" role="doc-biblioref">vas3k</a>)</span></p>
+<p><em>Extracted from vas3k blog</em> <span class="citation"
+data-cites="vas3k">(<a href="#ref-vas3k"
+role="doc-biblioref">vas3k</a>)</span></p>
 <p>Ensemble method is one of the machine learning method.</p>
-<p><span class="citation" data-cites="Geron2019">(<a href="#ref-Geron2019" role="doc-biblioref">Geron 2019</a>)</span> described that ensemble method is similar to aggregate the answer of a complex question from thousands of random people. This anchored on the idea of wisdom of the crowd. Often this approach would produce a better answer than an answer from an expert.</p>
-<p>Such method can be either applied on the same machine learning algorithms or aggregate across different machine learning algorithms.</p>
-<p>As the graph shown above, following are the three common ensemble methods:</p>
+<p><span class="citation" data-cites="Geron2019">(<a
+href="#ref-Geron2019" role="doc-biblioref">Geron 2019</a>)</span>
+described that ensemble method is similar to aggregate the answer of a
+complex question from thousands of random people. This anchored on the
+idea of wisdom of the crowd. Often this approach would produce a better
+answer than an answer from an expert.</p>
+<p>Such method can be either applied on the same machine learning
+algorithms or aggregate across different machine learning
+algorithms.</p>
+<p>As the graph shown above, following are the three common ensemble
+methods:</p>
 <ul>
-<li><p><strong>Bagging:</strong> Different models are trained by using different dataset randomly drawn with replacement from the training dataset. The final prediction is the average of predictions from all the fitted models. Random forest is one of the algorithm that leverages on bagging to improve the model accuracy.</p></li>
-<li><p><strong>Boosting:</strong> The idea is to a combination of weak learners could form a strong learner. XGBoost is one commonly used model algorithm that uses boosting method.</p></li>
-<li><p><strong>Stacking:</strong> As the name suggested, we “stack” the models on one another and create a new model.</p></li>
+<li><p><strong>Bagging:</strong> Different models are trained by using
+different dataset randomly drawn with replacement from the training
+dataset. The final prediction is the average of predictions from all the
+fitted models. Random forest is one of the algorithm that leverages on
+bagging to improve the model accuracy.</p></li>
+<li><p><strong>Boosting:</strong> The idea is to a combination of weak
+learners could form a strong learner. XGBoost is one commonly used model
+algorithm that uses boosting method.</p></li>
+<li><p><strong>Stacking:</strong> As the name suggested, we “stack” the
+models on one another and create a new model.</p></li>
 </ul>
-<p>In this post, I will be exploring model stacking and mainly covering the following topics:</p>
+<p>In this post, I will be exploring model stacking and mainly covering
+the following topics:</p>
 <ul>
 <li><p>How does model stacking work?</p></li>
 <li><p>How to implement model stacking in R?</p></li>
 </ul>
 <h2 id="so-how-does-stacking-work">So, how does stacking work?</h2>
-<p>If we were to visualize the steps for model stacking, this would be how it would look like:</p>
+<p>If we were to visualize the steps for model stacking, this would be
+how it would look like:</p>
 <div class="layout-chunk" data-layout="l-body">
 <p><img src="image/model%20stacking%20steps.png" width="135%" /></p>
 </div>
 <p>Following are the steps to perform model stacking:</p>
 <ul>
 <li><p>First, fit different individual machine learning models</p></li>
-<li><p>Next, use target variable from the training dataset and the predictions from the different machine learning models as input to fit a model</p></li>
+<li><p>Next, use target variable from the training dataset and the
+predictions from the different machine learning models as input to fit a
+model</p></li>
 </ul>
-<p>The conventional way to stack the model is to use linear model. Although in theory we could use other machine learning algorithm to stack the models, this would increase the complexity of the final model, making it even harder to interpret.</p>
+<p>The conventional way to stack the model is to use linear model.
+Although in theory we could use other machine learning algorithm to
+stack the models, this would increase the complexity of the final model,
+making it even harder to interpret.</p>
 <h2 id="why-is-this-method-popular">Why is this method popular?</h2>
-<p><span class="citation" data-cites="Gunes2017">(<a href="#ref-Gunes2017" role="doc-biblioref">Funda Gunes and Tan 2017</a>)</span> discussed in their paper that ensemble method enables the users to average out the noise from the diverse models and thereby enhance the generalizable signal.</p>
-<p>Therefore, such method has proven to increase model accuracy in Kaggle competitions. Often, even a slight uplift in improvement could affect our model performance rankings in the Kaggle competitions.</p>
-<p>While this method does not guarantee an improvement in the accuracy, it is worthwhile to fit such models to attempt to improve the accuracy of the predictions.</p>
-<p>However, by stacking the different models together, this has increased the complexity of the models, making it even harder to understand on how the model reaches the decisions.</p>
-<p>The time required for model fitting would be longer as well since we would need to fit the base model before perform model stacking.</p>
+<p><span class="citation" data-cites="Gunes2017">(<a
+href="#ref-Gunes2017" role="doc-biblioref">Funda Gunes and Tan
+2017</a>)</span> discussed in their paper that ensemble method enables
+the users to average out the noise from the diverse models and thereby
+enhance the generalizable signal.</p>
+<p>Therefore, such method has proven to increase model accuracy in
+Kaggle competitions. Often, even a slight uplift in improvement could
+affect our model performance rankings in the Kaggle competitions.</p>
+<p>While this method does not guarantee an improvement in the accuracy,
+it is worthwhile to fit such models to attempt to improve the accuracy
+of the predictions.</p>
+<p>However, by stacking the different models together, this has
+increased the complexity of the models, making it even harder to
+understand on how the model reaches the decisions.</p>
+<p>The time required for model fitting would be longer as well since we
+would need to fit the base model before perform model stacking.</p>
 <h2 id="stacks-r-package">Stacks R Package</h2>
 <p>Okay, let’s perform some model stacking!</p>
 <div class="layout-chunk" data-layout="l-body">
 <p><img src="image/bricks%20stack.jpg" width="70%" /></p>
 </div>
-<p><em>Photo by <a href="https://unsplash.com/@lastnameeaster?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">La-Rel Easter</a> on <a href="https://unsplash.com/s/photos/stack?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a></em></p>
-<p>In this demonstration, I will be using a package from <strong>tidymodels</strong> that allows the users to perform model stacks with just a few lines of codes. This package is called <strong>stacks</strong>.</p>
+<p><em>Photo by
+<a href="https://unsplash.com/@lastnameeaster?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">La-Rel
+Easter</a> on
+<a href="https://unsplash.com/s/photos/stack?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a></em></p>
+<p>In this demonstration, I will be using a package from
+<strong>tidymodels</strong> that allows the users to perform model
+stacks with just a few lines of codes. This package is called
+<strong>stacks</strong>.</p>
 <div class="layout-chunk" data-layout="l-body">
 <p><img src="image/logo_stacks.png" width="40%" /></p>
 </div>
-<p><a href="https://stacks.tidymodels.org/"><strong>stacks</strong> <em>package</em></a></p>
-<p>And yes, this package is it conforms to the tidy data concept. It is also designed to work together with the various packages under <strong>tidymodels</strong>.</p>
+<p><a href="https://stacks.tidymodels.org/"><strong>stacks</strong>
+<em>package</em></a></p>
+<p>And yes, this package is it conforms to the tidy data concept. It is
+also designed to work together with the various packages under
+<strong>tidymodels</strong>.</p>
 <p><strong>WHAT A BIG RELIEF!</strong></p>
 <div class="layout-chunk" data-layout="l-body">
 <p><img src="image/hooray.jpg" width="70%" /></p>
@@ -2199,7 +2287,8 @@ document.addEventListener('DOMContentLoaded', function() {
 <p>This would make it easier for one to use perform model stacking.</p>
 <h2 id="demonstration">Demonstration</h2>
 <h3 id="setup-the-environment">Setup the environment</h3>
-<p>Before I start the demonstration, I will setup the environment by calling the necessary packages.</p>
+<p>Before I start the demonstration, I will setup the environment by
+calling the necessary packages.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>packages</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"tidyverse"</span>, <span class='st'>"tidymodels"</span>, <span class='st'>"stacks"</span><span class='op'>)</span>
@@ -2213,7 +2302,8 @@ document.addEventListener('DOMContentLoaded', function() {
 </code></pre>
 </div>
 </div>
-<p>I will also define the common parameters that will be used in the analysis below.</p>
+<p>I will also define the common parameters that will be used in the
+analysis below.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Define the random seeds for reproducibility</span>
@@ -2230,7 +2320,10 @@ document.addEventListener('DOMContentLoaded', function() {
 </code></pre>
 </div>
 </div>
-<p>To stack model, we need to include following as well. According to the documentation page, this is to ensure the predictions and necessary info are output in the necessary format required by <strong>stacks</strong> package later.</p>
+<p>To stack model, we need to include following as well. According to
+the documentation page, this is to ensure the predictions and necessary
+info are output in the necessary format required by
+<strong>stacks</strong> package later.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>ctrl_grid</span> <span class='op'>&lt;-</span> <span class='fu'>control_stack_grid</span><span class='op'>(</span><span class='op'>)</span>
@@ -2242,9 +2335,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
 </div>
 <h3 id="import-data">Import Data</h3>
-<p>For this demonstration, I will be using a dataset from <a href="https://www.kaggle.com/c/actuarial-loss-estimation/overview">Actuarial Loss Prediction Kaggle Competition</a>.</p>
-<p>Also, this sharing will be focusing on the model stacking, instead of end to end process. Hence, I will import the data I have previously cleaned.</p>
-<p>Refer to my <a href="https://github.com/jasperlok/SAS-Sharing_20210422/blob/main/Analysis/MITB_Capstone_Lok%20Jun%20Haur_EDA.Rmd">EDA code file</a> on my Github page for the steps taken to clean the data.</p>
+<p>For this demonstration, I will be using a dataset from <a
+href="https://www.kaggle.com/c/actuarial-loss-estimation/overview">Actuarial
+Loss Prediction Kaggle Competition</a>.</p>
+<p>Also, this sharing will be focusing on the model stacking, instead of
+end to end process. Hence, I will import the data I have previously
+cleaned.</p>
+<p>Refer to my <a
+href="https://github.com/jasperlok/SAS-Sharing_20210422/blob/main/Analysis/MITB_Capstone_Lok%20Jun%20Haur_EDA.Rmd">EDA
+code file</a> on my Github page for the steps taken to clean the
+data.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'>read_csv</span><span class='op'>(</span><span class='st'>"data/data_eda_actLoss_3.csv"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
@@ -2261,10 +2361,14 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 <p>While importing the data, I have also:</p>
 <ul>
-<li><p>Drop ‘ClaimNumber,’ ‘num_week_paid_ult’ &amp; column headers that starts with ‘acc’ &amp; ‘report’ since I am not using them later</p></li>
-<li><p>Filter out gender ‘U’ as according to data dictionary, indicator ‘U’ means missing values</p></li>
+<li><p>Drop ‘ClaimNumber’, ‘num_week_paid_ult’ &amp; column headers that
+starts with ‘acc’ &amp; ‘report’ since I am not using them
+later</p></li>
+<li><p>Filter out gender ‘U’ as according to data dictionary, indicator
+‘U’ means missing values</p></li>
 <li><p>Drop the data with missing values</p></li>
-<li><p>Sample 30% of the data to use for the analysis, otherwise it would take forever to run on my laptop 😢</p></li>
+<li><p>Sample 30% of the data to use for the analysis, otherwise it
+would take forever to run on my laptop 😢</p></li>
 </ul>
 <h3 id="data-splitting">Data Splitting</h3>
 <p>Next, I will split the dataset into training and testing dataset.</p>
@@ -2289,7 +2393,8 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 </div>
 <h3 id="define-recipe">Define Recipe</h3>
-<p>In this section, I will define the general recipe for the different machine learning models.</p>
+<p>In this section, I will define the general recipe for the different
+machine learning models.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>gen_recipe</span> <span class='op'>&lt;-</span> <span class='fu'>recipe</span><span class='op'>(</span><span class='va'>init_ult_diff</span> <span class='op'>~</span> <span class='va'>.</span>, data <span class='op'>=</span> <span class='va'>df_train</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
@@ -2298,13 +2403,19 @@ document.addEventListener('DOMContentLoaded', function() {
 </code></pre>
 </div>
 </div>
-<p>Basically, I try to perform the following in the code chunk above:</p>
+<p>Basically, I try to perform the following in the code chunk
+above:</p>
 <ul>
-<li><p>Extract the date information from date variable by using <strong>step_date</strong> &amp; <strong>step_mutate</strong> functions</p></li>
-<li><p>Convert the extracted date features into ordinal variables by using <strong>factor</strong> function</p></li>
-<li><p>Update the roles for ‘DateTimeOfAccident’ &amp; ‘Date Reported’ to ‘id’ so that they will not be used in fitting the model</p></li>
+<li><p>Extract the date information from date variable by using
+<strong>step_date</strong> &amp; <strong>step_mutate</strong>
+functions</p></li>
+<li><p>Convert the extracted date features into ordinal variables by
+using <strong>factor</strong> function</p></li>
+<li><p>Update the roles for ‘DateTimeOfAccident’ &amp; ‘Date Reported’
+to ‘id’ so that they will not be used in fitting the model</p></li>
 </ul>
-<h3 id="fitting-individual-machine-learning-models">Fitting Individual Machine Learning Models</h3>
+<h3 id="fitting-individual-machine-learning-models">Fitting Individual
+Machine Learning Models</h3>
 <p>Before fitting a stack model, let’s fit individual models first.</p>
 <p>Random Forest</p>
 <div class="layout-chunk" data-layout="l-body">
@@ -2383,8 +2494,11 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 </div>
 <h3 id="stack-the-models">Stack the Models!</h3>
-<p>Okay, we have fitted all the individual models. I will move on and fit a stack model.</p>
-<p>To do so, I will use <strong>stack</strong> function to create an empty stack model and add on the individual fitted models earlier on.</p>
+<p>Okay, we have fitted all the individual models. I will move on and
+fit a stack model.</p>
+<p>To do so, I will use <strong>stack</strong> function to create an
+empty stack model and add on the individual fitted models earlier
+on.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>stack_model</span> <span class='op'>&lt;-</span>
@@ -2395,7 +2509,8 @@ document.addEventListener('DOMContentLoaded', function() {
 </code></pre>
 </div>
 </div>
-<p>Next, I will use blend_predictions function to find the coefficient of individual models.</p>
+<p>Next, I will use blend_predictions function to find the coefficient
+of individual models.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>stack_model_pred</span> <span class='op'>&lt;-</span>
@@ -2404,7 +2519,8 @@ document.addEventListener('DOMContentLoaded', function() {
 </code></pre>
 </div>
 </div>
-<p>To see the weights of the models, we can call the object we have created in the previous step.</p>
+<p>To see the weights of the models, we can call the object we have
+created in the previous step.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>stack_model_pred</span>
@@ -2413,12 +2529,14 @@ document.addEventListener('DOMContentLoaded', function() {
 <pre><code># A tibble: 3 x 3
   member           type        weight
   &lt;chr&gt;            &lt;chr&gt;        &lt;dbl&gt;
-1 xgboost_tune_1_1 boost_tree   0.477
-2 ranger_tune_1_1  rand_forest  0.475
-3 earth_tune_1_1   mars         0.158</code></pre>
+1 xgboost_tune_1_1 boost_tree   0.458
+2 ranger_tune_1_1  rand_forest  0.409
+3 earth_tune_1_1   mars         0.217</code></pre>
 </div>
-<p>As the results shown above, random forest, xgboost and mars are used to create the stacked model.</p>
-<p>We can also use the <strong>autoplot</strong> function to visualize the weight for different models.</p>
+<p>As the results shown above, random forest, xgboost and mars are used
+to create the stacked model.</p>
+<p>We can also use the <strong>autoplot</strong> function to visualize
+the weight for different models.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>autoplot</span><span class='op'>(</span><span class='va'>stack_model_pred</span>, type <span class='op'>=</span> <span class='st'>"weights"</span><span class='op'>)</span>
@@ -2426,7 +2544,9 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 <p><img src="model-stacking_files/figure-html5/unnamed-chunk-21-1.png" width="70%" /></p>
 </div>
-<p>Once the weights of the different models are determined, I will prepare the fitted stack model by using <strong>fit_members</strong> function.</p>
+<p>Once the weights of the different models are determined, I will
+prepare the fitted stack model by using <strong>fit_members</strong>
+function.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>stack_model_fit</span> <span class='op'>&lt;-</span> <span class='va'>stack_model_pred</span> <span class='op'>%&gt;%</span>
@@ -2434,13 +2554,19 @@ document.addEventListener('DOMContentLoaded', function() {
 </code></pre>
 </div>
 </div>
-<h3 id="compare-the-model-performance">Compare the Model Performance</h3>
-<h4 id="performance-metric-of-individual-models">Performance Metric of Individual Models</h4>
-<p>To compare the model performance from different models, I will do the following:</p>
+<h3 id="compare-the-model-performance">Compare the Model
+Performance</h3>
+<h4 id="performance-metric-of-individual-models">Performance Metric of
+Individual Models</h4>
+<p>To compare the model performance from different models, I will do the
+following:</p>
 <ul>
-<li><p>First, finalize the workflow by selecting the best parameters &amp; perform last_fit on the model</p></li>
-<li><p>Then, collect the model predictions by using collect_predictions</p></li>
-<li><p>Lastly, calculate the model performance, create a column named ‘model’ and pivot the columns</p></li>
+<li><p>First, finalize the workflow by selecting the best parameters
+&amp; perform last_fit on the model</p></li>
+<li><p>Then, collect the model predictions by using
+collect_predictions</p></li>
+<li><p>Lastly, calculate the model performance, create a column named
+‘model’ and pivot the columns</p></li>
 </ul>
 <p>Ranger metrics</p>
 <div class="layout-chunk" data-layout="l-body">
@@ -2508,7 +2634,8 @@ document.addEventListener('DOMContentLoaded', function() {
 </code></pre>
 </div>
 </div>
-<h4 id="performance-metric-of-stack-model">Performance Metric of Stack Model</h4>
+<h4 id="performance-metric-of-stack-model">Performance Metric of Stack
+Model</h4>
 <p>Next, I will calculate the model performance for the stack model.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
@@ -2522,7 +2649,8 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 </div>
 <h4 id="summary">Summary</h4>
-<p>Now I will combine all the results in a tibble table so that its easier to compare the performance metrics from different models.</p>
+<p>Now I will combine all the results in a tibble table so that its
+easier to compare the performance metrics from different models.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>tibble</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
@@ -2535,27 +2663,43 @@ document.addEventListener('DOMContentLoaded', function() {
 <pre><code># A tibble: 4 x 4
   .estimator model    rmse   rsq
   &lt;chr&gt;      &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;
-1 standard   stack   1547. 0.437
-2 standard   ranger  1580. 0.416
-3 standard   xgboost 1563. 0.427
-4 standard   earth   1662. 0.356</code></pre>
+1 standard   stack   1592. 0.415
+2 standard   ranger  1614. 0.399
+3 standard   xgboost 1604. 0.406
+4 standard   earth   1702. 0.341</code></pre>
 </div>
-<p>As shown above, both model performance metrics improved after we stacked the models.</p>
+<p>As shown above, both model performance metrics improved after we
+stacked the models.</p>
 <h2 id="conclusion">Conclusion</h2>
 <p>That’s all for the day!</p>
 <p>Thanks for reading the post until the end.</p>
-<p>Do check out on the <a href="https://stacks.tidymodels.org/">documentation page</a> if you want to find out more on model stacking.</p>
-<p>Feel free to contact me through <a href="mailto:junhaur.lok.2019@mitb.smu.edu.sg">email</a> or <a href="https://www.linkedin.com/in/jasper-l-13426232/">LinkedIn</a> if you have any suggestions on future topics to share.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
-<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<p>Do check out on the <a
+href="https://stacks.tidymodels.org/">documentation page</a> if you want
+to find out more on model stacking.</p>
+<p>Feel free to contact me through <a
+href="mailto:jasper.jh.lok@gmail.com">email</a> or <a
+href="https://www.linkedin.com/in/jasper-l-13426232/">LinkedIn</a> if
+you have any suggestions on future topics to share.</p>
+<p>Refer to this link for the <a
+href="https://jasperlok.netlify.app/blog_disclaimer.html">blog
+disclaimer</a>.</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<div id="refs" class="references csl-bib-body hanging-indent"
+role="doc-bibliography">
 <div id="ref-Gunes2017" class="csl-entry" role="doc-biblioentry">
-Funda Gunes, Russ Wolfinger, and Pei-Yi Tan, eds. 2017. <span>“Stacked Ensemble Models for Improved Prediction Accuracy.”</span> <a href="http://support.sas.com/resources/papers/proceedings17/SAS0437-2017.pdf">http://support.sas.com/resources/papers/proceedings17/SAS0437-2017.pdf</a>.
+Funda Gunes, Russ Wolfinger, and Pei-Yi Tan, eds. 2017. <span>“Stacked
+Ensemble Models for Improved Prediction Accuracy.”</span> <a
+href="http://support.sas.com/resources/papers/proceedings17/SAS0437-2017.pdf">http://support.sas.com/resources/papers/proceedings17/SAS0437-2017.pdf</a>.
 </div>
 <div id="ref-Geron2019" class="csl-entry" role="doc-biblioentry">
-Geron, Aurelien, ed. 2019. <em>Hands-on Machine Learning with Scikit-Learn, Keras, and TensorFlow</em>. O’Reilly Media.
+Geron, Aurelien, ed. 2019. <em>Hands-on Machine Learning with
+Scikit-Learn, Keras, and TensorFlow</em>. O’Reilly Media.
 </div>
 <div id="ref-vas3k" class="csl-entry" role="doc-biblioentry">
-vas3k, ed. <span>“Machine Learning for Everyone - in Simple Words. With Real-World Examples. Yes, Again.”</span> <a href="https://vas3k.com/blog/machine_learning/">https://vas3k.com/blog/machine_learning/</a>.
+vas3k, ed. <span>“Machine Learning for Everyone - in Simple Words. With
+Real-World Examples. Yes, Again.”</span> <a
+href="https://vas3k.com/blog/machine_learning/">https://vas3k.com/blog/machine_learning/</a>.
 </div>
 </div>
 <!--radix_placeholder_article_footer-->

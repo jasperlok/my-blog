@@ -740,9 +740,10 @@ Do check out on the [documentation page](https://discrim.tidymodels.org/index.ht
 
 
 
-Feel free to contact me through [email](mailto:junhaur.lok.2019@mitb.smu.edu.sg) or [LinkedIn](https://www.linkedin.com/in/jasper-l-13426232/) if you have any suggestions on future topics to share.
+Feel free to contact me through [email](mailto:jasper.jh.lok@gmail.com) or [LinkedIn](https://www.linkedin.com/in/jasper-l-13426232/) if you have any suggestions on future topics to share.
 
 
+Refer to this link for the [blog disclaimer](https://jasperlok.netlify.app/blog_disclaimer.html).
 
 
 

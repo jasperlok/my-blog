@@ -56,7 +56,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 code span.al { color: #ad0000; } /* Alert */
 code span.an { color: #5e5e5e; } /* Annotation */
-code span.at { color: #20794d; } /* Attribute */
+code span.at { } /* Attribute */
 code span.bn { color: #ad0000; } /* BaseN */
 code span.bu { } /* BuiltIn */
 code span.cf { color: #007ba5; } /* ControlFlow */
@@ -77,12 +77,34 @@ code span.kw { color: #007ba5; } /* Keyword */
 code span.op { color: #5e5e5e; } /* Operator */
 code span.ot { color: #007ba5; } /* Other */
 code span.pp { color: #ad0000; } /* Preprocessor */
-code span.sc { color: #20794d; } /* SpecialChar */
+code span.sc { color: #5e5e5e; } /* SpecialChar */
 code span.ss { color: #20794d; } /* SpecialString */
 code span.st { color: #20794d; } /* String */
 code span.va { color: #111111; } /* Variable */
 code span.vs { color: #20794d; } /* VerbatimString */
 code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+</style>
+
+<style>
+  div.csl-bib-body { }
+  div.csl-entry {
+    clear: both;
+    }
+  .hanging div.csl-entry {
+    margin-left:2em;
+    text-indent:-2em;
+  }
+  div.csl-left-margin {
+    min-width:2em;
+    float:left;
+  }
+  div.csl-right-inline {
+    margin-left:2em;
+    padding-left:1em;
+  }
+  div.csl-indent {
+    margin-left: 2em;
+  }
 </style>
 
   <!--radix_placeholder_meta_tags-->
@@ -114,7 +136,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <meta name="citation_reference" content="citation_title=Is it time for text analytics in financial services?;citation_publication_date=2016;citation_author=Alan D. Duncan"/>
   <meta name="citation_reference" content="citation_title=Decoding the hidden value of unstructured text data;citation_publication_date=2019;citation_author=Jason Rodriguez"/>
   <meta name="citation_reference" content="citation_title=The art of natural language processing: Classical, modern and contemporary approaches to text document classification;citation_publication_date=2020;citation_author=Andrea Ferrario;citation_author=Mara Naegelin"/>
-  <meta name="citation_reference" content="citation_title=An introduction to information retrieval;citation_publication_date=2009;citation_publisher=Cambridge University Press;citation_author=Christopher D. Manning;citation_author=Prabhakar Raghavan;citation_author=Hinrich SchÃ¼tze"/>
+  <meta name="citation_reference" content="citation_title=An introduction to information retrieval;citation_publication_date=2009;citation_publisher=Cambridge University Press;citation_author=Christopher D. Manning;citation_author=Prabhakar Raghavan;citation_author=Hinrich Schütze"/>
   <meta name="citation_reference" content="citation_title=When (not) to lemmatize or remove stop words in text preprocessing;citation_publication_date=2019;citation_author=Alex Schumacher"/>
   <meta name="citation_reference" content="citation_title=Text analytics with python a practical real- world approach to gaining actionable insights from your datal;citation_publication_date=2016;citation_publisher=Apress;citation_author=Dipanjan Sarkar"/>
   <meta name="citation_reference" content="citation_title=Chapter 4 stemming;citation_publication_date=2021;citation_author=Emil Hvitfeldt;citation_author=Julia Silge"/>
@@ -2057,7 +2079,7 @@ document.addEventListener('DOMContentLoaded', function() {
   <script src="../../site_libs/header-attrs/header-attrs.js"></script>
   <script src="../../site_libs/kePrint/kePrint.js"></script>
   <link href="../../site_libs/lightable/lightable.css" rel="stylesheet" />
-  <script src="../../site_libs/jquery/jquery.min.js"></script>
+  <script src="../../site_libs/jquery/jquery-3.6.0.min.js"></script>
   <script src="../../site_libs/popper/popper.min.js"></script>
   <link href="../../site_libs/tippy/tippy.css" rel="stylesheet" />
   <link href="../../site_libs/tippy/tippy-light-border.css" rel="stylesheet" />
@@ -2122,42 +2144,68 @@ document.addEventListener('DOMContentLoaded', function() {
 <nav class="l-text toc figcaption" id="TOC">
 <h3>Contents</h3>
 <ul>
-<li><a href="#text-analytics">Text Analytics</a></li>
-<li><a href="#potential-opportunities-in-text-analytics">Potential Opportunities in Text Analytics</a></li>
-<li><a href="#text-pre-processing">Text pre-processing</a>
+<li><a href="#text-analytics" id="toc-text-analytics">Text
+Analytics</a></li>
+<li><a href="#potential-opportunities-in-text-analytics"
+id="toc-potential-opportunities-in-text-analytics">Potential
+Opportunities in Text Analytics</a></li>
+<li><a href="#text-pre-processing" id="toc-text-pre-processing">Text
+pre-processing</a>
 <ul>
-<li><a href="#import-of-raw-text-and-formating">Import of Raw Text and Formating</a>
+<li><a href="#import-of-raw-text-and-formating"
+id="toc-import-of-raw-text-and-formating">Import of Raw Text and
+Formating</a>
 <ul>
-<li><a href="#removing-unwanted-characters-eg.-special-characters-and-symbols">Removing unwanted characters (eg. special characters and symbols)</a></li>
-<li><a href="#misspelling">Misspelling</a></li>
+<li><a
+href="#removing-unwanted-characters-eg.-special-characters-and-symbols"
+id="toc-removing-unwanted-characters-eg.-special-characters-and-symbols">Removing
+unwanted characters (eg. special characters and symbols)</a></li>
+<li><a href="#misspelling" id="toc-misspelling">Misspelling</a></li>
 </ul></li>
-<li><a href="#converting-into-lowercases">Converting into lowercases</a></li>
-<li><a href="#tokenization">Tokenization</a></li>
-<li><a href="#stopwords">Stopwords</a></li>
-<li><a href="#part-of-speech-tagging">Part of Speech Tagging</a></li>
-<li><a href="#stemming-lemmatization">Stemming &amp; lemmatization</a></li>
+<li><a href="#converting-into-lowercases"
+id="toc-converting-into-lowercases">Converting into lowercases</a></li>
+<li><a href="#tokenization" id="toc-tokenization">Tokenization</a></li>
+<li><a href="#stopwords" id="toc-stopwords">Stopwords</a></li>
+<li><a href="#part-of-speech-tagging"
+id="toc-part-of-speech-tagging">Part of Speech Tagging</a></li>
+<li><a href="#stemming-lemmatization"
+id="toc-stemming-lemmatization">Stemming &amp; lemmatization</a></li>
 </ul></li>
-<li><a href="#feature-engineering-techniques-for-text-analytics">Feature engineering techniques for text analytics</a>
+<li><a href="#feature-engineering-techniques-for-text-analytics"
+id="toc-feature-engineering-techniques-for-text-analytics">Feature
+engineering techniques for text analytics</a>
 <ul>
-<li><a href="#bag-of-words-bow">Bag of words (BoW)</a></li>
-<li><a href="#term-frequency-inverse-document-frequency">Term frequency &amp; inverse document frequency</a></li>
-<li><a href="#word-embedding">Word embedding</a></li>
+<li><a href="#bag-of-words-bow" id="toc-bag-of-words-bow">Bag of words
+(BoW)</a></li>
+<li><a href="#term-frequency-inverse-document-frequency"
+id="toc-term-frequency-inverse-document-frequency">Term frequency &amp;
+inverse document frequency</a></li>
+<li><a href="#word-embedding" id="toc-word-embedding">Word
+embedding</a></li>
 </ul></li>
-<li><a href="#how-different-r-packages-work-together">How different R packages work together</a></li>
-<li><a href="#demonstration">Demonstration</a>
+<li><a href="#how-different-r-packages-work-together"
+id="toc-how-different-r-packages-work-together">How different R packages
+work together</a></li>
+<li><a href="#demonstration" id="toc-demonstration">Demonstration</a>
 <ul>
-<li><a href="#setup-the-environment">Setup the environment</a></li>
-<li><a href="#import-data">Import data</a></li>
-<li><a href="#clean-text">Clean text</a>
+<li><a href="#setup-the-environment"
+id="toc-setup-the-environment">Setup the environment</a></li>
+<li><a href="#import-data" id="toc-import-data">Import data</a></li>
+<li><a href="#clean-text" id="toc-clean-text">Clean text</a>
 <ul>
-<li><a href="#convert-to-lower-letters">Convert to lower letters</a></li>
-<li><a href="#remove-stopwords-unwanted-characters">Remove stopwords &amp; unwanted characters</a></li>
-<li><a href="#replace-words">Replace words</a></li>
-<li><a href="#stemming">Stemming</a></li>
-<li><a href="#lemmatization">Lemmatization</a></li>
+<li><a href="#convert-to-lower-letters"
+id="toc-convert-to-lower-letters">Convert to lower letters</a></li>
+<li><a href="#remove-stopwords-unwanted-characters"
+id="toc-remove-stopwords-unwanted-characters">Remove stopwords &amp;
+unwanted characters</a></li>
+<li><a href="#replace-words" id="toc-replace-words">Replace
+words</a></li>
+<li><a href="#stemming" id="toc-stemming">Stemming</a></li>
+<li><a href="#lemmatization"
+id="toc-lemmatization">Lemmatization</a></li>
 </ul></li>
 </ul></li>
-<li><a href="#conclusion">Conclusion</a></li>
+<li><a href="#conclusion" id="toc-conclusion">Conclusion</a></li>
 </ul>
 </nav>
 </div>
@@ -2166,64 +2214,140 @@ document.addEventListener('DOMContentLoaded', function() {
 <p><img src="image/typewriter.jpg" width="90%" /></p>
 </div>
 <p><em>Photo by Leah Kelley from Pexels</em></p>
-<p>This is one of the topics I wanted to explore while I was pursuing my master degree.</p>
-<p>While I was reading through the different materials on text analytics and natural language processing, I realized the more I read about text analytics, the more I realized it is not as simple as what I initially imagined so.</p>
+<p>This is one of the topics I wanted to explore while I was pursuing my
+master degree.</p>
+<p>While I was reading through the different materials on text analytics
+and natural language processing, I realized the more I read about text
+analytics, the more I realized it is not as simple as what I initially
+imagined so.</p>
 <figure>
-<img src="https://media.giphy.com/media/SACoDGYTvVNhZYNb5a/giphy.gif" alt="Mind blown" /><figcaption aria-hidden="true">Mind blown</figcaption>
+<img src="https://media.giphy.com/media/SACoDGYTvVNhZYNb5a/giphy.gif"
+alt="Mind blown" />
+<figcaption aria-hidden="true">Mind blown</figcaption>
 </figure>
 <p><em>Taken from giphy</em></p>
-<p>Hence I have spent quite a fair bit of time reading through different books and articles to understand more about text analytics.</p>
-<p>Hope this would help you in understanding more about text analytics.</p>
+<p>Hence I have spent quite a fair bit of time reading through different
+books and articles to understand more about text analytics.</p>
+<p>Hope this would help you in understanding more about text
+analytics.</p>
 <h1 id="text-analytics">Text Analytics</h1>
-<p>As the name suggested, this technique focuses on cleaning and drawing insights out from the text data. Often, the text data are not ‘structured’ in a way that could be easily understood by the models/algorithms.</p>
-<p>Once the texts are processed, further techniques can be applied to the pre-processed text data to draw insights or even build a machine learning model on the text data.</p>
-<p>Let’s look at how text analytics could add value to the insurance business.</p>
-<h1 id="potential-opportunities-in-text-analytics">Potential Opportunities in Text Analytics</h1>
-<p>There are articles on how text data can be used in the insurance context. <span class="citation" data-cites="Rodriguez2019">(<a href="#ref-Rodriguez2019" role="doc-biblioref">Rodriguez 2019</a>)</span> discussed the benefits unstructured data (eg. text data) could provide, including how text data could assist insurers in improving decision making and so on.</p>
-<p>The author also provided an example of how insurers could tap onto text data is how the various text analytics and natural language processing can be used to process the volume of the texts, assisting claim adjusters potentially to make a more accurate decision with a shorter amount of time spent.</p>
-<p>Apart from using text data in claim analysis, <span class="citation" data-cites="Duncan2016">(<a href="#ref-Duncan2016" role="doc-biblioref">Duncan 2016</a>)</span> also listed some of the financial service use cases where text analytics is being applied.</p>
-<p>While the actual usage of text data in insurance day-to-day operation is somewhat lower than expected, the insurers seem to remain optimistic on the potential of using text data <span class="citation" data-cites="Mcgrath2021">(<a href="#ref-Mcgrath2021" role="doc-biblioref">McGrath 2021</a>)</span>.</p>
+<p>As the name suggested, this technique focuses on cleaning and drawing
+insights out from the text data. Often, the text data are not
+‘structured’ in a way that could be easily understood by the
+models/algorithms.</p>
+<p>Once the texts are processed, further techniques can be applied to
+the pre-processed text data to draw insights or even build a machine
+learning model on the text data.</p>
+<p>Let’s look at how text analytics could add value to the insurance
+business.</p>
+<h1 id="potential-opportunities-in-text-analytics">Potential
+Opportunities in Text Analytics</h1>
+<p>There are articles on how text data can be used in the insurance
+context. <span class="citation" data-cites="Rodriguez2019">(<a
+href="#ref-Rodriguez2019" role="doc-biblioref">Rodriguez
+2019</a>)</span> discussed the benefits unstructured data (eg. text
+data) could provide, including how text data could assist insurers in
+improving decision making and so on.</p>
+<p>The author also provided an example of how insurers could tap onto
+text data is how the various text analytics and natural language
+processing can be used to process the volume of the texts, assisting
+claim adjusters potentially to make a more accurate decision with a
+shorter amount of time spent.</p>
+<p>Apart from using text data in claim analysis, <span class="citation"
+data-cites="Duncan2016">(<a href="#ref-Duncan2016"
+role="doc-biblioref">Duncan 2016</a>)</span> also listed some of the
+financial service use cases where text analytics is being applied.</p>
+<p>While the actual usage of text data in insurance day-to-day operation
+is somewhat lower than expected, the insurers seem to remain optimistic
+on the potential of using text data <span class="citation"
+data-cites="Mcgrath2021">(<a href="#ref-Mcgrath2021"
+role="doc-biblioref">McGrath 2021</a>)</span>.</p>
 <h1 id="text-pre-processing">Text pre-processing</h1>
-<p><span class="citation" data-cites="Ferrario2020">(<a href="#ref-Ferrario2020" role="doc-biblioref">Ferrario and Naegelin 2020</a>)</span> The typical steps of text pre-processing include the following:</p>
+<p><span class="citation" data-cites="Ferrario2020">(<a
+href="#ref-Ferrario2020" role="doc-biblioref">Ferrario and Naegelin
+2020</a>)</span> The typical steps of text pre-processing include the
+following:</p>
 <ul>
 <li><p>Import of raw text and formatting</p></li>
 <li><p>Conversion of text to lowercase</p></li>
-<li><p>Tokenization, i.e. split of all strings of text into tokens</p></li>
+<li><p>Tokenization, i.e. split of all strings of text into
+tokens</p></li>
 <li><p>Stopwords removal</p></li>
 <li><p>Part-of-speech (POS) tagging of tokenized text</p></li>
 <li><p>Stemming or lemmatization</p></li>
 </ul>
 <p>Let’s look at what does each step does in text analytics.</p>
-<h2 id="import-of-raw-text-and-formating">Import of Raw Text and Formating</h2>
-<p>After importing the text into the environment, it is common that we will perform some levels of “text cleaning” to remove or correct some of the texts before performing the analysis.</p>
-<p>Following are some considerations while performing “text cleaning”:</p>
-<h3 id="removing-unwanted-characters-eg.-special-characters-and-symbols">Removing unwanted characters (eg. special characters and symbols)</h3>
-<p>Within the text, we might have characters we wanted to remove from the analysis. For example, we might want to exclude the reference link from the text analysis.</p>
-<p>Most of the modern packages would have included some pre-defined functions to remove the unwanted characters within the text data. For example, below is the function to tokenize text data in <code>quanteda</code> package:</p>
+<h2 id="import-of-raw-text-and-formating">Import of Raw Text and
+Formating</h2>
+<p>After importing the text into the environment, it is common that we
+will perform some levels of “text cleaning” to remove or correct some of
+the texts before performing the analysis.</p>
+<p>Following are some considerations while performing “text
+cleaning”:</p>
+<h3
+id="removing-unwanted-characters-eg.-special-characters-and-symbols">Removing
+unwanted characters (eg. special characters and symbols)</h3>
+<p>Within the text, we might have characters we wanted to remove from
+the analysis. For example, we might want to exclude the reference link
+from the text analysis.</p>
+<p>Most of the modern packages would have included some pre-defined
+functions to remove the unwanted characters within the text data. For
+example, below is the function to tokenize text data in
+<code>quanteda</code> package:</p>
 <div class="layout-chunk" data-layout="l-body">
 <p><img src="image/quanteda.png" width="90%" /></p>
 </div>
-<p><em>Screen shot from <a href="https://quanteda.io/reference/tokens.html"><code>quanteda</code> documentation</a> page</em></p>
-<p>As shown in the screenshot above, there are options for the users to indicate whether they would like to remove the necessary text within the data.</p>
-<p>However, there are scenarios where the pre-defined functions are unable to “clean” the data. For example, we might have the same words but spell differently within the data (eg. color vs colour).</p>
-<p>This is where regular expression (a.k.a. regex) comes in very handy. Regex can be used to extract, remove, replace or even find a string within the text.</p>
-<p>Personally, I find <a href="https://regexr.com/">this regex website</a> is very helpful. It helps me to visualize whether the regex is working (i.e. finding the relevant words) as intended.</p>
+<p><em>Screen shot from <a
+href="https://quanteda.io/reference/tokens.html"><code>quanteda</code>
+documentation</a> page</em></p>
+<p>As shown in the screenshot above, there are options for the users to
+indicate whether they would like to remove the necessary text within the
+data.</p>
+<p>However, there are scenarios where the pre-defined functions are
+unable to “clean” the data. For example, we might have the same words
+but spell differently within the data (eg. color vs colour).</p>
+<p>This is where regular expression (a.k.a. regex) comes in very handy.
+Regex can be used to extract, remove, replace or even find a string
+within the text.</p>
+<p>Personally, I find <a href="https://regexr.com/">this regex
+website</a> is very helpful. It helps me to visualize whether the regex
+is working (i.e. finding the relevant words) as intended.</p>
 <p>Below are some of the common syntax in regex:</p>
 <div class="layout-chunk" data-layout="l-body">
 <p><img src="image/regex_cheatsheet.png" width="90%" /></p>
 </div>
-<p><em>Extracted from <a href="https://regexr.com/">this website</a></em></p>
-<p>This is another <a href="https://docs.python.org/3/library/re.html">great resource</a> of the different regex syntax to extract the necessary info from the text.</p>
+<p><em>Extracted from <a href="https://regexr.com/">this
+website</a></em></p>
+<p>This is another <a
+href="https://docs.python.org/3/library/re.html">great resource</a> of
+the different regex syntax to extract the necessary info from the
+text.</p>
 <h3 id="misspelling">Misspelling</h3>
-<p>Often the texts are unlikely to be clean. Misspelling of words is one of the common problems to tackle when analyzing texts.</p>
-<p>To fix the misspelling, there are two approaches. One is to use existing packages to fix the typos.</p>
-<p>Another method is to create a manual listing of typos. The downside of such an approach is that we are limited to correct words we have observed within the dataset.</p>
+<p>Often the texts are unlikely to be clean. Misspelling of words is one
+of the common problems to tackle when analyzing texts.</p>
+<p>To fix the misspelling, there are two approaches. One is to use
+existing packages to fix the typos.</p>
+<p>Another method is to create a manual listing of typos. The downside
+of such an approach is that we are limited to correct words we have
+observed within the dataset.</p>
 <h2 id="converting-into-lowercases">Converting into lowercases</h2>
-<p>As the usual text analytics algorithm is case-sensitive, the same words with different lower cases and/or upper cases will be treated as different words. For example, “TEXT,” “Text” and “text” will be treated as different words.</p>
-<p>Hence, the usual approach is to convert all the words into lowercase so that the algorithm would not treat the same words as different words due to the difference in letter cases.</p>
+<p>As the usual text analytics algorithm is case-sensitive, the same
+words with different lower cases and/or upper cases will be treated as
+different words. For example, “TEXT”, “Text” and “text” will be treated
+as different words.</p>
+<p>Hence, the usual approach is to convert all the words into lowercase
+so that the algorithm would not treat the same words as different words
+due to the difference in letter cases.</p>
 <h2 id="tokenization">Tokenization</h2>
-<p>Tokenization is the process of chopping character streams into tokens <span class="citation" data-cites="Manning2008">(<a href="#ref-Manning2008" role="doc-biblioref">Manning, Raghavan, and Schütze 2009</a>)</span>. The authors also further explained that a token is an instance of a sequence of characters in some particular document that is grouped as a useful semantic unit for processing.</p>
-<p>In general, tokenization consists of following two types and their relevant descriptions <span class="citation" data-cites="Sarkar2016">(<a href="#ref-Sarkar2016" role="doc-biblioref">Sarkar 2016</a>)</span>:</p>
+<p>Tokenization is the process of chopping character streams into tokens
+<span class="citation" data-cites="Manning2008">(<a
+href="#ref-Manning2008" role="doc-biblioref">Manning, Raghavan, and
+Schütze 2009</a>)</span>. The authors also further explained that a
+token is an instance of a sequence of characters in some particular
+document that is grouped as a useful semantic unit for processing.</p>
+<p>In general, tokenization consists of following two types and their
+relevant descriptions <span class="citation" data-cites="Sarkar2016">(<a
+href="#ref-Sarkar2016" role="doc-biblioref">Sarkar 2016</a>)</span>:</p>
 <div class="layout-chunk" data-layout="l-body">
 <table class=" lightable-paper lightable-hover" style="font-size: 15px; font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
@@ -2257,8 +2381,15 @@ Split text into words
 </table>
 </div>
 <h2 id="stopwords">Stopwords</h2>
-<p>Stopwords are the most common words in any natural language <span class="citation" data-cites="Singh2019">(<a href="#ref-Singh2019" role="doc-biblioref">Singh 2019</a>)</span>. Often these stopwords do not carry much value in helping us in understanding the context of the documents/articles.</p>
-<p>In general, the stopwords can be categorized into following groups <span class="citation" data-cites="Hvitfeldt2021">(<a href="#ref-Hvitfeldt2021" role="doc-biblioref">Hvitfeldt and Silge 2021a</a>)</span>:</p>
+<p>Stopwords are the most common words in any natural language <span
+class="citation" data-cites="Singh2019">(<a href="#ref-Singh2019"
+role="doc-biblioref">Singh 2019</a>)</span>. Often these stopwords do
+not carry much value in helping us in understanding the context of the
+documents/articles.</p>
+<p>In general, the stopwords can be categorized into following groups
+<span class="citation" data-cites="Hvitfeldt2021">(<a
+href="#ref-Hvitfeldt2021" role="doc-biblioref">Hvitfeldt and Silge
+2021a</a>)</span>:</p>
 <div class="layout-chunk" data-layout="l-body">
 <table class=" lightable-paper lightable-hover" style="font-size: 15px; font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
@@ -2294,7 +2425,10 @@ Subject-specific stopwords
 Words that are uninformative for a given a subject area
 </td>
 <td style="text-align:left;">
-May improve performance if we have domain expertise to create a good list to remove them. But likely require us to create the list manually as these words are generally not considered as stopwords in a given language
+May improve performance if we have domain expertise to create a good
+list to remove them. But likely require us to create the list manually
+as these words are generally not considered as stopwords in a given
+language
 </td>
 </tr>
 <tr>
@@ -2311,19 +2445,45 @@ Difficult to classify and would not be worth the effort to identify
 </tbody>
 </table>
 </div>
-<p>While the common approach is to remove stopwords while performing text analytics, removal stopwords would not be appropriate in some of the NLP tasks such as machine translation and so on.</p>
-<p>This is because the meaning of the text could change when we remove stopwords. <span class="citation" data-cites="Schumacher2019">(<a href="#ref-Schumacher2019" role="doc-biblioref">Schumacher 2019</a>)</span> provided an example to illustrate a scenario where removing stopwords is a bad idea.</p>
-<p>Considering the following example by <span class="citation" data-cites="Schumacher2019">(<a href="#ref-Schumacher2019" role="doc-biblioref">Schumacher 2019</a>)</span>:</p>
+<p>While the common approach is to remove stopwords while performing
+text analytics, removal stopwords would not be appropriate in some of
+the NLP tasks such as machine translation and so on.</p>
+<p>This is because the meaning of the text could change when we remove
+stopwords. <span class="citation" data-cites="Schumacher2019">(<a
+href="#ref-Schumacher2019" role="doc-biblioref">Schumacher
+2019</a>)</span> provided an example to illustrate a scenario where
+removing stopwords is a bad idea.</p>
+<p>Considering the following example by <span class="citation"
+data-cites="Schumacher2019">(<a href="#ref-Schumacher2019"
+role="doc-biblioref">Schumacher 2019</a>)</span>:</p>
 <p>Original statement: Stacy gave her doll to the puppy</p>
 <p>After removing stopwords: Stacy gave doll puppy</p>
-<p>Without the stopwords, we are unable to interpret whether the doll was given to the puppy or the puppy was given to the doll. Hence, this illustrates that the importance of stopwords in this context.</p>
+<p>Without the stopwords, we are unable to interpret whether the doll
+was given to the puppy or the puppy was given to the doll. Hence, this
+illustrates that the importance of stopwords in this context.</p>
 <h2 id="part-of-speech-tagging">Part of Speech Tagging</h2>
-<p>Parts of speech (POS) are specific lexical categories to which words are assigned based on their syntactic context and role <span class="citation" data-cites="Sarkar2016">(<a href="#ref-Sarkar2016" role="doc-biblioref">Sarkar 2016</a>)</span>. In other words, the words in the text are being analyzed and tagged to a role in a sentence (eg. is the word a noun or a verb).</p>
-<p>Some of the natural language processing tasks (eg. named entity recognition) would require the tokens to be tagged first.</p>
+<p>Parts of speech (POS) are specific lexical categories to which words
+are assigned based on their syntactic context and role <span
+class="citation" data-cites="Sarkar2016">(<a href="#ref-Sarkar2016"
+role="doc-biblioref">Sarkar 2016</a>)</span>. In other words, the words
+in the text are being analyzed and tagged to a role in a sentence (eg.
+is the word a noun or a verb).</p>
+<p>Some of the natural language processing tasks (eg. named entity
+recognition) would require the tokens to be tagged first.</p>
 <h2 id="stemming-lemmatization">Stemming &amp; lemmatization</h2>
-<p>Often within the texts, there might be similar words. For example, the text might contain words like ‘cave’ and ‘caves,’ where both of the words are referring to the same thing.</p>
-<p>Hence, it would be better for us to “clean” the words before performing any analysis. Otherwise, the algorithm will be treating these words as separate words. <span class="citation" data-cites="Hvitfeldt2021Stem">(<a href="#ref-Hvitfeldt2021Stem" role="doc-biblioref">Hvitfeldt and Silge 2021b</a>)</span> The author also mentioned through this process, we reduce the sparsity of the test data, which can be very helpful when training models.</p>
-<p>Following is the comparison of stemming and lemmatization <span class="citation" data-cites="bitext2021">(<a href="#ref-bitext2021" role="doc-biblioref">bitext 2021</a>)</span>:</p>
+<p>Often within the texts, there might be similar words. For example,
+the text might contain words like ‘cave’ and ‘caves’, where both of the
+words are referring to the same thing.</p>
+<p>Hence, it would be better for us to “clean” the words before
+performing any analysis. Otherwise, the algorithm will be treating these
+words as separate words. <span class="citation"
+data-cites="Hvitfeldt2021Stem">(<a href="#ref-Hvitfeldt2021Stem"
+role="doc-biblioref">Hvitfeldt and Silge 2021b</a>)</span> The author
+also mentioned through this process, we reduce the sparsity of the test
+data, which can be very helpful when training models.</p>
+<p>Following is the comparison of stemming and lemmatization <span
+class="citation" data-cites="bitext2021">(<a href="#ref-bitext2021"
+role="doc-biblioref">bitext 2021</a>)</span>:</p>
 <div class="layout-chunk" data-layout="l-body">
 <table class=" lightable-paper lightable-hover" style="font-size: 15px; font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
@@ -2355,8 +2515,10 @@ Stemming
 <ul>
 <li>Linguistics-based</li>
 </ul></li>
-<li><p>Normalize the words based on language structure and how words are used in their context</p></li>
-<li><p>Take the morphological analysis of the words into considerations</p></li>
+<li><p>Normalize the words based on language structure and how words are
+used in their context</p></li>
+<li><p>Take the morphological analysis of the words into
+considerations</p></li>
 <li><p>Generally, longer runtime than stemming</p>
 </td>
 </tr>
@@ -2364,30 +2526,62 @@ Stemming
 </table></li>
 </ul>
 </div>
-<h1 id="feature-engineering-techniques-for-text-analytics">Feature engineering techniques for text analytics</h1>
-<p>As the machine learning algorithm is unable to work with the text directly, different feature engineering techniques can be used in preparing the text data before passing it into the algorithm.</p>
-<p>Following are some of the feature engineering techniques for text analytics:</p>
+<h1 id="feature-engineering-techniques-for-text-analytics">Feature
+engineering techniques for text analytics</h1>
+<p>As the machine learning algorithm is unable to work with the text
+directly, different feature engineering techniques can be used in
+preparing the text data before passing it into the algorithm.</p>
+<p>Following are some of the feature engineering techniques for text
+analytics:</p>
 <h2 id="bag-of-words-bow">Bag of words (BoW)</h2>
-<p><span class="citation" data-cites="Brownlee2019">(<a href="#ref-Brownlee2019" role="doc-biblioref">Brownlee 2019</a>)</span> explained that BoW is a representation of text that describes the occurrence of words within a document. Essentially we will split the texts into either individual text or a group of texts.</p>
-<p>Also, this technique is called ‘bag of words’ as under this technique, the sequence of the words does not matter.</p>
-<h2 id="term-frequency-inverse-document-frequency">Term frequency &amp; inverse document frequency</h2>
-<p><span class="citation" data-cites="Stecanella2019">(<a href="#ref-Stecanella2019" role="doc-biblioref">Stecanella 2019</a>)</span> explained that term frequency is calculating the frequency of the words in a document, where the inverse document frequency is measuring how common or a rare a word is in the entire document.</p>
-<p>Alternatively, the inverse document frequency can be thought as a “penalty function” imposed on term frequency to measure how frequently the words appear in the document. If the words appear more frequently in the document, the higher the “penalty” is.</p>
+<p><span class="citation" data-cites="Brownlee2019">(<a
+href="#ref-Brownlee2019" role="doc-biblioref">Brownlee 2019</a>)</span>
+explained that BoW is a representation of text that describes the
+occurrence of words within a document. Essentially we will split the
+texts into either individual text or a group of texts.</p>
+<p>Also, this technique is called ‘bag of words’ as under this
+technique, the sequence of the words does not matter.</p>
+<h2 id="term-frequency-inverse-document-frequency">Term frequency &amp;
+inverse document frequency</h2>
+<p><span class="citation" data-cites="Stecanella2019">(<a
+href="#ref-Stecanella2019" role="doc-biblioref">Stecanella
+2019</a>)</span> explained that term frequency is calculating the
+frequency of the words in a document, where the inverse document
+frequency is measuring how common or a rare a word is in the entire
+document.</p>
+<p>Alternatively, the inverse document frequency can be thought as a
+“penalty function” imposed on term frequency to measure how frequently
+the words appear in the document. If the words appear more frequently in
+the document, the higher the “penalty” is.</p>
 <h2 id="word-embedding">Word embedding</h2>
-<p>This is a more advanced technique, which I won’t be covering in this post. For more info, please refer to <a href="https://www.tensorflow.org/text/guide/word_embeddings">this link</a> or <a href="https://smltar.com/embeddings.html">this link</a>.</p>
-<h1 id="how-different-r-packages-work-together">How different R packages work together</h1>
-<p>In R, many packages work with text analytics and natural language processing.</p>
-<p>In this post, I will be exploring the different R packages mentioned in the Text Mining with R book.</p>
-<p>Following are how the different text analytics R packages could work together <span class="citation" data-cites="Silge2021">(<a href="#ref-Silge2021" role="doc-biblioref">Silge and Robinson 2021</a>)</span>:</p>
+<p>This is a more advanced technique, which I won’t be covering in this
+post. For more info, please refer to <a
+href="https://www.tensorflow.org/text/guide/word_embeddings">this
+link</a> or <a href="https://smltar.com/embeddings.html">this
+link</a>.</p>
+<h1 id="how-different-r-packages-work-together">How different R packages
+work together</h1>
+<p>In R, many packages work with text analytics and natural language
+processing.</p>
+<p>In this post, I will be exploring the different R packages mentioned
+in the Text Mining with R book.</p>
+<p>Following are how the different text analytics R packages could work
+together <span class="citation" data-cites="Silge2021">(<a
+href="#ref-Silge2021" role="doc-biblioref">Silge and Robinson
+2021</a>)</span>:</p>
 <div class="layout-chunk" data-layout="l-body">
 <p><img src="image/textanalytics_with_r.png" width="90%" /></p>
 </div>
 <p><em>Screenshot from Chapter 6 of Text Mining with R book</em></p>
 <h1 id="demonstration">Demonstration</h1>
-<p>In this demonstration, I will be using a dataset from Microsoft. This dataset contains a publicly available set of question and sentence pairs.</p>
-<p>This is the link to download the <a href="https://www.microsoft.com/en-us/download/details.aspx?id=52419">dataset</a>.</p>
+<p>In this demonstration, I will be using a dataset from Microsoft. This
+dataset contains a publicly available set of question and sentence
+pairs.</p>
+<p>This is the link to download the <a
+href="https://www.microsoft.com/en-us/download/details.aspx?id=52419">dataset</a>.</p>
 <h2 id="setup-the-environment">Setup the environment</h2>
-<p>First, I will set up the environment by calling all the packages I need for the analysis later.</p>
+<p>First, I will set up the environment by calling all the packages I
+need for the analysis later.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>packages</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'tidyverse'</span>, <span class='st'>'readr'</span>, <span class='st'>'skimr'</span>, <span class='st'>'tidytext'</span>, <span class='st'>'quanteda'</span>, 
@@ -2404,7 +2598,9 @@ Stemming
 </div>
 <h2 id="import-data">Import data</h2>
 <p>Next, I will import the dataset into the environment.</p>
-<p>Note that the dataset is in tsv format, hence I will be using <code>read_tsv</code> function to import the dataset into the environment.</p>
+<p>Note that the dataset is in tsv format, hence I will be using
+<code>read_tsv</code> function to import the dataset into the
+environment.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'>read_tsv</span><span class='op'>(</span><span class='st'>"data/WikiQA.tsv"</span>,
@@ -2413,8 +2609,10 @@ Stemming
 </div>
 </div>
 <h2 id="clean-text">Clean text</h2>
-<p>Once the data is imported into the environment, <code>tokens</code> function is used to tokenize the words.</p>
-<p>Meanwhile, I have also indicated that punctuation, numbers, symbols, and separators should be removed when the words are being tokenized.</p>
+<p>Once the data is imported into the environment, <code>tokens</code>
+function is used to tokenize the words.</p>
+<p>Meanwhile, I have also indicated that punctuation, numbers, symbols,
+and separators should be removed when the words are being tokenized.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df</span> <span class='op'>&lt;-</span> <span class='fu'>tokens</span><span class='op'>(</span><span class='va'>df</span><span class='op'>$</span><span class='va'>Sentence</span>, 
@@ -2427,8 +2625,12 @@ Stemming
 </div>
 </div>
 <h3 id="convert-to-lower-letters">Convert to lower letters</h3>
-<p>As discussed in the post earlier, the common text cleaning also involves converting the token into the lower case as the algorithm is case-sensitive. Same words with the different cases will be treated as different words.</p>
-<p>Hence, I have used <code>tokens_tolower</code> function to convert all the words to lower case.</p>
+<p>As discussed in the post earlier, the common text cleaning also
+involves converting the token into the lower case as the algorithm is
+case-sensitive. Same words with the different cases will be treated as
+different words.</p>
+<p>Hence, I have used <code>tokens_tolower</code> function to convert
+all the words to lower case.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df</span> <span class='op'>&lt;-</span> <span class='va'>text_df</span> <span class='op'>%&gt;%</span>
@@ -2436,8 +2638,11 @@ Stemming
 </code></pre>
 </div>
 </div>
-<h3 id="remove-stopwords-unwanted-characters">Remove stopwords &amp; unwanted characters</h3>
-<p>Next, I will remove the stopwords from the text data. To do so, I wrap <code>stopwords</code> function with <code>tokens_remove</code> function.</p>
+<h3 id="remove-stopwords-unwanted-characters">Remove stopwords &amp;
+unwanted characters</h3>
+<p>Next, I will remove the stopwords from the text data. To do so, I
+wrap <code>stopwords</code> function with <code>tokens_remove</code>
+function.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df</span> <span class='op'>&lt;-</span> <span class='va'>text_df</span> <span class='op'>%&gt;%</span>
@@ -2445,9 +2650,17 @@ Stemming
 </code></pre>
 </div>
 </div>
-<p>Note that I have also indicated that <code>padding</code> to be false so that the function will not replace the stopwords with an empty string. In other words, the stopwords will be dropped from the dataset.</p>
-<p>Also, note that I have indicated the source for stopwords should be <code>smart</code>, where the list of stopwords within this source can be found under <a href="http://www.ai.mit.edu/projects/jmlr/papers/volume5/lewis04a/a11-smart-stop-list/english.stop">this link</a>.</p>
-<p>There are also other sources for the English stopwords. Following are the different sources that are currently supported:</p>
+<p>Note that I have also indicated that <code>padding</code> to be false
+so that the function will not replace the stopwords with an empty
+string. In other words, the stopwords will be dropped from the
+dataset.</p>
+<p>Also, note that I have indicated the source for stopwords should be
+<code>smart</code>, where the list of stopwords within this source can
+be found under <a
+href="http://www.ai.mit.edu/projects/jmlr/papers/volume5/lewis04a/a11-smart-stop-list/english.stop">this
+link</a>.</p>
+<p>There are also other sources for the English stopwords. Following are
+the different sources that are currently supported:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>stopwords</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/stopwords/man/stopwords_getsources.html'>stopwords_getsources</a></span><span class='op'>(</span><span class='op'>)</span>
@@ -2456,7 +2669,8 @@ Stemming
 <pre><code>[1] &quot;snowball&quot;      &quot;stopwords-iso&quot; &quot;misc&quot;          &quot;smart&quot;        
 [5] &quot;marimo&quot;        &quot;ancient&quot;       &quot;nltk&quot;          &quot;perseus&quot;      </code></pre>
 </div>
-<p>Next, I will perform a quick check on the cleaned text data. I have noted a few issues within the text data.</p>
+<p>Next, I will perform a quick check on the cleaned text data. I have
+noted a few issues within the text data.</p>
 <p>For example, there are some digits with alphabets as shown below.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
@@ -2465,7 +2679,9 @@ Stemming
 </div>
 <pre><code>[1] &quot;21a&quot;</code></pre>
 </div>
-<p>If we were to go back to the original text data, we will realize this string seems to be the robot version number, which may not add much value/insight to the analysis later.</p>
+<p>If we were to go back to the original text data, we will realize this
+string seems to be the robot version number, which may not add much
+value/insight to the analysis later.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>df</span><span class='op'>$</span><span class='va'>Sentence</span><span class='op'>[</span><span class='fl'>51</span><span class='op'>]</span>
@@ -2473,8 +2689,12 @@ Stemming
 </div>
 <pre><code>[1] &quot;The Beretta 21A Bobcat is a small pocket-sized semi-automatic pistol designed by Beretta in Italy.&quot;</code></pre>
 </div>
-<p>Hence, I will remove this string from the text data. To do so, I have used <code>tokens_replace</code> and the relevant regex to remove the words.</p>
-<p>Note that in the regex, I have indicated that I want to find all the matching strings that start with a digit and continue by letters. The asterisk means there are 0 or more letters after the digits.</p>
+<p>Hence, I will remove this string from the text data. To do so, I have
+used <code>tokens_replace</code> and the relevant regex to remove the
+words.</p>
+<p>Note that in the regex, I have indicated that I want to find all the
+matching strings that start with a digit and continue by letters. The
+asterisk means there are 0 or more letters after the digits.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df</span> <span class='op'>&lt;-</span> <span class='va'>text_df</span> <span class='op'>%&gt;%</span>
@@ -2482,7 +2702,8 @@ Stemming
 </code></pre>
 </div>
 </div>
-<p>Below is another issue found in the text data. Somehow there is a hyphen before some of the words.</p>
+<p>Below is another issue found in the text data. Somehow there is a
+hyphen before some of the words.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>df</span><span class='op'>$</span><span class='va'>Sentence</span><span class='op'>[</span><span class='fl'>2735</span><span class='op'>]</span>
@@ -2490,8 +2711,12 @@ Stemming
 </div>
 <pre><code>[1] &quot;The bar was a staple of the Chicago -based company for some seven decades.&quot;</code></pre>
 </div>
-<p>Therefore, during the tokenization, I have indicated that the words should be split by hyphens. According to the <a href="https://quanteda.io/reference/tokens.html">documentation</a>, hyphens will be treated as a separate token.</p>
-<p>To remove the hyphens after splitting the words, I will use regex to remove the hyphens.</p>
+<p>Therefore, during the tokenization, I have indicated that the words
+should be split by hyphens. According to the <a
+href="https://quanteda.io/reference/tokens.html">documentation</a>,
+hyphens will be treated as a separate token.</p>
+<p>To remove the hyphens after splitting the words, I will use regex to
+remove the hyphens.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df</span> <span class='op'>&lt;-</span> <span class='va'>text_df</span> <span class='op'>%&gt;%</span>
@@ -2499,11 +2724,19 @@ Stemming
 </code></pre>
 </div>
 </div>
-<p>These are common issues one might face when cleaning the text data. Therefore, it is always a good practice to double the output to check whether the output is as expected based on the pre-processing steps indicated earlier.</p>
+<p>These are common issues one might face when cleaning the text data.
+Therefore, it is always a good practice to double the output to check
+whether the output is as expected based on the pre-processing steps
+indicated earlier.</p>
 <h3 id="replace-words">Replace words</h3>
-<p>Some words may have different spelling. Without any cleaning, the algorithm will these words with a different spelling as different words.</p>
-<p>For example, within the text data, I noted that “united state” can also be spelled as “united st” or “u.s” although both of the words refer to “united state.”</p>
-<p>Therefore, I will list the words to be replaced within <code>tokens_replace</code> function.</p>
+<p>Some words may have different spelling. Without any cleaning, the
+algorithm will these words with a different spelling as different
+words.</p>
+<p>For example, within the text data, I noted that “united state” can
+also be spelled as “united st” or “u.s” although both of the words refer
+to “united state”.</p>
+<p>Therefore, I will list the words to be replaced within
+<code>tokens_replace</code> function.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df</span> <span class='op'>&lt;-</span> <span class='va'>text_df</span> <span class='op'>%&gt;%</span>
@@ -2513,10 +2746,15 @@ Stemming
 </code></pre>
 </div>
 </div>
-<p>Note that as I am finding the exact match of the words, hence the <code>valuetype</code> should be indicated as “fixed.”</p>
+<p>Note that as I am finding the exact match of the words, hence the
+<code>valuetype</code> should be indicated as “fixed”.</p>
 <h3 id="stemming">Stemming</h3>
-<p>As mentioned in the earlier section, often we may perform some further cleaning to find the root words, otherwise the algorithm will treat these words as separate words by themselves.</p>
-<p>For example, if I were to extract the text that contains “tree,” we will note that “trees” are just the plural form of “tree” and we may not want to differentiate “tree” and “trees” in the analysis.</p>
+<p>As mentioned in the earlier section, often we may perform some
+further cleaning to find the root words, otherwise the algorithm will
+treat these words as separate words by themselves.</p>
+<p>For example, if I were to extract the text that contains “tree”, we
+will note that “trees” are just the plural form of “tree” and we may not
+want to differentiate “tree” and “trees” in the analysis.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>temp</span> <span class='op'>&lt;-</span> <span class='va'>text_df</span> <span class='op'>%&gt;%</span>
@@ -2530,8 +2768,10 @@ Stemming
 </div>
 <pre><code>[1] &quot;tree&quot;      &quot;trees&quot;     &quot;treedome&quot;  &quot;treener&quot;   &quot;treehouse&quot;</code></pre>
 </div>
-<p>Therefore, one of the common approaches is to use stemming to find the root words.</p>
-<p>To do so, I will use <code>tokens_wordstem</code> function to perform stemming on the words.</p>
+<p>Therefore, one of the common approaches is to use stemming to find
+the root words.</p>
+<p>To do so, I will use <code>tokens_wordstem</code> function to perform
+stemming on the words.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df_stem</span> <span class='op'>&lt;-</span> <span class='va'>text_df</span> <span class='op'>%&gt;%</span>
@@ -2539,8 +2779,11 @@ Stemming
 </code></pre>
 </div>
 </div>
-<p>Next, I will <code>dfm</code> function to create a document-feature matrix so that later I could use <code>tidy</code> function to convert the object to conform to tidy data format.</p>
-<p>Also, I will trim away all the term frequency that is lesser than 8.</p>
+<p>Next, I will <code>dfm</code> function to create a document-feature
+matrix so that later I could use <code>tidy</code> function to convert
+the object to conform to tidy data format.</p>
+<p>Also, I will trim away all the term frequency that is lesser than
+8.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df_stem_1</span> <span class='op'>&lt;-</span> <span class='va'>text_df_stem</span> <span class='op'>%&gt;%</span>
@@ -2552,8 +2795,10 @@ Stemming
 </code></pre>
 </div>
 </div>
-<p>Once the object is converted into tidy data format, we could use our usual dplyr to transform for the necessary analysis.</p>
-<p>I will perform a frequency count on each word in the entire dataset, regardless of which documents they appear on.</p>
+<p>Once the object is converted into tidy data format, we could use our
+usual dplyr to transform for the necessary analysis.</p>
+<p>I will perform a frequency count on each word in the entire dataset,
+regardless of which documents they appear on.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df_stem_1_tidy_count</span> <span class='op'>&lt;-</span> <span class='va'>text_df_stem_1_tidy</span> <span class='op'>%&gt;%</span>
@@ -2562,7 +2807,8 @@ Stemming
 </code></pre>
 </div>
 </div>
-<p>I will further sort the count descending. From the results, we can see that some of the words appear more frequently than the rest.</p>
+<p>I will further sort the count descending. From the results, we can
+see that some of the words appear more frequently than the rest.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df_stem_1_tidy_count</span> <span class='op'>%&gt;%</span>
@@ -2584,9 +2830,15 @@ Stemming
 10 film           862
 # ... with 5,388 more rows</code></pre>
 </div>
-<p>However, it would be quite difficult to compare the frequency count of different words by looking at the data above.</p>
-<p>Hence, I will pass the output into <code>ggwordcloud</code> to visualize the output in wordcloud. As there are too many unique words within the data and the graph will be cluttered with different words if we were to visualize all the words in wordcloud, the graph will be cluttered with words.</p>
-<p>Hence, to overcome this, I will filer out those words with less than 350 count to lower the number of word counts.</p>
+<p>However, it would be quite difficult to compare the frequency count
+of different words by looking at the data above.</p>
+<p>Hence, I will pass the output into <code>ggwordcloud</code> to
+visualize the output in wordcloud. As there are too many unique words
+within the data and the graph will be cluttered with different words if
+we were to visualize all the words in wordcloud, the graph will be
+cluttered with words.</p>
+<p>Hence, to overcome this, I will filer out those words with less than
+350 count to lower the number of word counts.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df_stem_1_tidy_count</span> <span class='op'>%&gt;%</span>
@@ -2599,7 +2851,8 @@ Stemming
 </div>
 <p><img src="text-analytics_files/figure-html5/unnamed-chunk-25-1.png" width="100%" /></p>
 </div>
-<p>While this stemming could assist us in finding the root words, but it also fails to identify the root words for some of the words.</p>
+<p>While this stemming could assist us in finding the root words, but it
+also fails to identify the root words for some of the words.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df_stem_1_tidy_count</span> <span class='op'>%&gt;%</span>
@@ -2614,9 +2867,14 @@ Stemming
 3 youngest        24</code></pre>
 </div>
 <h3 id="lemmatization">Lemmatization</h3>
-<p>Recall in the earlier section, I have discussed that lemmatization is another method to find the root words.</p>
-<p>This method is linguistics-based and could potentially overcome the issue we face when using stemming.</p>
-<p>To perform lemmatization, I have referred to this <a href="https://stackoverflow.com/questions/62329148/lemmatize-using-quanteda">Stack Overflow post</a> on how to perform lemmatization by using <code>tokens_replace</code> function.</p>
+<p>Recall in the earlier section, I have discussed that lemmatization is
+another method to find the root words.</p>
+<p>This method is linguistics-based and could potentially overcome the
+issue we face when using stemming.</p>
+<p>To perform lemmatization, I have referred to this <a
+href="https://stackoverflow.com/questions/62329148/lemmatize-using-quanteda">Stack
+Overflow post</a> on how to perform lemmatization by using
+<code>tokens_replace</code> function.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df_lemma</span> <span class='op'>&lt;-</span> <span class='va'>text_df</span> <span class='op'>%&gt;%</span>
@@ -2625,7 +2883,8 @@ Stemming
 </code></pre>
 </div>
 </div>
-<p>Once the lemmatization is done, let’s us check whether lemmatization has successfully finding the root words of “younger” and “youngest.”</p>
+<p>Once the lemmatization is done, let’s us check whether lemmatization
+has successfully finding the root words of “younger” and “youngest”.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df_lemma</span> <span class='op'>%&gt;%</span>
@@ -2644,8 +2903,11 @@ Stemming
 2 young&#39;s        4
 3 youngblood     1</code></pre>
 </div>
-<p>At least now the original words for “younger” &amp; “youngest” are found through lemmatization. The rest of the words which contain “young” are unlikely to have “young” as the root word.</p>
-<p>Next, I will follow similar steps to create the document-feature matrix and convert the data into tidy data format.</p>
+<p>At least now the original words for “younger” &amp; “youngest” are
+found through lemmatization. The rest of the words which contain “young”
+are unlikely to have “young” as the root word.</p>
+<p>Next, I will follow similar steps to create the document-feature
+matrix and convert the data into tidy data format.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df_lemma_1</span> <span class='op'>&lt;-</span> <span class='va'>text_df_lemma</span> <span class='op'>%&gt;%</span>
@@ -2661,7 +2923,8 @@ Stemming
 </code></pre>
 </div>
 </div>
-<p>Once the frequency count is computed, I will pass the data into word cloud function to visualize the words in the word cloud format.</p>
+<p>Once the frequency count is computed, I will pass the data into word
+cloud function to visualize the words in the word cloud format.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df_lemma_1_tidy_count</span> <span class='op'>%&gt;%</span>
@@ -2677,55 +2940,93 @@ Stemming
 <h1 id="conclusion">Conclusion</h1>
 <p>That’s all for the day!</p>
 <p>Thanks for reading the post until the end.</p>
-<p>Feel free to contact me through <a href="mailto:jasper.jh.lok@gmail.com">email</a> or <a href="https://www.linkedin.com/in/jasper-l-13426232/">LinkedIn</a> if you have any suggestions on future topics to share.</p>
+<p>Feel free to contact me through <a
+href="mailto:jasper.jh.lok@gmail.com">email</a> or <a
+href="https://www.linkedin.com/in/jasper-l-13426232/">LinkedIn</a> if
+you have any suggestions on future topics to share.</p>
+<p>Refer to this link for the <a
+href="https://jasperlok.netlify.app/blog_disclaimer.html">blog
+disclaimer</a>.</p>
 <p>Till next time, happy learning!</p>
 <div class="layout-chunk" data-layout="l-body">
 <p><img src="image/bookshelf.jpg" width="90%" /></p>
 </div>
 <p><em>Photo by Emre Can Acer from Pexels</em></p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
-<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<div id="refs" class="references csl-bib-body hanging-indent"
+role="doc-bibliography">
 <div id="ref-bitext2021" class="csl-entry" role="doc-biblioentry">
-bitext. 2021. <span>“What Is the Difference Between Stemming and Lemmatization?”</span> <a href="https://blog.bitext.com/what-is-the-difference-between-stemming-and-lemmatization/">https://blog.bitext.com/what-is-the-difference-between-stemming-and-lemmatization/</a>.
+bitext. 2021. <span>“What Is the Difference Between Stemming and
+Lemmatization?”</span> <a
+href="https://blog.bitext.com/what-is-the-difference-between-stemming-and-lemmatization/">https://blog.bitext.com/what-is-the-difference-between-stemming-and-lemmatization/</a>.
 </div>
 <div id="ref-Brownlee2019" class="csl-entry" role="doc-biblioentry">
-Brownlee, Jason. 2019. <span>“A Gentle Introduction to the Bag-of-Words Model.”</span> <a href="https://machinelearningmastery.com/gentle-introduction-bag-words-model/">https://machinelearningmastery.com/gentle-introduction-bag-words-model/</a>.
+Brownlee, Jason. 2019. <span>“A Gentle Introduction to the Bag-of-Words
+Model.”</span> <a
+href="https://machinelearningmastery.com/gentle-introduction-bag-words-model/">https://machinelearningmastery.com/gentle-introduction-bag-words-model/</a>.
 </div>
 <div id="ref-Duncan2016" class="csl-entry" role="doc-biblioentry">
-Duncan, Alan D. 2016. <span>“Is It Time for Text Analytics in Financial Services?”</span> <a href="https://blogs.gartner.com/alan-duncan/2016/09/21/time-come-text-analytics-financial-services/">https://blogs.gartner.com/alan-duncan/2016/09/21/time-come-text-analytics-financial-services/</a>.
+Duncan, Alan D. 2016. <span>“Is It Time for Text Analytics in Financial
+Services?”</span> <a
+href="https://blogs.gartner.com/alan-duncan/2016/09/21/time-come-text-analytics-financial-services/">https://blogs.gartner.com/alan-duncan/2016/09/21/time-come-text-analytics-financial-services/</a>.
 </div>
 <div id="ref-Ferrario2020" class="csl-entry" role="doc-biblioentry">
-Ferrario, Andrea, and Mara Naegelin. 2020. <span>“The Art of Natural Language Processing: Classical, Modern and Contemporary Approaches to Text Document Classification.”</span> <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3547887">https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3547887</a>.
+Ferrario, Andrea, and Mara Naegelin. 2020. <span>“The Art of Natural
+Language Processing: Classical, Modern and Contemporary Approaches to
+Text Document Classification.”</span> <a
+href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3547887">https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3547887</a>.
 </div>
 <div id="ref-Hvitfeldt2021" class="csl-entry" role="doc-biblioentry">
-Hvitfeldt, Emil, and Julia Silge. 2021a. <span>“Chapter 3 Stop Words.”</span> <a href="https://smltar.com/stopwords.html#stopwordssummary">https://smltar.com/stopwords.html#stopwordssummary</a>.
+Hvitfeldt, Emil, and Julia Silge. 2021a. <span>“Chapter 3 Stop
+Words.”</span> <a
+href="https://smltar.com/stopwords.html#stopwordssummary">https://smltar.com/stopwords.html#stopwordssummary</a>.
 </div>
-<div id="ref-Hvitfeldt2021Stem" class="csl-entry" role="doc-biblioentry">
-———. 2021b. <span>“Chapter 4 Stemming.”</span> <a href="https://smltar.com/stemming.html#how-to-stem-text-in-r">https://smltar.com/stemming.html#how-to-stem-text-in-r</a>.
+<div id="ref-Hvitfeldt2021Stem" class="csl-entry"
+role="doc-biblioentry">
+———. 2021b. <span>“Chapter 4 Stemming.”</span> <a
+href="https://smltar.com/stemming.html#how-to-stem-text-in-r">https://smltar.com/stemming.html#how-to-stem-text-in-r</a>.
 </div>
 <div id="ref-Manning2008" class="csl-entry" role="doc-biblioentry">
-Manning, Christopher D., Prabhakar Raghavan, and Hinrich Schütze. 2009. <em>An Introduction to Information Retrieval</em>. Cambridge University Press.
+Manning, Christopher D., Prabhakar Raghavan, and Hinrich Schütze. 2009.
+<em>An Introduction to Information Retrieval</em>. Cambridge University
+Press.
 </div>
 <div id="ref-Mcgrath2021" class="csl-entry" role="doc-biblioentry">
-McGrath, Liam. 2021. <span>“Mining for Gold: Text Analytics in Insurance: Natural Language Processing Provides Insurers Tools for Using Text Data.”</span> <a href="https://www.willistowerswatson.com/en-US/Insights/2021/03/mining-for-gold-text-analytics-in-insurance">https://www.willistowerswatson.com/en-US/Insights/2021/03/mining-for-gold-text-analytics-in-insurance</a>.
+McGrath, Liam. 2021. <span>“Mining for Gold: Text Analytics in
+Insurance: Natural Language Processing Provides Insurers Tools for Using
+Text Data.”</span> <a
+href="https://www.willistowerswatson.com/en-US/Insights/2021/03/mining-for-gold-text-analytics-in-insurance">https://www.willistowerswatson.com/en-US/Insights/2021/03/mining-for-gold-text-analytics-in-insurance</a>.
 </div>
 <div id="ref-Rodriguez2019" class="csl-entry" role="doc-biblioentry">
-Rodriguez, Jason. 2019. <span>“Decoding the Hidden Value of Unstructured Text Data.”</span> <a href="https://www.willistowerswatson.com/en-US/Insights/2019/02/decoding-the-hidden-value-of-unstructured-text-data">https://www.willistowerswatson.com/en-US/Insights/2019/02/decoding-the-hidden-value-of-unstructured-text-data</a>.
+Rodriguez, Jason. 2019. <span>“Decoding the Hidden Value of Unstructured
+Text Data.”</span> <a
+href="https://www.willistowerswatson.com/en-US/Insights/2019/02/decoding-the-hidden-value-of-unstructured-text-data">https://www.willistowerswatson.com/en-US/Insights/2019/02/decoding-the-hidden-value-of-unstructured-text-data</a>.
 </div>
 <div id="ref-Sarkar2016" class="csl-entry" role="doc-biblioentry">
-Sarkar, Dipanjan. 2016. <em>Text Analytics with Python a Practical Real- World Approach to Gaining Actionable Insights from Your Datal</em>. Apress.
+Sarkar, Dipanjan. 2016. <em>Text Analytics with Python a Practical Real-
+World Approach to Gaining Actionable Insights from Your Datal</em>.
+Apress.
 </div>
 <div id="ref-Schumacher2019" class="csl-entry" role="doc-biblioentry">
-Schumacher, Alex. 2019. <span>“When (Not) to Lemmatize or Remove Stop Words in Text Preprocessing.”</span> <a href="https://opendatagroup.github.io/data%20science/2019/03/21/preprocessing-text.html">https://opendatagroup.github.io/data%20science/2019/03/21/preprocessing-text.html</a>.
+Schumacher, Alex. 2019. <span>“When (Not) to Lemmatize or Remove Stop
+Words in Text Preprocessing.”</span> <a
+href="https://opendatagroup.github.io/data%20science/2019/03/21/preprocessing-text.html">https://opendatagroup.github.io/data%20science/2019/03/21/preprocessing-text.html</a>.
 </div>
 <div id="ref-Silge2021" class="csl-entry" role="doc-biblioentry">
-Silge, Julia, and David Robinson. 2021. <span>“6 Topic Modeling.”</span> <a href="https://www.tidytextmining.com/topicmodeling.html">https://www.tidytextmining.com/topicmodeling.html</a>.
+Silge, Julia, and David Robinson. 2021. <span>“6 Topic Modeling.”</span>
+<a
+href="https://www.tidytextmining.com/topicmodeling.html">https://www.tidytextmining.com/topicmodeling.html</a>.
 </div>
 <div id="ref-Singh2019" class="csl-entry" role="doc-biblioentry">
-Singh, Shubham. 2019. <span>“NLP Essentials: Removing Stopwords and Performing Text Normalization Using NLTK and spaCy in Python.”</span> <a href="https://www.analyticsvidhya.com/blog/2019/08/how-to-remove-stopwords-text-normalization-nltk-spacy-gensim-python/">https://www.analyticsvidhya.com/blog/2019/08/how-to-remove-stopwords-text-normalization-nltk-spacy-gensim-python/</a>.
+Singh, Shubham. 2019. <span>“NLP Essentials: Removing Stopwords and
+Performing Text Normalization Using NLTK and spaCy in Python.”</span> <a
+href="https://www.analyticsvidhya.com/blog/2019/08/how-to-remove-stopwords-text-normalization-nltk-spacy-gensim-python/">https://www.analyticsvidhya.com/blog/2019/08/how-to-remove-stopwords-text-normalization-nltk-spacy-gensim-python/</a>.
 </div>
 <div id="ref-Stecanella2019" class="csl-entry" role="doc-biblioentry">
-Stecanella, Bruno. 2019. <span>“Understanding TF-ID: A Simple Introduction.”</span> <a href="https://monkeylearn.com/blog/what-is-tf-idf/">https://monkeylearn.com/blog/what-is-tf-idf/</a>.
+Stecanella, Bruno. 2019. <span>“Understanding TF-ID: A Simple
+Introduction.”</span> <a
+href="https://monkeylearn.com/blog/what-is-tf-idf/">https://monkeylearn.com/blog/what-is-tf-idf/</a>.
 </div>
 </div>
 <!--radix_placeholder_article_footer-->

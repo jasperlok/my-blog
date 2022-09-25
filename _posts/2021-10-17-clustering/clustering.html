@@ -56,7 +56,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 code span.al { color: #ad0000; } /* Alert */
 code span.an { color: #5e5e5e; } /* Annotation */
-code span.at { color: #20794d; } /* Attribute */
+code span.at { } /* Attribute */
 code span.bn { color: #ad0000; } /* BaseN */
 code span.bu { } /* BuiltIn */
 code span.cf { color: #007ba5; } /* ControlFlow */
@@ -77,12 +77,34 @@ code span.kw { color: #007ba5; } /* Keyword */
 code span.op { color: #5e5e5e; } /* Operator */
 code span.ot { color: #007ba5; } /* Other */
 code span.pp { color: #ad0000; } /* Preprocessor */
-code span.sc { color: #20794d; } /* SpecialChar */
+code span.sc { color: #5e5e5e; } /* SpecialChar */
 code span.ss { color: #20794d; } /* SpecialString */
 code span.st { color: #20794d; } /* String */
 code span.va { color: #111111; } /* Variable */
 code span.vs { color: #20794d; } /* VerbatimString */
 code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+</style>
+
+<style>
+  div.csl-bib-body { }
+  div.csl-entry {
+    clear: both;
+    }
+  .hanging div.csl-entry {
+    margin-left:2em;
+    text-indent:-2em;
+  }
+  div.csl-left-margin {
+    min-width:2em;
+    float:left;
+  }
+  div.csl-right-inline {
+    margin-left:2em;
+    padding-left:1em;
+  }
+  div.csl-indent {
+    margin-left: 2em;
+  }
 </style>
 
   <!--radix_placeholder_meta_tags-->
@@ -1268,7 +1290,10 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
       // hoverable references
       $('span.citation[data-cites]').each(function() {
-        var refHtml = $('#ref-' + $(this).attr('data-cites')).html();
+        var refs = $(this).attr('data-cites').split(" ");
+        var refHtml = refs.map(function(ref) {
+          return "<p>" + $('#ref-' + ref).html() + "</p>";
+        }).join("\n");
         window.tippy(this, {
           allowHTML: true,
           content: refHtml,
@@ -1442,7 +1467,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <script src="clustering_files/header-attrs/header-attrs.js"></script>
   <script src="clustering_files/kePrint/kePrint.js"></script>
   <link href="clustering_files/lightable/lightable.css" rel="stylesheet" />
-  <script src="clustering_files/jquery/jquery.min.js"></script>
+  <script src="clustering_files/jquery/jquery-3.6.0.min.js"></script>
   <script src="clustering_files/popper/popper.min.js"></script>
   <link href="clustering_files/tippy/tippy.css" rel="stylesheet" />
   <link href="clustering_files/tippy/tippy-light-border.css" rel="stylesheet" />
@@ -1479,7 +1504,8 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <div class="dt=tag">Unsupervised Learning</div>
 </div>
 <!--/radix_placeholder_categories-->
-<p><p>Mirror, mirror on the wall, which data are similar to one another?</p></p>
+<p><p>Mirror, mirror on the wall, which data are similar to one
+another?</p></p>
 </div>
 
 <div class="d-byline">
@@ -1493,26 +1519,48 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <nav class="l-text toc figcaption" id="TOC">
 <h3>Contents</h3>
 <ul>
-<li><a href="#unsupervised-learning">Unsupervised Learning</a></li>
-<li><a href="#application-of-clustering">Application of Clustering</a></li>
-<li><a href="#consideration-when-performing-clustering">Consideration when Performing Clustering</a>
+<li><a href="#unsupervised-learning"
+id="toc-unsupervised-learning">Unsupervised Learning</a></li>
+<li><a href="#application-of-clustering"
+id="toc-application-of-clustering">Application of Clustering</a></li>
+<li><a href="#consideration-when-performing-clustering"
+id="toc-consideration-when-performing-clustering">Consideration when
+Performing Clustering</a>
 <ul>
-<li><a href="#purpose-of-clustering-analysis">Purpose of Clustering Analysis</a></li>
-<li><a href="#appropriateness-of-features-in-separating-policies-into-clusters">Appropriateness of Features in Separating Policies into Clusters</a></li>
-<li><a href="#number-of-data-points-within-each-cluster">Number of Data Points within Each Cluster</a></li>
-<li><a href="#cluster-selection">Cluster Selection</a></li>
-<li><a href="#limitation-of-selected-clustering-algorithm">Limitation of Selected Clustering Algorithm</a></li>
+<li><a href="#purpose-of-clustering-analysis"
+id="toc-purpose-of-clustering-analysis">Purpose of Clustering
+Analysis</a></li>
+<li><a
+href="#appropriateness-of-features-in-separating-policies-into-clusters"
+id="toc-appropriateness-of-features-in-separating-policies-into-clusters">Appropriateness
+of Features in Separating Policies into Clusters</a></li>
+<li><a href="#number-of-data-points-within-each-cluster"
+id="toc-number-of-data-points-within-each-cluster">Number of Data Points
+within Each Cluster</a></li>
+<li><a href="#cluster-selection" id="toc-cluster-selection">Cluster
+Selection</a></li>
+<li><a href="#limitation-of-selected-clustering-algorithm"
+id="toc-limitation-of-selected-clustering-algorithm">Limitation of
+Selected Clustering Algorithm</a></li>
 </ul></li>
-<li><a href="#conclusion">Conclusion</a></li>
+<li><a href="#conclusion" id="toc-conclusion">Conclusion</a></li>
 </ul>
 </nav>
 </div>
-<p>During the Q&amp;A session in my last August sharing, there were some questions on different unsupervised learning methods. It has triggered my thought to do a sharing on unsupervised learning methods, in particular clustering.</p>
-<p>It is one of the basic topics one would learn when he/she learns data science.</p>
-<p>Instead of having the explanations and demonstration in the same post, I have decided to split up the post into two so that each post is not too long to read.</p>
+<p>During the Q&amp;A session in my last August sharing, there were some
+questions on different unsupervised learning methods. It has triggered
+my thought to do a sharing on unsupervised learning methods, in
+particular clustering.</p>
+<p>It is one of the basic topics one would learn when he/she learns data
+science.</p>
+<p>Instead of having the explanations and demonstration in the same
+post, I have decided to split up the post into two so that each post is
+not too long to read.</p>
 <ul>
-<li><p>In this post, I will focus on what one should know before perform clustering analysis.</p></li>
-<li><p>The demonstration on clustering will be included in the next post.</p></li>
+<li><p>In this post, I will focus on what one should know before perform
+clustering analysis.</p></li>
+<li><p>The demonstration on clustering will be included in the next
+post.</p></li>
 </ul>
 <p>Nevertheless, let’s understand a bit more about clustering.</p>
 <div class="layout-chunk" data-layout="l-body">
@@ -1520,10 +1568,20 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 <p>Photo by v2osk on Unsplash</p>
 <h2 id="unsupervised-learning">Unsupervised Learning</h2>
-<p>In general, the classical machine learning models can be further split into two broad categories, which are supervised and unsupervised learning methods.</p>
-<p>Unsupervised learning is a machine learning method to discover hidden patterns or data groupings without human intervention <span class="citation" data-cites="IBM2020">(<a href="#ref-IBM2020" role="doc-biblioref">IBM Cloud Education 2020</a>)</span>.</p>
-<p>In other words, this method aims to model the underlying structure, affinities, or distribution in the data in order to learn more about its intrinsic characteristics <span class="citation" data-cites="Dinov2018">(<a href="#ref-Dinov2018" role="doc-biblioref">Ivo 2018</a>)</span>.</p>
-<p>The unsupervised learning method comprises clustering, association, and dimension reduction as shown in the graph below.</p>
+<p>In general, the classical machine learning models can be further
+split into two broad categories, which are supervised and unsupervised
+learning methods.</p>
+<p>Unsupervised learning is a machine learning method to discover hidden
+patterns or data groupings without human intervention <span
+class="citation" data-cites="IBM2020">(<a href="#ref-IBM2020"
+role="doc-biblioref">IBM Cloud Education 2020</a>)</span>.</p>
+<p>In other words, this method aims to model the underlying structure,
+affinities, or distribution in the data in order to learn more about its
+intrinsic characteristics <span class="citation"
+data-cites="Dinov2018">(<a href="#ref-Dinov2018"
+role="doc-biblioref">Ivo 2018</a>)</span>.</p>
+<p>The unsupervised learning method comprises clustering, association,
+and dimension reduction as shown in the graph below.</p>
 <div class="layout-chunk" data-layout="l-body">
 <p><img src="image/Graph%20on%20Different%20Machine%20Learning.png" width="90%" /></p>
 </div>
@@ -1547,11 +1605,16 @@ Descriptions
 Clustering
 </td>
 <td style="text-align:left;">
-<p>Clustering is one of the basic algorithms any beginners would learn when they started their data science journey.</p>
-<p>The clustering algorithms include k-means, hierarchical clustering, latent class analysis, and so on. It is commonly used in many applications as shown following:</p>
+<p>Clustering is one of the basic algorithms any beginners would learn
+when they started their data science journey.</p>
+<p>The clustering algorithms include k-means, hierarchical clustering,
+latent class analysis, and so on. It is commonly used in many
+applications as shown following:</p>
 <ul>
-<li><p>Find the different customer segments so that one could derive a more targeted strategy to boost the sales</p></li>
-<li><p>Group the customers into different groups based on their behaviors</p>
+<li><p>Find the different customer segments so that one could derive a
+more targeted strategy to boost the sales</p></li>
+<li><p>Group the customers into different groups based on their
+behaviors</p>
 </td>
 </tr>
 <tr>
@@ -1559,15 +1622,24 @@ Clustering
 <p>Association</p>
 </td>
 <td style="text-align:left;">
-<p>Apriori is one of the common algorithms used to mine the association rules between the different items. In other words, this method allows one to discover how the items are “associated” with one another.</p></li>
+<p>Apriori is one of the common algorithms used to mine the association
+rules between the different items. In other words, this method allows
+one to discover how the items are “associated” with one
+another.</p></li>
 </ul>
-<p>Following are some of the common examples of how the association rules are used:</p>
+<p>Following are some of the common examples of how the association
+rules are used:</p>
 <ul>
-<li><p>Product bundling by bundling products with higher profit margin and closely associated to boost the sales</p></li>
+<li><p>Product bundling by bundling products with higher profit margin
+and closely associated to boost the sales</p></li>
 <li><p>Perform cross-selling and upselling products</p></li>
-<li><p>Arranging the closely associated products together to increase the sales</p></li>
+<li><p>Arranging the closely associated products together to increase
+the sales</p></li>
 </ul>
-The more advanced technique includes taking time into considerations while performing association algorithms. This would allow one to understand whether there is a change in the customer purchasing behaviors.
+The more advanced technique includes taking time into considerations
+while performing association algorithms. This would allow one to
+understand whether there is a change in the customer purchasing
+behaviors.
 </td>
 </tr>
 <tr>
@@ -1575,17 +1647,31 @@ The more advanced technique includes taking time into considerations while perfo
 Dimension Reduction
 </td>
 <td style="text-align:left;">
-<p>As the data increases, often one would face the “curve of dimensionality.” This is an issue while building machine learning models as the data points in high-dimensional space are sparse, resulting in a less desirable machine learning model.</p>
-<p>Therefore, the common way to resolve this is to perform principal component analysis (PCA). The key idea of PCA is the algorithm attempts to find a low-dimensional representation of a dataset that contains as much as possible of the variation <span class="citation" data-cites="James2021">(<a href="#ref-James2021" role="doc-biblioref">James et al. 2021</a>)</span>.</p>
-However, as the principal components derived from the algorithm are not directly observable from the dataset, hence it is often more challenging to explain or understand the results.
+<p>As the data increases, often one would face the “curve of
+dimensionality”. This is an issue while building machine learning models
+as the data points in high-dimensional space are sparse, resulting in a
+less desirable machine learning model.</p>
+<p>Therefore, the common way to resolve this is to perform principal
+component analysis (PCA). The key idea of PCA is the algorithm attempts
+to find a low-dimensional representation of a dataset that contains as
+much as possible of the variation <span class="citation"
+data-cites="James2021">(<a href="#ref-James2021"
+role="doc-biblioref">James et al. 2021</a>)</span>.</p>
+However, as the principal components derived from the algorithm are not
+directly observable from the dataset, hence it is often more challenging
+to explain or understand the results.
 </td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>In this series, I will focus on clustering and leave the other two unsupervised learning methods for future posts.</p>
+<p>In this series, I will focus on clustering and leave the other two
+unsupervised learning methods for future posts.</p>
 <h2 id="application-of-clustering">Application of Clustering</h2>
-<p><span class="citation" data-cites="Google2020">(<a href="#ref-Google2020" role="doc-biblioref">Google Developers 2020</a>)</span> has listed a list of common applications for clustering, which includes:</p>
+<p><span class="citation" data-cites="Google2020">(<a
+href="#ref-Google2020" role="doc-biblioref">Google Developers
+2020</a>)</span> has listed a list of common applications for
+clustering, which includes:</p>
 <ul>
 <li><p>market segmentation</p></li>
 <li><p>social network analysis</p></li>
@@ -1594,94 +1680,210 @@ However, as the principal components derived from the algorithm are not directly
 <li><p>image segmentation</p></li>
 <li><p>anomaly detection</p></li>
 </ul>
-<h2 id="consideration-when-performing-clustering">Consideration when Performing Clustering</h2>
-<p>While clustering could be a useful tool to discover insights within the dataset, below are some of the important considerations when performing clustering:</p>
-<h3 id="purpose-of-clustering-analysis">Purpose of Clustering Analysis</h3>
+<h2 id="consideration-when-performing-clustering">Consideration when
+Performing Clustering</h2>
+<p>While clustering could be a useful tool to discover insights within
+the dataset, below are some of the important considerations when
+performing clustering:</p>
+<h3 id="purpose-of-clustering-analysis">Purpose of Clustering
+Analysis</h3>
 <div class="layout-chunk" data-layout="l-body">
 <p><img src="image/purpose.jpg" width="90%" /></p>
 </div>
 <p>Photo by Mark Fletcher-Brown on Unsplash</p>
-<p><span class="citation" data-cites="Logan2016">(<a href="#ref-Logan2016" role="doc-biblioref">Logan and Pentimonti 2016</a>)</span> recommended the users to think about how the clustering results will be used. For example, what is the business problem we be solving through the clustering results? The required dataset could defer depending on the business problem we are solving.</p>
-<p>Nevertheless, the answer to this question will guide users in selecting the appropriate variables for the clustering analysis, deciding the appropriate clustering algorithms, and so on.</p>
-<h3 id="appropriateness-of-features-in-separating-policies-into-clusters">Appropriateness of Features in Separating Policies into Clusters</h3>
-<p>As the name unsupervised machine learning suggested, the clustering algorithm has no mechanism for differentiating relevant or irrelevant variables. Also, the clustering results can be very dependent on the variables included in the analysis <span class="citation" data-cites="Kam2019">(<a href="#ref-Kam2019" role="doc-biblioref">Kam 2019</a>)</span>. Therefore, to obtain meaningful clustering results, the selected variables should be able to reflect the inherent differences between the different clusters.</p>
-<p>For example, if we know there are the fundamental structural difference between the different types of customers/businesses, the relevant parameters should be used in clustering so that the clusters are less likely to overlap with one another.</p>
+<p><span class="citation" data-cites="Logan2016">(<a
+href="#ref-Logan2016" role="doc-biblioref">Logan and Pentimonti
+2016</a>)</span> recommended the users to think about how the clustering
+results will be used. For example, what is the business problem we be
+solving through the clustering results? The required dataset could defer
+depending on the business problem we are solving.</p>
+<p>Nevertheless, the answer to this question will guide users in
+selecting the appropriate variables for the clustering analysis,
+deciding the appropriate clustering algorithms, and so on.</p>
+<h3
+id="appropriateness-of-features-in-separating-policies-into-clusters">Appropriateness
+of Features in Separating Policies into Clusters</h3>
+<p>As the name unsupervised machine learning suggested, the clustering
+algorithm has no mechanism for differentiating relevant or irrelevant
+variables. Also, the clustering results can be very dependent on the
+variables included in the analysis <span class="citation"
+data-cites="Kam2019">(<a href="#ref-Kam2019" role="doc-biblioref">Kam
+2019</a>)</span>. Therefore, to obtain meaningful clustering results,
+the selected variables should be able to reflect the inherent
+differences between the different clusters.</p>
+<p>For example, if we know there are the fundamental structural
+difference between the different types of customers/businesses, the
+relevant parameters should be used in clustering so that the clusters
+are less likely to overlap with one another.</p>
 <div class="layout-chunk" data-layout="l-body">
 <p><img src="image/separate.jpg" width="90%" /></p>
 </div>
 <p>Photo by David Rotimi on Unsplash</p>
-<p>Of course, the variables that could effectively separate the dataset may not be very apparent sometimes. Often, it requires some level of understanding of the underlying data or even the context of the data.</p>
-<p>As the old saying goes, garbage in garbage out. Without thinking through and selecting the appropriate variables, the clustering results may not be meaningful.</p>
-<p>Besides, the number of variables used in clustering is also quite important. The rule of thumb recommended by Goodman is to have at least three variables in the clustering analysis <span class="citation" data-cites="Goodman1974">(<a href="#ref-Goodman1974" role="doc-biblioref">Goodman 1974</a>)</span>. The clustering results may not be meaningful if insufficient variables are used in clustering.</p>
-<p>Meanwhile, having too many variables may introduce too much noise, resulting in less meaningful clustering results. Therefore, only the variables that could help us in separating the different characteristics of the model points should be included in the analysis.</p>
-<h3 id="number-of-data-points-within-each-cluster">Number of Data Points within Each Cluster</h3>
+<p>Of course, the variables that could effectively separate the dataset
+may not be very apparent sometimes. Often, it requires some level of
+understanding of the underlying data or even the context of the
+data.</p>
+<p>As the old saying goes, garbage in garbage out. Without thinking
+through and selecting the appropriate variables, the clustering results
+may not be meaningful.</p>
+<p>Besides, the number of variables used in clustering is also quite
+important. The rule of thumb recommended by Goodman is to have at least
+three variables in the clustering analysis <span class="citation"
+data-cites="Goodman1974">(<a href="#ref-Goodman1974"
+role="doc-biblioref">Goodman 1974</a>)</span>. The clustering results
+may not be meaningful if insufficient variables are used in
+clustering.</p>
+<p>Meanwhile, having too many variables may introduce too much noise,
+resulting in less meaningful clustering results. Therefore, only the
+variables that could help us in separating the different characteristics
+of the model points should be included in the analysis.</p>
+<h3 id="number-of-data-points-within-each-cluster">Number of Data Points
+within Each Cluster</h3>
 <div class="layout-chunk" data-layout="l-body">
 <p><img src="image/piles.jpg" width="90%" /></p>
 </div>
 <p>Photo by Monstera from Pexels</p>
-<p>The general rule of thumb is the number of data points within each cluster should not be less than 5. The idea is that the cluster is unlikely to be meaningful when the number of data points contained in the cluster is relatively low.</p>
-<p>For example, imagine the company is leveraging the clustering results to set up the different operations to serve different groups based on the values customers bring in. The company would be better off choosing a lower number of clusters that contain a decent number of data points within the clusters even though the higher number of clusters might be producing a better clustering result. The cost of having an additional headcount or separate process for a cluster without a decent size is likely to be hard to justify.</p>
+<p>The general rule of thumb is the number of data points within each
+cluster should not be less than 5. The idea is that the cluster is
+unlikely to be meaningful when the number of data points contained in
+the cluster is relatively low.</p>
+<p>For example, imagine the company is leveraging the clustering results
+to set up the different operations to serve different groups based on
+the values customers bring in. The company would be better off choosing
+a lower number of clusters that contain a decent number of data points
+within the clusters even though the higher number of clusters might be
+producing a better clustering result. The cost of having an additional
+headcount or separate process for a cluster without a decent size is
+likely to be hard to justify.</p>
 <h3 id="cluster-selection">Cluster Selection</h3>
 <div class="layout-chunk" data-layout="l-body">
 <p><img src="image/selection.jpg" width="90%" /></p>
 </div>
 <p>Photo by Edu Grande on Unsplash</p>
-<p>For clustering, the number of clusters is a parameter that needs to be defined upfront before clustering analysis. However, this poses a challenge - how do we know what is the optimal number of clusters for the given dataset?</p>
-<p>The common approach is to run the algorithm under a different number of clusters and use some measurements to compare the clustering results, providing us with a more objective method to determine the optimal number of clusters.</p>
-<p>For example, the elbow curve is one of the common approaches to find the optimal number of clusters. This approach plots the within-cluster sum of the square against the number of clusters. Within-cluster sum of square measures the variability within the cluster. With the same dataset, as the number of clusters increases, the within-cluster sum of squares tends to decrease.</p>
-<p>Following is an example of how the elbow curve graph looks like, where the x-axis represents the number of clusters and the y-axis represents the total withinness between clusters.</p>
+<p>For clustering, the number of clusters is a parameter that needs to
+be defined upfront before clustering analysis. However, this poses a
+challenge - how do we know what is the optimal number of clusters for
+the given dataset?</p>
+<p>The common approach is to run the algorithm under a different number
+of clusters and use some measurements to compare the clustering results,
+providing us with a more objective method to determine the optimal
+number of clusters.</p>
+<p>For example, the elbow curve is one of the common approaches to find
+the optimal number of clusters. This approach plots the within-cluster
+sum of the square against the number of clusters. Within-cluster sum of
+square measures the variability within the cluster. With the same
+dataset, as the number of clusters increases, the within-cluster sum of
+squares tends to decrease.</p>
+<p>Following is an example of how the elbow curve graph looks like,
+where the x-axis represents the number of clusters and the y-axis
+represents the total withinness between clusters.</p>
 <div class="layout-chunk" data-layout="l-body">
 <p><img src="image/elbow_curve.png" width="90%" /></p>
 </div>
 <p><em>Example of elbow curve graph</em></p>
-<p>However, having too many clusters could introduce noises into the clustering results, increasing the within-cluster sum of squares. The rule of thumb is to choose the point that the decrease in the within-cluster sum of squares would be insignificant when the number of clusters increases. This is because a simpler model is preferred if the simpler model can differentiate the segments well.</p>
-<p>Also, note that one could compare the clustering results only if the clustering results are run based on the same set of data. This is because supervised learning methods have an explicit target, so different accuracy measurements can be used to measure the performance of the different methods.</p>
-<p>On the other hand, unlike the supervised learning method, the fundamental idea of the unsupervised learning method is to use the algorithms to find the various underlying patterns within the dataset. Hence, the unsupervised learning method does not have an explicit target for the algorithm to learn and measure on.</p>
-<p>Hence, it is not meaningful to compare clustering results if the underlying dataset used in the clustering is different. However, we could compare the cluster results qualitatively to see which cluster models provide a more meaningful result. Following are some considerations in comparing the cluster results qualitatively:</p>
+<p>However, having too many clusters could introduce noises into the
+clustering results, increasing the within-cluster sum of squares. The
+rule of thumb is to choose the point that the decrease in the
+within-cluster sum of squares would be insignificant when the number of
+clusters increases. This is because a simpler model is preferred if the
+simpler model can differentiate the segments well.</p>
+<p>Also, note that one could compare the clustering results only if the
+clustering results are run based on the same set of data. This is
+because supervised learning methods have an explicit target, so
+different accuracy measurements can be used to measure the performance
+of the different methods.</p>
+<p>On the other hand, unlike the supervised learning method, the
+fundamental idea of the unsupervised learning method is to use the
+algorithms to find the various underlying patterns within the dataset.
+Hence, the unsupervised learning method does not have an explicit target
+for the algorithm to learn and measure on.</p>
+<p>Hence, it is not meaningful to compare clustering results if the
+underlying dataset used in the clustering is different. However, we
+could compare the cluster results qualitatively to see which cluster
+models provide a more meaningful result. Following are some
+considerations in comparing the cluster results qualitatively:</p>
 <ul>
-<li><p>Does each cluster have a reasonable amount of data points within each cluster (eg. not less than 5 data points within each cluster)?</p></li>
-<li><p>Is there any overlapping between the clusters? A good cluster should be able to show the differences between the data points</p></li>
+<li><p>Does each cluster have a reasonable amount of data points within
+each cluster (eg. not less than 5 data points within each
+cluster)?</p></li>
+<li><p>Is there any overlapping between the clusters? A good cluster
+should be able to show the differences between the data points</p></li>
 </ul>
-<h3 id="limitation-of-selected-clustering-algorithm">Limitation of Selected Clustering Algorithm</h3>
+<h3 id="limitation-of-selected-clustering-algorithm">Limitation of
+Selected Clustering Algorithm</h3>
 <div class="layout-chunk" data-layout="l-body">
 <p><img src="image/block.jpg" width="60%" /></p>
 </div>
 <p>Photo by lucas souza from Pexels</p>
-<p>Each clustering algorithm has its limitations, hence appropriate data transformation might require before the analysis.</p>
-<p>For example, the K-means clustering algorithm can only accept numeric variables. Hence the non-numeric variables will need to be transformed before they can be used for clustering purposes.</p>
-<p>Also, the common clustering algorithm assumes the data is time-independent. This assumption is not appropriate when we are dealing with sequential data, such as time-series data, speech data, and so on. Hence, other clustering methods (eg. dynamic time warping) that take time into considerations when performing clustering would be more appropriate. Do check out my previous poster on how we could use dynamic time warping to analyze time-series data in <a href="https://jasperlok.netlify.app/past_proj/2019-12-up-and-down-cpi/">this post</a>.</p>
+<p>Each clustering algorithm has its limitations, hence appropriate data
+transformation might require before the analysis.</p>
+<p>For example, the K-means clustering algorithm can only accept numeric
+variables. Hence the non-numeric variables will need to be transformed
+before they can be used for clustering purposes.</p>
+<p>Also, the common clustering algorithm assumes the data is
+time-independent. This assumption is not appropriate when we are dealing
+with sequential data, such as time-series data, speech data, and so on.
+Hence, other clustering methods (eg. dynamic time warping) that take
+time into considerations when performing clustering would be more
+appropriate. Do check out my previous poster on how we could use dynamic
+time warping to analyze time-series data in <a
+href="https://jasperlok.netlify.app/past_proj/2019-12-up-and-down-cpi/">this
+post</a>.</p>
 <div class="layout-chunk" data-layout="l-body">
 <p><img src="image/poster.png" width="90%" /></p>
 </div>
 <p><em>Poster of my project on Dynamic Time Warping</em></p>
-<p>Hence, it is important to understand the limitations of the selected clustering algorithm before the analysis to ensure meaningful results.</p>
+<p>Hence, it is important to understand the limitations of the selected
+clustering algorithm before the analysis to ensure meaningful
+results.</p>
 <h2 id="conclusion">Conclusion</h2>
 <p>That’s all for the day!</p>
-<p>Above are some of the important considerations while performing clustering analysis.</p>
+<p>Above are some of the important considerations while performing
+clustering analysis.</p>
 <p>Thanks for reading the post until the end.</p>
-<p>Feel free to contact me through <a href="mailto:jasper.jh.lok.@gmail.com">email</a> or <a href="https://www.linkedin.com/in/jasper-l-13426232/">LinkedIn</a> if you have any suggestions on future topics to share.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
-<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<p>Feel free to contact me through <a
+href="mailto:jasper.jh.lok.@gmail.com">email</a> or <a
+href="https://www.linkedin.com/in/jasper-l-13426232/">LinkedIn</a> if
+you have any suggestions on future topics to share.</p>
+<p>Refer to this link for the <a
+href="https://jasperlok.netlify.app/blog_disclaimer.html">blog
+disclaimer</a>.</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<div id="refs" class="references csl-bib-body hanging-indent"
+role="doc-bibliography">
 <div id="ref-Goodman1974" class="csl-entry" role="doc-biblioentry">
-Goodman, L. A. 1974. <span>“Exploratory Latent Structure Analysis Using Both Identifiable and Unidentifiable Models.”</span> <em>Biometrika</em>.
+Goodman, L. A. 1974. <span>“Exploratory Latent Structure Analysis Using
+Both Identifiable and Unidentifiable Models.”</span>
+<em>Biometrika</em>.
 </div>
 <div id="ref-Google2020" class="csl-entry" role="doc-biblioentry">
-Google Developers. 2020. <span>“Clustering in Machine Learning.”</span> <a href="https://developers.google.com/machine-learning/clustering/overview">https://developers.google.com/machine-learning/clustering/overview</a>.
+Google Developers. 2020. <span>“Clustering in Machine Learning.”</span>
+<a
+href="https://developers.google.com/machine-learning/clustering/overview">https://developers.google.com/machine-learning/clustering/overview</a>.
 </div>
 <div id="ref-IBM2020" class="csl-entry" role="doc-biblioentry">
-IBM Cloud Education. 2020. <span>“Unsupervised Learning.”</span> <a href="https://www.ibm.com/cloud/learn/unsupervised-learning">https://www.ibm.com/cloud/learn/unsupervised-learning</a>.
+IBM Cloud Education. 2020. <span>“Unsupervised Learning.”</span> <a
+href="https://www.ibm.com/cloud/learn/unsupervised-learning">https://www.ibm.com/cloud/learn/unsupervised-learning</a>.
 </div>
 <div id="ref-Dinov2018" class="csl-entry" role="doc-biblioentry">
-Ivo, Dinov D. 2018. <em>Data Science and Predictive Analytics: Biomedical and Health Applications Using r</em>. Springer.
+Ivo, Dinov D. 2018. <em>Data Science and Predictive Analytics:
+Biomedical and Health Applications Using r</em>. Springer.
 </div>
 <div id="ref-James2021" class="csl-entry" role="doc-biblioentry">
-James, Gareth, Daniela Witten, Trevor Hastie, and Robert Tibshirani. 2021. <em>An Introduction to Statistical Learning with Applications in r</em>. Springer.
+James, Gareth, Daniela Witten, Trevor Hastie, and Robert Tibshirani.
+2021. <em>An Introduction to Statistical Learning with Applications in
+r</em>. Springer.
 </div>
 <div id="ref-Kam2019" class="csl-entry" role="doc-biblioentry">
-Kam, T. Seong, ed. 2019. <span>“Isss602 Data Analytics Lab Week 4 Lesson Slides - Cluster Analysis: Concepts, Algorithms and Methods.”</span>
+Kam, T. Seong, ed. 2019. <span>“<a href="">Isss602 Data Analytics Lab
+Week 4 Lesson Slides - Cluster Analysis: Concepts, Algorithms and
+Methods</a>.”</span>
 </div>
 <div id="ref-Logan2016" class="csl-entry" role="doc-biblioentry">
-Logan, Jessica AR., and Jill M. Pentimonti. 2016. <em>Introduction to Latent Class Analysis for Reading Fluency Research</em>. Edited by Kelli D. Cummings and Yaacov Petscher. Springer.
+Logan, Jessica AR., and Jill M. Pentimonti. 2016. <em>Introduction to
+Latent Class Analysis for Reading Fluency Research</em>. Edited by Kelli
+D. Cummings and Yaacov Petscher. Springer.
 </div>
 </div>
 <!--radix_placeholder_article_footer-->

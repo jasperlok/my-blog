@@ -56,7 +56,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 code span.al { color: #ad0000; } /* Alert */
 code span.an { color: #5e5e5e; } /* Annotation */
-code span.at { color: #20794d; } /* Attribute */
+code span.at { } /* Attribute */
 code span.bn { color: #ad0000; } /* BaseN */
 code span.bu { } /* BuiltIn */
 code span.cf { color: #007ba5; } /* ControlFlow */
@@ -77,12 +77,34 @@ code span.kw { color: #007ba5; } /* Keyword */
 code span.op { color: #5e5e5e; } /* Operator */
 code span.ot { color: #007ba5; } /* Other */
 code span.pp { color: #ad0000; } /* Preprocessor */
-code span.sc { color: #20794d; } /* SpecialChar */
+code span.sc { color: #5e5e5e; } /* SpecialChar */
 code span.ss { color: #20794d; } /* SpecialString */
 code span.st { color: #20794d; } /* String */
 code span.va { color: #111111; } /* Variable */
 code span.vs { color: #20794d; } /* VerbatimString */
 code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+</style>
+
+<style>
+  div.csl-bib-body { }
+  div.csl-entry {
+    clear: both;
+    }
+  .hanging div.csl-entry {
+    margin-left:2em;
+    text-indent:-2em;
+  }
+  div.csl-left-margin {
+    min-width:2em;
+    float:left;
+  }
+  div.csl-right-inline {
+    margin-left:2em;
+    padding-left:1em;
+  }
+  div.csl-indent {
+    margin-left: 2em;
+  }
 </style>
 
   <!--radix_placeholder_meta_tags-->
@@ -2050,7 +2072,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <!--/radix_placeholder_distill-->
   <script src="../../site_libs/header-attrs/header-attrs.js"></script>
-  <script src="../../site_libs/jquery/jquery.min.js"></script>
+  <script src="../../site_libs/jquery/jquery-3.6.0.min.js"></script>
   <script src="../../site_libs/popper/popper.min.js"></script>
   <link href="../../site_libs/tippy/tippy.css" rel="stylesheet" />
   <link href="../../site_libs/tippy/tippy-light-border.css" rel="stylesheet" />
@@ -2115,42 +2137,64 @@ document.addEventListener('DOMContentLoaded', function() {
 <nav class="l-text toc figcaption" id="TOC">
 <h3>Contents</h3>
 <ul>
-<li><a href="#categorizing-documents">Categorizing documents</a></li>
-<li><a href="#what-is-topic-modeling">What is topic modeling?</a></li>
-<li><a href="#application-of-topic-modeling">Application of topic modeling</a></li>
-<li><a href="#methods-to-perform-topic-modeling">Methods to perform topic modeling</a></li>
-<li><a href="#latent-dirichlet-allocation-lda">Latent Dirichlet Allocation (LDA)</a>
+<li><a href="#categorizing-documents"
+id="toc-categorizing-documents">Categorizing documents</a></li>
+<li><a href="#what-is-topic-modeling"
+id="toc-what-is-topic-modeling">What is topic modeling?</a></li>
+<li><a href="#application-of-topic-modeling"
+id="toc-application-of-topic-modeling">Application of topic
+modeling</a></li>
+<li><a href="#methods-to-perform-topic-modeling"
+id="toc-methods-to-perform-topic-modeling">Methods to perform topic
+modeling</a></li>
+<li><a href="#latent-dirichlet-allocation-lda"
+id="toc-latent-dirichlet-allocation-lda">Latent Dirichlet Allocation
+(LDA)</a>
 <ul>
-<li><a href="#what-is-dirichlet-distribution">What is Dirichlet distribution?</a></li>
+<li><a href="#what-is-dirichlet-distribution"
+id="toc-what-is-dirichlet-distribution">What is Dirichlet
+distribution?</a></li>
 </ul></li>
-<li><a href="#r-package">R package</a></li>
-<li><a href="#demonstration">Demonstration</a>
+<li><a href="#r-package" id="toc-r-package">R package</a></li>
+<li><a href="#demonstration" id="toc-demonstration">Demonstration</a>
 <ul>
-<li><a href="#setup-the-environment">Setup the environment</a></li>
-<li><a href="#document-feature-matrix">Document-feature matrix</a>
+<li><a href="#setup-the-environment"
+id="toc-setup-the-environment">Setup the environment</a></li>
+<li><a href="#document-feature-matrix"
+id="toc-document-feature-matrix">Document-feature matrix</a>
 <ul>
-<li><a href="#word-cloud">Word Cloud</a></li>
+<li><a href="#word-cloud" id="toc-word-cloud">Word Cloud</a></li>
 </ul></li>
-<li><a href="#n-gram">N-gram</a>
+<li><a href="#n-gram" id="toc-n-gram">N-gram</a>
 <ul>
-<li><a href="#word-cloud-1">Word Cloud</a></li>
+<li><a href="#word-cloud-1" id="toc-word-cloud-1">Word Cloud</a></li>
 </ul></li>
-<li><a href="#lda">LDA</a></li>
+<li><a href="#lda" id="toc-lda">LDA</a></li>
 </ul></li>
-<li><a href="#conclusion">Conclusion</a></li>
+<li><a href="#conclusion" id="toc-conclusion">Conclusion</a></li>
 </ul>
 </nav>
 </div>
-<p>I have discussed the basics of text analytics and the pre-processing for text data in the previous post.</p>
-<p>Therefore, in this post, I will explore topic modeling, i.e. one of the techniques under text analytics.</p>
+<p>I have discussed the basics of text analytics and the pre-processing
+for text data in the previous post.</p>
+<p>Therefore, in this post, I will explore topic modeling, i.e. one of
+the techniques under text analytics.</p>
 <div class="layout-chunk" data-layout="l-body">
 <p><img src="image/books.jpg" width="90%" /></p>
 </div>
-<p>Photo by <a href="https://unsplash.com/@prateekkatyal?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Prateek Katyal</a> on <a href="https://unsplash.com/s/photos/stack-of-books?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a></p>
+<p>Photo by
+<a href="https://unsplash.com/@prateekkatyal?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Prateek
+Katyal</a> on
+<a href="https://unsplash.com/s/photos/stack-of-books?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a></p>
 <h1 id="categorizing-documents">Categorizing documents</h1>
-<p>Categorizing documents is one of the commonly used techniques in text analytics.</p>
-<p><span class="citation" data-cites="Blumenau2021">(<a href="#ref-Blumenau2021" role="doc-biblioref">Blumenau 2021</a>)</span> summarizes the suitable technique to categorize the documents depending on the situation.</p>
-<p>In general, the two considerations of which methods are appropriate to be used to categorize the documents are as follows:</p>
+<p>Categorizing documents is one of the commonly used techniques in text
+analytics.</p>
+<p><span class="citation" data-cites="Blumenau2021">(<a
+href="#ref-Blumenau2021" role="doc-biblioref">Blumenau 2021</a>)</span>
+summarizes the suitable technique to categorize the documents depending
+on the situation.</p>
+<p>In general, the two considerations of which methods are appropriate
+to be used to categorize the documents are as follows:</p>
 <ul>
 <li><p>Are the categories of the documents known?</p></li>
 <li><p>Do we know the rules of categorizing the documents?</p></li>
@@ -2158,14 +2202,34 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="layout-chunk" data-layout="l-body">
 <p><img src="image/mapping_topicModeling.png" width="90%" /></p>
 </div>
-<p>However, the categories within the documents may not be so straightforward some of the time. For example, how granular should we split the actuarial topics within the documents? Should I split by the broader topics within the documents? How do we define the broader topic?</p>
+<p>However, the categories within the documents may not be so
+straightforward some of the time. For example, how granular should we
+split the actuarial topics within the documents? Should I split by the
+broader topics within the documents? How do we define the broader
+topic?</p>
 <p>This is where the topic modeling technique becomes very handy.</p>
 <h1 id="what-is-topic-modeling">What is topic modeling?</h1>
-<p>Topic modeling is a statistical method for identifying words in a corpus of documents that tend to co-occur together and as a result, share some sort of semantic relationship <span class="citation" data-cites="Jockers2020">(<a href="#ref-Jockers2020" role="doc-biblioref">Jockers and Thalken 2020</a>)</span>.</p>
-<p>In other words, topic modeling can also be thought of as an exercise to perform clustering on the documents based on the keywords in the documents.</p>
-<h1 id="application-of-topic-modeling">Application of topic modeling</h1>
-<p>In a report by Milliman <span class="citation" data-cites="Pouget2021">(<a href="#ref-Pouget2021" role="doc-biblioref">Pouget et al. 2021</a>)</span>, the authors provided a use case on how topic modeling could help in claim management. In the use case, the author mentioned that the topic modeling technique can be used to categorize the emails into different topics. This could greatly reduce the number of variables for the classification tasks.</p>
-<p>Apart from that, the following are the other possible applications of topic modeling <span class="citation" data-cites="Valput2020">(<a href="#ref-Valput2020" role="doc-biblioref">Valput 2020</a>)</span>:</p>
+<p>Topic modeling is a statistical method for identifying words in a
+corpus of documents that tend to co-occur together and as a result,
+share some sort of semantic relationship <span class="citation"
+data-cites="Jockers2020">(<a href="#ref-Jockers2020"
+role="doc-biblioref">Jockers and Thalken 2020</a>)</span>.</p>
+<p>In other words, topic modeling can also be thought of as an exercise
+to perform clustering on the documents based on the keywords in the
+documents.</p>
+<h1 id="application-of-topic-modeling">Application of topic
+modeling</h1>
+<p>In a report by Milliman <span class="citation"
+data-cites="Pouget2021">(<a href="#ref-Pouget2021"
+role="doc-biblioref">Pouget et al. 2021</a>)</span>, the authors
+provided a use case on how topic modeling could help in claim
+management. In the use case, the author mentioned that the topic
+modeling technique can be used to categorize the emails into different
+topics. This could greatly reduce the number of variables for the
+classification tasks.</p>
+<p>Apart from that, the following are the other possible applications of
+topic modeling <span class="citation" data-cites="Valput2020">(<a
+href="#ref-Valput2020" role="doc-biblioref">Valput 2020</a>)</span>:</p>
 <ul>
 <li><p>Text summarization</p></li>
 <li><p>Query expansion</p></li>
@@ -2173,40 +2237,75 @@ document.addEventListener('DOMContentLoaded', function() {
 <li><p>Recommender systems</p></li>
 </ul>
 <p>Next, we will look at how to perform topic modeling.</p>
-<h1 id="methods-to-perform-topic-modeling">Methods to perform topic modeling</h1>
-<p><span class="citation" data-cites="Sarkar2016">(<a href="#ref-Sarkar2016" role="doc-biblioref">Sarkar 2016</a>)</span> There are three methods in extracting the topics from the text data:</p>
+<h1 id="methods-to-perform-topic-modeling">Methods to perform topic
+modeling</h1>
+<p><span class="citation" data-cites="Sarkar2016">(<a
+href="#ref-Sarkar2016" role="doc-biblioref">Sarkar 2016</a>)</span>
+There are three methods in extracting the topics from the text data:</p>
 <ul>
 <li><p>Latent Semantic Indexing (LSA)</p></li>
 <li><p>Latent Dirichlet Allocation (LDA)</p></li>
 <li><p>Non-negative Matrix Factorization (NNMF)</p></li>
 </ul>
-<p>Over here, I will be using the second method, where it is one of the popular methods to perform topic modeling.</p>
-<h1 id="latent-dirichlet-allocation-lda">Latent Dirichlet Allocation (LDA)</h1>
-<p>After reading through a few different materials, personally, I think is below explanation is easier to understand.</p>
-<p><span class="citation" data-cites="Bansal2016">(<a href="#ref-Bansal2016" role="doc-biblioref">Bansal 2016</a>)</span> LDA assumes documents are produced from a mixture of topics. Those topics then generate words based on their probability distribution. Given a dataset of documents, LDA backtracks and tries to figure out what topics would create those documents in the first place.</p>
+<p>Over here, I will be using the second method, where it is one of the
+popular methods to perform topic modeling.</p>
+<h1 id="latent-dirichlet-allocation-lda">Latent Dirichlet Allocation
+(LDA)</h1>
+<p>After reading through a few different materials, personally, I think
+is below explanation is easier to understand.</p>
+<p><span class="citation" data-cites="Bansal2016">(<a
+href="#ref-Bansal2016" role="doc-biblioref">Bansal 2016</a>)</span> LDA
+assumes documents are produced from a mixture of topics. Those topics
+then generate words based on their probability distribution. Given a
+dataset of documents, LDA backtracks and tries to figure out what topics
+would create those documents in the first place.</p>
 <div class="layout-chunk" data-layout="l-body">
 <p><img src="image/Notation%20of%20Topic%20Modeling.png" width="90%" /></p>
 </div>
-<p>This method is quite similar to LSA. The main difference between LSA and LDA is that LDA assumes that the distribution of topics in a document and the distribution of words in topics are Dirichlet distributions <span class="citation" data-cites="Pascuall2019">(<a href="#ref-Pascuall2019" role="doc-biblioref">Pascual 2019</a>)</span>.</p>
-<h2 id="what-is-dirichlet-distribution">What is Dirichlet distribution?</h2>
-<p>The Dirichlet distribution Dir(α) is a family of continuous multivariate probability distributions parameterized by a vector α of positive reals <span class="citation" data-cites="Liu2019">(<a href="#ref-Liu2019" role="doc-biblioref">Liu 2019</a>)</span>. It is a multivariate generalization of the Beta distribution. Dirichlet distributions are commonly used as prior distributions in Bayesian statistics.</p>
-<p>The author also provided the explanation of using Dirichlet distribution used as a prior distribution in Bayesian statistics, i.e. this distribution is the conjugate before the categorical distribution and multinomial distribution, and making it the prior would simplify the maths.</p>
+<p>This method is quite similar to LSA. The main difference between LSA
+and LDA is that LDA assumes that the distribution of topics in a
+document and the distribution of words in topics are Dirichlet
+distributions <span class="citation" data-cites="Pascuall2019">(<a
+href="#ref-Pascuall2019" role="doc-biblioref">Pascual
+2019</a>)</span>.</p>
+<h2 id="what-is-dirichlet-distribution">What is Dirichlet
+distribution?</h2>
+<p>The Dirichlet distribution Dir(α) is a family of continuous
+multivariate probability distributions parameterized by a vector α of
+positive reals <span class="citation" data-cites="Liu2019">(<a
+href="#ref-Liu2019" role="doc-biblioref">Liu 2019</a>)</span>. It is a
+multivariate generalization of the Beta distribution. Dirichlet
+distributions are commonly used as prior distributions in Bayesian
+statistics.</p>
+<p>The author also provided the explanation of using Dirichlet
+distribution used as a prior distribution in Bayesian statistics,
+i.e. this distribution is the conjugate before the categorical
+distribution and multinomial distribution, and making it the prior would
+simplify the maths.</p>
 <h1 id="r-package">R package</h1>
-<p>Just to recap how the different R packages work together with <code>tidytext</code> package <span class="citation" data-cites="Silge2021">(<a href="#ref-Silge2021" role="doc-biblioref">Silge and Robinson 2021</a>)</span>:</p>
+<p>Just to recap how the different R packages work together with
+<code>tidytext</code> package <span class="citation"
+data-cites="Silge2021">(<a href="#ref-Silge2021"
+role="doc-biblioref">Silge and Robinson 2021</a>)</span>:</p>
 <div class="layout-chunk" data-layout="l-body">
 <p><img src="image/textanalytics_with_r.png" width="100%" /></p>
 </div>
 <p><em>Screenshot from Chapter 6 of Text Mining with R book</em></p>
-<p>I will be using <code>topicmodels</code> package and <code>tidytext</code> package to perform topic modeling.</p>
+<p>I will be using <code>topicmodels</code> package and
+<code>tidytext</code> package to perform topic modeling.</p>
 <h1 id="demonstration">Demonstration</h1>
-<p>In this demonstration, I will be using the same dataset as the previous post. This is the link to download the <a href="https://www.microsoft.com/en-us/download/details.aspx?id=52419">dataset</a>.</p>
-<p>The data consists of a publicly available set of question and sentence pairs from an open domain question.</p>
+<p>In this demonstration, I will be using the same dataset as the
+previous post. This is the link to download the <a
+href="https://www.microsoft.com/en-us/download/details.aspx?id=52419">dataset</a>.</p>
+<p>The data consists of a publicly available set of question and
+sentence pairs from an open domain question.</p>
 <div class="layout-chunk" data-layout="l-body">
 <p><img src="image/question%20mark.jpg" width="100%" /></p>
 </div>
 <p>Photo by Olya Kobruseva from Pexels</p>
 <h2 id="setup-the-environment">Setup the environment</h2>
-<p>First, I will set up the environment by calling all the packages I need for the analysis later.</p>
+<p>First, I will set up the environment by calling all the packages I
+need for the analysis later.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>packages</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'tidyverse'</span>, <span class='st'>'readr'</span>, <span class='st'>'skimr'</span>, <span class='st'>'tidytext'</span>, <span class='st'>'quanteda'</span>, 
@@ -2221,11 +2320,20 @@ document.addEventListener('DOMContentLoaded', function() {
 </code></pre>
 </div>
 </div>
-<p>I will also be using the pre-processing steps as <a href="https://jasperlok.netlify.app/posts/2021-12-02-text-analytics/">previous post</a>. I will be also using the output from lemmatization to perform topic modeling.</p>
-<p>Hence, I will skip the pre-processing steps in this post so that this post is not too lengthy.</p>
+<p>I will also be using the pre-processing steps as <a
+href="https://jasperlok.netlify.app/posts/2021-12-02-text-analytics/">previous
+post</a>. I will be also using the output from lemmatization to perform
+topic modeling.</p>
+<p>Hence, I will skip the pre-processing steps in this post so that this
+post is not too lengthy.</p>
 <h2 id="document-feature-matrix">Document-feature matrix</h2>
-<p>To perform topic modeling, first, we will need to convert the token into the document-feature matrix (dfm).</p>
-<p>According to the <code>quanteda</code> <a href="https://cran.r-project.org/web/packages/quanteda/vignettes/quickstart.html#:~:text=%E2%80%9Cdfm%E2%80%9D%20is%20short%20for%20document,to%20each%20unit%20as%20columns.">documentation page</a>, <code>dfm</code> refers to documents in rows and “features” as columns, where we can understand the tokens as the “features” in this context.</p>
+<p>To perform topic modeling, first, we will need to convert the token
+into the document-feature matrix (dfm).</p>
+<p>According to the <code>quanteda</code> <a
+href="https://cran.r-project.org/web/packages/quanteda/vignettes/quickstart.html#:~:text=%E2%80%9Cdfm%E2%80%9D%20is%20short%20for%20document,to%20each%20unit%20as%20columns.">documentation
+page</a>, <code>dfm</code> refers to documents in rows and “features” as
+columns, where we can understand the tokens as the “features” in this
+context.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df_lemma_1</span> <span class='op'>&lt;-</span> <span class='va'>text_df_lemma</span> <span class='op'>%&gt;%</span>
@@ -2233,7 +2341,9 @@ document.addEventListener('DOMContentLoaded', function() {
 </code></pre>
 </div>
 </div>
-<p>I will also trim away the terms that appear 10 times or less across the document since it is unlikely the terms will carry much meaning to the analysis.</p>
+<p>I will also trim away the terms that appear 10 times or less across
+the document since it is unlikely the terms will carry much meaning to
+the analysis.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df_lemma_1</span> <span class='op'>&lt;-</span> <span class='va'>text_df_lemma_1</span>  <span class='op'>%&gt;%</span>
@@ -2241,7 +2351,8 @@ document.addEventListener('DOMContentLoaded', function() {
 </code></pre>
 </div>
 </div>
-<p>Then, <code>topfeatures</code> function is used to extract the top 20 features from the dfm object.</p>
+<p>Then, <code>topfeatures</code> function is used to extract the top 20
+features from the dfm object.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>topfeatures</span><span class='op'>(</span><span class='va'>text_df_lemma_1</span>, <span class='fl'>20</span><span class='op'>)</span>
@@ -2257,15 +2368,19 @@ document.addEventListener('DOMContentLoaded', function() {
          702          694          686          681          667 </code></pre>
 </div>
 <h3 id="word-cloud">Word Cloud</h3>
-<p>Next, I will illustrate the result in word cloud format so that it’s easier to visualize how frequently the words appear in the documents relative to one another.</p>
-<p>To do so, first I will convert the dfm object to a tidy object by using <code>tidy</code> function.</p>
+<p>Next, I will illustrate the result in word cloud format so that it’s
+easier to visualize how frequently the words appear in the documents
+relative to one another.</p>
+<p>To do so, first I will convert the dfm object to a tidy object by
+using <code>tidy</code> function.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df_lemma_1_tidy</span> <span class='op'>&lt;-</span> <span class='fu'>tidy</span><span class='op'>(</span><span class='va'>text_df_lemma_1</span><span class='op'>)</span>
 </code></pre>
 </div>
 </div>
-<p>Next, I will perform <code>group_by</code> to sum up the total count of the different words in the documents.</p>
+<p>Next, I will perform <code>group_by</code> to sum up the total count
+of the different words in the documents.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df_lemma_1_tidy_count</span> <span class='op'>&lt;-</span> <span class='va'>text_df_lemma_1_tidy</span> <span class='op'>%&gt;%</span>
@@ -2274,7 +2389,8 @@ document.addEventListener('DOMContentLoaded', function() {
 </code></pre>
 </div>
 </div>
-<p>Once that is done, I will use <code>ggplot</code> function to visualize the word cloud.</p>
+<p>Once that is done, I will use <code>ggplot</code> function to
+visualize the word cloud.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df_lemma_1_tidy_count</span> <span class='op'>%&gt;%</span>
@@ -2287,10 +2403,16 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 <p><img src="topicModeling_files/figure-html5/unnamed-chunk-20-1.png" width="90%" /></p>
 </div>
-<p>From the graph, it seems like some unigram tokens may not carry much meaning. The algorithm has treated each word as a token by itself. However, sometimes we need multiple words to convey the message.</p>
-<p>For example, if we refer to the graph, we will note “unite,” where “unite” could mean a lot of things. If we were to refer to the raw data, we will realize that “unite” is from the “united states.”</p>
+<p>From the graph, it seems like some unigram tokens may not carry much
+meaning. The algorithm has treated each word as a token by itself.
+However, sometimes we need multiple words to convey the message.</p>
+<p>For example, if we refer to the graph, we will note “unite”, where
+“unite” could mean a lot of things. If we were to refer to the raw data,
+we will realize that “unite” is from the “united states”.</p>
 <h2 id="n-gram">N-gram</h2>
-<p>To overcome this, instead of performing a uni-gram, I will specify 2:3 in the function so that both bi-gram and tri-gram will be generated.</p>
+<p>To overcome this, instead of performing a uni-gram, I will specify
+2:3 in the function so that both bi-gram and tri-gram will be
+generated.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df_lemma_3</span> <span class='op'>&lt;-</span> <span class='va'>text_df_lemma</span> <span class='op'>%&gt;%</span>
@@ -2299,7 +2421,8 @@ document.addEventListener('DOMContentLoaded', function() {
 </code></pre>
 </div>
 </div>
-<p><code>topfeatures</code> function is being used to extract the top features from the term frequency.</p>
+<p><code>topfeatures</code> function is being used to extract the top
+features from the term frequency.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>topfeatures</span><span class='op'>(</span><span class='va'>text_df_lemma_3</span>, <span class='fl'>20</span><span class='op'>)</span>
@@ -2320,9 +2443,14 @@ president unite state          unite nation    federal government
     metropolitan area          sell million 
                    68                    66 </code></pre>
 </div>
-<p>Note that the term “unite state” appears much more frequent than the rest of the words. After some trial and error, it seems like the topic modeling result seems to be more satisfying after I drop the word “unite state.”</p>
-<p>Hence in the <code>dfm_trim</code> function, I have specified I would like to drop the term that has more than 1000 counts.</p>
-<p>I will be dropping terms with a count of 30 or less, otherwise, the dfm will be too huge.</p>
+<p>Note that the term “unite state” appears much more frequent than the
+rest of the words. After some trial and error, it seems like the topic
+modeling result seems to be more satisfying after I drop the word “unite
+state”.</p>
+<p>Hence in the <code>dfm_trim</code> function, I have specified I would
+like to drop the term that has more than 1000 counts.</p>
+<p>I will be dropping terms with a count of 30 or less, otherwise, the
+dfm will be too huge.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df_lemma_3</span> <span class='op'>&lt;-</span> <span class='va'>text_df_lemma_3</span> <span class='op'>%&gt;%</span>
@@ -2332,9 +2460,13 @@ president unite state          unite nation    federal government
 </code></pre>
 </div>
 </div>
-<p><code>dfm_trim</code> function also supports other trimming methods, eg. drop by proportion, rank and, quantile. Refer to this <a href="https://quanteda.io/reference/dfm_trim.html">documentation page</a> for the different trimming methods.</p>
+<p><code>dfm_trim</code> function also supports other trimming methods,
+eg. drop by proportion, rank and, quantile. Refer to this <a
+href="https://quanteda.io/reference/dfm_trim.html">documentation
+page</a> for the different trimming methods.</p>
 <h3 id="word-cloud-1">Word Cloud</h3>
-<p>Next, I will convert the dfm object into a tidy object so that I could use <code>ggplot</code> function to visualize the word cloud.</p>
+<p>Next, I will convert the dfm object into a tidy object so that I
+could use <code>ggplot</code> function to visualize the word cloud.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>text_df_lemma_3_tidy</span> <span class='op'>&lt;-</span> <span class='fu'>tidy</span><span class='op'>(</span><span class='va'>text_df_lemma_3</span><span class='op'>)</span>
@@ -2354,8 +2486,13 @@ president unite state          unite nation    federal government
 <p><img src="topicModeling_files/figure-html5/unnamed-chunk-24-1.png" width="90%" /></p>
 </div>
 <h2 id="lda">LDA</h2>
-<p>Once that is done, I will pass the dfm object into <code>LDA</code> function. I have specified that I would like to have 5 topics in the result. Also, I will stick with the default fitting method, which is “VEM.”</p>
-<p>Before that, I will perform a check to ensure there is no presence of all 0 rows within the dfm object. Otherwise, the algorithm would not work.</p>
+<p>Once that is done, I will pass the dfm object into <code>LDA</code>
+function. I have specified that I would like to have 5 topics in the
+result. Also, I will stick with the default fitting method, which is
+“VEM”.</p>
+<p>Before that, I will perform a check to ensure there is no presence of
+all 0 rows within the dfm object. Otherwise, the algorithm would not
+work.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>rowTotals</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span><span class='op'>(</span><span class='va'>text_df_lemma_3</span>, <span class='fl'>1</span>, <span class='va'>sum</span><span class='op'>)</span>
@@ -2364,7 +2501,8 @@ president unite state          unite nation    federal government
 </code></pre>
 </div>
 </div>
-<p>Once the check is done, I will pass the updated dfm object into the <code>LDA</code> function.</p>
+<p>Once the check is done, I will pass the updated dfm object into the
+<code>LDA</code> function.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>df_lda_lemma_3</span> <span class='op'>&lt;-</span> <span class='fu'>LDA</span><span class='op'>(</span><span class='va'>text_df_lemma_3_new</span>, 
@@ -2374,7 +2512,9 @@ president unite state          unite nation    federal government
 </code></pre>
 </div>
 </div>
-<p>If we were to call the LDA object, you could see that we have fitted a LDA model with VEM fitting method. There are 5 topics within the fitted model.</p>
+<p>If we were to call the LDA object, you could see that we have fitted
+a LDA model with VEM fitting method. There are 5 topics within the
+fitted model.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>df_lda_lemma_3</span>
@@ -2382,8 +2522,13 @@ president unite state          unite nation    federal government
 </div>
 <pre><code>A LDA_VEM topic model with 5 topics.</code></pre>
 </div>
-<p>To visualize the result, I will use <code>tidy</code> function to convert the object into tidy data format so that <code>ggplot</code> function can be used.</p>
-<p>This is where we can use the <code>tidy</code> function within <code>tidytext</code> package to help us to convert the dfm object into a tidy object. Note that I have not passed in another argument, so the default matrix would be “beta” as shown in the result below.</p>
+<p>To visualize the result, I will use <code>tidy</code> function to
+convert the object into tidy data format so that <code>ggplot</code>
+function can be used.</p>
+<p>This is where we can use the <code>tidy</code> function within
+<code>tidytext</code> package to help us to convert the dfm object into
+a tidy object. Note that I have not passed in another argument, so the
+default matrix would be “beta” as shown in the result below.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>df_lda_lemma_3_tidy</span> <span class='op'>&lt;-</span> <span class='fu'>tidy</span><span class='op'>(</span><span class='va'>df_lda_lemma_3</span><span class='op'>)</span>
@@ -2392,22 +2537,26 @@ president unite state          unite nation    federal government
 </code></pre>
 </div>
 <pre><code># A tibble: 545 x 3
-   topic term             beta
-   &lt;int&gt; &lt;chr&gt;           &lt;dbl&gt;
- 1     1 world war     0.182  
- 2     2 world war     0.00268
- 3     3 world war     0.00311
- 4     4 world war     0.00651
- 5     5 world war     0.00471
- 6     1 unite kingdom 0.0255 
- 7     2 unite kingdom 0.0554 
- 8     3 unite kingdom 0.0341 
- 9     4 unite kingdom 0.0120 
-10     5 unite kingdom 0.0289 
+   topic term                   beta
+   &lt;int&gt; &lt;chr&gt;                 &lt;dbl&gt;
+ 1     1 african american    0.0215 
+ 2     2 african american    0.00110
+ 3     3 african american    0.00125
+ 4     4 african american    0.00285
+ 5     5 african american    0.00140
+ 6     1 fictional character 0.0109 
+ 7     2 fictional character 0.0109 
+ 8     3 fictional character 0.00563
+ 9     4 fictional character 0.00187
+10     5 fictional character 0.00489
 # ... with 535 more rows</code></pre>
 </div>
-<p>Recall beta is the parameter for per-topic word distribution. The way we could understand the beta is the probability of being generated from a necessary topic.</p>
-<p>Once the results are being converted into tidy data format, I will find the top 10 terms under each topic. I will also sort the term based on their beta values in descending order.</p>
+<p>Recall beta is the parameter for per-topic word distribution. The way
+we could understand the beta is the probability of being generated from
+a necessary topic.</p>
+<p>Once the results are being converted into tidy data format, I will
+find the top 10 terms under each topic. I will also sort the term based
+on their beta values in descending order.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>df_lda_lemma_3_tidy_terms</span> <span class='op'>&lt;-</span> <span class='va'>df_lda_lemma_3_tidy</span> <span class='op'>%&gt;%</span>
@@ -2418,7 +2567,8 @@ president unite state          unite nation    federal government
 </code></pre>
 </div>
 </div>
-<p>Then, I will pass the result to <code>ggplot</code> function to visualize the result in the word cloud.</p>
+<p>Then, I will pass the result to <code>ggplot</code> function to
+visualize the result in the word cloud.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>df_lda_lemma_3_tidy_terms</span> <span class='op'>%&gt;%</span>
@@ -2438,48 +2588,81 @@ president unite state          unite nation    federal government
 <p>From the result, below are some of the interesting insights:</p>
 <ul>
 <li><p>Topic 1 has some words that are related to football</p></li>
-<li><p>There are few words related to countries or areas within topic 2, eg. united states, united kingdom and, so on</p></li>
+<li><p>There are few words related to countries or areas within topic 2,
+eg. united states, united kingdom and, so on</p></li>
 <li><p>Topic 4 seems to be related to the super bowl</p></li>
-<li><p>Topic 3 &amp; 5 seems to be related to war since there are a few words related to wars</p></li>
-<li><p>Although both topic 3 &amp; 5 seem to be related to wars, topic 3 seems to be related to civil war and topic 5 relates to world war</p></li>
+<li><p>Topic 3 &amp; 5 seems to be related to war since there are a few
+words related to wars</p></li>
+<li><p>Although both topic 3 &amp; 5 seem to be related to wars, topic 3
+seems to be related to civil war and topic 5 relates to world
+war</p></li>
 </ul>
 <h1 id="conclusion">Conclusion</h1>
 <p>That’s all for the day!</p>
 <p>Thanks for reading the post until the end.</p>
-<p>Feel free to contact me through <a href="mailto:jasper.jh.lok@gmail.com">email</a> or <a href="https://www.linkedin.com/in/jasper-l-13426232/">LinkedIn</a> if you have any suggestions on future topics to share.</p>
+<p>Feel free to contact me through <a
+href="mailto:jasper.jh.lok@gmail.com">email</a> or <a
+href="https://www.linkedin.com/in/jasper-l-13426232/">LinkedIn</a> if
+you have any suggestions on future topics to share.</p>
+<p>Refer to this link for the <a
+href="https://jasperlok.netlify.app/blog_disclaimer.html">blog
+disclaimer</a>.</p>
 <p>Till next time, happy learning!</p>
 <div class="layout-chunk" data-layout="l-body">
 <p><img src="image/reading.jpg" width="90%" /></p>
 </div>
-<p>Photo by <a href="https://unsplash.com/@all_who_wander?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Kinga Cichewicz</a> on <a href="https://unsplash.com/s/photos/read-book?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a></p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
-<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<p>Photo by
+<a href="https://unsplash.com/@all_who_wander?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Kinga
+Cichewicz</a> on
+<a href="https://unsplash.com/s/photos/read-book?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a></p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<div id="refs" class="references csl-bib-body hanging-indent"
+role="doc-bibliography">
 <div id="ref-Bansal2016" class="csl-entry" role="doc-biblioentry">
-Bansal, Shivam. 2016. <span>“Beginners Guide to Topic Modeling in Pythons.”</span> <a href="https://www.analyticsvidhya.com/blog/2016/08/beginners-guide-to-topic-modeling-in-python/">https://www.analyticsvidhya.com/blog/2016/08/beginners-guide-to-topic-modeling-in-python/</a>.
+Bansal, Shivam. 2016. <span>“Beginners Guide to Topic Modeling in
+Pythons.”</span> <a
+href="https://www.analyticsvidhya.com/blog/2016/08/beginners-guide-to-topic-modeling-in-python/">https://www.analyticsvidhya.com/blog/2016/08/beginners-guide-to-topic-modeling-in-python/</a>.
 </div>
 <div id="ref-Blumenau2021" class="csl-entry" role="doc-biblioentry">
-Blumenau, Jack. 2021. <span>“Day 11: Topic Models: Me314: Introduction to Data Science and Machine Learning.”</span> <a href="https://lse-me314.github.io/lecturenotes/ME314_day11.pdf">https://lse-me314.github.io/lecturenotes/ME314_day11.pdf</a>.
+Blumenau, Jack. 2021. <span>“Day 11: Topic Models: Me314: Introduction
+to Data Science and Machine Learning.”</span> <a
+href="https://lse-me314.github.io/lecturenotes/ME314_day11.pdf">https://lse-me314.github.io/lecturenotes/ME314_day11.pdf</a>.
 </div>
 <div id="ref-Jockers2020" class="csl-entry" role="doc-biblioentry">
-Jockers, Matthew L., and Rosamond Thalken. 2020. <em>Text Analysis with r</em>. Springer.
+Jockers, Matthew L., and Rosamond Thalken. 2020. <em>Text Analysis with
+r</em>. Springer.
 </div>
 <div id="ref-Liu2019" class="csl-entry" role="doc-biblioentry">
-Liu, Sue. 2019. <span>“Dirichlet Distribution: Motivating LDA.”</span> <a href="https://towardsdatascience.com/dirichlet-distribution-a82ab942a879">https://towardsdatascience.com/dirichlet-distribution-a82ab942a879</a>.
+Liu, Sue. 2019. <span>“Dirichlet Distribution: Motivating LDA.”</span>
+<a
+href="https://towardsdatascience.com/dirichlet-distribution-a82ab942a879">https://towardsdatascience.com/dirichlet-distribution-a82ab942a879</a>.
 </div>
 <div id="ref-Pascuall2019" class="csl-entry" role="doc-biblioentry">
-Pascual, Federico. 2019. <span>“Topic Modeling: An Introduction.”</span> <a href="https://monkeylearn.com/blog/introduction-to-topic-modeling/">https://monkeylearn.com/blog/introduction-to-topic-modeling/</a>.
+Pascual, Federico. 2019. <span>“Topic Modeling: An Introduction.”</span>
+<a
+href="https://monkeylearn.com/blog/introduction-to-topic-modeling/">https://monkeylearn.com/blog/introduction-to-topic-modeling/</a>.
 </div>
 <div id="ref-Pouget2021" class="csl-entry" role="doc-biblioentry">
-Pouget, Fanny, Remi Bellina, Mehdi Echchelh, Karol Maciejewski, Christoph Krischanitz, Bartosz Gaweda, Dominik Sznajder, et al. 2021. <span>“The Use of Artificial Intelligence and Data Analytics in Life Insurance.”</span> Milliman.
+Pouget, Fanny, Remi Bellina, Mehdi Echchelh, Karol Maciejewski,
+Christoph Krischanitz, Bartosz Gaweda, Dominik Sznajder, et al. 2021.
+<span>“The Use of Artificial Intelligence and Data Analytics in Life
+Insurance.”</span> Milliman.
 </div>
 <div id="ref-Sarkar2016" class="csl-entry" role="doc-biblioentry">
-Sarkar, Dipanjan. 2016. <em>Text Analytics with Python a Practical Real- World Approach to Gaining Actionable Insights from Your Datal</em>. Apress.
+Sarkar, Dipanjan. 2016. <em>Text Analytics with Python a Practical Real-
+World Approach to Gaining Actionable Insights from Your Datal</em>.
+Apress.
 </div>
 <div id="ref-Silge2021" class="csl-entry" role="doc-biblioentry">
-Silge, Julia, and David Robinson. 2021. <span>“6 Topic Modeling.”</span> <a href="https://www.tidytextmining.com/topicmodeling.html">https://www.tidytextmining.com/topicmodeling.html</a>.
+Silge, Julia, and David Robinson. 2021. <span>“6 Topic Modeling.”</span>
+<a
+href="https://www.tidytextmining.com/topicmodeling.html">https://www.tidytextmining.com/topicmodeling.html</a>.
 </div>
 <div id="ref-Valput2020" class="csl-entry" role="doc-biblioentry">
-Valput, Damir. 2020. <span>“Topic Modelling: Interpretability and Applications.”</span> <a href="https://datascience.aero/topic-modelling/">https://datascience.aero/topic-modelling/</a>.
+Valput, Damir. 2020. <span>“Topic Modelling: Interpretability and
+Applications.”</span> <a
+href="https://datascience.aero/topic-modelling/">https://datascience.aero/topic-modelling/</a>.
 </div>
 </div>
 <!--radix_placeholder_article_footer-->

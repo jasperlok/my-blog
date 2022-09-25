@@ -374,7 +374,7 @@ Okay, that's all the sharing for this post!
 I have shown the awesome-ness of **tidyverse** through this post. There are many more functions within **[tidyverse](https://www.tidyverse.org/)** universe, which are not covered in this post. Do check out their [website]((https://www.tidyverse.org/)) for many more awesome functions!
 
 
-Feel free to contact me through [email](mailto:junhaur.lok.2019@mitb.smu.edu.sg) or [LinkedIn](https://www.linkedin.com/in/jasper-l-13426232/) if you have any suggestions on future topics to share.
+Feel free to contact me through [email](mailto:jasper.jh.lok@gmail.com) or [LinkedIn](https://www.linkedin.com/in/jasper-l-13426232/) if you have any suggestions on future topics to share.
 
-
+Refer to this link for the [blog disclaimer](https://jasperlok.netlify.app/blog_disclaimer.html).
 

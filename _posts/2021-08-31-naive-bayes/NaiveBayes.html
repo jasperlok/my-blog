@@ -56,7 +56,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 code span.al { color: #ad0000; } /* Alert */
 code span.an { color: #5e5e5e; } /* Annotation */
-code span.at { color: #20794d; } /* Attribute */
+code span.at { } /* Attribute */
 code span.bn { color: #ad0000; } /* BaseN */
 code span.bu { } /* BuiltIn */
 code span.cf { color: #007ba5; } /* ControlFlow */
@@ -77,12 +77,34 @@ code span.kw { color: #007ba5; } /* Keyword */
 code span.op { color: #5e5e5e; } /* Operator */
 code span.ot { color: #007ba5; } /* Other */
 code span.pp { color: #ad0000; } /* Preprocessor */
-code span.sc { color: #20794d; } /* SpecialChar */
+code span.sc { color: #5e5e5e; } /* SpecialChar */
 code span.ss { color: #20794d; } /* SpecialString */
 code span.st { color: #20794d; } /* String */
 code span.va { color: #111111; } /* Variable */
 code span.vs { color: #20794d; } /* VerbatimString */
 code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+</style>
+
+<style>
+  div.csl-bib-body { }
+  div.csl-entry {
+    clear: both;
+    }
+  .hanging div.csl-entry {
+    margin-left:2em;
+    text-indent:-2em;
+  }
+  div.csl-left-margin {
+    min-width:2em;
+    float:left;
+  }
+  div.csl-right-inline {
+    margin-left:2em;
+    padding-left:1em;
+  }
+  div.csl-indent {
+    margin-left: 2em;
+  }
 </style>
 
   <!--radix_placeholder_meta_tags-->
@@ -112,7 +134,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <meta name="citation_reference" content="citation_title=Applied predictive modeling;citation_publication_date=2013;citation_publisher=Springer"/>
   <meta name="citation_reference" content="citation_title=8 tactics to combat imbalanced classes in your machine learning dataset"/>
   <meta name="citation_reference" content="citation_title=1.9 naive bayes;citation_publication_date=0"/>
-  <meta name="citation_reference" content="citation_title=Comparison between naÃ¯ve bayes and logistic regression;citation_publication_date=2017;citation_author=Christopher Ottesen"/>
+  <meta name="citation_reference" content="citation_title=Comparison between naïve bayes and logistic regression;citation_publication_date=2017;citation_author=Christopher Ottesen"/>
   <meta name="citation_reference" content="citation_title=On discriminative vs. Genererative classifiers: A comparison of logistic regression and naive bayes;citation_publication_date=0"/>
   <!--radix_placeholder_rmarkdown_metadata-->
 
@@ -1269,7 +1291,10 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
       // hoverable references
       $('span.citation[data-cites]').each(function() {
-        var refHtml = $('#ref-' + $(this).attr('data-cites')).html();
+        var refs = $(this).attr('data-cites').split(" ");
+        var refHtml = refs.map(function(ref) {
+          return "<p>" + $('#ref-' + ref).html() + "</p>";
+        }).join("\n");
         window.tippy(this, {
           allowHTML: true,
           content: refHtml,
@@ -1441,7 +1466,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
   <!--/radix_placeholder_distill-->
   <script src="NaiveBayes_files/header-attrs/header-attrs.js"></script>
-  <script src="NaiveBayes_files/jquery/jquery.min.js"></script>
+  <script src="NaiveBayes_files/jquery/jquery-3.6.0.min.js"></script>
   <script src="NaiveBayes_files/popper/popper.min.js"></script>
   <link href="NaiveBayes_files/tippy/tippy.css" rel="stylesheet" />
   <link href="NaiveBayes_files/tippy/tippy-light-border.css" rel="stylesheet" />
@@ -1492,22 +1517,31 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <nav class="l-text toc figcaption" id="TOC">
 <h3>Contents</h3>
 <ul>
-<li><a href="#discriminative-model-vs-generative-model">Discriminative Model vs Generative Model</a></li>
-<li><a href="#naive-bayes-classifier">Naive Bayes Classifier</a></li>
-<li><a href="#discrim-r-package">Discrim R Package</a></li>
-<li><a href="#demonstration">Demonstration</a>
+<li><a href="#discriminative-model-vs-generative-model"
+id="toc-discriminative-model-vs-generative-model">Discriminative Model
+vs Generative Model</a></li>
+<li><a href="#naive-bayes-classifier"
+id="toc-naive-bayes-classifier">Naive Bayes Classifier</a></li>
+<li><a href="#discrim-r-package" id="toc-discrim-r-package">Discrim R
+Package</a></li>
+<li><a href="#demonstration" id="toc-demonstration">Demonstration</a>
 <ul>
-<li><a href="#setup-the-environment">Setup the environment</a></li>
-<li><a href="#import-data">Import Data</a></li>
-<li><a href="#data-checking-wrangling">Data Checking &amp; Wrangling</a></li>
-<li><a href="#data-cleaning">Data Cleaning</a></li>
-<li><a href="#model-building">Model Building</a>
+<li><a href="#setup-the-environment"
+id="toc-setup-the-environment">Setup the environment</a></li>
+<li><a href="#import-data" id="toc-import-data">Import Data</a></li>
+<li><a href="#data-checking-wrangling"
+id="toc-data-checking-wrangling">Data Checking &amp; Wrangling</a></li>
+<li><a href="#data-cleaning" id="toc-data-cleaning">Data
+Cleaning</a></li>
+<li><a href="#model-building" id="toc-model-building">Model Building</a>
 <ul>
-<li><a href="#logistic-regression">Logistic Regression</a></li>
-<li><a href="#naive-bayes-classifier-1">Naive Bayes Classifier</a></li>
+<li><a href="#logistic-regression" id="toc-logistic-regression">Logistic
+Regression</a></li>
+<li><a href="#naive-bayes-classifier-1"
+id="toc-naive-bayes-classifier-1">Naive Bayes Classifier</a></li>
 </ul></li>
 </ul></li>
-<li><a href="#conclusion">Conclusion</a></li>
+<li><a href="#conclusion" id="toc-conclusion">Conclusion</a></li>
 </ul>
 </nav>
 </div>
@@ -1515,31 +1549,77 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <p><img src="image/balance.jpg" width="80%" /></p>
 </div>
 <p><em>Photo by Shiva Smyth from Pexels</em></p>
-<p>Conventionally, logistic regression is often used to solve classification problems.</p>
-<p>In this post, I will explore an alternative popular machine learning algorithms, i.e. naive bayes classifier to solve classification problems.</p>
-<p>Before diving into naive bayes classifier, let’s understand the difference between discriminative model and generative model.</p>
-<h2 id="discriminative-model-vs-generative-model">Discriminative Model vs Generative Model</h2>
-<p>Discriminative models directly model the posterior probability <span class="math inline">\(Pr(Y|X)\)</span>. One good example of such model is logistic regression models.</p>
-<p>For generative models, instead of directly model the posterior probability, this type of model will model the join distribution of X &amp; Y before predicting the posterior probability given as <span class="math inline">\(Pr(Y|X)\)</span> <span class="citation" data-cites="Ottesen2017">(<a href="#ref-Ottesen2017" role="doc-biblioref">Ottesen 2017</a>)</span>. Naive bayes classifier is an example of such model.</p>
+<p>Conventionally, logistic regression is often used to solve
+classification problems.</p>
+<p>In this post, I will explore an alternative popular machine learning
+algorithms, i.e. naive bayes classifier to solve classification
+problems.</p>
+<p>Before diving into naive bayes classifier, let’s understand the
+difference between discriminative model and generative model.</p>
+<h2 id="discriminative-model-vs-generative-model">Discriminative Model
+vs Generative Model</h2>
+<p>Discriminative models directly model the posterior probability <span
+class="math inline">\(Pr(Y|X)\)</span>. One good example of such model
+is logistic regression models.</p>
+<p>For generative models, instead of directly model the posterior
+probability, this type of model will model the join distribution of X
+&amp; Y before predicting the posterior probability given as <span
+class="math inline">\(Pr(Y|X)\)</span> <span class="citation"
+data-cites="Ottesen2017">(<a href="#ref-Ottesen2017"
+role="doc-biblioref">Ottesen 2017</a>)</span>. Naive bayes classifier is
+an example of such model.</p>
 <h2 id="naive-bayes-classifier">Naive Bayes Classifier</h2>
-<p>In this algorithm, the prior knowledge is being included when making predictions. Essentially the idea for this algorithm is given the features we observed in the predictors, what is likelihood the ‘y’ belong to the particular class?</p>
-<p>Following is the mathematical expression for naive bayes classifier obtained from Scikit-learn <span class="citation" data-cites="scikit">(<a href="#ref-scikit" role="doc-biblioref">scikit-learn</a>)</span>:</p>
-<p><span class="math display">\[\hat{y} = arg max_y P(y)\prod_{i=1}^n P(x_i|y)\]</span></p>
-<p>One of the key assumptions in Naive Bayes classifier is all the predictors are assumed to be independent from one another <span class="citation" data-cites="Kuhn2013">(<a href="#ref-Kuhn2013" role="doc-biblioref">Kuhn and Johnson 2013</a>)</span>. This assumption has effectively simplified the calculations, allowing one to multiply the conditional probabilities together as shown in the mathematical expression above.</p>
-<p>Although the predictors are unlikely to be independent from one another, this model has a record of decent model performance.</p>
-<p>Nevertheless, as what Dr Brownlee suggested in his post of tactics to combat imbalanced classes <span class="citation" data-cites="Brownlee2015">(<a href="#ref-Brownlee2015" role="doc-biblioref">Brownlee, n.d.</a>)</span>, it is probably worthwhile to try different machine learning algorithms, instead of always sticking to our favorite algorithm. This would enable us in selecting the algorithm has a higher accuracy.</p>
+<p>In this algorithm, the prior knowledge is being included when making
+predictions. Essentially the idea for this algorithm is given the
+features we observed in the predictors, what is likelihood the ‘y’
+belong to the particular class?</p>
+<p>Following is the mathematical expression for naive bayes classifier
+obtained from Scikit-learn <span class="citation"
+data-cites="scikit">(<a href="#ref-scikit"
+role="doc-biblioref">scikit-learn</a>)</span>:</p>
+<p><span class="math display">\[\hat{y} = arg max_y P(y)\prod_{i=1}^n
+P(x_i|y)\]</span></p>
+<p>One of the key assumptions in Naive Bayes classifier is all the
+predictors are assumed to be independent from one another <span
+class="citation" data-cites="Kuhn2013">(<a href="#ref-Kuhn2013"
+role="doc-biblioref">Kuhn and Johnson 2013</a>)</span>. This assumption
+has effectively simplified the calculations, allowing one to multiply
+the conditional probabilities together as shown in the mathematical
+expression above.</p>
+<p>Although the predictors are unlikely to be independent from one
+another, this model has a record of decent model performance.</p>
+<p>Nevertheless, as what Dr Brownlee suggested in his post of tactics to
+combat imbalanced classes <span class="citation"
+data-cites="Brownlee2015">(<a href="#ref-Brownlee2015"
+role="doc-biblioref">Brownlee, n.d.</a>)</span>, it is probably
+worthwhile to try different machine learning algorithms, instead of
+always sticking to our favorite algorithm. This would enable us in
+selecting the algorithm has a higher accuracy.</p>
 <h2 id="discrim-r-package">Discrim R Package</h2>
-<p>In this demonstration, <strong>naive bayes wrapper</strong> function from <a href="https://discrim.tidymodels.org/index.html"><strong>discrim</strong> package</a> will be used.</p>
-<p><strong>Discrim</strong> packages contains various discriminant analysis models, including linear discriminant models and Naive Bayes Classifier.</p>
-<p>To contrast the model performance, I will be using <strong>logistic_reg</strong> function from <strong>parnsip</strong> package to build logistic regression models.</p>
+<p>In this demonstration, <strong>naive bayes wrapper</strong> function
+from <a
+href="https://discrim.tidymodels.org/index.html"><strong>discrim</strong>
+package</a> will be used.</p>
+<p><strong>Discrim</strong> packages contains various discriminant
+analysis models, including linear discriminant models and Naive Bayes
+Classifier.</p>
+<p>To contrast the model performance, I will be using
+<strong>logistic_reg</strong> function from <strong>parnsip</strong>
+package to build logistic regression models.</p>
 <h2 id="demonstration">Demonstration</h2>
-<p>For the dataset, I will be using a <a href="https://www.kaggle.com/mhdzahier/travel-insurance">travel insurance dataset</a> from Kaggle.</p>
+<p>For the dataset, I will be using a <a
+href="https://www.kaggle.com/mhdzahier/travel-insurance">travel
+insurance dataset</a> from Kaggle.</p>
 <div class="layout-chunk" data-layout="l-body">
 <p><img src="image/travel.jpg" width="80%" /></p>
 </div>
-<p>Photo by <a href="https://unsplash.com/@anniespratt?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Annie Spratt</a> on <a href="https://unsplash.com/s/photos/travel-insurance?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a></p>
+<p>Photo by
+<a href="https://unsplash.com/@anniespratt?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Annie
+Spratt</a> on
+<a href="https://unsplash.com/s/photos/travel-insurance?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a></p>
 <h3 id="setup-the-environment">Setup the environment</h3>
-<p>As usual, I will start by calling all the relevant packages I would need in the analysis later on.</p>
+<p>As usual, I will start by calling all the relevant packages I would
+need in the analysis later on.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>packages</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'tidyverse'</span>, <span class='st'>'readr'</span>, <span class='st'>'skimr'</span>, <span class='st'>'tidymodels'</span>, <span class='st'>'discrim'</span>, 
@@ -1616,7 +1696,17 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </tbody>
 </table>
 <p><strong>Variable type: character</strong></p>
-<table>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 12%" />
+<col style="width: 17%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 7%" />
+<col style="width: 11%" />
+<col style="width: 13%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;">skim_variable</th>
@@ -1704,6 +1794,19 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </table>
 <p><strong>Variable type: numeric</strong></p>
 <table>
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 8%" />
+<col style="width: 11%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 4%" />
+<col style="width: 3%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 34%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;">skim_variable</th>
@@ -1776,11 +1879,20 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </table>
 </div>
 <p><em>Gender</em></p>
-<p>There is excessive missing value for Gender, i.e. only about 28.8% of the data contains values in Gender column. Hence, I will drop this columns since this variable is unlikely to be going to be meaningful in explaining the target variable.</p>
+<p>There is excessive missing value for Gender, i.e. only about 28.8% of
+the data contains values in Gender column. Hence, I will drop this
+columns since this variable is unlikely to be going to be meaningful in
+explaining the target variable.</p>
 <p><em>Destinations</em></p>
-<p>There are about 149 unique values under destinations. This could be an issue when we use this feature to build machine learning model as there are too many unique categories.</p>
-<p>To further group the destinations, I have extracted the mapping between destinations and continents from internet and imported the mapping results into the environment. This allows me to join with the existing dataset.</p>
-<p>Below is code chunk I have imported into the environment and performed a left join with the original dataset:</p>
+<p>There are about 149 unique values under destinations. This could be
+an issue when we use this feature to build machine learning model as
+there are too many unique categories.</p>
+<p>To further group the destinations, I have extracted the mapping
+between destinations and continents from internet and imported the
+mapping results into the environment. This allows me to join with the
+existing dataset.</p>
+<p>Below is code chunk I have imported into the environment and
+performed a left join with the original dataset:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>destination_state</span> <span class='op'>&lt;-</span> <span class='fu'>read_excel</span><span class='op'>(</span><span class='st'>"data/Destination_Continent_Mapping.xlsx"</span><span class='op'>)</span>
@@ -1801,7 +1913,8 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 <p><img src="NaiveBayes_files/figure-html5/unnamed-chunk-8-1.png" width="80%" /></p>
 </div>
-<p>As the proportion of claim policies is rather low, it is hard to compare the claim proportion across different continents.</p>
+<p>As the proportion of claim policies is rather low, it is hard to
+compare the claim proportion across different continents.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>df</span> <span class='op'>%&gt;%</span>
@@ -1835,10 +1948,16 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 <p><img src="NaiveBayes_files/figure-html5/unnamed-chunk-10-1.png" width="80%" /></p>
 </div>
-<p>There are too many categories under product name. This would affect the performance of machine learning models if we use this variable to build models.</p>
-<p>Hence, I will further group the product names so that this feature does not have too many unique categories.</p>
-<p>As I am unable to find any further information on the product, hence I have kept products with top 90% of the sales as their original naming and renamed the remaining products as ‘Others.’</p>
-<p>Once the product names are being recoded, I will join the recoded product names back to the original dataset.</p>
+<p>There are too many categories under product name. This would affect
+the performance of machine learning models if we use this variable to
+build models.</p>
+<p>Hence, I will further group the product names so that this feature
+does not have too many unique categories.</p>
+<p>As I am unable to find any further information on the product, hence
+I have kept products with top 90% of the sales as their original naming
+and renamed the remaining products as ‘Others’.</p>
+<p>Once the product names are being recoded, I will join the recoded
+product names back to the original dataset.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>df_prod</span> <span class='op'>&lt;-</span> <span class='va'>df</span> <span class='op'>%&gt;%</span>
@@ -1870,7 +1989,8 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 <p><img src="NaiveBayes_files/figure-html5/unnamed-chunk-12-1.png" width="80%" /></p>
 </div>
-<p>As shown above, we can see that claim proportion for Bronze Plan and Others are higher than other plans.</p>
+<p>As shown above, we can see that claim proportion for Bronze Plan and
+Others are higher than other plans.</p>
 <p><em>Duration</em></p>
 <p>Below is the duration density plot:</p>
 <div class="layout-chunk" data-layout="l-body">
@@ -1888,7 +2008,9 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <p><img src="NaiveBayes_files/figure-html5/unnamed-chunk-13-1.png" width="80%" /></p>
 </div>
 <p>As shown in the graph, most of the trips were very short trip.</p>
-<p>If we were removed any data points with duration longer than 1000 and plot duration density between claim and no claim policies, following is the chart:</p>
+<p>If we were removed any data points with duration longer than 1000 and
+plot duration density between claim and no claim policies, following is
+the chart:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>duration_mean_claim</span> <span class='op'>&lt;-</span> <span class='va'>df</span> <span class='op'>%&gt;%</span>
@@ -1917,10 +2039,22 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 <p><img src="NaiveBayes_files/figure-html5/unnamed-chunk-14-1.png" width="80%" /></p>
 </div>
-<p>It seems like the average duration of the policies with no claim is shorter than the average duration of the duration with claim. This is logical since the duration is likely to represent the coverage duration of the travel insurance. Typically the coverage of the travel insurance starts from the day the insurance is purchased till the day the trip is being completed. Therefore, with a higher duration, it is more likely the customers would make a claim during the coverage period.</p>
-<p>Meanwhile, I do note that there are negative values within this variable, which the values do not seem to be reasonable. Therefore, I will remove them from the dataset.</p>
+<p>It seems like the average duration of the policies with no claim is
+shorter than the average duration of the duration with claim. This is
+logical since the duration is likely to represent the coverage duration
+of the travel insurance. Typically the coverage of the travel insurance
+starts from the day the insurance is purchased till the day the trip is
+being completed. Therefore, with a higher duration, it is more likely
+the customers would make a claim during the coverage period.</p>
+<p>Meanwhile, I do note that there are negative values within this
+variable, which the values do not seem to be reasonable. Therefore, I
+will remove them from the dataset.</p>
 <p><em>Sales</em></p>
-<p>In the earlier data summary, there are some policies with sales with zero or even negative. This is not logical as the sales of insurance policies would be positive. As lack of information, I would remove these policies from the dataset so that it will not affect the model performance.</p>
+<p>In the earlier data summary, there are some policies with sales with
+zero or even negative. This is not logical as the sales of insurance
+policies would be positive. As lack of information, I would remove these
+policies from the dataset so that it will not affect the model
+performance.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>netSales_mean_claim</span> <span class='op'>&lt;-</span> <span class='va'>df</span> <span class='op'>%&gt;%</span>
@@ -1947,7 +2081,8 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <p><img src="NaiveBayes_files/figure-html5/unnamed-chunk-15-1.png" width="80%" /></p>
 </div>
 <p><em>Commission</em></p>
-<p>Similarly, I will plot the commission distribution between claim and no claim policies.</p>
+<p>Similarly, I will plot the commission distribution between claim and
+no claim policies.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>comm_mean_claim</span> <span class='op'>&lt;-</span> <span class='va'>df</span> <span class='op'>%&gt;%</span>
@@ -1970,7 +2105,9 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 <p><img src="NaiveBayes_files/figure-html5/unnamed-chunk-16-1.png" width="80%" /></p>
 </div>
-<p>From the graph, the average commission for policies that have made a claim is lower than the average commission for policies that does not make a claim.</p>
+<p>From the graph, the average commission for policies that have made a
+claim is lower than the average commission for policies that does not
+make a claim.</p>
 <p><em>Age</em></p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
@@ -1995,8 +2132,13 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 <p><img src="NaiveBayes_files/figure-html5/unnamed-chunk-17-1.png" width="80%" /></p>
 </div>
-<p>Unlike the previous numerical variables, it seems like the average age between claim and no claim policies is quite minimal.</p>
-<p>Also, it seems like there are weird ages within the dataset as well. There are 984 policies with age 118, which seem to be what we know as ‘magic value’ in feature engineering. One possible explanation for this is the system will default the age to be 118 if the age is not being input into the system.</p>
+<p>Unlike the previous numerical variables, it seems like the average
+age between claim and no claim policies is quite minimal.</p>
+<p>Also, it seems like there are weird ages within the dataset as well.
+There are 984 policies with age 118, which seem to be what we know as
+‘magic value’ in feature engineering. One possible explanation for this
+is the system will default the age to be 118 if the age is not being
+input into the system.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>df</span> <span class='op'>%&gt;%</span>
@@ -2009,7 +2151,9 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   &lt;int&gt;
 1   984</code></pre>
 </div>
-<p>As I do not have any further information to estimate the ages for these policies, I will remove them from the dataset before building the model.</p>
+<p>As I do not have any further information to estimate the ages for
+these policies, I will remove them from the dataset before building the
+model.</p>
 <h3 id="data-cleaning">Data Cleaning</h3>
 <p>Before building the model, I will proceed and clean the data.</p>
 <div class="layout-chunk" data-layout="l-body">
@@ -2035,7 +2179,9 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </code></pre>
 </div>
 </div>
-<p>In this section, I will split the data into training and testing dataset. Once this is done, I will prepare the dataset for cross validation later.</p>
+<p>In this section, I will split the data into training and testing
+dataset. Once this is done, I will prepare the dataset for cross
+validation later.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>df_split</span> <span class='op'>&lt;-</span> <span class='fu'>initial_split</span><span class='op'>(</span><span class='va'>df_1</span>, prop <span class='op'>=</span> <span class='va'>prop_split</span>, strata <span class='op'>=</span> <span class='va'>Claim</span><span class='op'>)</span>
@@ -2046,23 +2192,29 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </code></pre>
 </div>
 </div>
-<p>Next, I will define the formula and dataset to be used to train the model.</p>
+<p>Next, I will define the formula and dataset to be used to train the
+model.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>gen_recipe</span> <span class='op'>&lt;-</span> <span class='fu'>recipe</span><span class='op'>(</span><span class='va'>Claim</span> <span class='op'>~</span> <span class='va'>.</span>, data <span class='op'>=</span> <span class='va'>df_train</span><span class='op'>)</span>
 </code></pre>
 </div>
 </div>
-<p>Okay, let’s start the analysis by using our classic machine learning model for classification problem - logistic regression!</p>
+<p>Okay, let’s start the analysis by using our classic machine learning
+model for classification problem - logistic regression!</p>
 <h4 id="logistic-regression">Logistic Regression</h4>
-<p>To record how long it takes to build a logistic regression model, I use <strong>tic</strong> &amp; <strong>toc</strong> functions from <strong>tictoc</strong> package to capture the time spent in building model.</p>
+<p>To record how long it takes to build a logistic regression model, I
+use <strong>tic</strong> &amp; <strong>toc</strong> functions from
+<strong>tictoc</strong> package to capture the time spent in building
+model.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>tic</span><span class='op'>(</span><span class='st'>"Time to Build Logistic Regression"</span><span class='op'>)</span>
 </code></pre>
 </div>
 </div>
-<p>First, I will define the data pre-processing steps to be performed.</p>
+<p>First, I will define the data pre-processing steps to be
+performed.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>logit_recipe</span> <span class='op'>&lt;-</span> <span class='va'>gen_recipe</span> <span class='op'>%&gt;%</span>
@@ -2072,7 +2224,9 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </code></pre>
 </div>
 </div>
-<p>Then, I will define the model to be built. I have also indicated the parameters to be tuned by using <strong>tune</strong> function to mark the parameters.</p>
+<p>Then, I will define the model to be built. I have also indicated the
+parameters to be tuned by using <strong>tune</strong> function to mark
+the parameters.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>logit_spec</span> <span class='op'>&lt;-</span> <span class='fu'>logistic_reg</span><span class='op'>(</span>mixture <span class='op'>=</span> <span class='fu'>tune</span><span class='op'>(</span><span class='op'>)</span>, penalty <span class='op'>=</span> <span class='fu'>tune</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
@@ -2081,7 +2235,8 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </code></pre>
 </div>
 </div>
-<p>Once this is done, I will chain all the created objects as a workflow.</p>
+<p>Once this is done, I will chain all the created objects as a
+workflow.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>logit_workflow</span> <span class='op'>&lt;-</span> <span class='fu'>workflow</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
@@ -2090,7 +2245,8 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </code></pre>
 </div>
 </div>
-<p>Then, I will start performing cross validation to find the best set of parameters.</p>
+<p>Then, I will start performing cross validation to find the best set
+of parameters.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>logit_grid</span> <span class='op'>&lt;-</span> <span class='fu'>tidyr</span><span class='fu'>::</span><span class='fu'><a href='https://tidyr.tidyverse.org/reference/expand.html'>crossing</a></span><span class='op'>(</span>penalty <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>4</span>,<span class='fl'>5</span>,<span class='fl'>6</span>,<span class='fl'>7</span>,<span class='fl'>8</span>,<span class='fl'>9</span>,<span class='fl'>10</span><span class='op'>)</span>, mixture <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.05</span>, <span class='fl'>0.1</span>, <span class='fl'>0.2</span>, <span class='fl'>0.4</span>, <span class='fl'>0.6</span>, <span class='fl'>0.8</span>, <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>
@@ -2110,7 +2266,8 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </code></pre>
 </div>
 </div>
-<p>The predicted values are then “collected” so that I could use them to calculate the necessary model performance.</p>
+<p>The predicted values are then “collected” so that I could use them to
+calculate the necessary model performance.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>logit_pred</span> <span class='op'>&lt;-</span> <span class='va'>logit_fit</span> <span class='op'>%&gt;%</span>
@@ -2118,13 +2275,15 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </code></pre>
 </div>
 </div>
-<p>Once the predicted values are being “collected,” <strong>toc</strong> function is used to calculate how long it takes to fit the model and make the necessary predictions.</p>
+<p>Once the predicted values are being “collected”, <strong>toc</strong>
+function is used to calculate how long it takes to fit the model and
+make the necessary predictions.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>toc</span><span class='op'>(</span><span class='op'>)</span>
 </code></pre>
 </div>
-<pre><code>Time to Build Logistic Regression: 196.01 sec elapsed</code></pre>
+<pre><code>Time to Build Logistic Regression: 199.63 sec elapsed</code></pre>
 </div>
 <p>Accuracy is typically used to measure classification model.</p>
 <div class="layout-chunk" data-layout="l-body">
@@ -2139,9 +2298,16 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt;
 1 accuracy binary         0.984</code></pre>
 </div>
-<p>Based on the accuracy results, it seems like this logistic model is a pretty decent model given it has such a high accuracy. More than 98% of the policies are being accurately classified.</p>
-<p>However, it can be very misleading if our decision is just based on accuracy measurement. Accuracy looks the number of policies are being accurately classified whether they have claimed or not. It does not differentiate the true positive and true negative in this case.</p>
-<p>However, in insurance, we are more interested in the policies that have claimed. One way is to compute the confusion matrix for the relevant model.</p>
+<p>Based on the accuracy results, it seems like this logistic model is a
+pretty decent model given it has such a high accuracy. More than 98% of
+the policies are being accurately classified.</p>
+<p>However, it can be very misleading if our decision is just based on
+accuracy measurement. Accuracy looks the number of policies are being
+accurately classified whether they have claimed or not. It does not
+differentiate the true positive and true negative in this case.</p>
+<p>However, in insurance, we are more interested in the policies that
+have claimed. One way is to compute the confusion matrix for the
+relevant model.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>conf_mat</span><span class='op'>(</span><span class='va'>logit_pred</span>, 
@@ -2154,7 +2320,9 @@ Prediction    No   Yes
        No  23539   372
        Yes     0     0</code></pre>
 </div>
-<p>Oh no! According to the results under confusion matrix, our model always predict that the policies will not make a claim. This is bad as this would result in the expected claim severely unstated.</p>
+<p>Oh no! According to the results under confusion matrix, our model
+always predict that the policies will not make a claim. This is bad as
+this would result in the expected claim severely unstated.</p>
 <p>Now let’s us plot the ROC curve.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
@@ -2165,8 +2333,11 @@ Prediction    No   Yes
 </div>
 <p><img src="NaiveBayes_files/figure-html5/unnamed-chunk-33-1.png" width="80%" /></p>
 </div>
-<p>The ROC curve for this model lie at the diagonal line, suggesting that this fitted model has no predictive power. It is as good as we take a random guess whether the selected policy will make a claim.</p>
-<p>If we were to visualize the claim count by using a histogram, we can see that the proportion of policyholders claimed is very low.</p>
+<p>The ROC curve for this model lie at the diagonal line, suggesting
+that this fitted model has no predictive power. It is as good as we take
+a random guess whether the selected policy will make a claim.</p>
+<p>If we were to visualize the claim count by using a histogram, we can
+see that the proportion of policyholders claimed is very low.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>df_1</span>, <span class='fu'>aes</span><span class='op'>(</span><span class='va'>Claim</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
@@ -2177,14 +2348,16 @@ Prediction    No   Yes
 </div>
 <h4 id="naive-bayes-classifier-1">Naive Bayes Classifier</h4>
 <p>Okay, let’s move on and build a naive bayes classifier model.</p>
-<p>First, I will use <strong>tic</strong> function to indicate where I should start measuring the time taken to build the model.</p>
+<p>First, I will use <strong>tic</strong> function to indicate where I
+should start measuring the time taken to build the model.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>tic</span><span class='op'>(</span><span class='st'>"Time to Build Naive Bayes Classifier"</span><span class='op'>)</span>
 </code></pre>
 </div>
 </div>
-<p>Then, I will start building the model, same as how I did it for logistic regression.</p>
+<p>Then, I will start building the model, same as how I did it for
+logistic regression.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>naive_recipe</span> <span class='op'>&lt;-</span> <span class='va'>gen_recipe</span> <span class='op'>%&gt;%</span>
@@ -2216,10 +2389,13 @@ Prediction    No   Yes
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>toc</span><span class='op'>(</span><span class='op'>)</span>
 </code></pre>
 </div>
-<pre><code>Time to Build Naive Bayes Classifier: 36.62 sec elapsed</code></pre>
+<pre><code>Time to Build Naive Bayes Classifier: 26.5 sec elapsed</code></pre>
 </div>
-<p>Note that the naive bayes classifier takes lesser time to build the model. In fact, it took less time to build naive bayes classifier than build logistic regression.</p>
-<p>This is consistent with what we have discussed in the earlier section of this post.</p>
+<p>Note that the naive bayes classifier takes lesser time to build the
+model. In fact, it took less time to build naive bayes classifier than
+build logistic regression.</p>
+<p>This is consistent with what we have discussed in the earlier section
+of this post.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>accuracy</span><span class='op'>(</span><span class='va'>naive_pred</span>, 
@@ -2232,7 +2408,8 @@ Prediction    No   Yes
   &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt;
 1 accuracy binary         0.941</code></pre>
 </div>
-<p>Similarly, let’s check the confusion matrix results for our naive bayes classifier.</p>
+<p>Similarly, let’s check the confusion matrix results for our naive
+bayes classifier.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>conf_mat</span><span class='op'>(</span><span class='va'>naive_pred</span>, 
@@ -2245,8 +2422,12 @@ Prediction    No   Yes
        No  22391   252
        Yes  1148   120</code></pre>
 </div>
-<p>Note that the model no longer always predict policyholders do not claim from their travel insurance.</p>
-<p>When we plot the ROC curve, we noted that the ROC curve no longer lie on the diagonal line. This suggests that although the accuracy of this fitted model is lower than logistic regression, this fitted model does have some levels of predictive power.</p>
+<p>Note that the model no longer always predict policyholders do not
+claim from their travel insurance.</p>
+<p>When we plot the ROC curve, we noted that the ROC curve no longer lie
+on the diagonal line. This suggests that although the accuracy of this
+fitted model is lower than logistic regression, this fitted model does
+have some levels of predictive power.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>autoplot</span><span class='op'>(</span><span class='fu'>roc_curve</span><span class='op'>(</span><span class='va'>naive_pred</span>, 
@@ -2256,34 +2437,66 @@ Prediction    No   Yes
 </div>
 <p><img src="NaiveBayes_files/figure-html5/unnamed-chunk-40-1.png" width="80%" /></p>
 </div>
-<p>Overall, we can see that naive bayes classifier performs better than logistic regression in this data.</p>
-<p>One of the possible reason why naive bayes classifier outperforms logistic regression is due to the small dataset. <span class="citation" data-cites="AndrewNg">(<a href="#ref-AndrewNg" role="doc-biblioref">Ng and Jordan</a>)</span> discussed that how the model performance for logistic regression will outperform naive bayes classifier when the training size reaches infinity.</p>
-<p>However, for this scenario, the dataset seems to be too small for logistic regression to converge and outperform naive bayes classifier. The performance of logistic regression model might improve further when we increase the training data.</p>
+<p>Overall, we can see that naive bayes classifier performs better than
+logistic regression in this data.</p>
+<p>One of the possible reason why naive bayes classifier outperforms
+logistic regression is due to the small dataset. <span class="citation"
+data-cites="AndrewNg">(<a href="#ref-AndrewNg" role="doc-biblioref">Ng
+and Jordan</a>)</span> discussed that how the model performance for
+logistic regression will outperform naive bayes classifier when the
+training size reaches infinity.</p>
+<p>However, for this scenario, the dataset seems to be too small for
+logistic regression to converge and outperform naive bayes classifier.
+The performance of logistic regression model might improve further when
+we increase the training data.</p>
 <h2 id="conclusion">Conclusion</h2>
-<p>That’s all for the day! We have finished “sorting” the policies in whether they are expected to claim or does not claim.</p>
+<p>That’s all for the day! We have finished “sorting” the policies in
+whether they are expected to claim or does not claim.</p>
 <div class="layout-chunk" data-layout="l-body">
 <p><img src="image/sorting%20hat.jpg" width="80%" /></p>
 </div>
-<p>Photo by <a href="https://unsplash.com/@emrecan_arik?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">emrecan arık</a> on <a href="https://unsplash.com/s/photos/sorting?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a></p>
+<p>Photo by
+<a href="https://unsplash.com/@emrecan_arik?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">emrecan
+arık</a> on
+<a href="https://unsplash.com/s/photos/sorting?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a></p>
 <p>Thanks for reading the post until the end.</p>
-<p>Do check out on the <a href="https://discrim.tidymodels.org/index.html">documentation page</a> if you want to find out more on naive bayes classifier.</p>
-<p>Feel free to contact me through <a href="mailto:junhaur.lok.2019@mitb.smu.edu.sg">email</a> or <a href="https://www.linkedin.com/in/jasper-l-13426232/">LinkedIn</a> if you have any suggestions on future topics to share.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
-<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<p>Do check out on the <a
+href="https://discrim.tidymodels.org/index.html">documentation page</a>
+if you want to find out more on naive bayes classifier.</p>
+<p>Feel free to contact me through <a
+href="mailto:jasper.jh.lok@gmail.com">email</a> or <a
+href="https://www.linkedin.com/in/jasper-l-13426232/">LinkedIn</a> if
+you have any suggestions on future topics to share.</p>
+<p>Refer to this link for the <a
+href="https://jasperlok.netlify.app/blog_disclaimer.html">blog
+disclaimer</a>.</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<div id="refs" class="references csl-bib-body hanging-indent"
+role="doc-bibliography">
 <div id="ref-Brownlee2015" class="csl-entry" role="doc-biblioentry">
-Brownlee, Jason, ed. n.d. <span>“8 Tactics to Combat Imbalanced Classes in Your Machine Learning Dataset.”</span> <a href="https://machinelearningmastery.com/tactics-to-combat-imbalanced-classes-in-your-machine-learning-dataset/">https://machinelearningmastery.com/tactics-to-combat-imbalanced-classes-in-your-machine-learning-dataset/</a>.
+Brownlee, Jason, ed. n.d. <span>“8 Tactics to Combat Imbalanced Classes
+in Your Machine Learning Dataset.”</span> <a
+href="https://machinelearningmastery.com/tactics-to-combat-imbalanced-classes-in-your-machine-learning-dataset/">https://machinelearningmastery.com/tactics-to-combat-imbalanced-classes-in-your-machine-learning-dataset/</a>.
 </div>
 <div id="ref-Kuhn2013" class="csl-entry" role="doc-biblioentry">
-Kuhn, Max, and Kjell Johnson, eds. 2013. <em>Applied Predictive Modeling</em>. Springer.
+Kuhn, Max, and Kjell Johnson, eds. 2013. <em>Applied Predictive
+Modeling</em>. Springer.
 </div>
 <div id="ref-AndrewNg" class="csl-entry" role="doc-biblioentry">
-Ng, Andrew, and Michael Jordan, eds. <span>“On Discriminative Vs. Genererative Classifiers: A Comparison of Logistic Regression and Naive Bayes.”</span> <a href="http://ai.stanford.edu/~ang/papers/nips01-discriminativegenerative.pdf">http://ai.stanford.edu/~ang/papers/nips01-discriminativegenerative.pdf</a>.
+Ng, Andrew, and Michael Jordan, eds. <span>“On Discriminative Vs.
+Genererative Classifiers: A Comparison of Logistic Regression and Naive
+Bayes.”</span> <a
+href="http://ai.stanford.edu/~ang/papers/nips01-discriminativegenerative.pdf">http://ai.stanford.edu/~ang/papers/nips01-discriminativegenerative.pdf</a>.
 </div>
 <div id="ref-Ottesen2017" class="csl-entry" role="doc-biblioentry">
-Ottesen, Christopher. 2017. <span>“Comparison Between Naïve Bayes and Logistic Regression.”</span> <a href="https://dataespresso.com/en/2017/10/24/comparison-between-naive-bayes-and-logistic-regression/">https://dataespresso.com/en/2017/10/24/comparison-between-naive-bayes-and-logistic-regression/</a>.
+Ottesen, Christopher. 2017. <span>“Comparison Between Naïve Bayes and
+Logistic Regression.”</span> <a
+href="https://dataespresso.com/en/2017/10/24/comparison-between-naive-bayes-and-logistic-regression/">https://dataespresso.com/en/2017/10/24/comparison-between-naive-bayes-and-logistic-regression/</a>.
 </div>
 <div id="ref-scikit" class="csl-entry" role="doc-biblioentry">
-scikit-learn, ed. <span>“1.9 Naive Bayes.”</span> <a href="https://scikit-learn.org/stable/modules/naive_bayes.html">https://scikit-learn.org/stable/modules/naive_bayes.html</a>.
+scikit-learn, ed. <span>“1.9 Naive Bayes.”</span> <a
+href="https://scikit-learn.org/stable/modules/naive_bayes.html">https://scikit-learn.org/stable/modules/naive_bayes.html</a>.
 </div>
 </div>
 <!--radix_placeholder_article_footer-->
