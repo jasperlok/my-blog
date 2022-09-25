@@ -1,10 +1,9 @@
 ---
-title: "Jasper Lok"
+title: "Disclaimer for This Personal Blog"
 site: blog_disclaimer.hmtl
 
 ---
 
-### Disclaimer for this blog
 
 ```{r, echo = FALSE, fig.width = 2}
 knitr::include_graphics("image/books.jpg")
