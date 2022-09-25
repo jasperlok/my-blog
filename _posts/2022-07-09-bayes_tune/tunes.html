@@ -1516,30 +1516,42 @@ class="uri">https://jasperlok.netlify.app/</a>
 <nav class="l-text toc figcaption" id="TOC">
 <h3>Contents</h3>
 <ul>
-<li><a href="#recap-on-hyperparameters-tuning">Recap on Hyperparameters
+<li><a href="#recap-on-hyperparameters-tuning"
+id="toc-recap-on-hyperparameters-tuning">Recap on Hyperparameters
 tuning</a></li>
-<li><a href="#optimization-methods">Optimization Methods</a>
+<li><a href="#optimization-methods"
+id="toc-optimization-methods">Optimization Methods</a>
 <ul>
-<li><a href="#regular-grid-search">Regular Grid Search</a></li>
-<li><a href="#bayes-optimization">Bayes Optimization</a></li>
+<li><a href="#regular-grid-search" id="toc-regular-grid-search">Regular
+Grid Search</a></li>
+<li><a href="#bayes-optimization" id="toc-bayes-optimization">Bayes
+Optimization</a></li>
 </ul></li>
-<li><a href="#demonstration">Demonstration</a>
+<li><a href="#demonstration" id="toc-demonstration">Demonstration</a>
 <ul>
-<li><a href="#setup-the-environment">Setup the environment</a></li>
-<li><a href="#import-the-data">Import the data</a></li>
-<li><a href="#build-a-model">Build a model</a></li>
-<li><a href="#creating-grid">Creating Grid</a></li>
-<li><a href="#tuning-hyperparameters">Tuning hyperparameters</a>
+<li><a href="#setup-the-environment"
+id="toc-setup-the-environment">Setup the environment</a></li>
+<li><a href="#import-the-data" id="toc-import-the-data">Import the
+data</a></li>
+<li><a href="#build-a-model" id="toc-build-a-model">Build a
+model</a></li>
+<li><a href="#creating-grid" id="toc-creating-grid">Creating
+Grid</a></li>
+<li><a href="#tuning-hyperparameters"
+id="toc-tuning-hyperparameters">Tuning hyperparameters</a>
 <ul>
-<li><a href="#regular-grid-search-1">Regular Grid Search</a></li>
-<li><a href="#bayes-optimization-1">Bayes Optimization</a>
+<li><a href="#regular-grid-search-1"
+id="toc-regular-grid-search-1">Regular Grid Search</a></li>
+<li><a href="#bayes-optimization-1" id="toc-bayes-optimization-1">Bayes
+Optimization</a>
 <ul>
-<li><a href="#parameters">Parameters</a></li>
-<li><a href="#tuning-hyperparameters-1">Tuning Hyperparameters</a></li>
+<li><a href="#parameters" id="toc-parameters">Parameters</a></li>
+<li><a href="#tuning-hyperparameters-1"
+id="toc-tuning-hyperparameters-1">Tuning Hyperparameters</a></li>
 </ul></li>
 </ul></li>
 </ul></li>
-<li><a href="#conclusion">Conclusion</a></li>
+<li><a href="#conclusion" id="toc-conclusion">Conclusion</a></li>
 </ul>
 </nav>
 </div>
@@ -1752,7 +1764,7 @@ hyperparameters.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>results_regular</span> <span class='op'>&lt;-</span> <span class='fu'>toc</span><span class='op'>(</span><span class='op'>)</span>
 </code></pre>
 </div>
-<pre><code>2249.47 sec elapsed</code></pre>
+<pre><code>2641.32 sec elapsed</code></pre>
 </div>
 <p><code>tune</code> package also offers a function to allow the users
 to plot the model performance against the parameters.</p>
@@ -1857,7 +1869,7 @@ the number of parameters being optimized.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>results_bayes</span> <span class='op'>&lt;-</span> <span class='fu'>toc</span><span class='op'>(</span><span class='op'>)</span>
 </code></pre>
 </div>
-<pre><code>474.47 sec elapsed</code></pre>
+<pre><code>495.11 sec elapsed</code></pre>
 </div>
 <p>Similarly, we can plot the model performance under different
 hyperparameters by using <code>autoplot</code> function.</p>
@@ -1896,19 +1908,19 @@ ascending order.</p>
 <pre><code># A tibble: 13 x 9
     mtry trees .metric .estimator  mean     n std_err .config    .iter
    &lt;int&gt; &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;      &lt;int&gt;
- 1     9  3160 roc_auc binary     0.965    10 0.00544 Preproces~     0
- 2    17    15 roc_auc binary     0.947    10 0.00886 Preproces~     0
- 3    19  4606 roc_auc binary     0.962    10 0.00557 Preproces~     0
- 4     3  1030 roc_auc binary     0.968    10 0.00506 Preproces~     0
- 5    10  2156 roc_auc binary     0.964    10 0.00556 Preproces~     0
- 6     5  2079 roc_auc binary     0.968    10 0.00527 Iter1          1
- 7     1  1838 roc_auc binary     0.926    10 0.00830 Iter2          2
- 8     4  1339 roc_auc binary     0.968    10 0.00521 Iter3          3
- 9     7  2201 roc_auc binary     0.967    10 0.00524 Iter4          4
-10    21  4960 roc_auc binary     0.961    10 0.00553 Iter5          5
-11     6  4998 roc_auc binary     0.967    10 0.00528 Iter6          6
-12    13  4987 roc_auc binary     0.963    10 0.00559 Iter7          7
-13    12     4 roc_auc binary     0.932    10 0.00696 Iter8          8</code></pre>
+ 1     9  3160 roc_auc binary     0.965    10 0.00554 Preproces~     0
+ 2    17    15 roc_auc binary     0.951    10 0.00778 Preproces~     0
+ 3    19  4606 roc_auc binary     0.963    10 0.00549 Preproces~     0
+ 4     3  1030 roc_auc binary     0.967    10 0.00561 Preproces~     0
+ 5    10  2156 roc_auc binary     0.964    10 0.00547 Preproces~     0
+ 6     5  2016 roc_auc binary     0.968    10 0.00553 Iter1          1
+ 7     1  2087 roc_auc binary     0.924    10 0.00784 Iter2          2
+ 8     4  1243 roc_auc binary     0.967    10 0.00534 Iter3          3
+ 9     7  2009 roc_auc binary     0.966    10 0.00539 Iter4          4
+10     3   306 roc_auc binary     0.968    10 0.00529 Iter5          5
+11     6  4998 roc_auc binary     0.967    10 0.00549 Iter6          6
+12    21  4962 roc_auc binary     0.961    10 0.00545 Iter7          7
+13     6     5 roc_auc binary     0.934    10 0.00818 Iter8          8</code></pre>
 </div>
 <p>I will also collect the model performance under regular grid
 search.</p>
@@ -1921,16 +1933,16 @@ search.</p>
 <pre><code># A tibble: 144 x 8
     mtry trees .metric .estimator  mean     n std_err .config         
    &lt;int&gt; &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;           
- 1     1     1 roc_auc binary     0.658    10 0.0195  Preprocessor1_M~
- 2     1   182 roc_auc binary     0.927    10 0.00948 Preprocessor1_M~
- 3     1   364 roc_auc binary     0.924    10 0.00829 Preprocessor1_M~
- 4     1   546 roc_auc binary     0.923    10 0.00789 Preprocessor1_M~
- 5     1   727 roc_auc binary     0.926    10 0.00839 Preprocessor1_M~
- 6     1   909 roc_auc binary     0.923    10 0.00831 Preprocessor1_M~
- 7     1  1091 roc_auc binary     0.927    10 0.00881 Preprocessor1_M~
- 8     1  1273 roc_auc binary     0.925    10 0.00854 Preprocessor1_M~
- 9     1  1454 roc_auc binary     0.925    10 0.00832 Preprocessor1_M~
-10     1  1636 roc_auc binary     0.926    10 0.00835 Preprocessor1_M~
+ 1     1     1 roc_auc binary     0.647    10 0.0216  Preprocessor1_M~
+ 2     1   182 roc_auc binary     0.925    10 0.00853 Preprocessor1_M~
+ 3     1   364 roc_auc binary     0.923    10 0.00874 Preprocessor1_M~
+ 4     1   546 roc_auc binary     0.923    10 0.00830 Preprocessor1_M~
+ 5     1   727 roc_auc binary     0.924    10 0.00835 Preprocessor1_M~
+ 6     1   909 roc_auc binary     0.925    10 0.00771 Preprocessor1_M~
+ 7     1  1091 roc_auc binary     0.925    10 0.00833 Preprocessor1_M~
+ 8     1  1273 roc_auc binary     0.924    10 0.00783 Preprocessor1_M~
+ 9     1  1454 roc_auc binary     0.924    10 0.00796 Preprocessor1_M~
+10     1  1636 roc_auc binary     0.926    10 0.00817 Preprocessor1_M~
 # ... with 134 more rows</code></pre>
 </div>
 <p>Let’s take a look at how the model performances differ between
@@ -1956,7 +1968,7 @@ grid search method and bayes optimization method.</p>
 </div>
 <p>However, bayes optimization uses lesser time to obtain similar model
 performance as compared to regular grid search.</p>
-<p>There is about 79% reduction in time spent in searching the optimal
+<p>There is about 81% reduction in time spent in searching the optimal
 hyperparameters when bayes optimization is used.</p>
 <p>This shows how bayes optimization could spend less time searching the
 optimal hyperparameters.</p>
@@ -1973,19 +1985,19 @@ the hyperparameters at the region where mtry value is low.</p>
 <pre><code># A tibble: 13 x 9
     mtry trees .metric .estimator  mean     n std_err .config    .iter
    &lt;int&gt; &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;      &lt;int&gt;
- 1     9  3160 roc_auc binary     0.965    10 0.00544 Preproces~     0
- 2    17    15 roc_auc binary     0.947    10 0.00886 Preproces~     0
- 3    19  4606 roc_auc binary     0.962    10 0.00557 Preproces~     0
- 4     3  1030 roc_auc binary     0.968    10 0.00506 Preproces~     0
- 5    10  2156 roc_auc binary     0.964    10 0.00556 Preproces~     0
- 6     5  2079 roc_auc binary     0.968    10 0.00527 Iter1          1
- 7     1  1838 roc_auc binary     0.926    10 0.00830 Iter2          2
- 8     4  1339 roc_auc binary     0.968    10 0.00521 Iter3          3
- 9     7  2201 roc_auc binary     0.967    10 0.00524 Iter4          4
-10    21  4960 roc_auc binary     0.961    10 0.00553 Iter5          5
-11     6  4998 roc_auc binary     0.967    10 0.00528 Iter6          6
-12    13  4987 roc_auc binary     0.963    10 0.00559 Iter7          7
-13    12     4 roc_auc binary     0.932    10 0.00696 Iter8          8</code></pre>
+ 1     9  3160 roc_auc binary     0.965    10 0.00554 Preproces~     0
+ 2    17    15 roc_auc binary     0.951    10 0.00778 Preproces~     0
+ 3    19  4606 roc_auc binary     0.963    10 0.00549 Preproces~     0
+ 4     3  1030 roc_auc binary     0.967    10 0.00561 Preproces~     0
+ 5    10  2156 roc_auc binary     0.964    10 0.00547 Preproces~     0
+ 6     5  2016 roc_auc binary     0.968    10 0.00553 Iter1          1
+ 7     1  2087 roc_auc binary     0.924    10 0.00784 Iter2          2
+ 8     4  1243 roc_auc binary     0.967    10 0.00534 Iter3          3
+ 9     7  2009 roc_auc binary     0.966    10 0.00539 Iter4          4
+10     3   306 roc_auc binary     0.968    10 0.00529 Iter5          5
+11     6  4998 roc_auc binary     0.967    10 0.00549 Iter6          6
+12    21  4962 roc_auc binary     0.961    10 0.00545 Iter7          7
+13     6     5 roc_auc binary     0.934    10 0.00818 Iter8          8</code></pre>
 </div>
 <p>The algorithm also tries 5 different sets of hyperparameters before
 the algorithm iterates on the hyperparameters as the
@@ -2023,6 +2035,9 @@ the next post.</p>
 href="mailto:jasper.jh.lok@gmail.com">email</a> or <a
 href="https://www.linkedin.com/in/jasper-l-13426232/">LinkedIn</a> if
 you have any suggestions on future topics to share.</p>
+<p>Refer to this link for the <a
+href="https://jasperlok.netlify.app/blog_disclaimer.html">blog
+disclaimer</a>.</p>
 <p>Till next time, happy learning!</p>
 <div class="layout-chunk" data-layout="l-body">
 <p><img src="image/tuning.jpg" width="100%" /></p>
