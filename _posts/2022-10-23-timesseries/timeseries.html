@@ -1,0 +1,2178 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <meta name="generator" content="distill" />
+
+  <style type="text/css">
+  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
+  body {
+    visibility: hidden;
+  }
+  </style>
+
+ <!--radix_placeholder_import_source-->
+ <!--/radix_placeholder_import_source-->
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ad0000; } /* Alert */
+code span.an { color: #5e5e5e; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bn { color: #ad0000; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007ba5; } /* ControlFlow */
+code span.ch { color: #20794d; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #5e5e5e; } /* Comment */
+code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+code span.dt { color: #ad0000; } /* DataType */
+code span.dv { color: #ad0000; } /* DecVal */
+code span.er { color: #ad0000; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #ad0000; } /* Float */
+code span.fu { color: #4758ab; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #5e5e5e; } /* Information */
+code span.kw { color: #007ba5; } /* Keyword */
+code span.op { color: #5e5e5e; } /* Operator */
+code span.ot { color: #007ba5; } /* Other */
+code span.pp { color: #ad0000; } /* Preprocessor */
+code span.sc { color: #5e5e5e; } /* SpecialChar */
+code span.ss { color: #20794d; } /* SpecialString */
+code span.st { color: #20794d; } /* String */
+code span.va { color: #111111; } /* Variable */
+code span.vs { color: #20794d; } /* VerbatimString */
+code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+</style>
+
+<style>
+  div.csl-bib-body { }
+  div.csl-entry {
+    clear: both;
+    }
+  .hanging div.csl-entry {
+    margin-left:2em;
+    text-indent:-2em;
+  }
+  div.csl-left-margin {
+    min-width:2em;
+    float:left;
+  }
+  div.csl-right-inline {
+    margin-left:2em;
+    padding-left:1em;
+  }
+  div.csl-indent {
+    margin-left: 2em;
+  }
+</style>
+
+  <!--radix_placeholder_meta_tags-->
+  <title>Visualizing Time Series</title>
+
+  <meta property="description" itemprop="description" content="It&#39;s about time"/>
+
+
+  <!--  https://schema.org/Article -->
+  <meta property="article:published" itemprop="datePublished" content="2022-10-23"/>
+  <meta property="article:created" itemprop="dateCreated" content="2022-10-23"/>
+  <meta name="article:author" content="Jasper Lok"/>
+
+  <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
+  <meta property="og:title" content="Visualizing Time Series"/>
+  <meta property="og:type" content="article"/>
+  <meta property="og:description" content="It&#39;s about time"/>
+  <meta property="og:locale" content="en_US"/>
+
+  <!--  https://dev.twitter.com/cards/types/summary -->
+  <meta property="twitter:card" content="summary"/>
+  <meta property="twitter:title" content="Visualizing Time Series"/>
+  <meta property="twitter:description" content="It&#39;s about time"/>
+
+  <!--/radix_placeholder_meta_tags-->
+  
+  <!--radix_placeholder_rmarkdown_metadata-->
+
+  <script type="text/json" id="radix-rmarkdown-metadata">
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","bibliography","biblio-style","link-citations","categories"]}},"value":[{"type":"character","attributes":{},"value":["Visualizing Time Series"]},{"type":"character","attributes":{},"value":["It's about time\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Jasper Lok"]},{"type":"character","attributes":{},"value":["https://jasperlok.netlify.app/"]}]}]},{"type":"character","attributes":{},"value":["10-23-2022"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","toc_depth","self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[4]},{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["ref.bib"]},{"type":"character","attributes":{},"value":["apa"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["Time Series","Data Visualization"]}]}
+  </script>
+  <!--/radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["data/M212881.csv","image/esplanade.jpg","image/inflation_cna.png","image/singapore.jpg","ref.bib","timeseries_files/figure-html5/unnamed-chunk-13-1.png","timeseries_files/figure-html5/unnamed-chunk-16-1.png","timeseries_files/figure-html5/unnamed-chunk-17-1.png","timeseries_files/figure-html5/unnamed-chunk-18-1.png","timeseries_files/figure-html5/unnamed-chunk-19-1.png","timeseries_files/figure-html5/unnamed-chunk-20-1.png"]}
+  </script>
+  <!--radix_placeholder_navigation_in_header-->
+  <!--/radix_placeholder_navigation_in_header-->
+  <!--radix_placeholder_distill-->
+
+  <style type="text/css">
+
+  body {
+    background-color: white;
+  }
+
+  .pandoc-table {
+    width: 100%;
+  }
+
+  .pandoc-table>caption {
+    margin-bottom: 10px;
+  }
+
+  .pandoc-table th:not([align]) {
+    text-align: left;
+  }
+
+  .pagedtable-footer {
+    font-size: 15px;
+  }
+
+  d-byline .byline {
+    grid-template-columns: 2fr 2fr;
+  }
+
+  d-byline .byline h3 {
+    margin-block-start: 1.5em;
+  }
+
+  d-byline .byline .authors-affiliations h3 {
+    margin-block-start: 0.5em;
+  }
+
+  .authors-affiliations .orcid-id {
+    width: 16px;
+    height:16px;
+    margin-left: 4px;
+    margin-right: 4px;
+    vertical-align: middle;
+    padding-bottom: 2px;
+  }
+
+  d-title .dt-tags {
+    margin-top: 1em;
+    grid-column: text;
+  }
+
+  .dt-tags .dt-tag {
+    text-decoration: none;
+    display: inline-block;
+    color: rgba(0,0,0,0.6);
+    padding: 0em 0.4em;
+    margin-right: 0.5em;
+    margin-bottom: 0.4em;
+    font-size: 70%;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  d-article table.gt_table td,
+  d-article table.gt_table th {
+    border-bottom: none;
+  }
+
+  .html-widget {
+    margin-bottom: 2.0em;
+  }
+
+  .l-screen-inset {
+    padding-right: 16px;
+  }
+
+  .l-screen .caption {
+    margin-left: 10px;
+  }
+
+  .shaded {
+    background: rgb(247, 247, 247);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .shaded .html-widget {
+    margin-bottom: 0;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .shaded .shaded-content {
+    background: white;
+  }
+
+  .text-output {
+    margin-top: 0;
+    line-height: 1.5em;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  d-article {
+    padding-top: 2.5rem;
+    padding-bottom: 30px;
+  }
+
+  d-appendix {
+    padding-top: 30px;
+  }
+
+  d-article>p>img {
+    width: 100%;
+  }
+
+  d-article h2 {
+    margin: 1rem 0 1.5rem 0;
+  }
+
+  d-article h3 {
+    margin-top: 1.5rem;
+  }
+
+  d-article iframe {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 2.0em;
+    width: 100%;
+  }
+
+  /* Tweak code blocks */
+
+  d-article div.sourceCode code,
+  d-article pre code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  d-article pre,
+  d-article div.sourceCode,
+  d-article div.sourceCode pre {
+    overflow: auto;
+  }
+
+  d-article div.sourceCode {
+    background-color: white;
+  }
+
+  d-article div.sourceCode pre {
+    padding-left: 10px;
+    font-size: 12px;
+    border-left: 2px solid rgba(0,0,0,0.1);
+  }
+
+  d-article pre {
+    font-size: 12px;
+    color: black;
+    background: none;
+    margin-top: 0;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+
+  d-article pre a {
+    border-bottom: none;
+  }
+
+  d-article pre a:hover {
+    border-bottom: none;
+    text-decoration: underline;
+  }
+
+  d-article details {
+    grid-column: text;
+    margin-bottom: 0.8em;
+  }
+
+  @media(min-width: 768px) {
+
+  d-article pre,
+  d-article div.sourceCode,
+  d-article div.sourceCode pre {
+    overflow: visible !important;
+  }
+
+  d-article div.sourceCode pre {
+    padding-left: 18px;
+    font-size: 14px;
+  }
+
+  d-article pre {
+    font-size: 14px;
+  }
+
+  }
+
+  figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+
+  /* CSS for d-contents */
+
+  .d-contents {
+    grid-column: text;
+    color: rgba(0,0,0,0.8);
+    font-size: 0.9em;
+    padding-bottom: 1em;
+    margin-bottom: 1em;
+    padding-bottom: 0.5em;
+    margin-bottom: 1em;
+    padding-left: 0.25em;
+    justify-self: start;
+  }
+
+  @media(min-width: 1000px) {
+    .d-contents.d-contents-float {
+      height: 0;
+      grid-column-start: 1;
+      grid-column-end: 4;
+      justify-self: center;
+      padding-right: 3em;
+      padding-left: 2em;
+    }
+  }
+
+  .d-contents nav h3 {
+    font-size: 18px;
+    margin-top: 0;
+    margin-bottom: 1em;
+  }
+
+  .d-contents li {
+    list-style-type: none
+  }
+
+  .d-contents nav > ul {
+    padding-left: 0;
+  }
+
+  .d-contents ul {
+    padding-left: 1em
+  }
+
+  .d-contents nav ul li {
+    margin-top: 0.6em;
+    margin-bottom: 0.2em;
+  }
+
+  .d-contents nav a {
+    font-size: 13px;
+    border-bottom: none;
+    text-decoration: none
+    color: rgba(0, 0, 0, 0.8);
+  }
+
+  .d-contents nav a:hover {
+    text-decoration: underline solid rgba(0, 0, 0, 0.6)
+  }
+
+  .d-contents nav > ul > li > a {
+    font-weight: 600;
+  }
+
+  .d-contents nav > ul > li > ul {
+    font-weight: inherit;
+  }
+
+  .d-contents nav > ul > li > ul > li {
+    margin-top: 0.2em;
+  }
+
+
+  .d-contents nav ul {
+    margin-top: 0;
+    margin-bottom: 0.25em;
+  }
+
+  .d-article-with-toc h2:nth-child(2) {
+    margin-top: 0;
+  }
+
+
+  /* Figure */
+
+  .figure {
+    position: relative;
+    margin-bottom: 2.5em;
+    margin-top: 1.5em;
+  }
+
+  .figure img {
+    width: 100%;
+  }
+
+  .figure .caption {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 12px;
+    line-height: 1.5em;
+  }
+
+  .figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+
+  .figure .caption a {
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  .figure .caption b,
+  .figure .caption strong, {
+    font-weight: 600;
+    color: rgba(0, 0, 0, 1.0);
+  }
+
+  /* Citations */
+
+  d-article .citation {
+    color: inherit;
+    cursor: inherit;
+  }
+
+  div.hanging-indent{
+    margin-left: 1em; text-indent: -1em;
+  }
+
+  /* Citation hover box */
+
+  .tippy-box[data-theme~=light-border] {
+    background-color: rgba(250, 250, 250, 0.95);
+  }
+
+  .tippy-content > p {
+    margin-bottom: 0;
+    padding: 2px;
+  }
+
+
+  /* Tweak 1000px media break to show more text */
+
+  @media(min-width: 1000px) {
+    .base-grid,
+    distill-header,
+    d-title,
+    d-abstract,
+    d-article,
+    d-appendix,
+    distill-appendix,
+    d-byline,
+    d-footnote-list,
+    d-citation-list,
+    distill-footer {
+      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 80px [middle-start] 50px [text-start kicker-end] 65px 65px 65px 65px 65px 65px 65px 65px [text-end gutter-start] 65px [middle-end] 65px [page-end gutter-end] 1fr [screen-end];
+      grid-column-gap: 16px;
+    }
+
+    .grid {
+      grid-column-gap: 16px;
+    }
+
+    d-article {
+      font-size: 1.06rem;
+      line-height: 1.7em;
+    }
+    figure .caption, .figure .caption, figure figcaption {
+      font-size: 13px;
+    }
+  }
+
+  @media(min-width: 1180px) {
+    .base-grid,
+    distill-header,
+    d-title,
+    d-abstract,
+    d-article,
+    d-appendix,
+    distill-appendix,
+    d-byline,
+    d-footnote-list,
+    d-citation-list,
+    distill-footer {
+      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
+      grid-column-gap: 32px;
+    }
+
+    .grid {
+      grid-column-gap: 32px;
+    }
+  }
+
+
+  /* Get the citation styles for the appendix (not auto-injected on render since
+     we do our own rendering of the citation appendix) */
+
+  d-appendix .citation-appendix,
+  .d-appendix .citation-appendix {
+    font-size: 11px;
+    line-height: 15px;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    padding-left: 18px;
+    border: 1px solid rgba(0,0,0,0.1);
+    background: rgba(0, 0, 0, 0.02);
+    padding: 10px 18px;
+    border-radius: 3px;
+    color: rgba(150, 150, 150, 1);
+    overflow: hidden;
+    margin-top: -12px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  /* Include appendix styles here so they can be overridden */
+
+  d-appendix {
+    contain: layout style;
+    font-size: 0.8em;
+    line-height: 1.7em;
+    margin-top: 60px;
+    margin-bottom: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    color: rgba(0,0,0,0.5);
+    padding-top: 60px;
+    padding-bottom: 48px;
+  }
+
+  d-appendix h3 {
+    grid-column: page-start / text-start;
+    font-size: 15px;
+    font-weight: 500;
+    margin-top: 1em;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.65);
+  }
+
+  d-appendix h3 + * {
+    margin-top: 1em;
+  }
+
+  d-appendix ol {
+    padding: 0 0 0 15px;
+  }
+
+  @media (min-width: 768px) {
+    d-appendix ol {
+      padding: 0 0 0 30px;
+      margin-left: -30px;
+    }
+  }
+
+  d-appendix li {
+    margin-bottom: 1em;
+  }
+
+  d-appendix a {
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  d-appendix > * {
+    grid-column: text;
+  }
+
+  d-appendix > d-footnote-list,
+  d-appendix > d-citation-list,
+  d-appendix > distill-appendix {
+    grid-column: screen;
+  }
+
+  /* Include footnote styles here so they can be overridden */
+
+  d-footnote-list {
+    contain: layout style;
+  }
+
+  d-footnote-list > * {
+    grid-column: text;
+  }
+
+  d-footnote-list a.footnote-backlink {
+    color: rgba(0,0,0,0.3);
+    padding-left: 0.5em;
+  }
+
+
+
+  /* Anchor.js */
+
+  .anchorjs-link {
+    /*transition: all .25s linear; */
+    text-decoration: none;
+    border-bottom: none;
+  }
+  *:hover > .anchorjs-link {
+    margin-left: -1.125em !important;
+    text-decoration: none;
+    border-bottom: none;
+  }
+
+  /* Social footer */
+
+  .social_footer {
+    margin-top: 30px;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.67);
+  }
+
+  .disqus-comments {
+    margin-right: 30px;
+  }
+
+  .disqus-comment-count {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+  }
+
+  #disqus_thread {
+    margin-top: 30px;
+  }
+
+  .article-sharing a {
+    border-bottom: none;
+    margin-right: 8px;
+  }
+
+  .article-sharing a:hover {
+    border-bottom: none;
+  }
+
+  .sidebar-section.subscribe {
+    font-size: 12px;
+    line-height: 1.6em;
+  }
+
+  .subscribe p {
+    margin-bottom: 0.5em;
+  }
+
+
+  .article-footer .subscribe {
+    font-size: 15px;
+    margin-top: 45px;
+  }
+
+
+  .sidebar-section.custom {
+    font-size: 12px;
+    line-height: 1.6em;
+  }
+
+  .custom p {
+    margin-bottom: 0.5em;
+  }
+
+  /* Styles for listing layout (hide title) */
+  .layout-listing d-title, .layout-listing .d-title {
+    display: none;
+  }
+
+  /* Styles for posts lists (not auto-injected) */
+
+
+  .posts-with-sidebar {
+    padding-left: 45px;
+    padding-right: 45px;
+  }
+
+  .posts-list .description h2,
+  .posts-list .description p {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  }
+
+  .posts-list .description h2 {
+    font-weight: 700;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .posts-list h2.post-tag {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    padding-bottom: 12px;
+  }
+  .posts-list {
+    margin-top: 60px;
+    margin-bottom: 24px;
+  }
+
+  .posts-list .post-preview {
+    text-decoration: none;
+    overflow: hidden;
+    display: block;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 24px 0;
+  }
+
+  .post-preview-last {
+    border-bottom: none !important;
+  }
+
+  .posts-list .posts-list-caption {
+    grid-column: screen;
+    font-weight: 400;
+  }
+
+  .posts-list .post-preview h2 {
+    margin: 0 0 6px 0;
+    line-height: 1.2em;
+    font-style: normal;
+    font-size: 24px;
+  }
+
+  .posts-list .post-preview p {
+    margin: 0 0 12px 0;
+    line-height: 1.4em;
+    font-size: 16px;
+  }
+
+  .posts-list .post-preview .thumbnail {
+    box-sizing: border-box;
+    margin-bottom: 24px;
+    position: relative;
+    max-width: 500px;
+  }
+  .posts-list .post-preview img {
+    width: 100%;
+    display: block;
+  }
+
+  .posts-list .metadata {
+    font-size: 12px;
+    line-height: 1.4em;
+    margin-bottom: 18px;
+  }
+
+  .posts-list .metadata > * {
+    display: inline-block;
+  }
+
+  .posts-list .metadata .publishedDate {
+    margin-right: 2em;
+  }
+
+  .posts-list .metadata .dt-authors {
+    display: block;
+    margin-top: 0.3em;
+    margin-right: 2em;
+  }
+
+  .posts-list .dt-tags {
+    display: block;
+    line-height: 1em;
+  }
+
+  .posts-list .dt-tags .dt-tag {
+    display: inline-block;
+    color: rgba(0,0,0,0.6);
+    padding: 0.3em 0.4em;
+    margin-right: 0.2em;
+    margin-bottom: 0.4em;
+    font-size: 60%;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .posts-list img {
+    opacity: 1;
+  }
+
+  .posts-list img[data-src] {
+    opacity: 0;
+  }
+
+  .posts-more {
+    clear: both;
+  }
+
+
+  .posts-sidebar {
+    font-size: 16px;
+  }
+
+  .posts-sidebar h3 {
+    font-size: 16px;
+    margin-top: 0;
+    margin-bottom: 0.5em;
+    font-weight: 400;
+    text-transform: uppercase;
+  }
+
+  .sidebar-section {
+    margin-bottom: 30px;
+  }
+
+  .categories ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .categories li {
+    color: rgba(0, 0, 0, 0.8);
+    margin-bottom: 0;
+  }
+
+  .categories li>a {
+    border-bottom: none;
+  }
+
+  .categories li>a:hover {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  }
+
+  .categories .active {
+    font-weight: 600;
+  }
+
+  .categories .category-count {
+    color: rgba(0, 0, 0, 0.4);
+  }
+
+
+  @media(min-width: 768px) {
+    .posts-list .post-preview h2 {
+      font-size: 26px;
+    }
+    .posts-list .post-preview .thumbnail {
+      float: right;
+      width: 30%;
+      margin-bottom: 0;
+    }
+    .posts-list .post-preview .description {
+      float: left;
+      width: 45%;
+    }
+    .posts-list .post-preview .metadata {
+      float: left;
+      width: 20%;
+      margin-top: 8px;
+    }
+    .posts-list .post-preview p {
+      margin: 0 0 12px 0;
+      line-height: 1.5em;
+      font-size: 16px;
+    }
+    .posts-with-sidebar .posts-list {
+      float: left;
+      width: 75%;
+    }
+    .posts-with-sidebar .posts-sidebar {
+      float: right;
+      width: 20%;
+      margin-top: 60px;
+      padding-top: 24px;
+      padding-bottom: 24px;
+    }
+  }
+
+
+  /* Improve display for browsers without grid (IE/Edge <= 15) */
+
+  .downlevel {
+    line-height: 1.6em;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+  }
+
+  .downlevel .d-title {
+    padding-top: 6rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .downlevel .d-title h1 {
+    font-size: 50px;
+    font-weight: 700;
+    line-height: 1.1em;
+    margin: 0 0 0.5rem;
+  }
+
+  .downlevel .d-title p {
+    font-weight: 300;
+    font-size: 1.2rem;
+    line-height: 1.55em;
+    margin-top: 0;
+  }
+
+  .downlevel .d-byline {
+    padding-top: 0.8em;
+    padding-bottom: 0.8em;
+    font-size: 0.8rem;
+    line-height: 1.8em;
+  }
+
+  .downlevel .section-separator {
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .downlevel .d-article {
+    font-size: 1.06rem;
+    line-height: 1.7em;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+  }
+
+
+  .downlevel .d-appendix {
+    padding-left: 0;
+    padding-right: 0;
+    max-width: none;
+    font-size: 0.8em;
+    line-height: 1.7em;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.5);
+    padding-top: 40px;
+    padding-bottom: 48px;
+  }
+
+  .downlevel .footnotes ol {
+    padding-left: 13px;
+  }
+
+  .downlevel .base-grid,
+  .downlevel .distill-header,
+  .downlevel .d-title,
+  .downlevel .d-abstract,
+  .downlevel .d-article,
+  .downlevel .d-appendix,
+  .downlevel .distill-appendix,
+  .downlevel .d-byline,
+  .downlevel .d-footnote-list,
+  .downlevel .d-citation-list,
+  .downlevel .distill-footer,
+  .downlevel .appendix-bottom,
+  .downlevel .posts-container {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  @media(min-width: 768px) {
+    .downlevel .base-grid,
+    .downlevel .distill-header,
+    .downlevel .d-title,
+    .downlevel .d-abstract,
+    .downlevel .d-article,
+    .downlevel .d-appendix,
+    .downlevel .distill-appendix,
+    .downlevel .d-byline,
+    .downlevel .d-footnote-list,
+    .downlevel .d-citation-list,
+    .downlevel .distill-footer,
+    .downlevel .appendix-bottom,
+    .downlevel .posts-container {
+    padding-left: 150px;
+    padding-right: 150px;
+    max-width: 900px;
+  }
+  }
+
+  .downlevel pre code {
+    display: block;
+    border-left: 2px solid rgba(0, 0, 0, .1);
+    padding: 0 0 0 20px;
+    font-size: 14px;
+  }
+
+  .downlevel code, .downlevel pre {
+    color: black;
+    background: none;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+
+  .downlevel .posts-list .post-preview {
+    color: inherit;
+  }
+
+
+
+  </style>
+
+  <script type="application/javascript">
+
+  function is_downlevel_browser() {
+    if (bowser.isUnsupportedBrowser({ msie: "12", msedge: "16"},
+                                   window.navigator.userAgent)) {
+      return true;
+    } else {
+      return window.load_distill_framework === undefined;
+    }
+  }
+
+  // show body when load is complete
+  function on_load_complete() {
+
+    // add anchors
+    if (window.anchors) {
+      window.anchors.options.placement = 'left';
+      window.anchors.add('d-article > h2, d-article > h3, d-article > h4, d-article > h5');
+    }
+
+
+    // set body to visible
+    document.body.style.visibility = 'visible';
+
+    // force redraw for leaflet widgets
+    if (window.HTMLWidgets) {
+      var maps = window.HTMLWidgets.findAll(".leaflet");
+      $.each(maps, function(i, el) {
+        var map = this.getMap();
+        map.invalidateSize();
+        map.eachLayer(function(layer) {
+          if (layer instanceof L.TileLayer)
+            layer.redraw();
+        });
+      });
+    }
+
+    // trigger 'shown' so htmlwidgets resize
+    $('d-article').trigger('shown');
+  }
+
+  function init_distill() {
+
+    init_common();
+
+    // create front matter
+    var front_matter = $('<d-front-matter></d-front-matter>');
+    $('#distill-front-matter').wrap(front_matter);
+
+    // create d-title
+    $('.d-title').changeElementType('d-title');
+
+    // create d-byline
+    var byline = $('<d-byline></d-byline>');
+    $('.d-byline').replaceWith(byline);
+
+    // create d-article
+    var article = $('<d-article></d-article>');
+    $('.d-article').wrap(article).children().unwrap();
+
+    // move posts container into article
+    $('.posts-container').appendTo($('d-article'));
+
+    // create d-appendix
+    $('.d-appendix').changeElementType('d-appendix');
+
+    // flag indicating that we have appendix items
+    var appendix = $('.appendix-bottom').children('h3').length > 0;
+
+    // replace footnotes with <d-footnote>
+    $('.footnote-ref').each(function(i, val) {
+      appendix = true;
+      var href = $(this).attr('href');
+      var id = href.replace('#', '');
+      var fn = $('#' + id);
+      var fn_p = $('#' + id + '>p');
+      fn_p.find('.footnote-back').remove();
+      var text = fn_p.html();
+      var dtfn = $('<d-footnote></d-footnote>');
+      dtfn.html(text);
+      $(this).replaceWith(dtfn);
+    });
+    // remove footnotes
+    $('.footnotes').remove();
+
+    // move refs into #references-listing
+    $('#references-listing').replaceWith($('#refs'));
+
+    $('h1.appendix, h2.appendix').each(function(i, val) {
+      $(this).changeElementType('h3');
+    });
+    $('h3.appendix').each(function(i, val) {
+      var id = $(this).attr('id');
+      $('.d-contents a[href="#' + id + '"]').parent().remove();
+      appendix = true;
+      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
+    });
+
+    // show d-appendix if we have appendix content
+    $("d-appendix").css('display', appendix ? 'grid' : 'none');
+
+    // localize layout chunks to just output
+    $('.layout-chunk').each(function(i, val) {
+
+      // capture layout
+      var layout = $(this).attr('data-layout');
+
+      // apply layout to markdown level block elements
+      var elements = $(this).children().not('details, div.sourceCode, pre, script');
+      elements.each(function(i, el) {
+        var layout_div = $('<div class="' + layout + '"></div>');
+        if (layout_div.hasClass('shaded')) {
+          var shaded_content = $('<div class="shaded-content"></div>');
+          $(this).wrap(shaded_content);
+          $(this).parent().wrap(layout_div);
+        } else {
+          $(this).wrap(layout_div);
+        }
+      });
+
+
+      // unwrap the layout-chunk div
+      $(this).children().unwrap();
+    });
+
+    // remove code block used to force  highlighting css
+    $('.distill-force-highlighting-css').parent().remove();
+
+    // remove empty line numbers inserted by pandoc when using a
+    // custom syntax highlighting theme
+    $('code.sourceCode a:empty').remove();
+
+    // load distill framework
+    load_distill_framework();
+
+    // wait for window.distillRunlevel == 4 to do post processing
+    function distill_post_process() {
+
+      if (!window.distillRunlevel || window.distillRunlevel < 4)
+        return;
+
+      // hide author/affiliations entirely if we have no authors
+      var front_matter = JSON.parse($("#distill-front-matter").html());
+      var have_authors = front_matter.authors && front_matter.authors.length > 0;
+      if (!have_authors)
+        $('d-byline').addClass('hidden');
+
+      // article with toc class
+      $('.d-contents').parent().addClass('d-article-with-toc');
+
+      // strip links that point to #
+      $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
+
+      // add orcid ids
+      $('.authors-affiliations').find('.author').each(function(i, el) {
+        var orcid_id = front_matter.authors[i].orcidID;
+        if (orcid_id) {
+          var a = $('<a></a>');
+          a.attr('href', 'https://orcid.org/' + orcid_id);
+          var img = $('<img></img>');
+          img.addClass('orcid-id');
+          img.attr('alt', 'ORCID ID');
+          img.attr('src','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==');
+          a.append(img);
+          $(this).append(a);
+        }
+      });
+
+      // hide elements of author/affiliations grid that have no value
+      function hide_byline_column(caption) {
+        $('d-byline').find('h3:contains("' + caption + '")').parent().css('visibility', 'hidden');
+      }
+
+      // affiliations
+      var have_affiliations = false;
+      for (var i = 0; i<front_matter.authors.length; ++i) {
+        var author = front_matter.authors[i];
+        if (author.affiliation !== "&nbsp;") {
+          have_affiliations = true;
+          break;
+        }
+      }
+      if (!have_affiliations)
+        $('d-byline').find('h3:contains("Affiliations")').css('visibility', 'hidden');
+
+      // published date
+      if (!front_matter.publishedDate)
+        hide_byline_column("Published");
+
+      // document object identifier
+      var doi = $('d-byline').find('h3:contains("DOI")');
+      var doi_p = doi.next().empty();
+      if (!front_matter.doi) {
+        // if we have a citation and valid citationText then link to that
+        if ($('#citation').length > 0 && front_matter.citationText) {
+          doi.html('Citation');
+          $('<a href="#citation"></a>')
+            .text(front_matter.citationText)
+            .appendTo(doi_p);
+        } else {
+          hide_byline_column("DOI");
+        }
+      } else {
+        $('<a></a>')
+           .attr('href', "https://doi.org/" + front_matter.doi)
+           .html(front_matter.doi)
+           .appendTo(doi_p);
+      }
+
+       // change plural form of authors/affiliations
+      if (front_matter.authors.length === 1) {
+        var grid = $('.authors-affiliations');
+        grid.children('h3:contains("Authors")').text('Author');
+        grid.children('h3:contains("Affiliations")').text('Affiliation');
+      }
+
+      // remove d-appendix and d-footnote-list local styles
+      $('d-appendix > style:first-child').remove();
+      $('d-footnote-list > style:first-child').remove();
+
+      // move appendix-bottom entries to the bottom
+      $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
+      $('.appendix-bottom').remove();
+
+      // hoverable references
+      $('span.citation[data-cites]').each(function() {
+        var refs = $(this).attr('data-cites').split(" ");
+        var refHtml = refs.map(function(ref) {
+          return "<p>" + $('#ref-' + ref).html() + "</p>";
+        }).join("\n");
+        window.tippy(this, {
+          allowHTML: true,
+          content: refHtml,
+          maxWidth: 500,
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'light-border',
+          placement: 'bottom-start'
+        });
+      });
+
+      // clear polling timer
+      clearInterval(tid);
+
+      // show body now that everything is ready
+      on_load_complete();
+    }
+
+    var tid = setInterval(distill_post_process, 50);
+    distill_post_process();
+
+  }
+
+  function init_downlevel() {
+
+    init_common();
+
+     // insert hr after d-title
+    $('.d-title').after($('<hr class="section-separator"/>'));
+
+    // check if we have authors
+    var front_matter = JSON.parse($("#distill-front-matter").html());
+    var have_authors = front_matter.authors && front_matter.authors.length > 0;
+
+    // manage byline/border
+    if (!have_authors)
+      $('.d-byline').remove();
+    $('.d-byline').after($('<hr class="section-separator"/>'));
+    $('.d-byline a').remove();
+
+    // remove toc
+    $('.d-contents').remove();
+
+    // move appendix elements
+    $('h1.appendix, h2.appendix').each(function(i, val) {
+      $(this).changeElementType('h3');
+    });
+    $('h3.appendix').each(function(i, val) {
+      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('.d-appendix'));
+    });
+
+
+    // inject headers into references and footnotes
+    var refs_header = $('<h3></h3>');
+    refs_header.text('References');
+    $('#refs').prepend(refs_header);
+
+    var footnotes_header = $('<h3></h3');
+    footnotes_header.text('Footnotes');
+    $('.footnotes').children('hr').first().replaceWith(footnotes_header);
+
+    // move appendix-bottom entries to the bottom
+    $('.appendix-bottom').appendTo('.d-appendix').children().unwrap();
+    $('.appendix-bottom').remove();
+
+    // remove appendix if it's empty
+    if ($('.d-appendix').children().length === 0)
+      $('.d-appendix').remove();
+
+    // prepend separator above appendix
+    $('.d-appendix').before($('<hr class="section-separator" style="clear: both"/>'));
+
+    // trim code
+    $('pre>code').each(function(i, val) {
+      $(this).html($.trim($(this).html()));
+    });
+
+    // move posts-container right before article
+    $('.posts-container').insertBefore($('.d-article'));
+
+    $('body').addClass('downlevel');
+
+    on_load_complete();
+  }
+
+
+  function init_common() {
+
+    // jquery plugin to change element types
+    (function($) {
+      $.fn.changeElementType = function(newType) {
+        var attrs = {};
+
+        $.each(this[0].attributes, function(idx, attr) {
+          attrs[attr.nodeName] = attr.nodeValue;
+        });
+
+        this.replaceWith(function() {
+          return $("<" + newType + "/>", attrs).append($(this).contents());
+        });
+      };
+    })(jQuery);
+
+    // prevent underline for linked images
+    $('a > img').parent().css({'border-bottom' : 'none'});
+
+    // mark non-body figures created by knitr chunks as 100% width
+    $('.layout-chunk').each(function(i, val) {
+      var figures = $(this).find('img, .html-widget');
+      if ($(this).attr('data-layout') !== "l-body") {
+        figures.css('width', '100%');
+      } else {
+        figures.css('max-width', '100%');
+        figures.filter("[width]").each(function(i, val) {
+          var fig = $(this);
+          fig.css('width', fig.attr('width') + 'px');
+        });
+
+      }
+    });
+
+    // auto-append index.html to post-preview links in file: protocol
+    // and in rstudio ide preview
+    $('.post-preview').each(function(i, val) {
+      if (window.location.protocol === "file:")
+        $(this).attr('href', $(this).attr('href') + "index.html");
+    });
+
+    // get rid of index.html references in header
+    if (window.location.protocol !== "file:") {
+      $('.distill-site-header a[href]').each(function(i,val) {
+        $(this).attr('href', $(this).attr('href').replace("index.html", "./"));
+      });
+    }
+
+    // add class to pandoc style tables
+    $('tr.header').parent('thead').parent('table').addClass('pandoc-table');
+    $('.kable-table').children('table').addClass('pandoc-table');
+
+    // add figcaption style to table captions
+    $('caption').parent('table').addClass("figcaption");
+
+    // initialize posts list
+    if (window.init_posts_list)
+      window.init_posts_list();
+
+    // implmement disqus comment link
+    $('.disqus-comment-count').click(function() {
+      window.headroom_prevent_pin = true;
+      $('#disqus_thread').toggleClass('hidden');
+      if (!$('#disqus_thread').hasClass('hidden')) {
+        var offset = $(this).offset();
+        $(window).resize();
+        $('html, body').animate({
+          scrollTop: offset.top - 35
+        });
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    if (is_downlevel_browser())
+      init_downlevel();
+    else
+      window.addEventListener('WebComponentsReady', init_distill);
+  });
+
+  </script>
+
+  <!--/radix_placeholder_distill-->
+  <script src="timeseries_files/header-attrs/header-attrs.js"></script>
+  <script src="timeseries_files/htmlwidgets/htmlwidgets.js"></script>
+  <script src="timeseries_files/plotly-binding/plotly.js"></script>
+  <script src="timeseries_files/typedarray/typedarray.min.js"></script>
+  <script src="timeseries_files/jquery/jquery-3.6.0.min.js"></script>
+  <link href="timeseries_files/crosstalk/css/crosstalk.min.css" rel="stylesheet" />
+  <script src="timeseries_files/crosstalk/js/crosstalk.min.js"></script>
+  <link href="timeseries_files/plotly-htmlwidgets-css/plotly-htmlwidgets.css" rel="stylesheet" />
+  <script src="timeseries_files/plotly-main/plotly-latest.min.js"></script>
+  <script src="timeseries_files/popper/popper.min.js"></script>
+  <link href="timeseries_files/tippy/tippy.css" rel="stylesheet" />
+  <link href="timeseries_files/tippy/tippy-light-border.css" rel="stylesheet" />
+  <script src="timeseries_files/tippy/tippy.umd.min.js"></script>
+  <script src="timeseries_files/anchor/anchor.min.js"></script>
+  <script src="timeseries_files/bowser/bowser.min.js"></script>
+  <script src="timeseries_files/webcomponents/webcomponents.js"></script>
+  <script src="timeseries_files/distill/template.v2.js"></script>
+  <!--radix_placeholder_site_in_header-->
+  <!--/radix_placeholder_site_in_header-->
+
+
+</head>
+
+<body>
+
+<!--radix_placeholder_front_matter-->
+
+<script id="distill-front-matter" type="text/json">
+{"title":"Visualizing Time Series","description":"It's about time","authors":[{"author":"Jasper Lok","authorURL":"https://jasperlok.netlify.app/","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2022-10-23T00:00:00.000+08:00","citationText":"Lok, 2022"}
+</script>
+
+<!--/radix_placeholder_front_matter-->
+<!--radix_placeholder_navigation_before_body-->
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="d-title">
+<h1>Visualizing Time Series</h1>
+<!--radix_placeholder_categories-->
+<div class="dt-tags">
+<div class="dt=tag">Time Series</div>
+<div class="dt=tag">Data Visualization</div>
+</div>
+<!--/radix_placeholder_categories-->
+<p><p>It’s about time</p></p>
+</div>
+
+<div class="d-byline">
+  Jasper Lok <a href="https://jasperlok.netlify.app/"
+class="uri">https://jasperlok.netlify.app/</a> 
+  
+<br/>10-23-2022
+</div>
+
+<div class="d-article">
+<div class="d-contents d-contents-float">
+<nav class="l-text toc figcaption" id="TOC">
+<h3>Contents</h3>
+<ul>
+<li><a href="#what-is-time-series" id="toc-what-is-time-series">What is
+time series?</a></li>
+<li><a href="#demonstration" id="toc-demonstration">Demonstration</a>
+<ul>
+<li><a href="#setup-the-environment"
+id="toc-setup-the-environment">Setup the environment</a></li>
+</ul></li>
+<li><a href="#visualization"
+id="toc-visualization">Visualization</a></li>
+<li><a href="#conclusion" id="toc-conclusion">Conclusion</a></li>
+</ul>
+</nav>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="image/esplanade.jpg" width="100%" /></p>
+</div>
+<p>Photo by <a
+href="https://www.pexels.com/photo/green-leafed-plants-inside-greenhouse-2426546/">Palu
+Malerba</a></p>
+<p>Recently there is a lot of discussions on rising inflation.</p>
+<p>This makes me curious about how inflation has changed over time.</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="image/inflation_cna.png" width="100%" /></p>
+</div>
+<p>Extracted from <a
+href="https://www.channelnewsasia.com/singapore/monetary-authority-singapore-mas-tighten-monetary-policy-fifth-time-3007081">CNA</a>
+on 23 Oct 2022</p>
+<p>Before we start visualizing the time series, let’s take a look what
+is time series.</p>
+<h1 id="what-is-time-series">What is time series?</h1>
+<p>Time series data is the data collected at regular time intervals.</p>
+<p>An observed time series can be decomposed into three components: the
+trend (long term direction), the seasonal (systematic, calendar related
+movements) and the irregular (unsystematic, short term fluctuations)
+<span class="citation" data-cites="ABS">(<a href="#ref-ABS"
+role="doc-biblioref">Australian Bureau of Statistics</a>)</span>.</p>
+<h1 id="demonstration">Demonstration</h1>
+<p>In this demonstration, I will be using the consumer price index
+dataset I obtained from Singstat website.</p>
+<p>This is also to satisfy my curiosity about what is driving inflation
+in Singapore upwards.</p>
+<h2 id="setup-the-environment">Setup the environment</h2>
+<p>First, I will set up the environment by calling the necessary
+packages.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>pacman</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/pacman/man/p_load.html'>p_load</a></span><span class='op'>(</span><span class='va'>tidyverse</span>, <span class='va'>lubridate</span>, <span class='va'>timetk</span>, <span class='va'>tsibble</span>, <span class='va'>janitor</span>, 
+               <span class='va'>feasts</span>, <span class='va'>plotly</span>, <span class='va'>wesanderson</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>Next, I will import the dataset into the environment.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'>read_csv</span><span class='op'>(</span><span class='st'>"data/M212881.csv"</span>, skip <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>slice</span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>148</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>`Data Series`</span> <span class='op'>!=</span> <span class='st'>"Hawker Centres"</span> <span class='op'>&amp;</span>
+           <span class='va'>`Data Series`</span> <span class='op'>!=</span> <span class='st'>"Food Courts &amp; Coffee Shops"</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>As some of the columns are imported in incorrect column types, I will
+use <code>sapply</code> function to convert the columns into the correct
+column types.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>cols_num</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span><span class='op'>:</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>ncol</a></span><span class='op'>(</span><span class='va'>df</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='va'>df</span><span class='op'>[</span><span class='va'>cols_num</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>sapply</a></span><span class='op'>(</span><span class='va'>df</span><span class='op'>[</span><span class='va'>cols_num</span><span class='op'>]</span>, <span class='va'>as.numeric</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>Once the columns are imported into the correct types, I will reshape
+the dataset by using <code>pivot_longer</code> function.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>start_date</span> <span class='op'>&lt;-</span> <span class='st'>"2014-01-01"</span>
+<span class='va'>end_date</span> <span class='op'>&lt;-</span> <span class='st'>"2022-06-01"</span>
+</code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>df_1</span> <span class='op'>&lt;-</span> <span class='va'>df</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>pivot_longer</span><span class='op'>(</span><span class='op'>!</span><span class='va'>`Data Series`</span>, names_to <span class='op'>=</span> <span class='st'>"Month Year"</span>, values_to <span class='op'>=</span> <span class='st'>"CPI"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>clean_names</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>mutate</span><span class='op'>(</span>month_year_recoded <span class='op'>=</span> <span class='fu'>ym</span><span class='op'>(</span><span class='va'>month_year</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>select</span><span class='op'>(</span><span class='op'>-</span><span class='va'>month_year</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>month_year_recoded</span> <span class='op'>&gt;=</span> <span class='va'>start_date</span> <span class='op'>&amp;</span> <span class='va'>month_year_recoded</span> <span class='op'>&lt;=</span> <span class='va'>end_date</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p><code>as_tsibble</code> function is to convert the dataset into
+tsibble dataframe.</p>
+<p>We will pass month_year_recoded into <code>index</code> argument.</p>
+<p>Another thing to take note of is we need to pass info</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>df_1_ts</span> <span class='op'>&lt;-</span> <span class='va'>df_1</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>mutate</span><span class='op'>(</span>month_year_recoded <span class='op'>=</span> <span class='fu'>yearmonth</span><span class='op'>(</span><span class='va'>month_year_recoded</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>as_tsibble</span><span class='op'>(</span>index <span class='op'>=</span> <span class='va'>month_year_recoded</span>,
+             key <span class='op'>=</span> <span class='va'>data_series</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>The <code>has_gaps</code> function can help us to check whether there
+are any gaps in the data.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>has_gaps</span><span class='op'>(</span><span class='va'>df_1_ts</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>.gaps</span> <span class='op'>==</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code># A tibble: 0 x 2
+# ... with 2 variables: data_series &lt;chr&gt;, .gaps &lt;lgl&gt;</code></pre>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>df_1</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>as_tsibble</span><span class='op'>(</span>index <span class='op'>=</span> <span class='va'>month_year_recoded</span>,
+             key <span class='op'>=</span> <span class='va'>data_series</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>has_gaps</span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code># A tibble: 146 x 2
+   data_series                                                   .gaps
+   &lt;chr&gt;                                                         &lt;lgl&gt;
+ 1 Accommodation                                                 TRUE 
+ 2 Air Fares                                                     TRUE 
+ 3 Alcoholic Drinks &amp; Tobacco                                    TRUE 
+ 4 All Items                                                     TRUE 
+ 5 All Items Less Accommodation                                  TRUE 
+ 6 All Items Less Imputed Rentals On Owner-Occupied Accommodati~ TRUE 
+ 7 Audio-Visual Equipment &amp; Others                               TRUE 
+ 8 Beef, Chilled                                                 TRUE 
+ 9 Beer                                                          TRUE 
+10 Biscuits &amp; Cookies                                            TRUE 
+# ... with 136 more rows</code></pre>
+</div>
+<p>If the dataset contains only one key, we can use
+<code>as_tsibble</code> function without specifying the key.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>df_1</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>data_series</span> <span class='op'>==</span> <span class='st'>"All Items"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>as_tsibble</span><span class='op'>(</span>index <span class='op'>=</span> <span class='va'>month_year_recoded</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code># A tsibble: 102 x 3 [1D]
+   data_series   cpi month_year_recoded
+   &lt;chr&gt;       &lt;dbl&gt; &lt;date&gt;            
+ 1 All Items    99.5 2014-01-01        
+ 2 All Items    99.5 2014-02-01        
+ 3 All Items    99.7 2014-03-01        
+ 4 All Items    99.3 2014-04-01        
+ 5 All Items    99.7 2014-05-01        
+ 6 All Items    99.5 2014-06-01        
+ 7 All Items    99.2 2014-07-01        
+ 8 All Items    99.7 2014-08-01        
+ 9 All Items    99.6 2014-09-01        
+10 All Items    99.3 2014-10-01        
+# ... with 92 more rows</code></pre>
+</div>
+<p>Once the dataset is converted into tsibble format, the usual
+<code>filter</code> function would not work.</p>
+<p>To do so, use <code>filter_index</code> function to perform the
+filtering job.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>df_1_ts</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>filter_index</span><span class='op'>(</span><span class='op'>~</span><span class='st'>"2021-12"</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code># A tsibble: 14,016 x 3 [1M]
+# Key:       data_series [146]
+   data_series     cpi month_year_recoded
+   &lt;chr&gt;         &lt;dbl&gt;              &lt;mth&gt;
+ 1 Accommodation  117.           2014 Jan
+ 2 Accommodation  117.           2014 Feb
+ 3 Accommodation  117.           2014 Mar
+ 4 Accommodation  114.           2014 Apr
+ 5 Accommodation  116.           2014 May
+ 6 Accommodation  116.           2014 Jun
+ 7 Accommodation  114.           2014 Jul
+ 8 Accommodation  116.           2014 Aug
+ 9 Accommodation  116.           2014 Sep
+10 Accommodation  114.           2014 Oct
+# ... with 14,006 more rows</code></pre>
+</div>
+<h1 id="visualization">Visualization</h1>
+<p>Next, I will visualize how the CPI has changed between 2014-01-01 and
+2022-06-01.</p>
+<p>As such, I will use <code>ggplot</code> functions to visualize the
+CPI.</p>
+<p>I will also pre-defined the dates of the two arrows I will be adding
+to the graph. The date info is obtained from Google.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>date_arrow</span> <span class='op'>&lt;-</span> <span class='fu'>as_date</span><span class='op'>(</span><span class='st'>"2020-04-07"</span>, <span class='st'>"%Y-%m-%d"</span><span class='op'>)</span>
+<span class='va'>date_petrol_duty</span> <span class='op'>&lt;-</span> <span class='fu'>as_date</span><span class='op'>(</span><span class='st'>"2021-02-16"</span>, <span class='st'>"%Y-%m-%d"</span><span class='op'>)</span>
+<span class='va'>date_ukraine_arrow</span> <span class='op'>&lt;-</span> <span class='fu'>as_date</span><span class='op'>(</span><span class='st'>"2022-02-20"</span>, <span class='st'>"%Y-%m-%d"</span><span class='op'>)</span>
+
+<span class='va'>df_1</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>data_series</span> <span class='op'>==</span> <span class='st'>"All Items"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>month_year_recoded</span>,
+         y <span class='op'>=</span> <span class='va'>cpi</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_line</span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_smooth</span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"loess"</span>, se <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_hline</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>yintercept <span class='op'>=</span> <span class='fl'>100</span><span class='op'>)</span>, 
+             color <span class='op'>=</span> <span class='st'>"blue"</span>, 
+             linetype <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>annotate</span><span class='op'>(</span><span class='st'>"segment"</span>, 
+           x <span class='op'>=</span> <span class='va'>date_arrow</span>, 
+           y <span class='op'>=</span> <span class='fl'>101.5</span>, 
+           xend <span class='op'>=</span> <span class='va'>date_arrow</span>, 
+           yend <span class='op'>=</span> <span class='fl'>100.55</span>, 
+           color <span class='op'>=</span> <span class='st'>"red"</span>, 
+           arrow <span class='op'>=</span> <span class='fu'>arrow</span><span class='op'>(</span>length <span class='op'>=</span> <span class='fu'>unit</span><span class='op'>(</span><span class='fl'>0.05</span>,<span class='st'>"npc"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>annotate</span><span class='op'>(</span><span class='st'>"text"</span>, 
+           x <span class='op'>=</span> <span class='va'>date_arrow</span>, 
+           y <span class='op'>=</span> <span class='fl'>101.9</span>, 
+           label <span class='op'>=</span> <span class='st'>"Circuit Breaker"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>annotate</span><span class='op'>(</span><span class='st'>"segment"</span>, 
+           x <span class='op'>=</span> <span class='va'>date_petrol_duty</span>, 
+           y <span class='op'>=</span> <span class='fl'>103</span>, 
+           xend <span class='op'>=</span> <span class='va'>date_petrol_duty</span>,
+           yend <span class='op'>=</span> <span class='fl'>102</span>, 
+           color <span class='op'>=</span> <span class='st'>"red"</span>, 
+           arrow <span class='op'>=</span> <span class='fu'>arrow</span><span class='op'>(</span>length <span class='op'>=</span> <span class='fu'>unit</span><span class='op'>(</span><span class='fl'>0.05</span>,<span class='st'>"npc"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>annotate</span><span class='op'>(</span><span class='st'>"text"</span>, 
+           x <span class='op'>=</span> <span class='va'>date_petrol_duty</span>, 
+           y <span class='op'>=</span> <span class='fl'>103.65</span>, 
+           label <span class='op'>=</span> <span class='st'>"Petrol Duty"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>annotate</span><span class='op'>(</span><span class='st'>"text"</span>, 
+           x <span class='op'>=</span> <span class='va'>date_petrol_duty</span>, 
+           y <span class='op'>=</span> <span class='fl'>103.25</span>, 
+           label <span class='op'>=</span> <span class='st'>"Increase"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>annotate</span><span class='op'>(</span><span class='st'>"segment"</span>, 
+           x <span class='op'>=</span> <span class='va'>date_ukraine_arrow</span>, 
+           y <span class='op'>=</span> <span class='fl'>99</span>, 
+           xend <span class='op'>=</span> <span class='va'>date_ukraine_arrow</span>, 
+           yend <span class='op'>=</span> <span class='fl'>99.9</span>, 
+           color <span class='op'>=</span> <span class='st'>"red"</span>, 
+           arrow <span class='op'>=</span> <span class='fu'>arrow</span><span class='op'>(</span>length <span class='op'>=</span> <span class='fu'>unit</span><span class='op'>(</span><span class='fl'>0.05</span>,<span class='st'>"npc"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>annotate</span><span class='op'>(</span><span class='st'>"text"</span>, 
+           x <span class='op'>=</span> <span class='va'>date_ukraine_arrow</span>, 
+           y <span class='op'>=</span> <span class='fl'>98.8</span>, 
+           label <span class='op'>=</span> <span class='st'>"Ukraine"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>annotate</span><span class='op'>(</span><span class='st'>"text"</span>, 
+           x <span class='op'>=</span> <span class='va'>date_ukraine_arrow</span>, 
+           y <span class='op'>=</span> <span class='fl'>98.4</span>, 
+           label <span class='op'>=</span> <span class='st'>"War"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>labs</span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Singapore Consumer Price Index"</span>,
+       caption <span class='op'>=</span> <span class='st'>"Data Source: Singstat (extracted as at Oct 2022)"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>theme_minimal</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>theme</span><span class='op'>(</span>axis.title.x <span class='op'>=</span> <span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span>,
+        axis.title.y <span class='op'>=</span> <span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span>,
+        plot.caption <span class='op'>=</span> <span class='fu'>element_text</span><span class='op'>(</span>hjust <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="timeseries_files/figure-html5/unnamed-chunk-13-1.png" width="100%" /></p>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>circuit_breaker</span> <span class='op'>&lt;-</span> 
+  <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>date_arrow</span>, 
+       y <span class='op'>=</span> <span class='fl'>101</span>,
+       text <span class='op'>=</span> <span class='st'>"Circuit Breaker"</span>,
+       showarrow <span class='op'>=</span> <span class='cn'>TRUE</span>,
+       arrowhead <span class='op'>=</span> <span class='fl'>1</span>,
+       ax <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>
+
+<span class='va'>petrol_duty</span> <span class='op'>&lt;-</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>date_petrol_duty</span>, 
+       y <span class='op'>=</span> <span class='fl'>103.5</span>,
+       text <span class='op'>=</span> <span class='st'>"Petrol Duty Increase"</span>,
+       showarrow <span class='op'>=</span> <span class='cn'>TRUE</span>,
+       arrowhead <span class='op'>=</span> <span class='fl'>1</span>,
+       ax <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>
+
+<span class='va'>ukraine_war</span> <span class='op'>&lt;-</span> 
+  <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>date_ukraine_arrow</span>, 
+       y <span class='op'>=</span> <span class='fl'>98.7</span>,
+       text <span class='op'>=</span> <span class='st'>"Ukraine War"</span>,
+       showarrow <span class='op'>=</span> <span class='cn'>TRUE</span>,
+       arrowhead <span class='op'>=</span> <span class='fl'>1</span>,
+       ax <span class='op'>=</span> <span class='fl'>0</span>,
+       ay <span class='op'>=</span> <span class='fl'>60</span><span class='op'>)</span>
+
+<span class='va'>caption</span> <span class='op'>&lt;-</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fl'>0</span>, 
+       y <span class='op'>=</span> <span class='op'>-</span><span class='fl'>0.15</span>, 
+       text <span class='op'>=</span> <span class='st'>"Data source: Singstat (extracted as at Oct 2022)"</span>, 
+       showarrow <span class='op'>=</span> <span class='cn'>F</span>,
+       xref<span class='op'>=</span><span class='st'>'paper'</span>, 
+       yref<span class='op'>=</span><span class='st'>'paper'</span><span class='op'>)</span>
+
+<span class='va'>df_1</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>data_series</span> <span class='op'>==</span> <span class='st'>'All Items'</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>plot_time_series</span><span class='op'>(</span><span class='va'>month_year_recoded</span>,
+                   <span class='va'>cpi</span>,
+                   .line_size <span class='op'>=</span> <span class='fl'>0.5</span>,
+                   .interactive <span class='op'>=</span> <span class='cn'>TRUE</span>,
+                   .smooth_degree <span class='op'>=</span> <span class='fl'>2</span>,
+                   .title <span class='op'>=</span> <span class='st'>"Singapore Consumer Product Index"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/graphics/layout.html'>layout</a></span><span class='op'>(</span>annotations <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>circuit_breaker</span>, 
+                            <span class='va'>ukraine_war</span>, 
+                            <span class='va'>petrol_duty</span>,
+                            <span class='va'>caption</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>add_lines</span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/range.html'>range</a></span><span class='op'>(</span><span class='va'>df_1</span><span class='op'>$</span><span class='va'>month_year_recoded</span><span class='op'>)</span>, 
+            y <span class='op'>=</span> <span class='fl'>100</span>, 
+            line <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='st'>"blue"</span>,
+                        dash <span class='op'>=</span> <span class='st'>'dot'</span><span class='op'>)</span><span class='op'>)</span> 
+</code></pre>
+</div>
+<div id="htmlwidget-ecf875c3b8557ba4999f" style="width:100%;height:384px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ecf875c3b8557ba4999f">{"x":{"data":[{"x":["2014-01-01","2014-02-01","2014-03-01","2014-04-01","2014-05-01","2014-06-01","2014-07-01","2014-08-01","2014-09-01","2014-10-01","2014-11-01","2014-12-01","2015-01-01","2015-02-01","2015-03-01","2015-04-01","2015-05-01","2015-06-01","2015-07-01","2015-08-01","2015-09-01","2015-10-01","2015-11-01","2015-12-01","2016-01-01","2016-02-01","2016-03-01","2016-04-01","2016-05-01","2016-06-01","2016-07-01","2016-08-01","2016-09-01","2016-10-01","2016-11-01","2016-12-01","2017-01-01","2017-02-01","2017-03-01","2017-04-01","2017-05-01","2017-06-01","2017-07-01","2017-08-01","2017-09-01","2017-10-01","2017-11-01","2017-12-01","2018-01-01","2018-02-01","2018-03-01","2018-04-01","2018-05-01","2018-06-01","2018-07-01","2018-08-01","2018-09-01","2018-10-01","2018-11-01","2018-12-01","2019-01-01","2019-02-01","2019-03-01","2019-04-01","2019-05-01","2019-06-01","2019-07-01","2019-08-01","2019-09-01","2019-10-01","2019-11-01","2019-12-01","2020-01-01","2020-02-01","2020-03-01","2020-04-01","2020-05-01","2020-06-01","2020-07-01","2020-08-01","2020-09-01","2020-10-01","2020-11-01","2020-12-01","2021-01-01","2021-02-01","2021-03-01","2021-04-01","2021-05-01","2021-06-01","2021-07-01","2021-08-01","2021-09-01","2021-10-01","2021-11-01","2021-12-01","2022-01-01","2022-02-01","2022-03-01","2022-04-01","2022-05-01","2022-06-01"],"y":[99.506,99.484,99.749,99.342,99.676,99.508,99.213,99.742,99.553,99.255,99.441,99.328,99.114,99.211,99.449,98.829,99.279,99.171,98.818,98.911,98.912,98.487,98.684,98.693,98.476,98.375,98.416,98.365,97.724,98.449,98.173,98.657,98.666,98.383,98.699,98.854,99.026,99.023,99.064,98.762,99.098,98.956,98.726,99.056,99.036,98.75,99.322,99.225,99.035,99.501,99.299,98.833,99.449,99.505,99.359,99.778,99.753,99.447,99.61,99.686,99.387,99.953,99.972,99.753,100.325,100.038,99.587,100.209,100.147,99.93,100.254,100.445,100.204,100.279,99.933,99.012,99.48,99.5,99.178,99.807,100.139,99.711,100.105,100.469,100.44,101.015,101.239,101.07,101.883,101.87,101.672,102.231,102.657,102.95,103.959,104.439,104.472,105.379,106.691,106.547,107.598,108.671],"text":["month_year_recoded: 2014-01-01<br />.value:  99.506","month_year_recoded: 2014-02-01<br />.value:  99.484","month_year_recoded: 2014-03-01<br />.value:  99.749","month_year_recoded: 2014-04-01<br />.value:  99.342","month_year_recoded: 2014-05-01<br />.value:  99.676","month_year_recoded: 2014-06-01<br />.value:  99.508","month_year_recoded: 2014-07-01<br />.value:  99.213","month_year_recoded: 2014-08-01<br />.value:  99.742","month_year_recoded: 2014-09-01<br />.value:  99.553","month_year_recoded: 2014-10-01<br />.value:  99.255","month_year_recoded: 2014-11-01<br />.value:  99.441","month_year_recoded: 2014-12-01<br />.value:  99.328","month_year_recoded: 2015-01-01<br />.value:  99.114","month_year_recoded: 2015-02-01<br />.value:  99.211","month_year_recoded: 2015-03-01<br />.value:  99.449","month_year_recoded: 2015-04-01<br />.value:  98.829","month_year_recoded: 2015-05-01<br />.value:  99.279","month_year_recoded: 2015-06-01<br />.value:  99.171","month_year_recoded: 2015-07-01<br />.value:  98.818","month_year_recoded: 2015-08-01<br />.value:  98.911","month_year_recoded: 2015-09-01<br />.value:  98.912","month_year_recoded: 2015-10-01<br />.value:  98.487","month_year_recoded: 2015-11-01<br />.value:  98.684","month_year_recoded: 2015-12-01<br />.value:  98.693","month_year_recoded: 2016-01-01<br />.value:  98.476","month_year_recoded: 2016-02-01<br />.value:  98.375","month_year_recoded: 2016-03-01<br />.value:  98.416","month_year_recoded: 2016-04-01<br />.value:  98.365","month_year_recoded: 2016-05-01<br />.value:  97.724","month_year_recoded: 2016-06-01<br />.value:  98.449","month_year_recoded: 2016-07-01<br />.value:  98.173","month_year_recoded: 2016-08-01<br />.value:  98.657","month_year_recoded: 2016-09-01<br />.value:  98.666","month_year_recoded: 2016-10-01<br />.value:  98.383","month_year_recoded: 2016-11-01<br />.value:  98.699","month_year_recoded: 2016-12-01<br />.value:  98.854","month_year_recoded: 2017-01-01<br />.value:  99.026","month_year_recoded: 2017-02-01<br />.value:  99.023","month_year_recoded: 2017-03-01<br />.value:  99.064","month_year_recoded: 2017-04-01<br />.value:  98.762","month_year_recoded: 2017-05-01<br />.value:  99.098","month_year_recoded: 2017-06-01<br />.value:  98.956","month_year_recoded: 2017-07-01<br />.value:  98.726","month_year_recoded: 2017-08-01<br />.value:  99.056","month_year_recoded: 2017-09-01<br />.value:  99.036","month_year_recoded: 2017-10-01<br />.value:  98.750","month_year_recoded: 2017-11-01<br />.value:  99.322","month_year_recoded: 2017-12-01<br />.value:  99.225","month_year_recoded: 2018-01-01<br />.value:  99.035","month_year_recoded: 2018-02-01<br />.value:  99.501","month_year_recoded: 2018-03-01<br />.value:  99.299","month_year_recoded: 2018-04-01<br />.value:  98.833","month_year_recoded: 2018-05-01<br />.value:  99.449","month_year_recoded: 2018-06-01<br />.value:  99.505","month_year_recoded: 2018-07-01<br />.value:  99.359","month_year_recoded: 2018-08-01<br />.value:  99.778","month_year_recoded: 2018-09-01<br />.value:  99.753","month_year_recoded: 2018-10-01<br />.value:  99.447","month_year_recoded: 2018-11-01<br />.value:  99.610","month_year_recoded: 2018-12-01<br />.value:  99.686","month_year_recoded: 2019-01-01<br />.value:  99.387","month_year_recoded: 2019-02-01<br />.value:  99.953","month_year_recoded: 2019-03-01<br />.value:  99.972","month_year_recoded: 2019-04-01<br />.value:  99.753","month_year_recoded: 2019-05-01<br />.value: 100.325","month_year_recoded: 2019-06-01<br />.value: 100.038","month_year_recoded: 2019-07-01<br />.value:  99.587","month_year_recoded: 2019-08-01<br />.value: 100.209","month_year_recoded: 2019-09-01<br />.value: 100.147","month_year_recoded: 2019-10-01<br />.value:  99.930","month_year_recoded: 2019-11-01<br />.value: 100.254","month_year_recoded: 2019-12-01<br />.value: 100.445","month_year_recoded: 2020-01-01<br />.value: 100.204","month_year_recoded: 2020-02-01<br />.value: 100.279","month_year_recoded: 2020-03-01<br />.value:  99.933","month_year_recoded: 2020-04-01<br />.value:  99.012","month_year_recoded: 2020-05-01<br />.value:  99.480","month_year_recoded: 2020-06-01<br />.value:  99.500","month_year_recoded: 2020-07-01<br />.value:  99.178","month_year_recoded: 2020-08-01<br />.value:  99.807","month_year_recoded: 2020-09-01<br />.value: 100.139","month_year_recoded: 2020-10-01<br />.value:  99.711","month_year_recoded: 2020-11-01<br />.value: 100.105","month_year_recoded: 2020-12-01<br />.value: 100.469","month_year_recoded: 2021-01-01<br />.value: 100.440","month_year_recoded: 2021-02-01<br />.value: 101.015","month_year_recoded: 2021-03-01<br />.value: 101.239","month_year_recoded: 2021-04-01<br />.value: 101.070","month_year_recoded: 2021-05-01<br />.value: 101.883","month_year_recoded: 2021-06-01<br />.value: 101.870","month_year_recoded: 2021-07-01<br />.value: 101.672","month_year_recoded: 2021-08-01<br />.value: 102.231","month_year_recoded: 2021-09-01<br />.value: 102.657","month_year_recoded: 2021-10-01<br />.value: 102.950","month_year_recoded: 2021-11-01<br />.value: 103.959","month_year_recoded: 2021-12-01<br />.value: 104.439","month_year_recoded: 2022-01-01<br />.value: 104.472","month_year_recoded: 2022-02-01<br />.value: 105.379","month_year_recoded: 2022-03-01<br />.value: 106.691","month_year_recoded: 2022-04-01<br />.value: 106.547","month_year_recoded: 2022-05-01<br />.value: 107.598","month_year_recoded: 2022-06-01<br />.value: 108.671"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(44,62,80,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":["2014-01-01","2014-02-01","2014-03-01","2014-04-01","2014-05-01","2014-06-01","2014-07-01","2014-08-01","2014-09-01","2014-10-01","2014-11-01","2014-12-01","2015-01-01","2015-02-01","2015-03-01","2015-04-01","2015-05-01","2015-06-01","2015-07-01","2015-08-01","2015-09-01","2015-10-01","2015-11-01","2015-12-01","2016-01-01","2016-02-01","2016-03-01","2016-04-01","2016-05-01","2016-06-01","2016-07-01","2016-08-01","2016-09-01","2016-10-01","2016-11-01","2016-12-01","2017-01-01","2017-02-01","2017-03-01","2017-04-01","2017-05-01","2017-06-01","2017-07-01","2017-08-01","2017-09-01","2017-10-01","2017-11-01","2017-12-01","2018-01-01","2018-02-01","2018-03-01","2018-04-01","2018-05-01","2018-06-01","2018-07-01","2018-08-01","2018-09-01","2018-10-01","2018-11-01","2018-12-01","2019-01-01","2019-02-01","2019-03-01","2019-04-01","2019-05-01","2019-06-01","2019-07-01","2019-08-01","2019-09-01","2019-10-01","2019-11-01","2019-12-01","2020-01-01","2020-02-01","2020-03-01","2020-04-01","2020-05-01","2020-06-01","2020-07-01","2020-08-01","2020-09-01","2020-10-01","2020-11-01","2020-12-01","2021-01-01","2021-02-01","2021-03-01","2021-04-01","2021-05-01","2021-06-01","2021-07-01","2021-08-01","2021-09-01","2021-10-01","2021-11-01","2021-12-01","2022-01-01","2022-02-01","2022-03-01","2022-04-01","2022-05-01","2022-06-01"],"y":[99.8498076737207,99.7711338369657,99.6950756429577,99.6216501695428,99.5508744945677,99.4827656958787,99.4173408513223,99.3546170387448,99.2946113359927,99.2373408209123,99.1828225713502,99.1310736651528,99.0821111801664,99.0360093240691,98.9927997026839,98.9524354910742,98.9148698643037,98.8800559974359,98.8479470655343,98.8184962436625,98.7916567068841,98.7673816302625,98.7456241888614,98.7263375577443,98.7094749119747,98.6949894266162,98.6831098891497,98.6740726075117,98.6678420374494,98.6643826347098,98.6636588550402,98.6656351541877,98.6702759878993,98.6775458119223,98.6874090820038,98.6998302538909,98.7147737833307,98.7322041260705,98.7520857378572,98.7781670522578,98.8132534240684,98.8558946908801,98.9046406902843,98.9580412598722,99.0146462372352,99.0730054599643,99.1316687656509,99.1891859918862,99.2441069762615,99.294981556368,99.340359569797,99.3787908541398,99.4097813563936,99.4346790002081,99.4547965881535,99.4714469227997,99.4859428067168,99.4995970424748,99.5137224326437,99.5296317797935,99.5486378864944,99.5720535553163,99.6011915888292,99.6373647896031,99.6721365360139,99.6981426223295,99.7183044749586,99.7355435203098,99.7527811847915,99.7729388948125,99.7989380767812,99.8337001571063,99.8801465621962,99.9411987184597,100.019778052305,100.118805990141,100.241203958377,100.379086239766,100.522965872356,100.673362415497,100.830795428537,100.995784470824,101.168849101707,101.350508880535,101.541283366656,101.741692119419,101.952254698173,102.173490662266,102.405919571047,102.650060983865,102.906024349715,103.173396440785,103.451912801216,103.741308975146,104.041320506716,104.351682940064,104.672131819331,105.002402688655,105.342231092177,105.691352574035,106.049502678369,106.416416949318],"text":["month_year_recoded: 2014-01-01<br />.value_smooth:  99.84981","month_year_recoded: 2014-02-01<br />.value_smooth:  99.77113","month_year_recoded: 2014-03-01<br />.value_smooth:  99.69508","month_year_recoded: 2014-04-01<br />.value_smooth:  99.62165","month_year_recoded: 2014-05-01<br />.value_smooth:  99.55087","month_year_recoded: 2014-06-01<br />.value_smooth:  99.48277","month_year_recoded: 2014-07-01<br />.value_smooth:  99.41734","month_year_recoded: 2014-08-01<br />.value_smooth:  99.35462","month_year_recoded: 2014-09-01<br />.value_smooth:  99.29461","month_year_recoded: 2014-10-01<br />.value_smooth:  99.23734","month_year_recoded: 2014-11-01<br />.value_smooth:  99.18282","month_year_recoded: 2014-12-01<br />.value_smooth:  99.13107","month_year_recoded: 2015-01-01<br />.value_smooth:  99.08211","month_year_recoded: 2015-02-01<br />.value_smooth:  99.03601","month_year_recoded: 2015-03-01<br />.value_smooth:  98.99280","month_year_recoded: 2015-04-01<br />.value_smooth:  98.95244","month_year_recoded: 2015-05-01<br />.value_smooth:  98.91487","month_year_recoded: 2015-06-01<br />.value_smooth:  98.88006","month_year_recoded: 2015-07-01<br />.value_smooth:  98.84795","month_year_recoded: 2015-08-01<br />.value_smooth:  98.81850","month_year_recoded: 2015-09-01<br />.value_smooth:  98.79166","month_year_recoded: 2015-10-01<br />.value_smooth:  98.76738","month_year_recoded: 2015-11-01<br />.value_smooth:  98.74562","month_year_recoded: 2015-12-01<br />.value_smooth:  98.72634","month_year_recoded: 2016-01-01<br />.value_smooth:  98.70947","month_year_recoded: 2016-02-01<br />.value_smooth:  98.69499","month_year_recoded: 2016-03-01<br />.value_smooth:  98.68311","month_year_recoded: 2016-04-01<br />.value_smooth:  98.67407","month_year_recoded: 2016-05-01<br />.value_smooth:  98.66784","month_year_recoded: 2016-06-01<br />.value_smooth:  98.66438","month_year_recoded: 2016-07-01<br />.value_smooth:  98.66366","month_year_recoded: 2016-08-01<br />.value_smooth:  98.66564","month_year_recoded: 2016-09-01<br />.value_smooth:  98.67028","month_year_recoded: 2016-10-01<br />.value_smooth:  98.67755","month_year_recoded: 2016-11-01<br />.value_smooth:  98.68741","month_year_recoded: 2016-12-01<br />.value_smooth:  98.69983","month_year_recoded: 2017-01-01<br />.value_smooth:  98.71477","month_year_recoded: 2017-02-01<br />.value_smooth:  98.73220","month_year_recoded: 2017-03-01<br />.value_smooth:  98.75209","month_year_recoded: 2017-04-01<br />.value_smooth:  98.77817","month_year_recoded: 2017-05-01<br />.value_smooth:  98.81325","month_year_recoded: 2017-06-01<br />.value_smooth:  98.85589","month_year_recoded: 2017-07-01<br />.value_smooth:  98.90464","month_year_recoded: 2017-08-01<br />.value_smooth:  98.95804","month_year_recoded: 2017-09-01<br />.value_smooth:  99.01465","month_year_recoded: 2017-10-01<br />.value_smooth:  99.07301","month_year_recoded: 2017-11-01<br />.value_smooth:  99.13167","month_year_recoded: 2017-12-01<br />.value_smooth:  99.18919","month_year_recoded: 2018-01-01<br />.value_smooth:  99.24411","month_year_recoded: 2018-02-01<br />.value_smooth:  99.29498","month_year_recoded: 2018-03-01<br />.value_smooth:  99.34036","month_year_recoded: 2018-04-01<br />.value_smooth:  99.37879","month_year_recoded: 2018-05-01<br />.value_smooth:  99.40978","month_year_recoded: 2018-06-01<br />.value_smooth:  99.43468","month_year_recoded: 2018-07-01<br />.value_smooth:  99.45480","month_year_recoded: 2018-08-01<br />.value_smooth:  99.47145","month_year_recoded: 2018-09-01<br />.value_smooth:  99.48594","month_year_recoded: 2018-10-01<br />.value_smooth:  99.49960","month_year_recoded: 2018-11-01<br />.value_smooth:  99.51372","month_year_recoded: 2018-12-01<br />.value_smooth:  99.52963","month_year_recoded: 2019-01-01<br />.value_smooth:  99.54864","month_year_recoded: 2019-02-01<br />.value_smooth:  99.57205","month_year_recoded: 2019-03-01<br />.value_smooth:  99.60119","month_year_recoded: 2019-04-01<br />.value_smooth:  99.63736","month_year_recoded: 2019-05-01<br />.value_smooth:  99.67214","month_year_recoded: 2019-06-01<br />.value_smooth:  99.69814","month_year_recoded: 2019-07-01<br />.value_smooth:  99.71830","month_year_recoded: 2019-08-01<br />.value_smooth:  99.73554","month_year_recoded: 2019-09-01<br />.value_smooth:  99.75278","month_year_recoded: 2019-10-01<br />.value_smooth:  99.77294","month_year_recoded: 2019-11-01<br />.value_smooth:  99.79894","month_year_recoded: 2019-12-01<br />.value_smooth:  99.83370","month_year_recoded: 2020-01-01<br />.value_smooth:  99.88015","month_year_recoded: 2020-02-01<br />.value_smooth:  99.94120","month_year_recoded: 2020-03-01<br />.value_smooth: 100.01978","month_year_recoded: 2020-04-01<br />.value_smooth: 100.11881","month_year_recoded: 2020-05-01<br />.value_smooth: 100.24120","month_year_recoded: 2020-06-01<br />.value_smooth: 100.37909","month_year_recoded: 2020-07-01<br />.value_smooth: 100.52297","month_year_recoded: 2020-08-01<br />.value_smooth: 100.67336","month_year_recoded: 2020-09-01<br />.value_smooth: 100.83080","month_year_recoded: 2020-10-01<br />.value_smooth: 100.99578","month_year_recoded: 2020-11-01<br />.value_smooth: 101.16885","month_year_recoded: 2020-12-01<br />.value_smooth: 101.35051","month_year_recoded: 2021-01-01<br />.value_smooth: 101.54128","month_year_recoded: 2021-02-01<br />.value_smooth: 101.74169","month_year_recoded: 2021-03-01<br />.value_smooth: 101.95225","month_year_recoded: 2021-04-01<br />.value_smooth: 102.17349","month_year_recoded: 2021-05-01<br />.value_smooth: 102.40592","month_year_recoded: 2021-06-01<br />.value_smooth: 102.65006","month_year_recoded: 2021-07-01<br />.value_smooth: 102.90602","month_year_recoded: 2021-08-01<br />.value_smooth: 103.17340","month_year_recoded: 2021-09-01<br />.value_smooth: 103.45191","month_year_recoded: 2021-10-01<br />.value_smooth: 103.74131","month_year_recoded: 2021-11-01<br />.value_smooth: 104.04132","month_year_recoded: 2021-12-01<br />.value_smooth: 104.35168","month_year_recoded: 2022-01-01<br />.value_smooth: 104.67213","month_year_recoded: 2022-02-01<br />.value_smooth: 105.00240","month_year_recoded: 2022-03-01<br />.value_smooth: 105.34223","month_year_recoded: 2022-04-01<br />.value_smooth: 105.69135","month_year_recoded: 2022-05-01<br />.value_smooth: 106.04950","month_year_recoded: 2022-06-01<br />.value_smooth: 106.41642"],"type":"scatter","mode":"lines","line":{"width":3.77952755905512,"color":"rgba(51,102,255,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":["2014-01-01","2022-06-01"],"y":[100,100],"type":"scatter","mode":"lines","line":{"color":"blue","dash":"dot"},"marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"layout":{"margin":{"t":45.4063926940639,"r":7.30593607305936,"b":27.2146118721461,"l":40.1826484018265},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(44,62,80,1)","family":"","size":14.6118721461187},"title":{"text":"Singapore Consumer Product Index","font":{"color":"rgba(44,62,80,1)","family":"","size":17.5342465753425},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"date","autorange":true,"range":["2013-07-31","2022-11-01"],"tickmode":"auto","ticktext":["2014","2016","2018","2020","2022"],"tickvals":[16071,16801,17532,18262,18993],"categoryorder":"array","categoryarray":["2014","2016","2018","2020","2022"],"nticks":null,"ticks":"outside","tickcolor":"rgba(204,204,204,1)","ticklen":3.65296803652968,"tickwidth":0.22139200221392,"showticklabels":true,"tickfont":{"color":"rgba(44,62,80,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(204,204,204,1)","gridwidth":0.22139200221392,"zeroline":false,"anchor":"y","title":{"text":"","font":{"color":"rgba(44,62,80,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":true,"range":[97.17665,109.21835],"tickmode":"auto","ticktext":["97.5","100.0","102.5","105.0","107.5"],"tickvals":[97.5,100,102.5,105,107.5],"categoryorder":"array","categoryarray":["97.5","100.0","102.5","105.0","107.5"],"nticks":null,"ticks":"outside","tickcolor":"rgba(204,204,204,1)","ticklen":3.65296803652968,"tickwidth":0.22139200221392,"showticklabels":true,"tickfont":{"color":"rgba(44,62,80,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(204,204,204,1)","gridwidth":0.22139200221392,"zeroline":false,"anchor":"x","title":{"text":"","font":{"color":"rgba(44,62,80,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":"transparent","line":{"color":"rgba(44,62,80,1)","width":0.33208800332088,"linetype":"solid"},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(44,62,80,1)","family":"","size":11.689497716895}},"hovermode":"closest","barmode":"relative","annotations":[{"x":"2020-04-07","y":101,"text":"Circuit Breaker","showarrow":true,"arrowhead":1,"ax":0},{"x":"2022-02-20","y":98.7,"text":"Ukraine War","showarrow":true,"arrowhead":1,"ax":0,"ay":60},{"x":"2021-02-16","y":103.5,"text":"Petrol Duty Increase","showarrow":true,"arrowhead":1,"ax":0},{"x":0,"y":-0.15,"text":"Data source: Singstat (extracted as at Oct 2022)","showarrow":false,"xref":"paper","yref":"paper"}]},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"194573428fe":{"x":{},"y":{},"type":"scatter"},"19436186f6f":{"x":{},"y":{}},"194573428fe.1":{"x":["2014-01-01","2022-06-01"],"y":100,"type":"scatter","mode":"lines","line":{"color":"blue","dash":"dot"},"inherit":true}},"cur_data":"194573428fe","visdat":{"194573428fe":["function (y) ","x"],"19436186f6f":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<p>Alternatively, we can still use the conventional methods to create
+the interactive graphs, e.g. plotting the graph by using
+<code>plot_ly</code> function or creating the <code>ggplot</code> object
+and then passing the object to <code>ggplotly</code> function.</p>
+<p>I prefer the second method so I need not remember so many
+syntaxes.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>ggplotly</span><span class='op'>(</span>
+  <span class='va'>df_1</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>data_series</span> <span class='op'>==</span> <span class='st'>"All Items"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>month_year_recoded</span>,
+         y <span class='op'>=</span> <span class='va'>cpi</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_line</span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_smooth</span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"loess"</span>, se <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_hline</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>yintercept <span class='op'>=</span> <span class='fl'>100</span><span class='op'>)</span>, 
+             color <span class='op'>=</span> <span class='st'>"blue"</span>, 
+             linetype <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>annotate</span><span class='op'>(</span><span class='st'>"segment"</span>, 
+           x <span class='op'>=</span> <span class='va'>date_arrow</span>, 
+           y <span class='op'>=</span> <span class='fl'>101.5</span>, 
+           xend <span class='op'>=</span> <span class='va'>date_arrow</span>, 
+           yend <span class='op'>=</span> <span class='fl'>100.55</span>, 
+           color <span class='op'>=</span> <span class='st'>"red"</span>, 
+           arrow <span class='op'>=</span> <span class='fu'>arrow</span><span class='op'>(</span>length <span class='op'>=</span> <span class='fu'>unit</span><span class='op'>(</span><span class='fl'>0.05</span>,<span class='st'>"npc"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>annotate</span><span class='op'>(</span><span class='st'>"text"</span>, 
+           x <span class='op'>=</span> <span class='va'>date_arrow</span>, 
+           y <span class='op'>=</span> <span class='fl'>102</span>, 
+           label <span class='op'>=</span> <span class='st'>"Circuit Breaker"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>annotate</span><span class='op'>(</span><span class='st'>"segment"</span>, 
+           x <span class='op'>=</span> <span class='va'>date_petrol_duty</span>, 
+           y <span class='op'>=</span> <span class='fl'>103</span>, 
+           xend <span class='op'>=</span> <span class='va'>date_petrol_duty</span>, 
+           yend <span class='op'>=</span> <span class='fl'>102</span>, 
+           color <span class='op'>=</span> <span class='st'>"red"</span>, 
+           arrow <span class='op'>=</span> <span class='fu'>arrow</span><span class='op'>(</span>length <span class='op'>=</span> <span class='fu'>unit</span><span class='op'>(</span><span class='fl'>0.05</span>,<span class='st'>"npc"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>annotate</span><span class='op'>(</span><span class='st'>"text"</span>, 
+           x <span class='op'>=</span> <span class='va'>date_petrol_duty</span>, 
+           y <span class='op'>=</span> <span class='fl'>103.85</span>, 
+           label <span class='op'>=</span> <span class='st'>"Petrol Duty"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>annotate</span><span class='op'>(</span><span class='st'>"text"</span>, 
+           x <span class='op'>=</span> <span class='va'>date_petrol_duty</span>, 
+           y <span class='op'>=</span> <span class='fl'>103.3</span>, 
+           label <span class='op'>=</span> <span class='st'>"Increase"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>annotate</span><span class='op'>(</span><span class='st'>"segment"</span>, 
+           x <span class='op'>=</span> <span class='va'>date_ukraine_arrow</span>, 
+           y <span class='op'>=</span> <span class='fl'>99</span>, 
+           xend <span class='op'>=</span> <span class='va'>date_ukraine_arrow</span>, 
+           yend <span class='op'>=</span> <span class='fl'>99.9</span>, 
+           color <span class='op'>=</span> <span class='st'>"red"</span>, 
+           arrow <span class='op'>=</span> <span class='fu'>arrow</span><span class='op'>(</span>length <span class='op'>=</span> <span class='fu'>unit</span><span class='op'>(</span><span class='fl'>0.05</span>,<span class='st'>"npc"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>annotate</span><span class='op'>(</span><span class='st'>"text"</span>, 
+           x <span class='op'>=</span> <span class='va'>date_ukraine_arrow</span>, 
+           y <span class='op'>=</span> <span class='fl'>98.7</span>, 
+           label <span class='op'>=</span> <span class='st'>"Ukraine"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>annotate</span><span class='op'>(</span><span class='st'>"text"</span>, 
+           x <span class='op'>=</span> <span class='va'>date_ukraine_arrow</span>, 
+           y <span class='op'>=</span> <span class='fl'>98.15</span>, 
+           label <span class='op'>=</span> <span class='st'>"War"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>labs</span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Singapore Consumer Price Index"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>theme_minimal</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>theme</span><span class='op'>(</span>axis.title.x <span class='op'>=</span> <span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span>,
+        axis.title.y <span class='op'>=</span> <span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span>,
+        plot.caption <span class='op'>=</span> <span class='fu'>element_text</span><span class='op'>(</span>hjust <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/graphics/layout.html'>layout</a></span><span class='op'>(</span>annotations <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>caption</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+<div id="htmlwidget-de486600cec6acdbd5ab" style="width:100%;height:384px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-de486600cec6acdbd5ab">{"x":{"data":[{"x":[16071,16102,16130,16161,16191,16222,16252,16283,16314,16344,16375,16405,16436,16467,16495,16526,16556,16587,16617,16648,16679,16709,16740,16770,16801,16832,16861,16892,16922,16953,16983,17014,17045,17075,17106,17136,17167,17198,17226,17257,17287,17318,17348,17379,17410,17440,17471,17501,17532,17563,17591,17622,17652,17683,17713,17744,17775,17805,17836,17866,17897,17928,17956,17987,18017,18048,18078,18109,18140,18170,18201,18231,18262,18293,18322,18353,18383,18414,18444,18475,18506,18536,18567,18597,18628,18659,18687,18718,18748,18779,18809,18840,18871,18901,18932,18962,18993,19024,19052,19083,19113,19144],"y":[99.506,99.484,99.749,99.342,99.676,99.508,99.213,99.742,99.553,99.255,99.441,99.328,99.114,99.211,99.449,98.829,99.279,99.171,98.818,98.911,98.912,98.487,98.684,98.693,98.476,98.375,98.416,98.365,97.724,98.449,98.173,98.657,98.666,98.383,98.699,98.854,99.026,99.023,99.064,98.762,99.098,98.956,98.726,99.056,99.036,98.75,99.322,99.225,99.035,99.501,99.299,98.833,99.449,99.505,99.359,99.778,99.753,99.447,99.61,99.686,99.387,99.953,99.972,99.753,100.325,100.038,99.587,100.209,100.147,99.93,100.254,100.445,100.204,100.279,99.933,99.012,99.48,99.5,99.178,99.807,100.139,99.711,100.105,100.469,100.44,101.015,101.239,101.07,101.883,101.87,101.672,102.231,102.657,102.95,103.959,104.439,104.472,105.379,106.691,106.547,107.598,108.671],"text":["month_year_recoded: 2014-01-01<br />cpi:  99.506","month_year_recoded: 2014-02-01<br />cpi:  99.484","month_year_recoded: 2014-03-01<br />cpi:  99.749","month_year_recoded: 2014-04-01<br />cpi:  99.342","month_year_recoded: 2014-05-01<br />cpi:  99.676","month_year_recoded: 2014-06-01<br />cpi:  99.508","month_year_recoded: 2014-07-01<br />cpi:  99.213","month_year_recoded: 2014-08-01<br />cpi:  99.742","month_year_recoded: 2014-09-01<br />cpi:  99.553","month_year_recoded: 2014-10-01<br />cpi:  99.255","month_year_recoded: 2014-11-01<br />cpi:  99.441","month_year_recoded: 2014-12-01<br />cpi:  99.328","month_year_recoded: 2015-01-01<br />cpi:  99.114","month_year_recoded: 2015-02-01<br />cpi:  99.211","month_year_recoded: 2015-03-01<br />cpi:  99.449","month_year_recoded: 2015-04-01<br />cpi:  98.829","month_year_recoded: 2015-05-01<br />cpi:  99.279","month_year_recoded: 2015-06-01<br />cpi:  99.171","month_year_recoded: 2015-07-01<br />cpi:  98.818","month_year_recoded: 2015-08-01<br />cpi:  98.911","month_year_recoded: 2015-09-01<br />cpi:  98.912","month_year_recoded: 2015-10-01<br />cpi:  98.487","month_year_recoded: 2015-11-01<br />cpi:  98.684","month_year_recoded: 2015-12-01<br />cpi:  98.693","month_year_recoded: 2016-01-01<br />cpi:  98.476","month_year_recoded: 2016-02-01<br />cpi:  98.375","month_year_recoded: 2016-03-01<br />cpi:  98.416","month_year_recoded: 2016-04-01<br />cpi:  98.365","month_year_recoded: 2016-05-01<br />cpi:  97.724","month_year_recoded: 2016-06-01<br />cpi:  98.449","month_year_recoded: 2016-07-01<br />cpi:  98.173","month_year_recoded: 2016-08-01<br />cpi:  98.657","month_year_recoded: 2016-09-01<br />cpi:  98.666","month_year_recoded: 2016-10-01<br />cpi:  98.383","month_year_recoded: 2016-11-01<br />cpi:  98.699","month_year_recoded: 2016-12-01<br />cpi:  98.854","month_year_recoded: 2017-01-01<br />cpi:  99.026","month_year_recoded: 2017-02-01<br />cpi:  99.023","month_year_recoded: 2017-03-01<br />cpi:  99.064","month_year_recoded: 2017-04-01<br />cpi:  98.762","month_year_recoded: 2017-05-01<br />cpi:  99.098","month_year_recoded: 2017-06-01<br />cpi:  98.956","month_year_recoded: 2017-07-01<br />cpi:  98.726","month_year_recoded: 2017-08-01<br />cpi:  99.056","month_year_recoded: 2017-09-01<br />cpi:  99.036","month_year_recoded: 2017-10-01<br />cpi:  98.750","month_year_recoded: 2017-11-01<br />cpi:  99.322","month_year_recoded: 2017-12-01<br />cpi:  99.225","month_year_recoded: 2018-01-01<br />cpi:  99.035","month_year_recoded: 2018-02-01<br />cpi:  99.501","month_year_recoded: 2018-03-01<br />cpi:  99.299","month_year_recoded: 2018-04-01<br />cpi:  98.833","month_year_recoded: 2018-05-01<br />cpi:  99.449","month_year_recoded: 2018-06-01<br />cpi:  99.505","month_year_recoded: 2018-07-01<br />cpi:  99.359","month_year_recoded: 2018-08-01<br />cpi:  99.778","month_year_recoded: 2018-09-01<br />cpi:  99.753","month_year_recoded: 2018-10-01<br />cpi:  99.447","month_year_recoded: 2018-11-01<br />cpi:  99.610","month_year_recoded: 2018-12-01<br />cpi:  99.686","month_year_recoded: 2019-01-01<br />cpi:  99.387","month_year_recoded: 2019-02-01<br />cpi:  99.953","month_year_recoded: 2019-03-01<br />cpi:  99.972","month_year_recoded: 2019-04-01<br />cpi:  99.753","month_year_recoded: 2019-05-01<br />cpi: 100.325","month_year_recoded: 2019-06-01<br />cpi: 100.038","month_year_recoded: 2019-07-01<br />cpi:  99.587","month_year_recoded: 2019-08-01<br />cpi: 100.209","month_year_recoded: 2019-09-01<br />cpi: 100.147","month_year_recoded: 2019-10-01<br />cpi:  99.930","month_year_recoded: 2019-11-01<br />cpi: 100.254","month_year_recoded: 2019-12-01<br />cpi: 100.445","month_year_recoded: 2020-01-01<br />cpi: 100.204","month_year_recoded: 2020-02-01<br />cpi: 100.279","month_year_recoded: 2020-03-01<br />cpi:  99.933","month_year_recoded: 2020-04-01<br />cpi:  99.012","month_year_recoded: 2020-05-01<br />cpi:  99.480","month_year_recoded: 2020-06-01<br />cpi:  99.500","month_year_recoded: 2020-07-01<br />cpi:  99.178","month_year_recoded: 2020-08-01<br />cpi:  99.807","month_year_recoded: 2020-09-01<br />cpi: 100.139","month_year_recoded: 2020-10-01<br />cpi:  99.711","month_year_recoded: 2020-11-01<br />cpi: 100.105","month_year_recoded: 2020-12-01<br />cpi: 100.469","month_year_recoded: 2021-01-01<br />cpi: 100.440","month_year_recoded: 2021-02-01<br />cpi: 101.015","month_year_recoded: 2021-03-01<br />cpi: 101.239","month_year_recoded: 2021-04-01<br />cpi: 101.070","month_year_recoded: 2021-05-01<br />cpi: 101.883","month_year_recoded: 2021-06-01<br />cpi: 101.870","month_year_recoded: 2021-07-01<br />cpi: 101.672","month_year_recoded: 2021-08-01<br />cpi: 102.231","month_year_recoded: 2021-09-01<br />cpi: 102.657","month_year_recoded: 2021-10-01<br />cpi: 102.950","month_year_recoded: 2021-11-01<br />cpi: 103.959","month_year_recoded: 2021-12-01<br />cpi: 104.439","month_year_recoded: 2022-01-01<br />cpi: 104.472","month_year_recoded: 2022-02-01<br />cpi: 105.379","month_year_recoded: 2022-03-01<br />cpi: 106.691","month_year_recoded: 2022-04-01<br />cpi: 106.547","month_year_recoded: 2022-05-01<br />cpi: 107.598","month_year_recoded: 2022-06-01<br />cpi: 108.671"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[16071,16109.8987341772,16148.7974683544,16187.6962025316,16226.5949367089,16265.4936708861,16304.3924050633,16343.2911392405,16382.1898734177,16421.0886075949,16459.9873417722,16498.8860759494,16537.7848101266,16576.6835443038,16615.582278481,16654.4810126582,16693.3797468354,16732.2784810127,16771.1772151899,16810.0759493671,16848.9746835443,16887.8734177215,16926.7721518987,16965.6708860759,17004.5696202532,17043.4683544304,17082.3670886076,17121.2658227848,17160.164556962,17199.0632911392,17237.9620253165,17276.8607594937,17315.7594936709,17354.6582278481,17393.5569620253,17432.4556962025,17471.3544303797,17510.253164557,17549.1518987342,17588.0506329114,17626.9493670886,17665.8481012658,17704.746835443,17743.6455696203,17782.5443037975,17821.4430379747,17860.3417721519,17899.2405063291,17938.1392405063,17977.0379746835,18015.9367088608,18054.835443038,18093.7341772152,18132.6329113924,18171.5316455696,18210.4303797468,18249.3291139241,18288.2278481013,18327.1265822785,18366.0253164557,18404.9240506329,18443.8227848101,18482.7215189873,18521.6202531646,18560.5189873418,18599.417721519,18638.3164556962,18677.2151898734,18716.1139240506,18755.0126582278,18793.9113924051,18832.8101265823,18871.7088607595,18910.6075949367,18949.5063291139,18988.4050632911,19027.3037974684,19066.2025316456,19105.1012658228,19144],"y":[99.8524701183539,99.7516490215589,99.6551598017597,99.5630334477708,99.4753009484063,99.3919932924807,99.3131414688082,99.2387764662031,99.1689292734797,99.1036308794525,99.0429502501269,98.9870120200428,98.9357421788676,98.8890490361061,98.8468409012628,98.8090260838425,98.7755128933499,98.7462096392895,98.7210246311662,98.6998661784846,98.6827450220584,98.670360885566,98.6627624362566,98.6598257634897,98.6614269566248,98.6674421050216,98.6777472980397,98.6922186250386,98.7107321753781,98.7331640384176,98.7600727907917,98.8006504774528,98.8550863934114,98.9198356395363,98.9913533166965,99.0660945257607,99.1405143675978,99.2110679430768,99.2742103530663,99.3263966984353,99.3670269504261,99.399915761236,99.4270886716613,99.4505567242275,99.47233096146,99.4944224258845,99.5188421600265,99.5476012064114,99.5827106075648,99.6261814060122,99.6716570239216,99.7024631503047,99.7239059568945,99.7423307371887,99.7640827846847,99.7955073928802,99.8429498552726,99.9127554653596,100.011269516639,100.144837302607,100.314076543993,100.496312479855,100.689417647493,100.894532867211,101.11279895931,101.345356744094,101.593347041866,101.857910672928,102.140188457583,102.441321216134,102.762346905362,103.102838909892,103.462096342998,103.839577895561,104.234742258458,104.647048122569,105.075954178773,105.52091911795,105.981401630978,106.456860408737],"text":["month_year_recoded: 16071.00<br />cpi:  99.85247","month_year_recoded: 16109.90<br />cpi:  99.75165","month_year_recoded: 16148.80<br />cpi:  99.65516","month_year_recoded: 16187.70<br />cpi:  99.56303","month_year_recoded: 16226.59<br />cpi:  99.47530","month_year_recoded: 16265.49<br />cpi:  99.39199","month_year_recoded: 16304.39<br />cpi:  99.31314","month_year_recoded: 16343.29<br />cpi:  99.23878","month_year_recoded: 16382.19<br />cpi:  99.16893","month_year_recoded: 16421.09<br />cpi:  99.10363","month_year_recoded: 16459.99<br />cpi:  99.04295","month_year_recoded: 16498.89<br />cpi:  98.98701","month_year_recoded: 16537.78<br />cpi:  98.93574","month_year_recoded: 16576.68<br />cpi:  98.88905","month_year_recoded: 16615.58<br />cpi:  98.84684","month_year_recoded: 16654.48<br />cpi:  98.80903","month_year_recoded: 16693.38<br />cpi:  98.77551","month_year_recoded: 16732.28<br />cpi:  98.74621","month_year_recoded: 16771.18<br />cpi:  98.72102","month_year_recoded: 16810.08<br />cpi:  98.69987","month_year_recoded: 16848.97<br />cpi:  98.68275","month_year_recoded: 16887.87<br />cpi:  98.67036","month_year_recoded: 16926.77<br />cpi:  98.66276","month_year_recoded: 16965.67<br />cpi:  98.65983","month_year_recoded: 17004.57<br />cpi:  98.66143","month_year_recoded: 17043.47<br />cpi:  98.66744","month_year_recoded: 17082.37<br />cpi:  98.67775","month_year_recoded: 17121.27<br />cpi:  98.69222","month_year_recoded: 17160.16<br />cpi:  98.71073","month_year_recoded: 17199.06<br />cpi:  98.73316","month_year_recoded: 17237.96<br />cpi:  98.76007","month_year_recoded: 17276.86<br />cpi:  98.80065","month_year_recoded: 17315.76<br />cpi:  98.85509","month_year_recoded: 17354.66<br />cpi:  98.91984","month_year_recoded: 17393.56<br />cpi:  98.99135","month_year_recoded: 17432.46<br />cpi:  99.06609","month_year_recoded: 17471.35<br />cpi:  99.14051","month_year_recoded: 17510.25<br />cpi:  99.21107","month_year_recoded: 17549.15<br />cpi:  99.27421","month_year_recoded: 17588.05<br />cpi:  99.32640","month_year_recoded: 17626.95<br />cpi:  99.36703","month_year_recoded: 17665.85<br />cpi:  99.39992","month_year_recoded: 17704.75<br />cpi:  99.42709","month_year_recoded: 17743.65<br />cpi:  99.45056","month_year_recoded: 17782.54<br />cpi:  99.47233","month_year_recoded: 17821.44<br />cpi:  99.49442","month_year_recoded: 17860.34<br />cpi:  99.51884","month_year_recoded: 17899.24<br />cpi:  99.54760","month_year_recoded: 17938.14<br />cpi:  99.58271","month_year_recoded: 17977.04<br />cpi:  99.62618","month_year_recoded: 18015.94<br />cpi:  99.67166","month_year_recoded: 18054.84<br />cpi:  99.70246","month_year_recoded: 18093.73<br />cpi:  99.72391","month_year_recoded: 18132.63<br />cpi:  99.74233","month_year_recoded: 18171.53<br />cpi:  99.76408","month_year_recoded: 18210.43<br />cpi:  99.79551","month_year_recoded: 18249.33<br />cpi:  99.84295","month_year_recoded: 18288.23<br />cpi:  99.91276","month_year_recoded: 18327.13<br />cpi: 100.01127","month_year_recoded: 18366.03<br />cpi: 100.14484","month_year_recoded: 18404.92<br />cpi: 100.31408","month_year_recoded: 18443.82<br />cpi: 100.49631","month_year_recoded: 18482.72<br />cpi: 100.68942","month_year_recoded: 18521.62<br />cpi: 100.89453","month_year_recoded: 18560.52<br />cpi: 101.11280","month_year_recoded: 18599.42<br />cpi: 101.34536","month_year_recoded: 18638.32<br />cpi: 101.59335","month_year_recoded: 18677.22<br />cpi: 101.85791","month_year_recoded: 18716.11<br />cpi: 102.14019","month_year_recoded: 18755.01<br />cpi: 102.44132","month_year_recoded: 18793.91<br />cpi: 102.76235","month_year_recoded: 18832.81<br />cpi: 103.10284","month_year_recoded: 18871.71<br />cpi: 103.46210","month_year_recoded: 18910.61<br />cpi: 103.83958","month_year_recoded: 18949.51<br />cpi: 104.23474","month_year_recoded: 18988.41<br />cpi: 104.64705","month_year_recoded: 19027.30<br />cpi: 105.07595","month_year_recoded: 19066.20<br />cpi: 105.52092","month_year_recoded: 19105.10<br />cpi: 105.98140","month_year_recoded: 19144.00<br />cpi: 106.45686"],"type":"scatter","mode":"lines","name":"fitted values","line":{"width":3.77952755905512,"color":"rgba(51,102,255,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,15917.35,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65,19297.65],"y":[100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100],"text":"yintercept: 100","type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(0,0,255,1)","dash":"dash"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[18359,18359],"y":[101.5,100.55],"text":"x: 2020-04-07<br />xend: 18359<br />y: 101.5<br />yend: 100.55","type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(255,0,0,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[18359],"y":[102],"text":"Circuit Breaker","hovertext":"x: 2020-04-07<br />y: 102","textfont":{"size":14.6645669291339,"color":"rgba(0,0,0,1)"},"type":"scatter","mode":"text","hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[18674,18674],"y":[103,102],"text":"x: 2021-02-16<br />xend: 18674<br />y: 103<br />yend: 102","type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(255,0,0,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[18674],"y":[103.85],"text":"Petrol Duty","hovertext":"x: 2021-02-16<br />y: 103.85","textfont":{"size":14.6645669291339,"color":"rgba(0,0,0,1)"},"type":"scatter","mode":"text","hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[18674],"y":[103.3],"text":"Increase","hovertext":"x: 2021-02-16<br />y: 103.3","textfont":{"size":14.6645669291339,"color":"rgba(0,0,0,1)"},"type":"scatter","mode":"text","hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[19043,19043],"y":[99,99.9],"text":"x: 2022-02-20<br />xend: 19043<br />y: 99<br />yend: 99.9","type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(255,0,0,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[19043],"y":[98.7],"text":"Ukraine","hovertext":"x: 2022-02-20<br />y: 98.7","textfont":{"size":14.6645669291339,"color":"rgba(0,0,0,1)"},"type":"scatter","mode":"text","hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[19043],"y":[98.15],"text":"War","hovertext":"x: 2022-02-20<br />y: 98.15","textfont":{"size":14.6645669291339,"color":"rgba(0,0,0,1)"},"type":"scatter","mode":"text","hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":45.4063926940639,"r":7.30593607305936,"b":27.2146118721461,"l":40.1826484018265},"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"title":{"text":"Singapore Consumer Price Index","font":{"color":"rgba(0,0,0,1)","family":"","size":17.5342465753425},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[15917.35,19297.65],"tickmode":"array","ticktext":["2014","2016","2018","2020","2022"],"tickvals":[16071,16801,17532,18262,18993],"categoryorder":"array","categoryarray":["2014","2016","2018","2020","2022"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.65296803652968,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"","font":{"color":null,"family":null,"size":0}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[97.17665,109.21835],"tickmode":"array","ticktext":["97.5","100.0","102.5","105.0","107.5"],"tickvals":[97.5,100,102.5,105,107.5],"categoryorder":"array","categoryarray":["97.5","100.0","102.5","105.0","107.5"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.65296803652968,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"","font":{"color":null,"family":null,"size":0}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895}},"hovermode":"closest","barmode":"relative","annotations":[{"x":0,"y":-0.15,"text":"Data source: Singstat (extracted as at Oct 2022)","showarrow":false,"xref":"paper","yref":"paper"}]},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"194647c78e8":{"x":{},"y":{},"type":"scatter"},"1944e416361":{"x":{},"y":{}},"1944b6311a4":{"yintercept":{}},"1941ede22a2":{"x":{},"xend":{},"y":{},"yend":{}},"194585735f0":{"x":{},"y":{}},"1947f845978":{"x":{},"xend":{},"y":{},"yend":{}},"1944bc429c5":{"x":{},"y":{}},"194519c61b1":{"x":{},"y":{}},"1941cef3c7b":{"x":{},"xend":{},"y":{},"yend":{}},"194262f658e":{"x":{},"y":{}},"19441d94b81":{"x":{},"y":{}}},"cur_data":"194647c78e8","visdat":{"194647c78e8":["function (y) ","x"],"1944e416361":["function (y) ","x"],"1944b6311a4":["function (y) ","x"],"1941ede22a2":["function (y) ","x"],"194585735f0":["function (y) ","x"],"1947f845978":["function (y) ","x"],"1944bc429c5":["function (y) ","x"],"194519c61b1":["function (y) ","x"],"1941cef3c7b":["function (y) ","x"],"194262f658e":["function (y) ","x"],"19441d94b81":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<p>Although overall CPI is increasing, the different components within
+CPI have different trends.</p>
+<p>Split by different components within CPI</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>df_1</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>data_series</span> <span class='op'>==</span> <span class='st'>'Food'</span> <span class='op'>|</span>
+          <span class='va'>data_series</span> <span class='op'>==</span> <span class='st'>'Food Excl Food Serving Services'</span> <span class='op'>|</span>
+          <span class='va'>data_series</span> <span class='op'>==</span> <span class='st'>'Food Serving Services'</span> <span class='op'>|</span>
+          <span class='va'>data_series</span> <span class='op'>==</span> <span class='st'>'Clothing &amp; Footwear'</span> <span class='op'>|</span>
+          <span class='va'>data_series</span> <span class='op'>==</span> <span class='st'>'Housing &amp; Utilities'</span> <span class='op'>|</span>
+          <span class='va'>data_series</span> <span class='op'>==</span> <span class='st'>'Household Durables &amp; Services'</span> <span class='op'>|</span>
+          <span class='va'>data_series</span> <span class='op'>==</span> <span class='st'>'Health Care'</span> <span class='op'>|</span>
+          <span class='va'>data_series</span> <span class='op'>==</span> <span class='st'>'Transport'</span> <span class='op'>|</span>
+          <span class='va'>data_series</span> <span class='op'>==</span> <span class='st'>'Communication'</span> <span class='op'>|</span>
+          <span class='va'>data_series</span> <span class='op'>==</span> <span class='st'>'Recreation &amp; Culture'</span> <span class='op'>|</span>
+          <span class='va'>data_series</span> <span class='op'>==</span> <span class='st'>'Education'</span> <span class='op'>|</span>
+          <span class='va'>data_series</span> <span class='op'>==</span> <span class='st'>'Miscellaneous Goods &amp; Services'</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>month_year_recoded</span>,
+             y <span class='op'>=</span> <span class='va'>cpi</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_line</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_hline</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>yintercept <span class='op'>=</span> <span class='fl'>100</span><span class='op'>)</span>, color <span class='op'>=</span> <span class='st'>"blue"</span>, linetype <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>facet_wrap</span><span class='op'>(</span><span class='op'>~</span><span class='va'>data_series</span>, labeller <span class='op'>=</span> <span class='fu'>labeller</span><span class='op'>(</span>data_series <span class='op'>=</span> <span class='fu'>label_wrap_gen</span><span class='op'>(</span><span class='fl'>25</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+    <span class='fu'>labs</span><span class='op'>(</span>title <span class='op'>=</span> <span class='fu'>str_wrap</span><span class='op'>(</span><span class='st'>"Singapore Consumer Price Index By Components Between  2014 Jan - 2021 Dec"</span>, <span class='fl'>65</span><span class='op'>)</span>,
+       caption <span class='op'>=</span> <span class='st'>"Data Source: Singstat (extracted as at Oct 2022)"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>theme</span><span class='op'>(</span>axis.text.x <span class='op'>=</span> <span class='fu'>element_text</span><span class='op'>(</span>angle <span class='op'>=</span> <span class='fl'>90</span>, hjust <span class='op'>=</span> <span class='fl'>1</span>, vjust <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>theme_minimal</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>theme</span><span class='op'>(</span>axis.title.x <span class='op'>=</span> <span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span>,
+        axis.text.x <span class='op'>=</span> <span class='fu'>element_text</span><span class='op'>(</span>angle <span class='op'>=</span> <span class='fl'>90</span><span class='op'>)</span>,
+        axis.title.y <span class='op'>=</span> <span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span>,
+        plot.caption <span class='op'>=</span> <span class='fu'>element_text</span><span class='op'>(</span>hjust <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="timeseries_files/figure-html5/unnamed-chunk-16-1.png" width="100%" /></p>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>df_1</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>data_series</span> <span class='op'>==</span> <span class='st'>"Private Transport"</span> <span class='op'>|</span>
+           <span class='va'>data_series</span> <span class='op'>==</span> <span class='st'>"Public Transport"</span> <span class='op'>|</span>
+           <span class='va'>data_series</span> <span class='op'>==</span> <span class='st'>"Other Transport Services"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>month_year_recoded</span>,
+         y <span class='op'>=</span> <span class='va'>cpi</span>,
+         color <span class='op'>=</span> <span class='va'>data_series</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_line</span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>1.2</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_hline</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>yintercept <span class='op'>=</span> <span class='fl'>100</span><span class='op'>)</span>, color <span class='op'>=</span> <span class='st'>"blue"</span>, linetype <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>labs</span><span class='op'>(</span>title <span class='op'>=</span> <span class='fu'>str_wrap</span><span class='op'>(</span><span class='st'>"Singapore CPI on Different Transport Components Between 2014 Jan and 2021 Dec"</span>, <span class='fl'>65</span><span class='op'>)</span>,
+       caption <span class='op'>=</span> <span class='st'>"Data Source: Singstat (extracted as at Oct 2022)"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>scale_color_brewer</span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Pastel1"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>theme_minimal</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>theme</span><span class='op'>(</span>axis.title.x <span class='op'>=</span> <span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span>,
+        axis.title.y <span class='op'>=</span> <span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span>,
+        legend.position <span class='op'>=</span> <span class='st'>"top"</span>,
+        legend.justification<span class='op'>=</span><span class='st'>'left'</span>,
+        legend.title <span class='op'>=</span> <span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span>,
+        plot.caption <span class='op'>=</span> <span class='fu'>element_text</span><span class='op'>(</span>hjust <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="timeseries_files/figure-html5/unnamed-chunk-17-1.png" width="100%" /></p>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>df_1</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>data_series</span> <span class='op'>==</span> <span class='st'>"Cars"</span> <span class='op'>|</span>
+           <span class='va'>data_series</span> <span class='op'>==</span> <span class='st'>"Motorcycles"</span> <span class='op'>|</span>
+           <span class='va'>data_series</span> <span class='op'>==</span> <span class='st'>"Petrol"</span> <span class='op'>|</span>
+           <span class='va'>data_series</span> <span class='op'>==</span> <span class='st'>"Other Private Transport"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>month_year_recoded</span>,
+         y <span class='op'>=</span> <span class='va'>cpi</span>,
+         color <span class='op'>=</span> <span class='va'>data_series</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_line</span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>1.2</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_hline</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>yintercept <span class='op'>=</span> <span class='fl'>100</span><span class='op'>)</span>, 
+             color <span class='op'>=</span> <span class='st'>"blue"</span>, 
+             linetype <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>annotate</span><span class='op'>(</span><span class='st'>"segment"</span>, 
+           x <span class='op'>=</span> <span class='va'>date_arrow</span>, 
+           y <span class='op'>=</span> <span class='fl'>115</span>, 
+           xend <span class='op'>=</span> <span class='va'>date_arrow</span>, 
+           yend <span class='op'>=</span> <span class='fl'>108</span>, 
+           color <span class='op'>=</span> <span class='st'>"red"</span>, 
+           arrow <span class='op'>=</span> <span class='fu'>arrow</span><span class='op'>(</span>length <span class='op'>=</span> <span class='fu'>unit</span><span class='op'>(</span><span class='fl'>0.05</span>,<span class='st'>"npc"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>annotate</span><span class='op'>(</span><span class='st'>"text"</span>, 
+           x <span class='op'>=</span> <span class='va'>date_arrow</span>, 
+           y <span class='op'>=</span> <span class='fl'>120</span>, 
+           label <span class='op'>=</span> <span class='st'>"Circuit Breaker"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>annotate</span><span class='op'>(</span><span class='st'>"segment"</span>, 
+           x <span class='op'>=</span> <span class='va'>date_petrol_duty</span>, 
+           y <span class='op'>=</span> <span class='fl'>130</span>, 
+           xend <span class='op'>=</span> <span class='va'>date_petrol_duty</span>, 
+           yend <span class='op'>=</span> <span class='fl'>115</span>, 
+           color <span class='op'>=</span> <span class='st'>"red"</span>, 
+           arrow <span class='op'>=</span> <span class='fu'>arrow</span><span class='op'>(</span>length <span class='op'>=</span> <span class='fu'>unit</span><span class='op'>(</span><span class='fl'>0.05</span>,<span class='st'>"npc"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>annotate</span><span class='op'>(</span><span class='st'>"text"</span>, 
+           x <span class='op'>=</span> <span class='va'>date_petrol_duty</span>, 
+           y <span class='op'>=</span> <span class='fl'>139</span>, 
+           label <span class='op'>=</span> <span class='st'>"Petrol Duty"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>annotate</span><span class='op'>(</span><span class='st'>"text"</span>, 
+           x <span class='op'>=</span> <span class='va'>date_petrol_duty</span>, 
+           y <span class='op'>=</span> <span class='fl'>134</span>, 
+           label <span class='op'>=</span> <span class='st'>"Increase"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>annotate</span><span class='op'>(</span><span class='st'>"segment"</span>, 
+           x <span class='op'>=</span> <span class='va'>date_ukraine_arrow</span>, 
+           y <span class='op'>=</span> <span class='fl'>90</span>, 
+           xend <span class='op'>=</span> <span class='va'>date_ukraine_arrow</span>, 
+           yend <span class='op'>=</span> <span class='fl'>99</span>, 
+           color <span class='op'>=</span> <span class='st'>"red"</span>, 
+           arrow <span class='op'>=</span> <span class='fu'>arrow</span><span class='op'>(</span>length <span class='op'>=</span> <span class='fu'>unit</span><span class='op'>(</span><span class='fl'>0.05</span>,<span class='st'>"npc"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>annotate</span><span class='op'>(</span><span class='st'>"text"</span>, 
+           x <span class='op'>=</span> <span class='va'>date_ukraine_arrow</span>, 
+           y <span class='op'>=</span> <span class='fl'>89</span>, 
+           label <span class='op'>=</span> <span class='st'>"Ukraine"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>annotate</span><span class='op'>(</span><span class='st'>"text"</span>, 
+           x <span class='op'>=</span> <span class='va'>date_ukraine_arrow</span>, 
+           y <span class='op'>=</span> <span class='fl'>84</span>, 
+           label <span class='op'>=</span> <span class='st'>"War"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>labs</span><span class='op'>(</span>title <span class='op'>=</span> <span class='fu'>str_wrap</span><span class='op'>(</span><span class='st'>"Singapore CPI on Different Private Transport Components Between  2014 Jan and 2021 Dec"</span>, <span class='fl'>65</span><span class='op'>)</span>,
+       caption <span class='op'>=</span> <span class='st'>"Data Source: Singstat (extracted as at Oct 2022)"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>scale_color_brewer</span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Pastel1"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>theme_minimal</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>theme</span><span class='op'>(</span>axis.title.x <span class='op'>=</span> <span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span>,
+        axis.title.y <span class='op'>=</span> <span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span>,
+        legend.position <span class='op'>=</span> <span class='st'>"top"</span>,
+        legend.justification<span class='op'>=</span><span class='st'>'left'</span>,
+        legend.title <span class='op'>=</span> <span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span>,
+        plot.caption <span class='op'>=</span> <span class='fu'>element_text</span><span class='op'>(</span>hjust <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span>  
+</code></pre>
+</div>
+<p><img src="timeseries_files/figure-html5/unnamed-chunk-18-1.png" width="100%" /></p>
+</div>
+<p>Strangely enough that the CPI for clothing and footwear drop</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>df_1</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>data_series</span> <span class='op'>==</span> <span class='st'>"Clothing &amp; Footwear"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>month_year_recoded</span>,
+         y <span class='op'>=</span> <span class='va'>cpi</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_line</span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_hline</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>yintercept <span class='op'>=</span> <span class='fl'>100</span><span class='op'>)</span>, color <span class='op'>=</span> <span class='st'>"blue"</span>, linetype <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>labs</span><span class='op'>(</span>title <span class='op'>=</span> <span class='fu'>str_wrap</span><span class='op'>(</span><span class='st'>"Singapore CPI on Clothing and Footwear Between  2014 Jan - 2021 Dec"</span>, <span class='fl'>65</span><span class='op'>)</span>,
+       caption <span class='op'>=</span> <span class='st'>"Data Source: Singstat (extracted as at Oct 2022)"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>theme_minimal</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>theme</span><span class='op'>(</span>axis.title.x <span class='op'>=</span> <span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span>,
+        axis.title.y <span class='op'>=</span> <span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span>,
+        plot.caption <span class='op'>=</span> <span class='fu'>element_text</span><span class='op'>(</span>hjust <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="timeseries_files/figure-html5/unnamed-chunk-19-1.png" width="100%" /></p>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>df_1</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>data_series</span> <span class='op'>==</span> <span class='st'>"Clothing"</span> <span class='op'>|</span>
+           <span class='va'>data_series</span> <span class='op'>==</span> <span class='st'>"Other Articles &amp; Related Services"</span> <span class='op'>|</span>
+           <span class='va'>data_series</span> <span class='op'>==</span> <span class='st'>"Footwear"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>month_year_recoded</span>,
+         y <span class='op'>=</span> <span class='va'>cpi</span>,
+         color <span class='op'>=</span> <span class='va'>data_series</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_line</span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>1.2</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_hline</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>yintercept <span class='op'>=</span> <span class='fl'>100</span><span class='op'>)</span>, 
+             color <span class='op'>=</span> <span class='st'>"blue"</span>, 
+             linetype <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>annotate</span><span class='op'>(</span><span class='st'>"segment"</span>, 
+           x <span class='op'>=</span> <span class='va'>date_arrow</span>, 
+           y <span class='op'>=</span> <span class='fl'>110</span>, 
+           xend <span class='op'>=</span> <span class='va'>date_arrow</span>, 
+           yend <span class='op'>=</span> <span class='fl'>102</span>, 
+           color <span class='op'>=</span> <span class='st'>"red"</span>, 
+           arrow <span class='op'>=</span> <span class='fu'>arrow</span><span class='op'>(</span>length <span class='op'>=</span> <span class='fu'>unit</span><span class='op'>(</span><span class='fl'>0.05</span>,<span class='st'>"npc"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>annotate</span><span class='op'>(</span><span class='st'>"text"</span>, 
+           x <span class='op'>=</span> <span class='va'>date_arrow</span>, 
+           y <span class='op'>=</span> <span class='fl'>113</span>, 
+           label <span class='op'>=</span> <span class='st'>"Circuit Breaker"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>annotate</span><span class='op'>(</span><span class='st'>"segment"</span>, 
+           x <span class='op'>=</span> <span class='va'>date_petrol_duty</span>, 
+           y <span class='op'>=</span> <span class='fl'>120</span>, 
+           xend <span class='op'>=</span> <span class='va'>date_petrol_duty</span>, 
+           yend <span class='op'>=</span> <span class='fl'>102</span>, 
+           color <span class='op'>=</span> <span class='st'>"red"</span>, 
+           arrow <span class='op'>=</span> <span class='fu'>arrow</span><span class='op'>(</span>length <span class='op'>=</span> <span class='fu'>unit</span><span class='op'>(</span><span class='fl'>0.05</span>,<span class='st'>"npc"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>annotate</span><span class='op'>(</span><span class='st'>"text"</span>, 
+           x <span class='op'>=</span> <span class='va'>date_petrol_duty</span>, 
+           y <span class='op'>=</span> <span class='fl'>125</span>, 
+           label <span class='op'>=</span> <span class='st'>"Petrol Duty"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>annotate</span><span class='op'>(</span><span class='st'>"text"</span>, 
+           x <span class='op'>=</span> <span class='va'>date_petrol_duty</span>, 
+           y <span class='op'>=</span> <span class='fl'>122</span>, 
+           label <span class='op'>=</span> <span class='st'>"Increase"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>annotate</span><span class='op'>(</span><span class='st'>"segment"</span>, 
+           x <span class='op'>=</span> <span class='va'>date_ukraine_arrow</span>, 
+           y <span class='op'>=</span> <span class='fl'>90</span>, 
+           xend <span class='op'>=</span> <span class='va'>date_ukraine_arrow</span>, 
+           yend <span class='op'>=</span> <span class='fl'>99</span>, 
+           color <span class='op'>=</span> <span class='st'>"red"</span>, 
+           arrow <span class='op'>=</span> <span class='fu'>arrow</span><span class='op'>(</span>length <span class='op'>=</span> <span class='fu'>unit</span><span class='op'>(</span><span class='fl'>0.05</span>,<span class='st'>"npc"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>annotate</span><span class='op'>(</span><span class='st'>"text"</span>, 
+           x <span class='op'>=</span> <span class='va'>date_ukraine_arrow</span>, 
+           y <span class='op'>=</span> <span class='fl'>89</span>, 
+           label <span class='op'>=</span> <span class='st'>"Ukraine"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>annotate</span><span class='op'>(</span><span class='st'>"text"</span>, 
+           x <span class='op'>=</span> <span class='va'>date_ukraine_arrow</span>, 
+           y <span class='op'>=</span> <span class='fl'>86</span>, 
+           label <span class='op'>=</span> <span class='st'>"War"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>labs</span><span class='op'>(</span>title <span class='op'>=</span> <span class='fu'>str_wrap</span><span class='op'>(</span><span class='st'>"Singapore CPI on Clothing &amp; Footwear Between 2014 Jan and 2021 Dec"</span>, <span class='fl'>65</span><span class='op'>)</span>,
+       caption <span class='op'>=</span> <span class='st'>"Data Source: Singstat (extracted as at Oct 2022)"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>scale_color_brewer</span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"Pastel1"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>theme_minimal</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>theme</span><span class='op'>(</span>axis.title.x <span class='op'>=</span> <span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span>,
+        axis.title.y <span class='op'>=</span> <span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span>,
+        legend.position <span class='op'>=</span> <span class='st'>"top"</span>,
+        legend.justification<span class='op'>=</span><span class='st'>'left'</span>,
+        legend.title <span class='op'>=</span> <span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span>,
+        plot.caption <span class='op'>=</span> <span class='fu'>element_text</span><span class='op'>(</span>hjust <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="timeseries_files/figure-html5/unnamed-chunk-20-1.png" width="100%" /></p>
+</div>
+<p>Despite all odds, consumer price index of clothing and footwear
+continue to drop.</p>
+<h1 id="conclusion">Conclusion</h1>
+<p>That’s all for the day!</p>
+<p>Thanks for reading the post until the end.</p>
+<p>Feel free to contact me through <a
+href="mailto:jasper.jh.lok@gmail.com">email</a> or <a
+href="https://www.linkedin.com/in/jasper-l-13426232/">LinkedIn</a> if
+you have any suggestions on future topics to share.</p>
+<p>Refer to this link for the <a
+href="https://jasperlok.netlify.app/blog_disclaimer.html">blog
+disclaimer</a>.</p>
+<p>Till next time, happy learning!</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="image/singapore.jpg" width="100%" /></p>
+</div>
+<p>Photo by <a
+href="https://www.pexels.com/photo/black-and-white-photo-of-a-building-3914752/">Soulful
+Pizza</a></p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<div id="refs" class="references csl-bib-body hanging-indent"
+role="doc-bibliography">
+<div id="ref-ABS" class="csl-entry" role="doc-biblioentry">
+Australian Bureau of Statistics. <span>“Time Series Analysis: The
+Basics.”</span> <a
+href="https://www.abs.gov.au/websitedbs/d3310114.nsf/home/time+series+analysis:+the+basics">https://www.abs.gov.au/websitedbs/d3310114.nsf/home/time+series+analysis:+the+basics</a>.
+</div>
+</div>
+<!--radix_placeholder_article_footer-->
+<!--/radix_placeholder_article_footer-->
+</div>
+
+<div class="d-appendix">
+</div>
+
+
+<!--radix_placeholder_site_after_body-->
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_appendices-->
+<div class="appendix-bottom">
+<h3 id="references">References</h3>
+<div id="references-listing"></div>
+</div>
+<!--/radix_placeholder_appendices-->
+<!--radix_placeholder_navigation_after_body-->
+<!--/radix_placeholder_navigation_after_body-->
+
+</body>
+
+</html>

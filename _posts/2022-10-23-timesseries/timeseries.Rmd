@@ -1,0 +1,589 @@
+---
+title: "Visualizing Time Series"
+description: |
+   It's about time
+author:
+  - name: Jasper Lok 
+    url: https://jasperlok.netlify.app/
+date: 10-23-2022
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 4
+    self_contained: false
+bibliography: ["ref.bib"]
+biblio-style: "apa"
+link-citations: true
+categories:
+  - Time Series
+  - Data Visualization
+  
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+pacman::p_load(captioner, knitr, kableExtra, tidyverse)
+
+knitr::opts_chunk$set(fig.retina = 3,                       
+                      echo = TRUE,                       
+                      eval = TRUE,                       
+                      message = FALSE,                       
+                      warning = FALSE,
+                      out.width="100%")
+
+```
+
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/esplanade.jpg")
+
+```
+
+
+Photo by [Palu Malerba](https://www.pexels.com/photo/green-leafed-plants-inside-greenhouse-2426546/)
+
+Recently there is a lot of discussions on rising inflation. 
+
+This makes me curious about how inflation has changed over time.
+
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/inflation_cna.png")
+
+```
+
+Extracted from [CNA](https://www.channelnewsasia.com/singapore/monetary-authority-singapore-mas-tighten-monetary-policy-fifth-time-3007081) on 23 Oct 2022
+
+Before we start visualizing the time series, let's take a look what is time series.
+
+
+# What is time series?
+
+Time series data is the data collected at regular time intervals.
+
+An observed time series can be decomposed into three components: the trend (long term direction), the seasonal (systematic, calendar related movements) and the irregular (unsystematic, short term fluctuations) [@ABS].
+
+# Demonstration
+
+In this demonstration, I will be using the consumer price index dataset I obtained from Singstat website.
+
+This is also to satisfy my curiosity about what is driving inflation in Singapore upwards.
+
+## Setup the environment
+
+First, I will set up the environment by calling the necessary packages.
+
+```{r}
+pacman::p_load(tidyverse, lubridate, timetk, tsibble, janitor, 
+               feasts, plotly, wesanderson)
+
+```
+
+Next, I will import the dataset into the environment.
+
+```{r}
+df <- read_csv("data/M212881.csv", skip = 10) %>%
+  slice(1:148) %>%
+  filter(`Data Series` != "Hawker Centres" &
+           `Data Series` != "Food Courts & Coffee Shops")
+
+```
+
+As some of the columns are imported in incorrect column types, I will use `sapply` function to convert the columns into the correct column types.
+
+```{r}
+cols_num <- c(2:ncol(df))
+
+df[cols_num] <- sapply(df[cols_num], as.numeric)
+
+```
+
+Once the columns are imported into the correct types, I will reshape the dataset by using `pivot_longer` function.
+
+```{r}
+start_date <- "2014-01-01"
+end_date <- "2022-06-01"
+
+```
+
+```{r}
+df_1 <- df %>%
+  pivot_longer(!`Data Series`, names_to = "Month Year", values_to = "CPI") %>%
+  clean_names() %>%
+  mutate(month_year_recoded = ym(month_year)) %>%
+  select(-month_year) %>%
+  filter(month_year_recoded >= start_date & month_year_recoded <= end_date)
+
+```
+
+`as_tsibble` function is to convert the dataset into tsibble dataframe.
+
+We will pass month_year_recoded into `index` argument.
+
+Another thing to take note of is we need to pass info
+
+```{r}
+df_1_ts <- df_1 %>%
+  mutate(month_year_recoded = yearmonth(month_year_recoded)) %>%
+  as_tsibble(index = month_year_recoded,
+             key = data_series)
+
+```
+
+The `has_gaps` function can help us to check whether there are any gaps in the data.
+
+```{r}
+has_gaps(df_1_ts) %>%
+  filter(.gaps == TRUE)
+
+```
+
+```{r}
+df_1 %>%
+  as_tsibble(index = month_year_recoded,
+             key = data_series) %>%
+  has_gaps()
+
+```
+
+If the dataset contains only one key, we can use `as_tsibble` function without specifying the key.
+
+```{r}
+df_1 %>%
+  filter(data_series == "All Items") %>%
+  as_tsibble(index = month_year_recoded)
+
+```
+
+Once the dataset is converted into tsibble format, the usual `filter` function would not work.
+
+To do so, use `filter_index` function to perform the filtering job.
+
+```{r}
+df_1_ts %>%
+  filter_index(~"2021-12")
+
+```
+
+# Visualization
+
+Next, I will visualize how the CPI has changed between `r start_date` and `r end_date`.
+
+As such, I will use `ggplot` functions to visualize the CPI.
+
+I will also pre-defined the dates of the two arrows I will be adding to the graph. The date info is obtained from Google.
+
+```{r}
+date_arrow <- as_date("2020-04-07", "%Y-%m-%d")
+date_petrol_duty <- as_date("2021-02-16", "%Y-%m-%d")
+date_ukraine_arrow <- as_date("2022-02-20", "%Y-%m-%d")
+
+df_1 %>%
+  filter(data_series == "All Items") %>%
+  ggplot(aes(x = month_year_recoded,
+         y = cpi)) +
+  geom_line(size = 0.5) +
+  geom_smooth(method = "loess", se = FALSE) +
+  geom_hline(aes(yintercept = 100), 
+             color = "blue", 
+             linetype = 2) +
+  annotate("segment", 
+           x = date_arrow, 
+           y = 101.5, 
+           xend = date_arrow, 
+           yend = 100.55, 
+           color = "red", 
+           arrow = arrow(length = unit(0.05,"npc"))) +
+  annotate("text", 
+           x = date_arrow, 
+           y = 101.9, 
+           label = "Circuit Breaker") +
+  annotate("segment", 
+           x = date_petrol_duty, 
+           y = 103, 
+           xend = date_petrol_duty,
+           yend = 102, 
+           color = "red", 
+           arrow = arrow(length = unit(0.05,"npc"))) +
+  annotate("text", 
+           x = date_petrol_duty, 
+           y = 103.65, 
+           label = "Petrol Duty") +
+  annotate("text", 
+           x = date_petrol_duty, 
+           y = 103.25, 
+           label = "Increase") +
+  annotate("segment", 
+           x = date_ukraine_arrow, 
+           y = 99, 
+           xend = date_ukraine_arrow, 
+           yend = 99.9, 
+           color = "red", 
+           arrow = arrow(length = unit(0.05,"npc"))) +
+  annotate("text", 
+           x = date_ukraine_arrow, 
+           y = 98.8, 
+           label = "Ukraine") +
+  annotate("text", 
+           x = date_ukraine_arrow, 
+           y = 98.4, 
+           label = "War") +
+  labs(title = "Singapore Consumer Price Index",
+       caption = "Data Source: Singstat (extracted as at Oct 2022)") +
+  theme_minimal() +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        plot.caption = element_text(hjust = 0))
+  
+```
+
+```{r}
+circuit_breaker <- 
+  list(x = date_arrow, 
+       y = 101,
+       text = "Circuit Breaker",
+       showarrow = TRUE,
+       arrowhead = 1,
+       ax = 0)
+
+petrol_duty <-
+  list(x = date_petrol_duty, 
+       y = 103.5,
+       text = "Petrol Duty Increase",
+       showarrow = TRUE,
+       arrowhead = 1,
+       ax = 0)
+
+ukraine_war <- 
+  list(x = date_ukraine_arrow, 
+       y = 98.7,
+       text = "Ukraine War",
+       showarrow = TRUE,
+       arrowhead = 1,
+       ax = 0,
+       ay = 60)
+
+caption <-
+  list(x = 0, 
+       y = -0.15, 
+       text = "Data source: Singstat (extracted as at Oct 2022)", 
+       showarrow = F,
+       xref='paper', 
+       yref='paper')
+
+df_1 %>%
+  filter(data_series == 'All Items') %>%
+  plot_time_series(month_year_recoded,
+                   cpi,
+                   .line_size = 0.5,
+                   .interactive = TRUE,
+                   .smooth_degree = 2,
+                   .title = "Singapore Consumer Product Index") %>%
+  layout(annotations = list(circuit_breaker, 
+                            ukraine_war, 
+                            petrol_duty,
+                            caption)) %>%
+  add_lines(x = range(df_1$month_year_recoded), 
+            y = 100, 
+            line = list(color = "blue",
+                        dash = 'dot')) 
+
+```
+
+
+Alternatively, we can still use the conventional methods to create the interactive graphs, e.g. plotting the graph by using `plot_ly` function or creating the `ggplot` object and then passing the object to `ggplotly` function.
+
+I prefer the second method so I need not remember so many syntaxes.
+
+```{r}
+ggplotly(
+  df_1 %>%
+  filter(data_series == "All Items") %>%
+  ggplot(aes(x = month_year_recoded,
+         y = cpi)) +
+  geom_line(size = 0.5) +
+  geom_smooth(method = "loess", se = FALSE) +
+  geom_hline(aes(yintercept = 100), 
+             color = "blue", 
+             linetype = 2) +
+  annotate("segment", 
+           x = date_arrow, 
+           y = 101.5, 
+           xend = date_arrow, 
+           yend = 100.55, 
+           color = "red", 
+           arrow = arrow(length = unit(0.05,"npc"))) +
+  annotate("text", 
+           x = date_arrow, 
+           y = 102, 
+           label = "Circuit Breaker") +
+  annotate("segment", 
+           x = date_petrol_duty, 
+           y = 103, 
+           xend = date_petrol_duty, 
+           yend = 102, 
+           color = "red", 
+           arrow = arrow(length = unit(0.05,"npc"))) +
+  annotate("text", 
+           x = date_petrol_duty, 
+           y = 103.85, 
+           label = "Petrol Duty") +
+  annotate("text", 
+           x = date_petrol_duty, 
+           y = 103.3, 
+           label = "Increase") +
+  annotate("segment", 
+           x = date_ukraine_arrow, 
+           y = 99, 
+           xend = date_ukraine_arrow, 
+           yend = 99.9, 
+           color = "red", 
+           arrow = arrow(length = unit(0.05,"npc"))) +
+  annotate("text", 
+           x = date_ukraine_arrow, 
+           y = 98.7, 
+           label = "Ukraine") +
+  annotate("text", 
+           x = date_ukraine_arrow, 
+           y = 98.15, 
+           label = "War") +
+  labs(title = "Singapore Consumer Price Index") +
+  theme_minimal() +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        plot.caption = element_text(hjust = 0))
+  ) %>%
+  layout(annotations = list(caption))
+
+```
+
+Although overall CPI is increasing, the different components within CPI have different trends.
+
+Split by different components within CPI
+
+```{r}
+df_1 %>%
+  filter(data_series == 'Food' |
+          data_series == 'Food Excl Food Serving Services' |
+          data_series == 'Food Serving Services' |
+          data_series == 'Clothing & Footwear' |
+          data_series == 'Housing & Utilities' |
+          data_series == 'Household Durables & Services' |
+          data_series == 'Health Care' |
+          data_series == 'Transport' |
+          data_series == 'Communication' |
+          data_series == 'Recreation & Culture' |
+          data_series == 'Education' |
+          data_series == 'Miscellaneous Goods & Services') %>%
+  ggplot(aes(x = month_year_recoded,
+             y = cpi)) +
+  geom_line() +
+  geom_hline(aes(yintercept = 100), color = "blue", linetype = 2) +
+  facet_wrap(~data_series, labeller = labeller(data_series = label_wrap_gen(25))) +
+    labs(title = str_wrap("Singapore Consumer Price Index By Components Between  2014 Jan - 2021 Dec", 65),
+       caption = "Data Source: Singstat (extracted as at Oct 2022)") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0)) +
+  theme_minimal() +
+  theme(axis.title.x = element_blank(),
+        axis.text.x = element_text(angle = 90),
+        axis.title.y = element_blank(),
+        plot.caption = element_text(hjust = 0))
+
+  
+```
+
+```{r}
+df_1 %>%
+  filter(data_series == "Private Transport" |
+           data_series == "Public Transport" |
+           data_series == "Other Transport Services") %>%
+  ggplot(aes(x = month_year_recoded,
+         y = cpi,
+         color = data_series)) +
+  geom_line(size = 1.2) +
+  geom_hline(aes(yintercept = 100), color = "blue", linetype = 2) +
+  labs(title = str_wrap("Singapore CPI on Different Transport Components Between 2014 Jan and 2021 Dec", 65),
+       caption = "Data Source: Singstat (extracted as at Oct 2022)") +
+  scale_color_brewer(palette = "Pastel1") +
+  theme_minimal() +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        legend.position = "top",
+        legend.justification='left',
+        legend.title = element_blank(),
+        plot.caption = element_text(hjust = 0))
+
+```
+
+```{r}
+df_1 %>%
+  filter(data_series == "Cars" |
+           data_series == "Motorcycles" |
+           data_series == "Petrol" |
+           data_series == "Other Private Transport") %>%
+  ggplot(aes(x = month_year_recoded,
+         y = cpi,
+         color = data_series)) +
+  geom_line(size = 1.2) +
+  geom_hline(aes(yintercept = 100), 
+             color = "blue", 
+             linetype = 2) +
+  annotate("segment", 
+           x = date_arrow, 
+           y = 115, 
+           xend = date_arrow, 
+           yend = 108, 
+           color = "red", 
+           arrow = arrow(length = unit(0.05,"npc"))) +
+  annotate("text", 
+           x = date_arrow, 
+           y = 120, 
+           label = "Circuit Breaker") +
+  annotate("segment", 
+           x = date_petrol_duty, 
+           y = 130, 
+           xend = date_petrol_duty, 
+           yend = 115, 
+           color = "red", 
+           arrow = arrow(length = unit(0.05,"npc"))) +
+  annotate("text", 
+           x = date_petrol_duty, 
+           y = 139, 
+           label = "Petrol Duty") +
+  annotate("text", 
+           x = date_petrol_duty, 
+           y = 134, 
+           label = "Increase") +
+  annotate("segment", 
+           x = date_ukraine_arrow, 
+           y = 90, 
+           xend = date_ukraine_arrow, 
+           yend = 99, 
+           color = "red", 
+           arrow = arrow(length = unit(0.05,"npc"))) +
+  annotate("text", 
+           x = date_ukraine_arrow, 
+           y = 89, 
+           label = "Ukraine") +
+  annotate("text", 
+           x = date_ukraine_arrow, 
+           y = 84, 
+           label = "War") +
+  labs(title = str_wrap("Singapore CPI on Different Private Transport Components Between  2014 Jan and 2021 Dec", 65),
+       caption = "Data Source: Singstat (extracted as at Oct 2022)") +
+  scale_color_brewer(palette = "Pastel1") +
+  theme_minimal() +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        legend.position = "top",
+        legend.justification='left',
+        legend.title = element_blank(),
+        plot.caption = element_text(hjust = 0))  
+
+```
+
+Strangely enough that the CPI for clothing and footwear drop
+
+```{r}
+df_1 %>%
+  filter(data_series == "Clothing & Footwear") %>%
+  ggplot(aes(x = month_year_recoded,
+         y = cpi)) +
+  geom_line(size = 0.5) +
+  geom_hline(aes(yintercept = 100), color = "blue", linetype = 2) +
+  labs(title = str_wrap("Singapore CPI on Clothing and Footwear Between  2014 Jan - 2021 Dec", 65),
+       caption = "Data Source: Singstat (extracted as at Oct 2022)") +
+  theme_minimal() +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        plot.caption = element_text(hjust = 0))
+
+```
+
+```{r}
+df_1 %>%
+  filter(data_series == "Clothing" |
+           data_series == "Other Articles & Related Services" |
+           data_series == "Footwear") %>%
+  ggplot(aes(x = month_year_recoded,
+         y = cpi,
+         color = data_series)) +
+  geom_line(size = 1.2) +
+  geom_hline(aes(yintercept = 100), 
+             color = "blue", 
+             linetype = 2) +
+  annotate("segment", 
+           x = date_arrow, 
+           y = 110, 
+           xend = date_arrow, 
+           yend = 102, 
+           color = "red", 
+           arrow = arrow(length = unit(0.05,"npc"))) +
+  annotate("text", 
+           x = date_arrow, 
+           y = 113, 
+           label = "Circuit Breaker") +
+  annotate("segment", 
+           x = date_petrol_duty, 
+           y = 120, 
+           xend = date_petrol_duty, 
+           yend = 102, 
+           color = "red", 
+           arrow = arrow(length = unit(0.05,"npc"))) +
+  annotate("text", 
+           x = date_petrol_duty, 
+           y = 125, 
+           label = "Petrol Duty") +
+  annotate("text", 
+           x = date_petrol_duty, 
+           y = 122, 
+           label = "Increase") +
+  annotate("segment", 
+           x = date_ukraine_arrow, 
+           y = 90, 
+           xend = date_ukraine_arrow, 
+           yend = 99, 
+           color = "red", 
+           arrow = arrow(length = unit(0.05,"npc"))) +
+  annotate("text", 
+           x = date_ukraine_arrow, 
+           y = 89, 
+           label = "Ukraine") +
+  annotate("text", 
+           x = date_ukraine_arrow, 
+           y = 86, 
+           label = "War") +
+  labs(title = str_wrap("Singapore CPI on Clothing & Footwear Between 2014 Jan and 2021 Dec", 65),
+       caption = "Data Source: Singstat (extracted as at Oct 2022)") +
+  scale_color_brewer(palette = "Pastel1") +
+  theme_minimal() +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        legend.position = "top",
+        legend.justification='left',
+        legend.title = element_blank(),
+        plot.caption = element_text(hjust = 0))
+
+```
+
+Despite all odds, consumer price index of clothing and footwear continue to drop.
+
+# Conclusion
+
+That's all for the day!
+
+Thanks for reading the post until the end.
+
+Feel free to contact me through [email](mailto:jasper.jh.lok@gmail.com) or [LinkedIn](https://www.linkedin.com/in/jasper-l-13426232/) if you have any suggestions on future topics to share.
+
+Refer to this link for the [blog disclaimer](https://jasperlok.netlify.app/blog_disclaimer.html).
+
+Till next time, happy learning!
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/singapore.jpg")
+
+```
+
+Photo by [Soulful Pizza](https://www.pexels.com/photo/black-and-white-photo-of-a-building-3914752/)
