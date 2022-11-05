@@ -1,0 +1,466 @@
+---
+title: "Time Series Decomposition"
+description: |
+   Breaking down to the "lego block" of time series
+author:
+  - name: Jasper Lok 
+    url: https://jasperlok.netlify.app/
+date: 11-06-2022
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 4
+    self_contained: false
+bibliography: ["ref.bib"]
+biblio-style: "apa"
+link-citations: true
+categories:
+  - Time Series
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+pacman::p_load(captioner, knitr, kableExtra, tidyverse)
+
+knitr::opts_chunk$set(fig.retina = 3,                       
+                      echo = TRUE,                       
+                      eval = TRUE,                       
+                      message = FALSE,                       
+                      warning = FALSE,
+                      out.width="100%")
+
+```
+
+This post continues our previous topic on time series.
+
+As the name of the post suggested, we will be breaking the time series into different components.
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/lego.jpg")
+
+```
+
+Photo by <a href="https://unsplash.com/@sen7?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Sen</a> on <a href="https://unsplash.com/s/photos/lego?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+  
+
+
+# Time series components
+
+In general, time series can be seen as made out of following components:
+
+- Trend
+
+- Seasonal
+
+- Remainder
+
+
+It can be written in following mathematical format:
+
+$$y_t = S_t + T_t + R_t$$
+
+where
+
+- $S_t$ is the seasonal component
+
+- $T_t$ is the trend component
+
+- $R_t$ is the remainder component
+
+
+While the above mathematical expression shows the additive time series decomposition, it can be written as multiplicative decomposition as well.
+
+$$y_t = S_t \times T_t \times R_t$$
+
+# So when should we use additive or multiplicative components?
+
+This depends on the magnitude of seasonal variations or variation around trend.
+
+If the variation seems to be increasing by time, then multiplicative components are likely to be more suitable.
+
+
+# Differences between the different methods
+
+There are several methods in decomposing the time series [@Hyndman2021]:
+
+
+```{r, echo = FALSE}
+time_series_decom <- tibble(Method = c("Classical decomposition", 
+                                       "X11 decomposition",
+                                       "SEATS decomposition",
+                                       "STL decomposition"),
+                            Remarks = c("Some of the problems with this method:<br/>- the estimate of trend is not available for first few and last few observations<br/>- trend estimate tends to over-smooth rapid rises and falls<br/>- assume the seasonal components repeats from year to year, which may not be reasonable<br/>- not robust to outliers", 
+                                     "Based on classical decomposition, but includes many extra steps and features to overcome the drawbacks of classical decomposition", 
+                                     "The full name is 'seasonal extraction in ARIMA time series'<br/><br/>This method only works with quarterly and monthly data", 
+                                     "The full name is 'seasonal decomposition of time series by Loess'<br/><br/>Following are the advantages over the classical, SEATS and X11 decomposition methods:<br/>- Unlike SEATS and X11, this method handles any type of seasonality, not only monthly and quarterly data<br/>- Seasonal component is allowed to change over time<br/>- Seasonal component and smoothness of the trend can be controlled by the user<br/>- Trend and seasonal component of this method is robust to outliers"))
+
+time_series_decom %>%
+  kbl(escape = FALSE) %>%
+  kable_paper("hover", full_width = F, html_font = "Cambria", font_size = 15)
+
+
+```
+
+
+
+
+
+# Demonstration
+
+Since the high inflation has been a hot topic, in this demonstration, I will be using the consumer price index dataset I obtained from Singstat website.
+
+![](https://media.giphy.com/media/132pnhRx4EM7ni/giphy-downsized-large.gif)
+
+*Taken from giphy*
+
+## Setup the environment
+
+First, I will setup the environment by calling the necessary packages.
+
+```{r}
+pacman::p_load(tidyverse, lubridate, timetk, tsibble, janitor, feasts, fable, seasonal)
+
+```
+
+Next, I will import the dataset into the environment.
+
+```{r}
+df <- read_csv("https://raw.githubusercontent.com/jasperlok/my-blog/master/_posts/2022-10-23-timesseries/data/M212881.csv", 
+               skip = 10) %>%
+  slice(1:148) %>%
+  filter(`Data Series` != "Hawker Centres" &
+           `Data Series` != "Food Courts & Coffee Shops")
+
+```
+
+As some of the columns are imported in incorrect column types, I will use `sapply` function to convert the columns into the correct column types.
+
+```{r}
+cols_num <- c(2:ncol(df))
+
+df[cols_num] <- sapply(df[cols_num], as.numeric)
+
+```
+
+Once the columns are imported into the correct types, I will reshape the dataset by using `pivot_longer` function.
+
+```{r}
+start_date <- "2014-01-01"
+end_date <- "2021-12-01"
+
+```
+
+```{r}
+df_1 <- df %>%
+  pivot_longer(!`Data Series`, names_to = "Month Year", values_to = "CPI") %>%
+  clean_names() %>%
+  mutate(month_year_recoded = ym(month_year)) %>%
+  select(-month_year) %>%
+  filter(month_year_recoded >= start_date & month_year_recoded <= end_date)
+
+```
+
+`as_tsibble` function is to convert the dataset into tsibble dataframe.
+
+We will pass month_year_recoded into `index` argument.
+
+As another thing to take note is we need to pass info
+
+```{r}
+df_1_ts <- df_1 %>%
+  mutate(month_year_recoded = yearmonth(month_year_recoded)) %>%
+  as_tsibble(index = month_year_recoded,
+             key = data_series)
+
+```
+
+# Decompose the time series
+
+In this demonstration, I will be using one of the items to demonstrate on how we could decompose the time series.
+
+```{r}
+interested_cpi_item <- "Clothing & Footwear"
+
+```
+
+Before jumping into the time series decomposition, let's look at the time series again.
+
+```{r}
+df_1_ts %>%
+  filter(data_series == interested_cpi_item) %>%
+  autoplot() +
+  xlab("") +
+  ylab("CPI") +
+  labs(title = paste0("CPI Time Series of ", interested_cpi_item)) +
+  theme_minimal()
+
+```
+
+
+
+### Classical Decomposition
+
+From the graph, it seems like the seasonality or variation around time series are quite consistent throughout the period.
+
+Hence, I will indicate the type should be "additive" in the `type` argument in `classical_decomposition` function.
+
+```{r}
+classical_model <- df_1_ts %>%
+  filter(data_series == interested_cpi_item) %>%
+  model(classical_decomposition(type = "additive"))
+
+classical_model
+
+```
+
+The output consists of the selected data series and the model. 
+
+To extract the info of the fitted model, I will use the `components` function.
+
+
+```{r}
+classical_model %>%
+  components()
+
+```
+
+Aside from the fitted values (i.e. trend, seasonal, random and season_adjust), it also contains the original time series value (i.e. cpi in this demonstration).
+
+
+As the default value for seasonality in `classical_decomposition` function is 12 (which 12 means its a monthly seasonality), we can observe that the `trend` and `random` column do not contain any value for the first 6 months and last 6 months.
+
+
+We can visualize the different components by passing the objects into `autoplot` function as shown below.
+
+
+```{r}
+classical_model %>%
+  components() %>%
+  autoplot()
+
+```
+
+Note that there are some grey bars on the left side of the graphs. 
+
+
+Those bars represents the relative scales of the different components since all the components are plotted under different scales.
+
+In other words, it probably be easier to understand the bars as how much we have "zoomed in" to illustrate the components. 
+
+The longer the bar, the more we have "zoomed in".
+
+Personally, I find the bars can cause some confusion when I try to explain the graph. 
+
+To avoid the unnecessary confusion, we can turn off the `scale_bars` by passing `FALSE` into the argument.
+
+```{r}
+classical_model %>%
+  components() %>%
+  autoplot(scale_bars = FALSE)
+
+```
+
+
+We can also change the seasonality to other values.
+
+Following are the values for the seasonality:
+
+```{r}
+seasonality_df <- tibble(Value = c("4", "12", "7"),
+                         `Corresponding seasonality` = c("Quarterly",
+                                                         "Monthly",
+                                                         "Daily"))
+
+seasonality_df %>%
+  kbl(escape = FALSE) %>%
+  kable_paper("hover", full_width = F, html_font = "Cambria", font_size = 15)
+
+```
+
+So, if I were to change the seasonality to quarterly seasonality, below are the components of the revised model:
+
+```{r}
+df_1_ts %>%
+  filter(data_series == interested_cpi_item) %>%
+  model(classical_decomposition(cpi ~ season(4),
+                                type = "additive")) %>%
+  components() %>%
+  autoplot()
+
+```
+
+This revised decomposition model seems to "perform" worse than the decomposition model with monthly seasonality.
+
+Under the quarterly decomposition model, there seems to have some "patterns" uncaptured by the seasonality.
+
+
+### X11 Decomposition
+
+Next, I will use X11 decomposition method.
+
+
+
+```{r}
+temp <- df_1_ts %>%
+  filter(data_series == interested_cpi_item) %>%
+  model(X_13ARIMA_SEATS(cpi ~ x11())) %>%
+  report()
+
+```
+```{r}
+objects(temp)
+
+```
+
+```{r}
+df_1_ts %>%
+  filter(data_series == interested_cpi_item) %>%
+  model(X_13ARIMA_SEATS(cpi ~ x11())) %>%
+  components() %>%
+  autoplot()
+
+```
+
+
+Do refer to this [instruction manual](https://www2.census.gov/software/x-13arima-seats/x13as/windows/documentation/docx13as.pdf) if you want to find out the arguments can be accepted by the functions.
+
+
+For example, by default, the seasonal adjustment decomposition of X11 is set to be pseudo additive.
+
+To change the type of seasonal adjustment decomposition, we will do the following:
+
+- Include the `transform` argument
+
+    - Otherwise, the code will return error even if we are not transforming the data series
+
+- Pass the selected type of seasonal adjustment decomposition calculation to the `mode` argument
+
+
+page 224
+
+```{r}
+df_1_ts %>%
+  filter(data_series == interested_cpi_item) %>%
+  model(X_13ARIMA_SEATS(cpi ~ transform(`function` = "none") + x11(mode = "add"))) %>%
+  report()
+
+```
+
+
+Also, the manual mentioned above is also applicable for the `SEATS` decomposition method that I am covering next.
+
+
+### SEATS Decomposition
+
+Next, I will use `SEATS` to decompose the time series.
+
+To do so, we can either just pass in the time series into `X_13ARIMA_SEATS` function without specifying the specs or explicitly indicate the specs should be `seats`.
+
+*Method 1: Without specifying the specs*
+
+```{r}
+df_1_ts %>%
+  filter(data_series == interested_cpi_item) %>%
+  model(X_13ARIMA_SEATS(cpi)) %>%
+  components() %>%
+  autoplot()
+
+```
+
+*Method 2: Explicitly specify the specs as `seats`*
+
+```{r}
+df_1_ts %>%
+  filter(data_series == interested_cpi_item) %>%
+  model(X_13ARIMA_SEATS(cpi ~ seats())) %>%
+  components() %>%
+  autoplot()
+
+```
+
+
+Note that the graph does not mention which adjustment is being selected when `seats` specs is used to decompose the time series.
+
+
+Similarly, the `report` function allows to check the model output result.
+
+```{r}
+df_1_ts %>%
+  filter(data_series == interested_cpi_item) %>%
+  model(X_13ARIMA_SEATS(cpi ~ seats())) %>%
+  report()
+
+```
+
+
+### STL Decomposition
+
+Lastly, I will use `STL` function to decompose the time series.
+
+As such, I will use the `STL` function from `feasts` package to perform the task.
+
+```{r}
+df_1_ts %>%
+  filter(data_series == interested_cpi_item) %>%
+  model(STL(cpi)) %>%
+  components()
+
+```
+
+As usual, I will pass the components to `autoplot` function to visualize the graph.
+
+```{r}
+df_1_ts %>%
+  filter(data_series == interested_cpi_item) %>%
+  model(STL(cpi)) %>%
+  components() %>%
+  autoplot()
+
+```
+
+`STL` function also allows the users to pass in additional parameters.
+
+For example, in the previous STL graph, the season is set as "yearly" as there is a "_year" beside "season".
+
+We can modify the seasonality by passing the information to `season` argument as shown below.
+
+
+```{r}
+df_1_ts %>%
+  filter(data_series == interested_cpi_item) %>%
+  model(STL(cpi ~ season(3))) %>%
+  components() %>%
+  autoplot()
+
+```
+
+The graph will show the number of observations in each seasonal period we have indicated in the earlier argument.
+
+
+For more information on the parameters allowed, please refer to the documentation page.
+
+- [feats documentation](https://feasts.tidyverts.org/reference/STL.html)
+
+- [stl documentation](https://rdrr.io/r/stats/stl.html)
+
+# Conclusion
+
+That's all for the day!
+
+Thanks for reading the post until the end.
+
+Feel free to contact me through [email](mailto:jasper.jh.lok@gmail.com) or [LinkedIn](https://www.linkedin.com/in/jasper-l-13426232/) if you have any suggestions on future topics to share.
+
+Refer to this link for the [blog disclaimer](https://jasperlok.netlify.app/blog_disclaimer.html).
+
+Till next time, happy learning!
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/stack.jpg")
+
+```
+
+Photo by <a href="https://unsplash.com/@keilahoetzel?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Keila Hötzel</a> on <a href="https://unsplash.com/s/photos/stack?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+  
+
