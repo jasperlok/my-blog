@@ -1,0 +1,342 @@
+---
+title: "Reading PDF into R"
+description: |
+   
+author:
+  - name: Jasper Lok 
+    url: https://jasperlok.netlify.app/
+date: 01-04-2023
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 4
+    self_contained: false
+bibliography: ["ref.bib"]
+biblio-style: "apa"
+link-citations: true
+categories:
+  - Text Analytics
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+pacman::p_load(captioner, knitr, kableExtra, tidyverse)
+
+knitr::opts_chunk$set(fig.retina = 3,                       
+                      echo = TRUE,                       
+                      eval = TRUE,                       
+                      message = FALSE,                       
+                      warning = FALSE,
+                      out.width="100%")
+
+```
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/scan_text.jpg")
+
+```
+
+Photo by [cottonbro](https://www.pexels.com/photo/person-in-white-button-up-shirt-holding-white-printer-paper-6334768/)
+
+Previously, while I was reading up the different text analytics, I happened to come acorss a R package that helps to read PDF documents into R environment.
+
+That makes me wonder **what if** I could use this to help me to summarise the key points in the PDF documents, instead of needing to read through the entire documents.
+
+![](https://media.giphy.com/media/3o7buirYcmV5nSwIRW/giphy.gif)
+
+*Taken from giphy*
+
+
+As there isn't much theory on this exploration, so I will jump straight into the demonstration and it would be a rather short post.
+
+# Demonstration
+
+In this demonstration, I will use the pdf copy of the paper I wrote together with my professor when I was doing the capstone project for my master degree.
+
+The pdf can be found under [this link](https://github.com/jasperlok/SMU_Capstone/blob/main/Report/MITB_Capstone_Lok%20Jun%20Haur_Final%20Report_20210430.pdf).
+
+## Setup the environment
+
+I will first call all the packages I need.
+
+```{r}
+pacman::p_load(tidyverse, pdftools, readr, tidytext, ggwordcloud, quanteda, spacyr)
+
+```
+
+## Import the pdf into the environment
+
+To import the pdf into the environment, I will use `pdf_text` function from `pdftools` package to do so.
+
+```{r}
+df <- pdf_text("data/MITB_Capstone_Lok Jun Haur_Final Report_20210430.pdf")
+
+```
+
+To find out how pages there are in the pdf, we could use `length` function on the dataset.
+
+```{r}
+length(df)
+
+```
+
+We could also extract the content of the selected page by using double bracket as shown below.
+
+```{r}
+df[[10]]
+
+```
+
+To make the text more readable, we could use `cat` function from base R.
+
+```{r}
+cat(df[[10]])
+
+```
+
+Next, I will perform some text analysis.
+
+To do so, I will convert the character object into data frame so that it would be easier to analyze later.
+
+To do so, I will first convert the text into different lines by using `read_lines` function.
+
+```{r}
+df[[10]] %>%
+  read_lines()
+
+```
+
+Next, I will trim additional whitespace by using `str_squish` function.
+
+```{r}
+df[[10]] %>%
+  read_lines() %>%
+  str_squish()
+
+```
+
+Then, I will convert the text into a tibble table by using `as_tibble` function. I will filter out all the empty rows after converting into the data frame.
+
+```{r}
+df[[10]] %>%
+  read_lines() %>%
+  str_squish() %>%
+  as_tibble() %>%
+  filter(value != "")
+
+```
+
+```{r}
+df_page <- df[[10]] %>%
+  read_lines() %>%
+  str_squish() %>%
+  as_tibble() %>%
+  filter(value != "")
+
+df_page
+
+```
+
+Next, I will tokenize the words by using `token` function.
+
+I will also perform the following when tokenizing the words:
+
+-   Remove punctuation
+
+-   Remove numbers
+
+-   Remove symbols
+
+-   Remove separators
+
+-   Split the words that join together by hyphens
+
+I will also convert the words to small letters and remove the stopwords.
+
+```{r}
+df_token <- 
+  tokens(df_page$value, 
+         remove_punct = TRUE,
+         remove_numbers = TRUE,
+         remove_symbols = TRUE,
+         remove_separators = TRUE,
+         split_hyphens = TRUE) %>%
+  tokens_tolower() %>%
+  tokens_remove(stopwords(language = "en", source = "smart"), padding = FALSE)
+
+```
+
+```{r}
+df_token
+
+```
+
+Now the page is being tokenized.
+
+I will perform frequency count on the word as shown below.
+
+```{r}
+df_token_df <- 
+  df_token %>%
+  dfm() %>%
+  tidy() %>%
+  group_by(term) %>%
+  summarise(tot_count = sum(count)) %>%
+  arrange(desc(tot_count))
+
+df_token_df
+
+```
+
+Next I will visualize the texts in word cloud.
+
+```{r}
+df_token_df %>%
+  filter(tot_count > 1) %>%
+  ggplot(aes(label = term, size = tot_count, color = tot_count)) +
+  geom_text_wordcloud_area(shape  = "circle") +
+  scale_size_area(max_size = 18) +
+  theme_minimal()
+  
+```
+
+From the word cloud, we can see that the content of the selected page is about insurance claim cost. Other key words are 'assumptions', 'cashflow', 'stochastic' and so on.
+
+To analyze the whole context of the document, I will use a for loop to loop through the main content of the report.
+
+```{r}
+page_num <- 5:93 # page number for the main content of the report
+
+df_page_2 <- tibble()
+
+for(i in page_num){
+  temp <- 
+    df[[i]] %>%
+    read_lines() %>%
+    str_squish() %>%
+    as_tibble() %>%
+    filter(value != "") 
+
+temp_page <- 
+  tokens(temp$value, 
+         remove_punct = TRUE,
+         remove_numbers = TRUE,
+         remove_symbols = TRUE,
+         remove_separators = TRUE,
+         split_hyphens = FALSE) %>%
+  tokens_tolower() %>%
+  tokens_remove(stopwords(language = "en", source = "smart"), padding = FALSE) %>%
+  tokens_replace(pattern = lexicon::hash_lemmas$token, 
+                 replacement = lexicon::hash_lemmas$lemma) %>%
+  dfm() %>%
+  tidy() %>%
+  group_by(term) %>%
+  summarise(tot_count = sum(count)) %>%
+  mutate(page = i)
+
+df_page_2 <- df_page_2 %>%
+  bind_rows(temp_page)
+}
+
+```
+
+```{r}
+df_page_3 <- df_page_2 %>%
+  group_by(term) %>%
+  summarise(tot_count = sum(tot_count)) %>%
+  arrange(desc(tot_count))
+
+```
+
+```{r}
+df_page_3 %>%
+  filter(tot_count >= 20) %>%
+  ggplot(aes(label = term, size = tot_count, color = tot_count)) +
+  geom_text_wordcloud_area(shape  = "circle") +
+  scale_size_area(max_size = 18) +
+  theme_minimal()
+  
+```
+
+From the word cloud, we can see the document is about datum (i.e. the lemma word for data) and model.
+
+
+## N-gram
+
+Personally, I prefer generating different ngrams to see whether there is any interesting insights could be extracted.
+
+
+```{r}
+df_page_2_ngram <- tibble()
+
+for(i in page_num){
+  temp <- 
+    df[[i]] %>%
+    read_lines() %>%
+    str_squish() %>%
+    as_tibble() %>%
+    filter(value != "") 
+
+temp_page <- 
+  tokens(temp$value, 
+         remove_punct = TRUE,
+         remove_numbers = TRUE,
+         remove_symbols = TRUE,
+         remove_separators = TRUE,
+         split_hyphens = FALSE) %>%
+  tokens_tolower() %>%
+  tokens_remove(stopwords(language = "en", source = "smart"), padding = FALSE) %>%
+  tokens_replace(pattern = lexicon::hash_lemmas$token, 
+                 replacement = lexicon::hash_lemmas$lemma) %>%
+  tokens_ngrams(n = 2:3, concatenator = " ") %>%
+  dfm() %>%
+  tidy() %>%
+  group_by(term) %>%
+  summarise(tot_count = sum(count)) %>%
+  mutate(page = i)
+
+df_page_2_ngram <- df_page_2_ngram %>%
+  bind_rows(temp_page)
+}
+
+
+```
+
+
+```{r}
+df_page_2_ngram %>%
+  group_by(term) %>%
+  summarise(tot_count = sum(tot_count)) %>%
+  arrange(desc(tot_count)) %>%
+  filter(tot_count >= 15) %>%
+  ggplot(aes(label = term, size = tot_count, color = tot_count)) +
+  geom_text_wordcloud_area(shape  = "circle") +
+  scale_size_area(max_size = 18) +
+  theme_minimal()
+
+```
+
+Now the words in the word cloud make more sense. 
+
+Now we can see the report is about machine learning and data science.
+
+
+# Conclusion
+
+That's all for the day!
+
+Thanks for reading the post until the end.
+
+Feel free to contact me through [email](mailto:jasper.jh.lok@gmail.com) or [LinkedIn](https://www.linkedin.com/in/jasper-l-13426232/) if you have any suggestions on future topics to share.
+
+Refer to this link for the [blog disclaimer](https://jasperlok.netlify.app/blog_disclaimer.html).
+
+Till next time, happy learning!
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/explore.jpg")
+
+```
+
+Photo by [Tyler Lastovich](https://www.pexels.com/photo/photo-of-a-man-walking-on-boardwalk-808466/)
