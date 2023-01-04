@@ -50,6 +50,7 @@ pre.numberSource code > span > a:first-child::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
+<<<<<<< HEAD
   { color: #00769e; background-color: #f1f3f5; }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
@@ -61,6 +62,18 @@ code span.at { color: #657422; } /* Attribute */
 code span.bn { color: #ad0000; } /* BaseN */
 code span.bu { } /* BuiltIn */
 code span.cf { color: #00769e; } /* ControlFlow */
+=======
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ad0000; } /* Alert */
+code span.an { color: #5e5e5e; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bn { color: #ad0000; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007ba5; } /* ControlFlow */
+>>>>>>> parent of 609029f (Remove textpdf)
 code span.ch { color: #20794d; } /* Char */
 code span.cn { color: #8f5902; } /* Constant */
 code span.co { color: #5e5e5e; } /* Comment */
@@ -74,9 +87,15 @@ code span.fl { color: #ad0000; } /* Float */
 code span.fu { color: #4758ab; } /* Function */
 code span.im { } /* Import */
 code span.in { color: #5e5e5e; } /* Information */
+<<<<<<< HEAD
 code span.kw { color: #00769e; } /* Keyword */
 code span.op { color: #5e5e5e; } /* Operator */
 code span.ot { color: #00769e; } /* Other */
+=======
+code span.kw { color: #007ba5; } /* Keyword */
+code span.op { color: #5e5e5e; } /* Operator */
+code span.ot { color: #007ba5; } /* Other */
+>>>>>>> parent of 609029f (Remove textpdf)
 code span.pp { color: #ad0000; } /* Preprocessor */
 code span.sc { color: #5e5e5e; } /* SpecialChar */
 code span.ss { color: #20794d; } /* SpecialString */
@@ -785,7 +804,10 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   d-article table.gt_table td,
   d-article table.gt_table th {
     border-bottom: none;
+<<<<<<< HEAD
     font-size: 100%;
+=======
+>>>>>>> parent of 609029f (Remove textpdf)
   }
 
   .html-widget {
@@ -1029,6 +1051,13 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     margin-top: 1.5em;
   }
 
+<<<<<<< HEAD
+=======
+  .figure img {
+    width: 100%;
+  }
+
+>>>>>>> parent of 609029f (Remove textpdf)
   .figure .caption {
     color: rgba(0, 0, 0, 0.6);
     font-size: 12px;
@@ -1858,6 +1887,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
       // hoverable references
       $('span.citation[data-cites]').each(function() {
+<<<<<<< HEAD
         const citeChild = $(this).children()[0]
         // Do not process if @xyz has been used without escaping and without bibliography activated
         // https://github.com/rstudio/distill/issues/466
@@ -1873,6 +1903,11 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
         var refHtml = refs.map(function(ref) {
           // Could use CSS.escape too here, we insure backward compatibility in navigator
           return "<p>" + $('div[id="ref-' + ref + '"]').html() + "</p>";
+=======
+        var refs = $(this).attr('data-cites').split(" ");
+        var refHtml = refs.map(function(ref) {
+          return "<p>" + $('#ref-' + ref).html() + "</p>";
+>>>>>>> parent of 609029f (Remove textpdf)
         }).join("\n");
         window.tippy(this, {
           allowHTML: true,
@@ -1885,6 +1920,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
         });
       });
 
+<<<<<<< HEAD
       // fix footnotes in tables (#411)
       // replacing broken distill.pub feature
       $('table d-footnote').each(function() {
@@ -1910,6 +1946,8 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
         }
       })
 
+=======
+>>>>>>> parent of 609029f (Remove textpdf)
       // clear polling timer
       clearInterval(tid);
 
@@ -2008,8 +2046,11 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     // mark non-body figures created by knitr chunks as 100% width
     $('.layout-chunk').each(function(i, val) {
       var figures = $(this).find('img, .html-widget');
+<<<<<<< HEAD
       // ignore leaflet img layers (#106)
       figures = figures.filter(':not(img[class*="leaflet"])')
+=======
+>>>>>>> parent of 609029f (Remove textpdf)
       if ($(this).attr('data-layout') !== "l-body") {
         figures.css('width', '100%');
       } else {
@@ -2032,7 +2073,11 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     // get rid of index.html references in header
     if (window.location.protocol !== "file:") {
       $('.distill-site-header a[href]').each(function(i,val) {
+<<<<<<< HEAD
         $(this).attr('href', $(this).attr('href').replace(/^index[.]html/, "./"));
+=======
+        $(this).attr('href', $(this).attr('href').replace("index.html", "./"));
+>>>>>>> parent of 609029f (Remove textpdf)
       });
     }
 
@@ -2071,7 +2116,11 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </script>
 
   <!--/radix_placeholder_distill-->
+<<<<<<< HEAD
   <script src="site_libs/header-attrs-2.19/header-attrs.js"></script>
+=======
+  <script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+>>>>>>> parent of 609029f (Remove textpdf)
   <script src="site_libs/popper-2.6.0/popper.min.js"></script>
   <link href="site_libs/tippy-6.2.7/tippy.css" rel="stylesheet" />
   <link href="site_libs/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
@@ -2272,7 +2321,7 @@ function init_posts_list() {
 <a href="posts/2022-11-06-timesseries-decom/" class="post-preview">
 <script class="post-metadata" type="text/json">{"categories":["Time Series"]}</script>
 <div class="metadata">
-<div class="publishedDate">Nov. 6, 2022</div>
+<div class="publishedDate">Nov. 5, 2022</div>
 <div class="dt-authors">
 <div class="dt-author">Jasper Lok</div>
 </div>
@@ -2291,7 +2340,7 @@ function init_posts_list() {
 <a href="posts/2022-11-05-exponential_smooth/" class="post-preview">
 <script class="post-metadata" type="text/json">{"categories":["Time Series","Time Series Forecasting"]}</script>
 <div class="metadata">
-<div class="publishedDate">Nov. 5, 2022</div>
+<div class="publishedDate">Nov. 4, 2022</div>
 <div class="dt-authors">
 <div class="dt-author">Jasper Lok</div>
 </div>
@@ -2311,7 +2360,7 @@ function init_posts_list() {
 <a href="posts/2022-10-23-timesseries/" class="post-preview">
 <script class="post-metadata" type="text/json">{"categories":["Time Series","Data Visualization"]}</script>
 <div class="metadata">
-<div class="publishedDate">Oct. 23, 2022</div>
+<div class="publishedDate">Oct. 22, 2022</div>
 <div class="dt-authors">
 <div class="dt-author">Jasper Lok</div>
 </div>
@@ -2331,7 +2380,7 @@ function init_posts_list() {
 <a href="posts/2022-09-24-glm/" class="post-preview">
 <script class="post-metadata" type="text/json">{"categories":["Machine Learning","Supervised Learning"]}</script>
 <div class="metadata">
-<div class="publishedDate">Sept. 24, 2022</div>
+<div class="publishedDate">Sept. 23, 2022</div>
 <div class="dt-authors">
 <div class="dt-author">Jasper Lok</div>
 </div>
@@ -2351,7 +2400,7 @@ function init_posts_list() {
 <a href="posts/2022-09-10-kaplan-meier/" class="post-preview">
 <script class="post-metadata" type="text/json">{"categories":["Machine Learning","Survival Model"]}</script>
 <div class="metadata">
-<div class="publishedDate">Sept. 10, 2022</div>
+<div class="publishedDate">Sept. 9, 2022</div>
 <div class="dt-authors">
 <div class="dt-author">Jasper Lok</div>
 </div>
@@ -2371,7 +2420,7 @@ function init_posts_list() {
 <a href="posts/2022-08-06-fairness/" class="post-preview">
 <script class="post-metadata" type="text/json">{"categories":["Machine Learning","Model Explanability"]}</script>
 <div class="metadata">
-<div class="publishedDate">Aug. 6, 2022</div>
+<div class="publishedDate">Aug. 5, 2022</div>
 <div class="dt-authors">
 <div class="dt-author">Jasper Lok</div>
 </div>
@@ -2391,7 +2440,7 @@ function init_posts_list() {
 <a href="posts/2022-07-09-bayes_tune/" class="post-preview">
 <script class="post-metadata" type="text/json">{"categories":["Machine Learning","Hyperparameter Tuning"]}</script>
 <div class="metadata">
-<div class="publishedDate">July 9, 2022</div>
+<div class="publishedDate">July 8, 2022</div>
 <div class="dt-authors">
 <div class="dt-author">Jasper Lok</div>
 </div>
@@ -2411,7 +2460,7 @@ function init_posts_list() {
 <a href="posts/2022-06-05-grids/" class="post-preview">
 <script class="post-metadata" type="text/json">{"categories":["Machine Learning","Hyperparameter Tuning"]}</script>
 <div class="metadata">
-<div class="publishedDate">June 5, 2022</div>
+<div class="publishedDate">June 4, 2022</div>
 <div class="dt-authors">
 <div class="dt-author">Jasper Lok</div>
 </div>
@@ -2431,7 +2480,7 @@ function init_posts_list() {
 <a href="posts/2022-05-03-partial-dependence/" class="post-preview">
 <script class="post-metadata" type="text/json">{"categories":["Machine Learning","Model Explanability"]}</script>
 <div class="metadata">
-<div class="publishedDate">May 7, 2022</div>
+<div class="publishedDate">May 6, 2022</div>
 <div class="dt-authors">
 <div class="dt-author">Jasper Lok</div>
 </div>
@@ -2451,7 +2500,7 @@ function init_posts_list() {
 <a href="posts/2022-04-16-lime/" class="post-preview">
 <script class="post-metadata" type="text/json">{"categories":["Machine Learning","Model Explanability"]}</script>
 <div class="metadata">
-<div class="publishedDate">April 16, 2022</div>
+<div class="publishedDate">April 15, 2022</div>
 <div class="dt-authors">
 <div class="dt-author">Jasper Lok</div>
 </div>
@@ -2471,7 +2520,7 @@ function init_posts_list() {
 <a href="posts/2022-03-12-marketbasket/" class="post-preview">
 <script class="post-metadata" type="text/json">{"categories":["Unsupervised Learning","Association Rules"]}</script>
 <div class="metadata">
-<div class="publishedDate">March 12, 2022</div>
+<div class="publishedDate">March 11, 2022</div>
 <div class="dt-authors">
 <div class="dt-author">Jasper Lok</div>
 </div>
@@ -2491,7 +2540,7 @@ function init_posts_list() {
 <a href="posts/2022-02-12-point-pattern-analysis/" class="post-preview">
 <script class="post-metadata" type="text/json">{"categories":["Geospatial Analytics"]}</script>
 <div class="metadata">
-<div class="publishedDate">Feb. 12, 2022</div>
+<div class="publishedDate">Feb. 11, 2022</div>
 <div class="dt-authors">
 <div class="dt-author">Jasper Lok</div>
 </div>
@@ -2510,7 +2559,7 @@ function init_posts_list() {
 <a href="posts/2022-01-15-topic-modeling/" class="post-preview">
 <script class="post-metadata" type="text/json">{"categories":["Text Analytics"]}</script>
 <div class="metadata">
-<div class="publishedDate">Jan. 15, 2022</div>
+<div class="publishedDate">Jan. 14, 2022</div>
 <div class="dt-authors">
 <div class="dt-author">Jasper Lok</div>
 </div>
@@ -2529,7 +2578,7 @@ function init_posts_list() {
 <a href="posts/2021-12-02-text-analytics/" class="post-preview">
 <script class="post-metadata" type="text/json">{"categories":["Text Analytics"]}</script>
 <div class="metadata">
-<div class="publishedDate">Dec. 2, 2021</div>
+<div class="publishedDate">Dec. 1, 2021</div>
 <div class="dt-authors">
 <div class="dt-author">Jasper Lok</div>
 </div>
@@ -2548,7 +2597,7 @@ function init_posts_list() {
 <a href="posts/2021-10-30-k-means/" class="post-preview">
 <script class="post-metadata" type="text/json">{"categories":["Machine Learning","Unsupervised Learning"]}</script>
 <div class="metadata">
-<div class="publishedDate">Oct. 30, 2021</div>
+<div class="publishedDate">Oct. 29, 2021</div>
 <div class="dt-authors">
 <div class="dt-author">Jasper Lok</div>
 </div>
@@ -2571,7 +2620,7 @@ Because it's mean.</p>
 <a href="posts/2021-10-17-clustering/" class="post-preview">
 <script class="post-metadata" type="text/json">{"categories":["Machine Learning","Unsupervised Learning"]}</script>
 <div class="metadata">
-<div class="publishedDate">Oct. 17, 2021</div>
+<div class="publishedDate">Oct. 16, 2021</div>
 <div class="dt-authors">
 <div class="dt-author">Jasper Lok</div>
 </div>
@@ -2591,7 +2640,7 @@ Because it's mean.</p>
 <a href="posts/2021-09-17-transfer-learning-with-cnn/" class="post-preview">
 <script class="post-metadata" type="text/json">{"categories":["Tensorflow/Keras","Deep Learning","Image Recognition","Transfer Learning"]}</script>
 <div class="metadata">
-<div class="publishedDate">Sept. 17, 2021</div>
+<div class="publishedDate">Sept. 16, 2021</div>
 <div class="dt-authors">
 <div class="dt-author">Jasper Lok</div>
 </div>
@@ -2613,7 +2662,7 @@ Because it's mean.</p>
 <a href="posts/2021-08-31-naive-bayes/" class="post-preview">
 <script class="post-metadata" type="text/json">{"categories":["Machine Learning","Supervised Learning"]}</script>
 <div class="metadata">
-<div class="publishedDate">Sept. 4, 2021</div>
+<div class="publishedDate">Sept. 3, 2021</div>
 <div class="dt-authors">
 <div class="dt-author">Jasper Lok</div>
 </div>
@@ -2633,7 +2682,7 @@ Because it's mean.</p>
 <a href="posts/2021-05-23-model-stacking/" class="post-preview">
 <script class="post-metadata" type="text/json">{"categories":["Machine Learning","Supervised Learning"]}</script>
 <div class="metadata">
-<div class="publishedDate">May 23, 2021</div>
+<div class="publishedDate">May 22, 2021</div>
 <div class="dt-authors">
 <div class="dt-author">Jasper Lok</div>
 </div>
@@ -2653,7 +2702,7 @@ Because it's mean.</p>
 <a href="posts/2021-01-22-data-wrangling/" class="post-preview">
 <script class="post-metadata" type="text/json">{"categories":["Data Wrangling"]}</script>
 <div class="metadata">
-<div class="publishedDate">Feb. 15, 2021</div>
+<div class="publishedDate">Feb. 14, 2021</div>
 <div class="dt-authors">
 <div class="dt-author">Jasper Lok</div>
 </div>
@@ -2672,7 +2721,7 @@ Because it's mean.</p>
 <a href="posts/2021-01-17-my-data-science-journey/" class="post-preview">
 <script class="post-metadata" type="text/json">{"categories":[]}</script>
 <div class="metadata">
-<div class="publishedDate">Jan. 20, 2021</div>
+<div class="publishedDate">Jan. 19, 2021</div>
 <div class="dt-authors">
 <div class="dt-author">Jasper Lok</div>
 </div>
@@ -2781,7 +2830,10 @@ Because it's mean.</p>
 <a href="#">More articles &raquo;</a>
 </div>
 </div>
-<!--/radix_placeholder_article_listing-->
+<!--/radix_placeholder_article_listing-->
+=======
+<!--/radix_placeholder_article_listing-->
+>>>>>>> parent of 609029f (Remove textpdf)
 
 <div class="d-title">
 <h1>When Actuarial Science Collides with Data Science</h1>
@@ -2792,7 +2844,12 @@ Because it's mean.</p>
 
 
 <div class="d-article">
+<<<<<<< HEAD
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+=======
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+>>>>>>> parent of 609029f (Remove textpdf)
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>

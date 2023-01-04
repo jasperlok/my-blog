@@ -50,17 +50,16 @@ pre.numberSource code > span > a:first-child::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  { color: #00769e; background-color: #f1f3f5; }
+  {   }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span { color: #00769e; } /* Normal */
 code span.al { color: #ad0000; } /* Alert */
 code span.an { color: #5e5e5e; } /* Annotation */
-code span.at { color: #657422; } /* Attribute */
+code span.at { } /* Attribute */
 code span.bn { color: #ad0000; } /* BaseN */
 code span.bu { } /* BuiltIn */
-code span.cf { color: #00769e; } /* ControlFlow */
+code span.cf { color: #007ba5; } /* ControlFlow */
 code span.ch { color: #20794d; } /* Char */
 code span.cn { color: #8f5902; } /* Constant */
 code span.co { color: #5e5e5e; } /* Comment */
@@ -74,9 +73,9 @@ code span.fl { color: #ad0000; } /* Float */
 code span.fu { color: #4758ab; } /* Function */
 code span.im { } /* Import */
 code span.in { color: #5e5e5e; } /* Information */
-code span.kw { color: #00769e; } /* Keyword */
+code span.kw { color: #007ba5; } /* Keyword */
 code span.op { color: #5e5e5e; } /* Operator */
-code span.ot { color: #00769e; } /* Other */
+code span.ot { color: #007ba5; } /* Other */
 code span.pp { color: #ad0000; } /* Preprocessor */
 code span.sc { color: #5e5e5e; } /* SpecialChar */
 code span.ss { color: #20794d; } /* SpecialString */
@@ -785,7 +784,6 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   d-article table.gt_table td,
   d-article table.gt_table th {
     border-bottom: none;
-    font-size: 100%;
   }
 
   .html-widget {
@@ -1027,6 +1025,10 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     position: relative;
     margin-bottom: 2.5em;
     margin-top: 1.5em;
+  }
+
+  .figure img {
+    width: 100%;
   }
 
   .figure .caption {
@@ -1858,21 +1860,9 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
       // hoverable references
       $('span.citation[data-cites]').each(function() {
-        const citeChild = $(this).children()[0]
-        // Do not process if @xyz has been used without escaping and without bibliography activated
-        // https://github.com/rstudio/distill/issues/466
-        if (citeChild === undefined) return true
-
-        if (citeChild.nodeName == "D-FOOTNOTE") {
-          var fn = citeChild
-          $(this).html(fn.shadowRoot.querySelector("sup"))
-          $(this).id = fn.id
-          fn.remove()
-        }
         var refs = $(this).attr('data-cites').split(" ");
         var refHtml = refs.map(function(ref) {
-          // Could use CSS.escape too here, we insure backward compatibility in navigator
-          return "<p>" + $('div[id="ref-' + ref + '"]').html() + "</p>";
+          return "<p>" + $('#ref-' + ref).html() + "</p>";
         }).join("\n");
         window.tippy(this, {
           allowHTML: true,
@@ -1884,31 +1874,6 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
           placement: 'bottom-start'
         });
       });
-
-      // fix footnotes in tables (#411)
-      // replacing broken distill.pub feature
-      $('table d-footnote').each(function() {
-        // we replace internal showAtNode methode which is triggered when hovering a footnote
-        this.hoverBox.showAtNode = function(node) {
-          // ported from https://github.com/distillpub/template/pull/105/files
-          calcOffset = function(elem) {
-              let x = elem.offsetLeft;
-              let y = elem.offsetTop;
-              // Traverse upwards until an `absolute` element is found or `elem`
-              // becomes null.
-              while (elem = elem.offsetParent && elem.style.position != 'absolute') {
-                  x += elem.offsetLeft;
-                  y += elem.offsetTop;
-              }
-
-              return { left: x, top: y };
-          }
-          // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetTop
-          const bbox = node.getBoundingClientRect();
-          const offset = calcOffset(node);
-          this.show([offset.left + bbox.width, offset.top + bbox.height]);
-        }
-      })
 
       // clear polling timer
       clearInterval(tid);
@@ -2008,8 +1973,6 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     // mark non-body figures created by knitr chunks as 100% width
     $('.layout-chunk').each(function(i, val) {
       var figures = $(this).find('img, .html-widget');
-      // ignore leaflet img layers (#106)
-      figures = figures.filter(':not(img[class*="leaflet"])')
       if ($(this).attr('data-layout') !== "l-body") {
         figures.css('width', '100%');
       } else {
@@ -2032,7 +1995,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     // get rid of index.html references in header
     if (window.location.protocol !== "file:") {
       $('.distill-site-header a[href]').each(function(i,val) {
-        $(this).attr('href', $(this).attr('href').replace(/^index[.]html/, "./"));
+        $(this).attr('href', $(this).attr('href').replace("index.html", "./"));
       });
     }
 
@@ -2071,7 +2034,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </script>
 
   <!--/radix_placeholder_distill-->
-  <script src="site_libs/header-attrs-2.19/header-attrs.js"></script>
+  <script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
   <link href="site_libs/cronologia-0.1.0/cronologia.min.css" rel="stylesheet" />
   <script src="site_libs/popper-2.6.0/popper.min.js"></script>
   <link href="site_libs/tippy-6.2.7/tippy.css" rel="stylesheet" />
@@ -2129,31 +2092,53 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <div class="layout-chunk" data-layout="l-body">
 <p><img src="image/jasper_2.jpg" width="388" /></p>
 </div>
-<p>Hi there, welcome to my blog! I am currently working as a data scientist. I am passionate about transforming business through my actuarial and data science knowledge.</p>
+<p>Hi there, welcome to my blog! I am currently working as a data
+scientist. I am passionate about transforming business through my
+actuarial and data science knowledge.</p>
 <h3 id="academic-background">Academic Background</h3>
-<p>I did my actuarial science undergraduate degree in The Australian National University back in 2009. Ironically I had no clue what actuarial science or statistics is about when I entered into university. It was one of my final year GLM project sparked my interest in statistics and data science.</p>
-<p>In 2018, I have enrolled myself into Master of IT in Business (Analytics) in Singapore Management University.</p>
+<p>I did my actuarial science undergraduate degree in The Australian
+National University back in 2009. Ironically I had no clue what
+actuarial science or statistics is about when I entered into university.
+It was one of my final year GLM project sparked my interest in
+statistics and data science.</p>
+<p>In 2018, I have enrolled myself into Master of IT in Business
+(Analytics) in Singapore Management University.</p>
 <div class="layout-chunk" data-layout="l-body">
 <p><img src="image/data_idea.jpg" width="80%" /></p>
 </div>
 <p><em>Photo by Franki Chamaki on Unsplash</em></p>
-<p>Throughout my study in SMU, I studied various types of analytics, including customer analytics, social analytics, visual analytics, and operation analytics, to gain a broad understanding of various analytics techniques.</p>
-<p>I also specialized in digital transformation strategy in my master course. During the middle of the pandemic, I also did a consulting job for a local SME that is in the oil &amp; gas industry under the guidance of my SMU professors. The task involved preparing a business proposal on how the SME could leverage its current strength to pivot the current business to venture into a new business market. This would help the SME to ensure its revised business model is more resilient to external market forces.</p>
-<p>I have also written a paper on how modern data science techniques can be used to complement conventional actuarial analysis together with my professor Kam Tin Seong. I am honored to share my paper &amp; learning at Singapore Actuarial Society and useR conference 2021.</p>
+<p>Throughout my study in SMU, I studied various types of analytics,
+including customer analytics, social analytics, visual analytics, and
+operation analytics, to gain a broad understanding of various analytics
+techniques.</p>
+<p>I also specialized in digital transformation strategy in my master
+course. During the middle of the pandemic, I also did a consulting job
+for a local SME that is in the oil &amp; gas industry under the guidance
+of my SMU professors. The task involved preparing a business proposal on
+how the SME could leverage its current strength to pivot the current
+business to venture into a new business market. This would help the SME
+to ensure its revised business model is more resilient to external
+market forces.</p>
+<p>I have also written a paper on how modern data science techniques can
+be used to complement conventional actuarial analysis together with my
+professor Kam Tin Seong. I am honored to share my paper &amp; learning
+at Singapore Actuarial Society and useR conference 2021.</p>
 <h3 id="work-experience">Work Experience</h3>
-<p>I have worked as an actuary in both life insurance and general insurance for the first 10 years of my career before I decided to do a mid career switch into data science.</p>
+<p>I have worked as an actuary in both life insurance and general
+insurance for the first 10 years of my career before I decided to do a
+mid career switch into data science.</p>
 <div class="layout-chunk" data-layout="l-body">
 <p><img src="image/last%20day.jpg" width="75%" /></p>
 </div>
-<p><em>My last day at Income + commencement date for my master degree. They happened to be on the same day!</em></p>
-<p>Throughout my career, I have worked on the following: <br   />
-- Product pricing on various life, general and group insurance products <br   />
-- Experience analysis <br   />
-- Participating fund management <br   />
-- Distribution compensation <br   />
-- End to end machine learning related project <br   />
-- New business model <br   /></p>
-<p>In conclusion, my background &amp; experience can be summarized as following:</p>
+<p><em>My last day at Income + commencement date for my master degree.
+They happened to be on the same day!</em></p>
+<p>Throughout my career, I have worked on the following: <br   /> -
+Product pricing on various life, general and group insurance products
+<br   /> - Experience analysis <br   /> - Participating fund management
+<br   /> - Distribution compensation <br   /> - End to end machine
+learning related project <br   /> - New business model <br   /></p>
+<p>In conclusion, my background &amp; experience can be summarized as
+following:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="chronologia-wrapper">
 <div class="chronologia-detail-wrapper">
@@ -2200,10 +2185,16 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 </div>
 </div>
-<p>Do visit my <a href="https://www.linkedin.com/in/jasper-l-13426232/">LinkedIn page</a> or contact me if you are interested to find out more on my work experience!</p>
+<p>Do visit my <a
+href="https://www.linkedin.com/in/jasper-l-13426232/">LinkedIn page</a>
+or contact me if you are interested to find out more on my work
+experience!</p>
 <h3 id="contact">Contact</h3>
-<p>Feel free to contact me on <a href="mailto:jasper.jh.lok@gmail.com">email</a> or <a href="https://www.linkedin.com/in/jasper-l-13426232/">LinkedIn</a>.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<p>Feel free to contact me on <a
+href="mailto:jasper.jh.lok@gmail.com">email</a> or <a
+href="https://www.linkedin.com/in/jasper-l-13426232/">LinkedIn</a>.</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>

@@ -18,7 +18,7 @@
     ],
     "contents": "\r\n\r\n\r\n\r\nScreen shot of my research page on TechInnovation page\r\nBrief Description of the Sharing\r\nI was honored to be selected by Singapore Management University to be featured at TechInnovation 2021 to show case my previous research on machine learning use case in insurance context.\r\nDetails\r\nThe details of the feature can be found under this link.\r\n\r\n\r\n\r\n",
     "preview": "past_proj/2021-09-TechInnovation2021/distill-preview.png",
-    "last_modified": "2022-12-27T22:23:35+08:00",
+    "last_modified": "2021-09-26T22:58:49+08:00",
     "input_file": {}
   },
   {
@@ -39,7 +39,7 @@
     ],
     "contents": "\r\n\r\n\r\n\r\nPhoto by CDC from Pexels\r\nBrief Description of Project\r\nA year and a half into the onset of the Covid-19 pandemic, control and recovery efforts as well as subsequent economic effects have varied substantially across each country. Three metrics are commonly utilized as a measure of how well a country is coping with the coronavirus: number of new cases, number of deaths (due to infection), and number of recovered cases.\r\nThe performance of each country with regard to these metrics have been demonstrated to vary in line with the availability of national and local healthcare resources. In countries that struggled with capacity of hospital beds or equipment, significant increases in Covid-19 attributed mortality rates were observed for the duration of hospital capacity shortages (Sen-Crowe et al. 2020), (Zhou et al. 2020). These shortages of hospital capacity were preceded by spikes in the rate of infection, possibly indicating insufficient preparation by healthcare administrators. Hence, forecasting and allocating for sufficient hospital and healthcare infrastructure in advance of spikes in pandemic infections is vital to controlling and reducing the mortality rate from any given disease. In this project, we intend to model the projected infection rate for a given country, as well as their requirements for healthcare preparedness, based on provided inputs.\r\n\r\n\r\n\r\nSen-Crowe, B., M. Sutherland, M. McKenney, and A. Elkbuli. 2020. “A Closer Look into Global Hospital Beds Capacity and Resource Shortages During the COVID-19 Pandemic.” The Journal of Surgical Research 56-63.\r\n\r\n\r\nZhou, W, Wang A, Wang X, Cheke RA, Xiao Y, and Tang S. 2020. “Impact of Hospital Bed Shortages on the Containment of COVID-19 in Wuhan.” Int J Environ Res Public Health.\r\n\r\n\r\n\r\n\r\n",
     "preview": "past_proj/2021-08-Covid-projection/distill-preview.png",
-    "last_modified": "2022-12-27T22:23:34+08:00",
+    "last_modified": "2021-08-29T19:30:06+08:00",
     "input_file": {}
   },
   {
@@ -61,7 +61,7 @@
     ],
     "contents": "\r\n\r\n\r\n\r\nPhoto by Alexandr Podvalny from Pexels\r\nBrief Description of Project\r\nConventionally, mortgage lenders rely on customers’ standard information, such as credit history and current bank balance to determine whether home loan applications should be accepted. However, this poses a challenge in assessing the creditworthiness of unbanked individuals who do not use official finance institutions to save or borrow money. More than 2.5 billion adults worldwide are unbanked, representing a large population with little or no credit history (Chaia, Goland, and Schiff 2010) and are thus unable to apply for home loans from authorized lenders. Promoting greater financial inclusion to unbanked populations will allow mortgage lenders to tap into this largely overlooked market segment. Studies have been conducted to explore how financial institutions can leverage alternative data such as transactional data to evaluate the creditworthiness of their customers. In 2020, the Hong Kong Monetary Authority published a white paper on how banks could rely on transaction-based behavioural data for alternative credit scoring (Hong Kong Monetary Authority 2020).\r\nBesides integrating alternative credit scoring methods to expand their clientele pool, mortgage lenders stand to benefit from incorporating machine learning (ML) models in their credit risk predictions to reduce manual underwriting processing time and potentially bring down overall business costs. According to recent U.S. data, we estimate that it takes on average 43.7 man-hours to process a single home loan application (computed from total number of applications (Consumer Financial Protection Bureau 2020), number of staff required (U.S. Bureau of Labor Statistics 2021), and working hours per week (Kolakowski 2019))\r\n\r\n\r\n\r\nChaia, Alberto, Tony Goland, and Robert Schiff. 2010. “Counting the World’s Unbanked | McKinsey. McKinsey & Company.” https://www.mckinsey.com/industries/financial-services/our-insights/counting-the-worlds-unbanked#.\r\n\r\n\r\nConsumer Financial Protection Bureau, ed. 2020. “FFIEC Announces Availability of 2019 Data on Mortgage Lending. Consumer Financial Protection Bureau.” https://www.consumerfinance.gov/about-us/newsroom/ffiec-announces-availability-2019-data-mortgage-lending/.\r\n\r\n\r\nHong Kong Monetary Authority, ed. 2020. “Alternative Credit Scoring of Micro-, Small and Medium-Sized Enterprises. Hong Kong Applied Science and Technology Research Institute Company Limited (ASTRI).” https://www.hkma.gov.hk/media/eng/doc/key-functions/financial-infrastructure/alternative_credit_scoring.pdf.\r\n\r\n\r\nKolakowski, Mark, ed. 2019. “What Does a Loan Officer Do? The Balance Careers.” https://www.thebalancecareers.com/loan-officer-careers-1286762.\r\n\r\n\r\nU.S. Bureau of Labor Statistics, ed. 2021. “Loan Officers : Occupational Outlook Handbook: : U.s. Bureau of Labor Statistics. U.s. BUREAU of LABOR STATISTICS.” https://www.bls.gov/ooh/business-and-financial/loan-officers.htm#tab-1.\r\n\r\n\r\n\r\n\r\n",
     "preview": "past_proj/2021-08-Home-loan/distill-preview.png",
-    "last_modified": "2022-12-27T22:23:34+08:00",
+    "last_modified": "2021-08-29T18:18:05+08:00",
     "input_file": {}
   },
   {
@@ -83,7 +83,7 @@
     ],
     "contents": "\r\n\r\n\r\n\r\nScreen shot of SAS-AASL Webinar\r\nBrief Description of the Sharing\r\nI was honored to be invited to do a sharing together at a joint webinar organized by Singapore Actuarial Society and Actuarial Association of Sri Lanka to share how data science can be used to analyze insurance claims data.\r\nPresentation Slides\r\nThe presentation slides can be found this link.\r\n\r\n\r\n\r\n",
     "preview": "past_proj/2021-08-SAS-AASL-sharing/distill-preview.png",
-    "last_modified": "2022-12-27T22:23:35+08:00",
+    "last_modified": "2021-08-29T23:23:58+08:00",
     "input_file": {}
   },
   {
@@ -105,7 +105,7 @@
     ],
     "contents": "\r\n\r\n\r\n\r\nScreen shot of useR! Conference 2021\r\nBrief Description of the Sharing\r\nI was honored to be selected to do a short sharing together with my professor at the useR! Conference 2021 on how tidymodels can used to complement conventional actuarial analysis.\r\nTechnical Note\r\nThe submitted technical note can be found this link.\r\n\r\n\r\n\r\n",
     "preview": "past_proj/2021-07-useR-sharing/distill-preview.png",
-    "last_modified": "2022-12-27T22:23:34+08:00",
+    "last_modified": "2021-08-29T23:08:30+08:00",
     "input_file": {}
   },
   {
@@ -127,7 +127,7 @@
     ],
     "contents": "\r\n\r\n\r\n\r\nScreen shot of capstone poster\r\nAbstract\r\nThe increasing ability to store and analyze the data due to the advancement in technology has provided actuaries opportunities in optimizing capital held by insurance companies. Often, the ability to optimize the capital would lower the cost of capital for companies. This could translate into an increase in profit from the lower cost incurred or an increase in competitiveness through lowering the premiums companies charge for their insurance plans.\r\nIn this analysis, tidyverse and tidymodels packages are used to demonstrate how the modern data science R packages could assist the actuaries in predicting the ultimate claim cost once the claims are reported. The conformity with tidy data concepts by these R packages has flattened the learning curve to use different machine learning techniques to complement the conventional actuarial analysis. This has effectively allowed actuaries in building various machine learning models in a more tidy and efficient manner. The packages also enable users to harass on the power of data science to mine the “gold” in unstructured data, such as claim descriptions, item descriptions, and so on. Nevertheless, these would enable the companies to hold less reserve through a more accurate claim estimation while not compromising the solvency of the companies, allowing the capital to be re-deployed for other purposes.\r\nReport\r\nThe report of this capstone can be found this link.\r\n\r\n\r\n\r\n",
     "preview": "past_proj/2021-04-Capstone/distill-preview.png",
-    "last_modified": "2022-12-27T22:23:34+08:00",
+    "last_modified": "2021-08-29T19:35:25+08:00",
     "input_file": {}
   },
   {
@@ -146,7 +146,7 @@
     ],
     "contents": "\r\nUpdated on 13 May 2021\r\nSummary of update: - Include link to the presentation video, slides and documents\r\n\r\n\r\n\r\nAnd finally after months preparations, I will be sharing at Singapore Actuarial Society on how actuaries could leverage on modern data science packages in R to perform necessary actuarial analysis.\r\nBelow are the details of the event:\r\nEvent Organizer: Singapore Actuarial Society\r\nDate: 22 April 2021\r\nTime: 10 - 11.30 am\r\nEvent Link: Link\r\nWhile this research project focus on the end to end of data science project process (ie. from data wrangling, pre-processing, modeling and communication), this sharing will only be focusing on the modeling part due to the time constraint.\r\nFollowing is the links to the various documents from the presentations:\r\nPresentation video: https://youtu.be/CKPRjkiKqbQ.\r\nPresentation slides: link\r\nOther documents (eg. R codes, research report): https://github.com/jasperlok/SAS-Sharing_20210422\r\n\r\n\r\n\r\n",
     "preview": {},
-    "last_modified": "2022-12-27T22:23:34+08:00",
+    "last_modified": "2021-08-29T22:53:55+08:00",
     "input_file": {}
   },
   {
@@ -166,7 +166,7 @@
     ],
     "contents": "\r\n\r\n\r\n\r\nPhoto by Chris Lawton on Unsplash\r\nBrief Description of Project\r\nIn this project, my teammates and I have helped a local SME on how they can pivot their business. Their current business model is vulnerable to external factors, such as global demand, government policies and so on, which could threaten the survival of the business in the future. By studying their current capabilities, we came up with a proposal and strategy on how they could pivot their current business to enter into new business area. In the proposal, we have also laid out the key milestones and potential risks to mitigate to ensure the success of the strategy.\r\nWith this new business model, the additional revenue is estimated to be $2 million per annum in addition to current business.\r\n\r\n\r\n\r\n",
     "preview": "past_proj/2020-11-Digital-transformation/distill-preview.png",
-    "last_modified": "2022-12-27T22:23:34+08:00",
+    "last_modified": "2021-08-29T19:35:48+08:00",
     "input_file": {}
   },
   {
@@ -187,7 +187,7 @@
     ],
     "contents": "\r\n\r\n\r\n\r\nPhoto by Markus Winkler from Pexels\r\nAbstract\r\nThe ease of sharing information through online media has arguably benefited society by creating a more informed populace, many of whom were able to directly benefit from the new jobs created in areas such as advertising and IT. At the same time, it has been commonly argued that online media has facilitated sharing of false information (‘fake news’) which has caused more harm than good to robust public discourse. Governments around the world have been confronted with serious questions about how they should address online fake news.\r\nIn the Singapore context, the 2020 General Election was significant not only because it came amidst the COVID-19 pandemic, but because it will be the first election since the implementation of the Protection from Online Falsehoods and Manipulation Act (POFMA). POFMA aims to balance online debates by requiring tech companies to publish clarifications to false statements as decided by the Government. This approach has been the subject of intense debate1, particularly the lines between a false statement of fact (which can be dealt with under POFMA) and statement of opinion (which cannot) – which are rarely clear cut.\r\n\r\n\r\n\r\n",
     "preview": "past_proj/2020-08-Fake-news/distill-preview.png",
-    "last_modified": "2022-12-27T22:23:34+08:00",
+    "last_modified": "2021-08-29T19:40:24+08:00",
     "input_file": {}
   },
   {
@@ -208,7 +208,7 @@
     ],
     "contents": "\r\n\r\n\r\n\r\nPhoto by Sarah Chai from Pexels\r\nBrief Description of Project\r\nWith the rise of technology and the advent of data analytics, retailers now have access to large amounts of customer data. The challenge currently faced is how to utilise the data to come up with actionable insights and improve on fundamental processes such as customer acquisition and development to eventually boost sales. My classmates and I have demonstrated how retailers can go about this process by using a dataset from Dunnhumby – The Complete Journey.\r\nEach of us has focused on one part of the customer journey. I am responsible to build a simple recommender system. This is to help the company to increase the sales and profits through potential cross-selling and up-selling.\r\nWith the rise of technology and the advent of data analytics, retailers now have access to large amounts of customer data. The challenge currently faced is how to utilise the data to come up with actionable insights and improve on fundamental processes such as customer acquisition and development to eventually boost sales. Our project aims to demonstrate how retailers can go about this process by using a dataset from Dunnhumby – The Complete Journey.\r\nOur chosen dataset contains household level transactions at a retailer over 2 years from 2,500 households. Demographic information such as age range, marital status, etc. are available for some of the households. Other key items in the dataset include the campaigns received by each household, the time period for each campaign, the coupons sent during each campaign and the date of redemption for each coupon.\r\nWe will conduct exploratory data analysis (EDA) and construct the relevant customer signature to give a snapshot of the customer profile and behaviour. Through the EDA, we will understand:\r\nWho is buying?\r\nA summary of the customer demographics\r\n\r\nWhat are the customers buying?\r\nThe categories/products purchased by the customers\r\n\r\nWhen are the customers buying?\r\nThe shopping frequency of the customers\r\n\r\nWhy are the customers buying?\r\nGain insight into the households who respond positively to campaigns and identify any other key observations related to each campaign\r\n\r\nHow much does the customer buy?\r\nThe total amount of a customer’s shopping basket\r\n\r\nNext, we carry out customer segmentation at household level to break down the large number of households into homogenous segments to identify the most valuable customers and the segment most likely to respond to marketing campaigns and purchase more. Targeted strategies will be formulated according to the customer profile and this will lead to more effective marketing campaigns which will boost the retailer’s overall sales. Market basket analysis will be conducted to provide generic recommendations and a recommender system will be constructed to come up with personalised recommendations for customers. The aim is to further boost response rate to marketing campaigns and make good use of the resources invested.\r\n\r\n\r\n\r\n",
     "preview": "past_proj/2020-04-Customer-analytics/distill-preview.png",
-    "last_modified": "2022-12-27T22:23:33+08:00",
+    "last_modified": "2021-08-29T19:48:34+08:00",
     "input_file": {}
   },
   {
@@ -230,7 +230,7 @@
     ],
     "contents": "\r\n\r\n\r\n\r\nPhoto by Jad Limcaco on Unsplash\r\nAbstract\r\nIn this era of information explosion, this poses challenges in continuing the current conventional way to analyze association rules. Often these conventional methods do not show the underlying complex relationships between different items. Besides that, the conventional interface of the analytical software lack of interactivity between the graphs and the underlying model. Hence, in this research paper, an alternative way to visualize the association rules is presented. Demonstrations are also included to show interactivity functions are integrated into the application to provide a more seamless process in calibrating the model and visualizing the association rules. The designed application will provide users more control and flexibility.\r\nPoster\r\nThe poster of this project can be found this link.\r\n\r\n\r\n\r\nScreen shot of project poster\r\n\r\n\r\n\r\n",
     "preview": "past_proj/2020-04-Network-visualization/distill-preview.png",
-    "last_modified": "2022-12-27T22:23:33+08:00",
+    "last_modified": "2021-08-29T20:15:42+08:00",
     "input_file": {}
   },
   {
@@ -251,7 +251,7 @@
     ],
     "contents": "\r\n\r\n\r\n\r\nPhoto by Timo Volz from Pexels\r\nAbstract\r\nConsumer price index (CPI) is designed to measure the average price changes in a fixed basket of goods and services commonly purchased by resident households over time. It is commonly used as a measure of consumer price inflation. While the CPI is an overall representation of inflation in the economy, different households are affected differently, depending on the nucleus structure of the family. In this paper, we examine Singapore’s CPI between January 2014 and September 2019 to discover the relationships among the CPI components using the Dynamic Time Warping (DTW) method, to aggregate them into clusters with similar price movements. Our findings reveal that various components have increased significantly or even decreased over the period whereas the overall CPI index has increased moderately between 2014 and 2019, reflecting economic growth and successful public policies.\r\nPoster\r\nThe poster of this project can be found this link.\r\n\r\n\r\n\r\nScreen shot of project poster\r\n\r\n\r\n\r\n",
     "preview": "past_proj/2019-12-Up-and-down-cpi/distill-preview.png",
-    "last_modified": "2022-12-27T22:23:33+08:00",
+    "last_modified": "2021-08-29T22:14:58+08:00",
     "input_file": {}
   }
 ]
