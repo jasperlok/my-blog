@@ -1,4 +1,0 @@
-"0","cat_list <- df_1 %>%"
-"0","  select_if(is.factor) %>%"
-"0","  names()"
-"0",""
