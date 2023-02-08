@@ -1,0 +1,332 @@
+---
+title: "K-proto Clustering"
+description: |
+  Sorting numeric and categorical data at one go
+author:
+  - name: Jasper Lok
+    url: {}
+date: 02-11-2023
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 4
+    self_contained: false
+bibliography: ["ref.bib"]
+biblio-style: "apa"
+link-citations: true
+categories:
+  - Machine Learning
+  - Unsupervised Learning
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+pacman::p_load(captioner, knitr)
+
+knitr::opts_chunk$set(fig.retina = 3,                       
+                      echo = TRUE,                       
+                      eval = TRUE,                       
+                      message = FALSE,                       
+                      warning = FALSE,
+                      out.width="90%")
+
+```
+
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/mix.jpg")
+
+```
+
+Photo by Karolina Grabowska from Pexels
+
+
+Recently, I happened to come across a paper on how clustering can be used in actuarial valuation. 
+
+
+In the paper, the author used clustering algorithm to find the representative model points for a group of variable annuities before calculating the market value and Greeks of every contract in the portfolio. 
+
+
+This has reduced the number of model points, which reduced the computing time significantly. In the paper, the method is estimated about 66 times faster than the conventional method. 
+
+
+Hence, in this post, I will be exploring cluster algorithm, k-prototypes.
+
+
+As the discussion will be building on my previous post on clustering, this would be a rather short post. 
+
+Below are the links to the previous posts:
+
+- [Purpose & considerations of clustering](https://jasperlok.netlify.app/posts/2021-10-17-clustering/)
+
+
+- [K-means clustering](https://jasperlok.netlify.app/posts/2021-10-30-k-means/)
+
+
+# Limitation of K-means clustering
+
+One of the issue of using K-means clustering algorithm is this method could only take in numeric variables. 
+
+
+
+To overcome this, one could convert the non-numeric variables into dummy variables. 
+
+
+However, it is not ideal to convert the non-numeric variables to dummy variables and perform the clustering [@IBM2020].
+
+
+
+# K-Prototypes
+
+
+K-Prototypes is a clustering method that allows one to perform clustering on mixed data types.
+
+
+The author explained that the k-prototypes algorithm combines the “means” of the numerical part and the “modes” of the categorical part to build a new hybrid Cluster Center “prototype”[@Soliya2021].
+
+
+Application of data clustering and machine learning in variable annuity valuation
+
+
+The distance between two records **x** and **y** can be defined as:
+
+$D(x,y,\lambda)=\sqrt{\sum_{h=1}^{d_1}(x_h-y_h)^2+\lambda\sum_{h=d_1+1}^{d}\delta({x_h,y_h})}$
+
+where:
+
+- the first $d_1$ attributes are numeric and the last $d_2=d-d_1$ attribures are categorical
+
+- ${x_h}$ and ${y_h}$ are the hth component of x and y, respectively $\lambda$
+
+- simple matching distance is defined as:
+$\delta({x_h,y_h})=\{_{1,\ if\ x_h\ \neq\ y_h}^{0,\ if\ x_h\ =\ y_h}$
+
+
+
+The objective function for k-prototypes algorithm is to minimize the following function:
+
+$P_{\lambda}=\sum_{j=i}^{k}\sum_{x\in C_{j}}D^2(x, \mu_j, \lambda)$
+
+where:
+
+- k is the number of clusters
+
+- $C_j$ is the jth cluster
+
+- $\mu_j$ is the center or prototype of cluster $C_j$
+
+
+Okay, that's all the discussions on the algorithm. 
+
+
+Let's start the demonstration!
+
+
+# Demonstration
+
+For this demonstration, I will be using [bank marketing data](http://archive.ics.uci.edu/ml/datasets/Bank+Marketing#) from UCI Machine Learning Repository. 
+
+
+This dataset contains data points from past direct marketing campaigns of a Portuguese banking institution. 
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/deposit.jpg")
+
+```
+
+Photo by Monstera from Pexels
+
+
+## Setup the environment
+
+
+First, I will set up the environment by calling all the packages I need for the analysis later.
+
+
+```{r, echo = FALSE}
+# set the random seed so that I re-produce the same results
+set.seed(1234)
+
+```
+
+```{r}
+pacman::p_load(tidyverse, readr, clustMixType)
+
+```
+
+## Import the data
+
+Next, I will import the data into the environment.
+
+```{r}
+df <- read_delim("data/bank-full.csv", delim = ";") %>%
+  mutate(across(where(is.character), as.factor)) %>%
+  mutate(month = ordered(month, levels = c("jan",
+                                          "feb",
+                                          "mar",
+                                          "apr",
+                                          "may",
+                                          "jun",
+                                          "jul",
+                                          "aug",
+                                          "sep",
+                                          "oct",
+                                          "nov",
+                                          "dec"))) %>%
+  sample_frac(0.5)
+
+```
+
+
+
+## Kproto clustering
+
+Okay, let's start the demonstration on clustering by using `kproto` function.
+
+
+Note that similar to other clustering algorithms, we will need to specify the number of clusters upfront before running the clustering algorithm.
+
+
+```{r}
+kpres <- kproto(df, 5)
+
+```
+
+To understand the characteristics of the different clusters, we could call the clustering results.
+
+
+
+
+```{r}
+kpres
+
+```
+
+In the results, the numeric value represents the mean value of the cluster and mode for the categorical variables. 
+
+Following are some of the insights gathered from the clustering:
+
+- Among the groups, the customers under group 4 have the highest average balance, while group 3 has the lowest average balance
+
+
+- Despite that the customers under group 4 & 6 are rather similar, i.e. both groups are mostly married and have a tertiary education, the average balance under group 6 is somewhat much lower than group 4
+
+
+- Similarly, the customer characteristics under group 3 & 5 are also quite similar, the average balance of the customers under group 5 are more than 3 times of the average balance of group 3
+
+
+As mentioned earlier, the algorithm requires us to upfront indicate the number of clusters. To find the optimal number of clusters, we will loop through the clustering algorithm through different numbers.
+
+
+Alternatively, we could pass the results into `summary` function.
+
+```{r}
+summary(kpres)
+
+```
+
+
+
+### Visualize the result
+
+To visualize the clustering result, we could use `plot` function.
+
+```{r}
+plot(kpres, vars = "job")
+
+```
+
+If a numeric variable is being passed to the function, boxplot will be used to show the distribution.
+
+```{r}
+plot(kpres, vars = "age")
+
+```
+
+Alternatively, we can use `ggplot` to visualize the result.
+
+```{r}
+for (i in 1:5){
+  graph <- df %>%
+    bind_cols(tibble(cluster = kpres$cluster)) %>%
+    filter(cluster == i) %>%
+    group_by(job) %>%
+    tally() %>%
+    rename(count = n) %>%
+    ggplot(aes(x = reorder(job, -count), 
+               y = count/sum(count),
+               alpha = 0.8)) +
+    geom_col() +
+    scale_y_continuous(labels = scales::percent) +
+    xlab("Jobs") +
+    ylab("Proportion") +
+    labs(title = paste0("Cluster ", i, " - Proportion of Jobs")) +
+    theme(axis.text.x = element_text(angle = 90), 
+          legend.position="none")
+  
+  print(graph)
+  
+}
+
+```
+
+### Elbow Curve
+
+```{r, results = 'hide'}
+k_num <- 8
+tot_wss <- sapply(1:k_num, 
+                  function(k){kproto(df, k)$tot.withinss})
+
+```
+
+Next, I will convert the list to a tibble table and include the respective number of clusters.
+
+
+```{r}
+withness_cluster <- 
+  as_tibble(tot_wss) %>%
+  rename(tot_withness = value) %>%
+  mutate(cluster = row_number())
+
+```
+
+This will allow us to visualize the results by using `ggplot` function.
+
+```{r}
+ggplot(withness_cluster, 
+       aes(x = cluster, y = tot_withness)) +
+  geom_point() +
+  geom_line() +
+  labs(title = "Elbow Curve")
+
+```
+
+
+
+
+# Conclusion
+
+That's all for the day!
+
+
+Thanks for reading the post until the end. 
+
+
+Feel free to contact me through [email](mailto:jasper.jh.lok@gmail.com) or [LinkedIn](https://www.linkedin.com/in/jasper-l-13426232/) if you have any suggestions on future topics to share.
+
+Refer to this link for the [blog disclaimer](https://jasperlok.netlify.app/blog_disclaimer.html).
+
+Till next time, happy learning!
+
+
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/Lang Tengah.jpg")
+
+```
+
+*Took this when I went to Lang Tengah, Malaysia
+
+
+
