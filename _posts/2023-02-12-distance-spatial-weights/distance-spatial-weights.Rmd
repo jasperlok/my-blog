@@ -1,0 +1,316 @@
+---
+title: "Distance-based Spatial Weights"
+description: |
+   Part 2 - Journey to find the "neighbours"
+author:
+  - name: Jasper Lok 
+    url: https://jasperlok.netlify.app/
+date: 02-13-2023
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 4
+    self_contained: false
+bibliography: ["ref.bib"]
+biblio-style: "apa"
+link-citations: true
+categories:
+  - Geospatial Analytics
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+pacman::p_load(captioner, knitr, kableExtra, tidyverse)
+
+knitr::opts_chunk$set(fig.retina = 3,                       
+                      echo = TRUE,                       
+                      eval = TRUE,                       
+                      message = FALSE,                       
+                      warning = FALSE,
+                      out.width="100%")
+
+```
+
+
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/hands.jpg")
+
+```
+
+Photo by <a href="https://unsplash.com/@nadineshaabana?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Nadine Shaabana</a> on <a href="https://unsplash.com/photos/ypyaaEf2ntM?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+
+Previously we discussed contiguity-based spatial weight.
+
+In this post, we will focus on another spatial weighting method, which is **distance-based spatial weights**.
+
+
+
+# What is distance-based spatial weight?
+
+[@Rey2020] explained that distance-based weight can be defined as neighbour relations as a function of the distance separating spatial observations.
+
+In other words, this approach determines who are the neighbours by using the distance, instead of which areas are connected.
+
+
+# Types of distance-based spatial weights
+
+Below are two common distance-based spatial weights approaches:
+
+**K nearest neighbours weights**
+
+[@Rey2020] defines this type of distance-based weight as the neighbour set of a particular observation containing its nearest k observations, where the user specifies the value of k.
+
+
+**Fixed distance**
+
+As the name suggested, this approach defines to be the neighbour of the selected district, the distance between them must be within the specified range.
+
+We will see more about how this fixed distance spatial weight works in the demonstration.
+
+
+
+# Best practice on how to select the appropriate spatial weighting method
+
+This was discussed in my previous post.
+
+Please refer to the [previous post](https://jasperlok.netlify.app/posts/2023-02-05-contiguity-spatial-weights/) for more info.
+
+# Demonstration
+
+I will download Malaysia shape files from [this link](https://earthworks.stanford.edu/catalog/stanford-nv753sn0493).
+
+For more explanations on shape files, please refer to my [previous post](https://jasperlok.netlify.app/posts/2022-02-12-point-pattern-analysis/).
+
+
+## Setup the environment
+
+First, I will setup the environment by calling the necessary packages.
+
+```{r}
+pacman::p_load(tidyverse, sf, spdep, tmap, janitor)
+
+```
+
+I will also set the `tmap_mode` to `view` so that I can interact with the graphs.
+
+```{r}
+tmap_mode('view')
+
+```
+
+## Import the data
+
+### Import shp files
+
+Next, I will import the dataset into the environment.
+
+```{r}
+msia_map <- st_read(dsn = "data", layer = "MYS_adm2")
+
+```
+
+Next, I will visualize the Malaysia map.
+
+```{r}
+tm_shape(msia_map) +
+  tm_polygons()
+
+```
+
+Good! Now, we can proceed and find the "neighbours".
+
+
+## Distance-based spatial weight
+
+In this sub-section, I will derive the distance-based spatial weights.
+
+To better visualize the spatial weights results later, I will find the centroids of different administrative districts.
+
+```{r}
+longitude <- map_dbl(msia_map$geometry, ~st_centroid(.x)[[1]])
+latitude <- map_dbl(msia_map$geometry, ~st_centroid(.x)[[2]])
+
+```
+
+Once the latitude and longitude are derived, I will use `cbind` function to bind the columns together.
+
+```{r}
+coords <- cbind(longitude, latitude)
+
+```
+
+### K Nearest Neighbours
+
+I will pass the created `coords` object into `knearneigh` function.
+
+```{r}
+kneigh <- knearneigh(coords, k = 4)
+
+```
+
+According to the [documentation](https://r-spatial.github.io/spdep/reference/knearneigh.html), the function returns a matrix with the indices of points belonging to the set of k nearest neighbours of each other.
+
+I have sliced the first 10 rows from the data to have a look at who are their neighbours.
+
+```{r}
+kneigh$nn[1:10, 1:4]
+
+```
+
+Once we find the neighbours, we will use `knn2nb` function to convert the objects into `nb` so that we can use the plot function to visualize the results.
+
+```{r}
+knn <- knn2nb(kneigh)
+
+```
+
+
+
+
+Fantastic!
+
+I will then pass the objects to the plotting function to visualize the results.
+
+```{r}
+plot(msia_map$geometry, border = "lightgrey")
+plot(knn, coords, add = TRUE, col = "blue")
+
+```
+
+Noted that under this approach, everyone has the same number of neighbours.
+
+### Fixed distance
+
+Now, let's move on to another distance-based spatial weight approach, which is fixed distance.
+
+To do so, I will use `dnearneigh` function.
+
+I will need to specify the lower and upper distance bounds in the function.
+
+Over here, I have specified the lower and upper distance bounds are 0 and 100 respectively.
+
+```{r}
+fixed_d <- dnearneigh(coords, 0, 100, longlat = TRUE)
+
+```
+
+`spdep` package offers a function to extract the number of neighbours of each area.
+
+```{r}
+card(fixed_d)
+
+```
+
+Oh no! Some of the districts (i.e. the two colored districts in the graph below) don't have any neighbours as they seem to be far from everyone.
+
+```{r, echo = FALSE}
+msia_map_ind <-
+  msia_map %>%
+  mutate(ind = if_else(NAME_2 %in% c("Belaga", "Kapit"), "1", "0"))
+
+tm_shape(msia_map_ind) +
+  tm_polygons(
+    "ind"
+    ,id = "NAME_2"
+    ,palette = c(
+        "0" = "lightgrey"
+        ,"1" = "tomato")
+    ,legend.show = FALSE)
+
+```
+
+So if we were to visualize the result by using our usual plotting function, we will see that there are two nodes within the graph that don't have any edges.
+
+
+```{r}
+plot(msia_map$geometry, border = "lightgrey")
+plot(fixed_d, coords, add = TRUE, col = "blue")
+
+```
+
+
+To overcome this issue, we could increase the upper distance bound to a higher number.
+
+As such, we will find the largest distance between the first nearest neighbours and 
+
+In this example, I will take the max distance from K nearest neighbours as the upper distance bound.
+
+
+Then I will use `nbdists` function to calculate the Euclidean distances along the links.
+
+```{r}
+dist_new <- nbdists(knn, coords, longlat = TRUE)
+
+```
+
+Then I will unlist the object to convert it into a list before passing it to `summary` function to find the summary statistics.
+
+```{r}
+dist_new_unlist <- unlist(dist_new)
+
+```
+
+
+```{r}
+summary(dist_new_unlist)
+
+```
+
+Great!
+
+The largest distance between the first nearest neighbours is 163.055km from the summary statistics shown above.
+
+![](https://media.giphy.com/media/pHYaWbspekVsTKRFQT/giphy.gif)
+
+*Taken from giphy*
+
+Now, we can find the neighbours by using the updated upper distance bound.
+
+```{r}
+fixed_d_new <- dnearneigh(coords, 0, 163.1, longlat = TRUE)
+
+plot(msia_map$geometry, border = "lightgrey")
+plot(fixed_d_new, coords, add = TRUE, col = "blue")
+
+```
+
+Now all the districts have "neighbours".
+
+We can also call the created object to see the summary result.
+
+
+```{r}
+fixed_d_new
+
+```
+
+From the result, we noted the following:
+
+- There are about 3,120 edges in total
+
+- On average, each district has 21.6667 neighbours
+
+
+# Conclusion
+
+That's all for the day!
+
+Thanks for reading the post until the end.
+
+Feel free to contact me through [email](mailto:jasper.jh.lok@gmail.com) or [LinkedIn](https://www.linkedin.com/in/jasper-l-13426232/) if you have any suggestions on future topics to share.
+
+Refer to this link for the [blog disclaimer](https://jasperlok.netlify.app/blog_disclaimer.html).
+
+Till next time, happy learning!
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/maps.jpg")
+
+```
+
+Photo by <a href="https://unsplash.com/ko/@dariuszsankowski?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Dariusz Sankowski</a> on <a href="https://unsplash.com/photos/3OiYMgDKJ6k?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+  
+  
+
