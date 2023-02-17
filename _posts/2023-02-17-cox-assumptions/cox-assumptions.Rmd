@@ -1,0 +1,294 @@
+---
+title: "Proportion Hazard Assumption under Cox Model"
+description: |
+   Have you checked the assumption?
+author:
+  - name: Jasper Lok 
+    url: https://jasperlok.netlify.app/
+date: 02-17-2023
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 4
+    self_contained: false
+bibliography: ["ref.bib"]
+biblio-style: "apa"
+link-citations: true
+categories:
+  - Machine Learning
+  - Survival Model
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+pacman::p_load(captioner, knitr, kableExtra, tidyverse)
+
+knitr::opts_chunk$set(fig.retina = 3,                       
+                      echo = TRUE,                       
+                      eval = TRUE,                       
+                      message = FALSE,                       
+                      warning = FALSE,
+                      out.width="100%")
+
+```
+
+
+In [previous post](https://jasperlok.netlify.app/posts/2023-01-10-cox-ph/), I have explored on how to build a Cox proportional hazard model.
+
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/triangle.jpg")
+
+```
+
+Photo by <a href="https://unsplash.com/it/@bubbafat?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Robert Horvick</a> on <a href="https://unsplash.com/wallpapers/design/pattern?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+  
+
+In this post, I will be exploring how to check the proportional hazard assumption in the model.
+
+
+# Test Cox proportional hazard
+
+One of the main assumptions is the hazard functions are proportional to one another over the period.
+
+
+To check whether the proportional hazard is appropriate, we will perform statistical test based on scaled Schoenfeld residuals.
+
+
+If the p-value is significant, the proportional hazard assumption doesn't hold [@StackExchange2019].
+
+
+## When proportional hazard assumption is inappropriate
+
+When the proportional hazard assumption does not hold, there are several approaches to overcome this [@Sestelo2017].
+
+- Stratify the variable
+
+- Partition of the time axis
+
+- Check on the nonlinear effect
+
+In this post, I will focus on how to stratify the variable.
+
+# Strata
+
+[@Todd2017] explained that in a Cox model, stratification allows for as many different hazard functions as there are strata. 
+
+Beta coefficients (hazard ratios) optimized for all strata are then fitted.
+
+
+# Demonstration
+
+In this demonstration, I will be using this [bank dataset](https://www.kaggle.com/datasets/shrutimechlearn/churn-modelling) from Kaggle.
+
+## Setup the environment
+
+First, I will load the necessary packages into the environment.
+
+```{r}
+pacman::p_load(tidyverse, lubridate, janitor, survival, survminer)
+
+```
+
+## Import Data
+
+First I will import the dataset into the environment. 
+
+I will also clean the column names, drop the columns I don't need and transform the columns to be the right format.
+
+```{r}
+df <- read_csv("https://raw.githubusercontent.com/jasperlok/my-blog/master/_posts/2022-09-10-kaplan-meier/data/Churn_Modelling.csv") %>%
+  clean_names() %>%
+  select(-c(row_number, customer_id, surname)) %>%
+  mutate(has_cr_card = factor(has_cr_card),
+         is_active_member = factor(is_active_member),
+         credit_score = credit_score/100,
+         balance = balance/10000,
+         estimated_salary = estimated_salary/10000) %>%
+  filter(tenure > 0)
+
+```
+
+
+## Test Cox Proportional assumption
+
+Before we could check the proportional hazard assumption, I will build a simple model.
+
+```{r}
+cox_model <- 
+  coxph(Surv(tenure, exited) ~ estimated_salary, 
+        data = df, 
+        x = TRUE, 
+        y = TRUE)
+
+```
+
+To check the assumption, I will pass the fitted model to `cox.zph` function as follows:
+
+```{r}
+cox.zph(cox_model)
+
+```
+
+From the result, the p-value is greater than 0.05, suggesting the proportional hazard assumption is appropriate for this simple model.
+
+To visualize the result, we could pass the result from `cox.zph` function to `plot` function.
+
+```{r}
+plot(cox.zph(cox_model))
+
+```
+
+
+Alternatively, we can pass the result from `cox.zph` function to `ggcoxzph` function to visualize the result.
+
+According to [R documentation](https://www.rdocumentation.org/packages/survminer/versions/0.4.9/topics/ggcoxzph), `ggcoxzph` function is a wrapper around `plot.cox.zph` function.
+
+```{r}
+ggcoxzph(
+  cox.zph(cox_model)
+)
+
+```
+
+Below are some of the interpretations of the result [@Sampada2019]:
+
+- Solid line represents the smoothing spline fit for the plot
+
+- Dashed lines represent +/- 2 standard error bands around the fit
+
+- If the p-value is less than 0.05, then the assumption is violated
+
+    - Assumption: the hazard ratio is not constant over time
+
+    - Assume a non-significant relationship betweeen residuals and time
+
+Next, I will check the proportional hazard assumption under a multivariate model.
+
+Similarly, I will build a multivariate model first.
+
+```{r}
+cox_model_all <- 
+  coxph(Surv(tenure, exited) ~ credit_score + gender + balance + age + num_of_products + has_cr_card + is_active_member + estimated_salary, 
+        data = df, 
+        x = TRUE, 
+        y = TRUE)
+
+```
+
+Then, I will pass the result to `cox.zph` function.
+
+```{r}
+cox.zph(cox_model_all)
+
+```
+From the result, we note that the overall p-value is still greater than 0.05, although the p-value for `balance` is less than 0.05.
+
+Based on this [discussion post](https://discourse.datamethods.org/t/how-to-calculate-the-heterogeneity-p-value-for-a-variable-in-two-cox-regression-models/1661/5), the author suggested since the overall test has a near-perfect multiplicity adjustment, individual tests probably is not so crucial if global p-value is greater than 0.2 unless the individual $\rho$ value (i.e. correlation between Schoenfeld residual and time) is very high.
+
+
+Next, I will visualize the result by using `ggcoxzph` function.
+
+Given the number of variables used to build the model, the graph will be hard to read.
+
+Hence, I will make some modifications to the graphs produced.
+
+```{r}
+ggcoxzph(
+    cox.zph(cox_model_all)
+    ,font.x = 8
+    ,font.y = 7
+    ,font.tickslab = 8
+    ,font.main = 8)
+
+```
+
+Similar results can be observed.
+
+If I were to convert the balance into categorical variable and visualize the survival curve, we will note that one of the survival curve interacts other curves. 
+
+```{r}
+df_grp <-
+  df %>%
+  mutate(balance_grp = cut(balance, breaks = c(-Inf, 5, 10, 15, 20, 25, 30)))
+
+ggsurvplot(survfit(Surv(tenure, exited) ~ balance_grp, data = df_grp),
+           data = df_grp)
+
+```
+
+
+
+## Stratify the variable
+
+In this demonstration, I will explore using stratification.
+
+To do so, I will re-build the model by stratifying the balance variable.
+
+```{r}
+cox_model_all_balance_strata <- 
+  coxph(Surv(tenure, exited) ~ credit_score + gender + age + num_of_products + has_cr_card + is_active_member + estimated_salary + strata(balance), 
+        data = df, 
+        x = TRUE, 
+        y = TRUE)
+
+```
+
+
+```{r}
+cox_model_all_balance_strata
+
+```
+
+
+
+After stratifying the variable, the overall p-value increases.
+
+```{r}
+cox.zph(cox_model_all_balance_strata)
+
+```
+
+Similarly, I will visualize the result by using `ggcoxzph` function.
+
+```{r}
+ggcoxzph(
+    cox.zph(cox_model_all_balance_strata)
+    ,font.x = 8
+    ,font.y = 7
+    ,font.tickslab = 8
+    ,font.main = 8)
+
+```
+
+
+Lastly, I will extract the concordance results from the original & stratified models for comparison.
+
+```{r}
+cox_model_all$concordance["concordance"]
+cox_model_all_balance_strata$concordance["concordance"]
+
+```
+
+The concordance result improves slightly after we stratify `balance`.
+
+# Conclusion
+
+That's all for the day!
+
+Thanks for reading the post until the end.
+
+Feel free to contact me through [email](mailto:jasper.jh.lok@gmail.com) or [LinkedIn](https://www.linkedin.com/in/jasper-l-13426232/) if you have any suggestions on future topics to share.
+
+Refer to this link for the [blog disclaimer](https://jasperlok.netlify.app/blog_disclaimer.html).
+
+Till next time, happy learning!
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/house.jpg")
+
+```
+
+Photo by <a href="https://unsplash.com/@walking_abby?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Abbilyn Rurenko</a> on <a href="https://unsplash.com/photos/uOYak90r4L0?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+  
