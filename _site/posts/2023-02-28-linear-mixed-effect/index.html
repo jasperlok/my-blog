@@ -145,7 +145,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["image/chocolate.jpg","image/ggplot_actual_vs_predicted.png","image/mixed_colors.jpg","image/purple.jpg","ref.bib"]}
+  {"type":"character","attributes":{},"value":["image/chocolate.jpg","image/ggplot_actual_vs_predicted.png","image/mixed_colors.jpg","image/purple.jpg","linear-mixed-effect_files/anchor/anchor.min.js","linear-mixed-effect_files/bowser/bowser.min.js","linear-mixed-effect_files/distill/template.v2.js","linear-mixed-effect_files/header-attrs/header-attrs.js","linear-mixed-effect_files/jquery/jquery-3.6.0.js","linear-mixed-effect_files/jquery/jquery-3.6.0.min.js","linear-mixed-effect_files/jquery/jquery-3.6.0.min.map","linear-mixed-effect_files/popper/popper.min.js","linear-mixed-effect_files/tippy/tippy-bundle.umd.min.js","linear-mixed-effect_files/tippy/tippy-light-border.css","linear-mixed-effect_files/tippy/tippy.css","linear-mixed-effect_files/tippy/tippy.umd.min.js","linear-mixed-effect_files/webcomponents/webcomponents.js","ref.bib"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
 <meta name="distill:offset" content="../.."/>
@@ -2416,7 +2416,6 @@ Fixed effects:
 <li><p>Adjusted ICC: Only looks at the random effects</p></li>
 <li><p>Unadjusted ICC: Also takes the fixed effects variances into account</p></li>
 </ul>
-<p><strong>Question: How to interpret the two ICCs figures?</strong></p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'>icc</span><span class='op'>(</span><span class='va'>lmer_fit</span><span class='op'>$</span><span class='va'>fit</span>, by_group <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span></code></pre>

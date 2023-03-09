@@ -284,8 +284,6 @@ According to the [documentation page](https://easystats.github.io/performance/re
 - Unadjusted ICC: Also takes the fixed effects variances into account
 
 
-**Question: How to interpret the two ICCs figures?**
-
 ```{r}
 icc(lmer_fit$fit, by_group = TRUE)
 
