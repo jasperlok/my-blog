@@ -1,0 +1,2584 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <meta name="generator" content="distill" />
+
+  <style type="text/css">
+  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
+  body {
+    visibility: hidden;
+  }
+  </style>
+
+ <!--radix_placeholder_import_source-->
+ <!--/radix_placeholder_import_source-->
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  { color: #00769e; background-color: #f1f3f5; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span { color: #00769e; } /* Normal */
+code span.al { color: #ad0000; } /* Alert */
+code span.an { color: #5e5e5e; } /* Annotation */
+code span.at { color: #657422; } /* Attribute */
+code span.bn { color: #ad0000; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #00769e; } /* ControlFlow */
+code span.ch { color: #20794d; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #5e5e5e; } /* Comment */
+code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+code span.dt { color: #ad0000; } /* DataType */
+code span.dv { color: #ad0000; } /* DecVal */
+code span.er { color: #ad0000; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #ad0000; } /* Float */
+code span.fu { color: #4758ab; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #5e5e5e; } /* Information */
+code span.kw { color: #00769e; } /* Keyword */
+code span.op { color: #5e5e5e; } /* Operator */
+code span.ot { color: #00769e; } /* Other */
+code span.pp { color: #ad0000; } /* Preprocessor */
+code span.sc { color: #5e5e5e; } /* SpecialChar */
+code span.ss { color: #20794d; } /* SpecialString */
+code span.st { color: #20794d; } /* String */
+code span.va { color: #111111; } /* Variable */
+code span.vs { color: #20794d; } /* VerbatimString */
+code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+</style>
+
+
+  <!--radix_placeholder_meta_tags-->
+<title>When Actuarial Science Collides with Data Science: Local Moran's I</title>
+
+<meta property="description" itemprop="description" content="Are the selected locations different from each other?"/>
+
+
+<!--  https://schema.org/Article -->
+<meta property="article:published" itemprop="datePublished" content="2023-03-19"/>
+<meta property="article:created" itemprop="dateCreated" content="2023-03-19"/>
+<meta name="article:author" content="Jasper Lok"/>
+
+<!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
+<meta property="og:title" content="When Actuarial Science Collides with Data Science: Local Moran&#39;s I"/>
+<meta property="og:type" content="article"/>
+<meta property="og:description" content="Are the selected locations different from each other?"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:site_name" content="When Actuarial Science Collides with Data Science"/>
+
+<!--  https://dev.twitter.com/cards/types/summary -->
+<meta property="twitter:card" content="summary"/>
+<meta property="twitter:title" content="When Actuarial Science Collides with Data Science: Local Moran&#39;s I"/>
+<meta property="twitter:description" content="Are the selected locations different from each other?"/>
+
+<!--/radix_placeholder_meta_tags-->
+  
+  <!--radix_placeholder_rmarkdown_metadata-->
+
+<script type="text/json" id="radix-rmarkdown-metadata">
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","bibliography","biblio-style","link-citations","categories"]}},"value":[{"type":"character","attributes":{},"value":["Local Moran's I"]},{"type":"character","attributes":{},"value":["Are the selected locations different from each other?"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Jasper Lok"]},{"type":"character","attributes":{},"value":["https://jasperlok.netlify.app/"]}]}]},{"type":"character","attributes":{},"value":["03-19-2023"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","toc_depth","self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[4]},{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["ref.bib"]},{"type":"character","attributes":{},"value":["apa"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["Geospatial Analytics"]}]}
+</script>
+<!--/radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["data/gadm36_MYS_2_sf.rds","data/live-births-by-state-administrative-district-and-sex-2015-2021.csv","data/MYS_adm2-fgdc.xml","data/MYS_adm2-iso19110.xml","data/MYS_adm2-iso19139.xml","data/MYS_adm2.cpg","data/MYS_adm2.csv","data/MYS_adm2.dbf","data/MYS_adm2.prj","data/MYS_adm2.shp","data/MYS_adm2.shp.xml","data/MYS_adm2.shx","data/Population_by_state_administrative_district_and_sex_2016-2018.xlsx","image/apples.jpg","image/red green apples.jpg","local-spatial-autocorrelation_files/anchor/anchor.min.js","local-spatial-autocorrelation_files/bowser/bowser.min.js","local-spatial-autocorrelation_files/distill/template.v2.js","local-spatial-autocorrelation_files/figure-html5/unnamed-chunk-13-1.png","local-spatial-autocorrelation_files/header-attrs/header-attrs.js","local-spatial-autocorrelation_files/jquery/jquery-3.6.0.js","local-spatial-autocorrelation_files/jquery/jquery-3.6.0.min.js","local-spatial-autocorrelation_files/jquery/jquery-3.6.0.min.map","local-spatial-autocorrelation_files/popper/popper.min.js","local-spatial-autocorrelation_files/tippy/tippy-bundle.umd.min.js","local-spatial-autocorrelation_files/tippy/tippy-light-border.css","local-spatial-autocorrelation_files/tippy/tippy.css","local-spatial-autocorrelation_files/tippy/tippy.umd.min.js","local-spatial-autocorrelation_files/webcomponents/webcomponents.js","ref.bib"]}
+  </script>
+  <!--radix_placeholder_navigation_in_header-->
+<meta name="distill:offset" content="../.."/>
+
+<script type="application/javascript">
+
+  window.headroom_prevent_pin = false;
+
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+
+    // initialize headroom for banner
+    var header = $('header').get(0);
+    var headerHeight = header.offsetHeight;
+    var headroom = new Headroom(header, {
+      tolerance: 5,
+      onPin : function() {
+        if (window.headroom_prevent_pin) {
+          window.headroom_prevent_pin = false;
+          headroom.unpin();
+        }
+      }
+    });
+    headroom.init();
+    if(window.location.hash)
+      headroom.unpin();
+    $(header).addClass('headroom--transition');
+
+    // offset scroll location for banner on hash change
+    // (see: https://github.com/WickyNilliams/headroom.js/issues/38)
+    window.addEventListener("hashchange", function(event) {
+      window.scrollTo(0, window.pageYOffset - (headerHeight + 25));
+    });
+
+    // responsive menu
+    $('.distill-site-header').each(function(i, val) {
+      var topnav = $(this);
+      var toggle = topnav.find('.nav-toggle');
+      toggle.on('click', function() {
+        topnav.toggleClass('responsive');
+      });
+    });
+
+    // nav dropdowns
+    $('.nav-dropbtn').click(function(e) {
+      $(this).next('.nav-dropdown-content').toggleClass('nav-dropdown-active');
+      $(this).parent().siblings('.nav-dropdown')
+         .children('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $("body").click(function(e){
+      $('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $(".nav-dropdown").click(function(e){
+      e.stopPropagation();
+    });
+  });
+</script>
+
+<style type="text/css">
+
+/* Theme (user-documented overrideables for nav appearance) */
+
+.distill-site-nav {
+  color: rgba(255, 255, 255, 0.8);
+  background-color: #0F2E3D;
+  font-size: 15px;
+  font-weight: 300;
+}
+
+.distill-site-nav a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.distill-site-nav a:hover {
+  color: white;
+}
+
+@media print {
+  .distill-site-nav {
+    display: none;
+  }
+}
+
+.distill-site-header {
+
+}
+
+.distill-site-footer {
+
+}
+
+
+/* Site Header */
+
+.distill-site-header {
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 3;
+}
+
+.distill-site-header .nav-left {
+  display: inline-block;
+  margin-left: 8px;
+}
+
+@media screen and (max-width: 768px) {
+  .distill-site-header .nav-left {
+    margin-left: 0;
+  }
+}
+
+
+.distill-site-header .nav-right {
+  float: right;
+  margin-right: 8px;
+}
+
+.distill-site-header a,
+.distill-site-header .title {
+  display: inline-block;
+  text-align: center;
+  padding: 14px 10px 14px 10px;
+}
+
+.distill-site-header .title {
+  font-size: 18px;
+  min-width: 150px;
+}
+
+.distill-site-header .logo {
+  padding: 0;
+}
+
+.distill-site-header .logo img {
+  display: none;
+  max-height: 20px;
+  width: auto;
+  margin-bottom: -4px;
+}
+
+.distill-site-header .nav-image img {
+  max-height: 18px;
+  width: auto;
+  display: inline-block;
+  margin-bottom: -3px;
+}
+
+
+
+@media screen and (min-width: 1000px) {
+  .distill-site-header .logo img {
+    display: inline-block;
+  }
+  .distill-site-header .nav-left {
+    margin-left: 20px;
+  }
+  .distill-site-header .nav-right {
+    margin-right: 20px;
+  }
+  .distill-site-header .title {
+    padding-left: 12px;
+  }
+}
+
+
+.distill-site-header .nav-toggle {
+  display: none;
+}
+
+.nav-dropdown {
+  display: inline-block;
+  position: relative;
+}
+
+.nav-dropdown .nav-dropbtn {
+  border: none;
+  outline: none;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 16px 10px;
+  background-color: transparent;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  margin: 0;
+  margin-top: 1px;
+  z-index: 2;
+}
+
+.nav-dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 200px;
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 4px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+  z-index: 1;
+  margin-top: 2px;
+  white-space: nowrap;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.nav-dropdown-content hr {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.nav-dropdown-active {
+  display: block;
+}
+
+.nav-dropdown-content a, .nav-dropdown-content .nav-dropdown-header {
+  color: black;
+  padding: 6px 24px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.nav-dropdown-content .nav-dropdown-header {
+  display: block;
+  padding: 5px 24px;
+  padding-bottom: 0;
+  text-transform: uppercase;
+  font-size: 14px;
+  color: #999999;
+  white-space: nowrap;
+}
+
+.nav-dropdown:hover .nav-dropbtn {
+  color: white;
+}
+
+.nav-dropdown-content a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.nav-right .nav-dropdown-content {
+  margin-left: -45%;
+  right: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .distill-site-header a, .distill-site-header .nav-dropdown  {display: none;}
+  .distill-site-header a.nav-toggle {
+    float: right;
+    display: block;
+  }
+  .distill-site-header .title {
+    margin-left: 0;
+  }
+  .distill-site-header .nav-right {
+    margin-right: 0;
+  }
+  .distill-site-header {
+    overflow: hidden;
+  }
+  .nav-right .nav-dropdown-content {
+    margin-left: 0;
+  }
+}
+
+
+@media screen and (max-width: 768px) {
+  .distill-site-header.responsive {position: relative; min-height: 500px; }
+  .distill-site-header.responsive a.nav-toggle {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .distill-site-header.responsive a,
+  .distill-site-header.responsive .nav-dropdown {
+    display: block;
+    text-align: left;
+  }
+  .distill-site-header.responsive .nav-left,
+  .distill-site-header.responsive .nav-right {
+    width: 100%;
+  }
+  .distill-site-header.responsive .nav-dropdown {float: none;}
+  .distill-site-header.responsive .nav-dropdown-content {position: relative;}
+  .distill-site-header.responsive .nav-dropdown .nav-dropbtn {
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+}
+
+/* Site Footer */
+
+.distill-site-footer {
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  z-index: 3;
+  margin-top: 30px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  text-align: center;
+}
+
+/* Headroom */
+
+d-title {
+  padding-top: 6rem;
+}
+
+@media print {
+  d-title {
+    padding-top: 4rem;
+  }
+}
+
+.headroom {
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.headroom--transition {
+  transition: all .4s ease-in-out;
+}
+
+.headroom--unpinned {
+  top: -100px;
+}
+
+.headroom--pinned {
+  top: 0;
+}
+
+/* adjust viewport for navbar height */
+/* helps vertically center bootstrap (non-distill) content */
+.min-vh-100 {
+  min-height: calc(100vh - 100px) !important;
+}
+
+</style>
+
+<script src="../../site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<link href="../../site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet"/>
+<link href="../../site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet"/>
+<script src="../../site_libs/headroom-0.9.4/headroom.min.js"></script>
+<script src="../../site_libs/autocomplete-0.37.1/autocomplete.min.js"></script>
+<script src="../../site_libs/fuse-6.4.1/fuse.min.js"></script>
+
+<script type="application/javascript">
+
+function getMeta(metaName) {
+  var metas = document.getElementsByTagName('meta');
+  for (let i = 0; i < metas.length; i++) {
+    if (metas[i].getAttribute('name') === metaName) {
+      return metas[i].getAttribute('content');
+    }
+  }
+  return '';
+}
+
+function offsetURL(url) {
+  var offset = getMeta('distill:offset');
+  return offset ? offset + '/' + url : url;
+}
+
+function createFuseIndex() {
+
+  // create fuse index
+  var options = {
+    keys: [
+      { name: 'title', weight: 20 },
+      { name: 'categories', weight: 15 },
+      { name: 'description', weight: 10 },
+      { name: 'contents', weight: 5 },
+    ],
+    ignoreLocation: true,
+    threshold: 0
+  };
+  var fuse = new window.Fuse([], options);
+
+  // fetch the main search.json
+  return fetch(offsetURL('search.json'))
+    .then(function(response) {
+      if (response.status == 200) {
+        return response.json().then(function(json) {
+          // index main articles
+          json.articles.forEach(function(article) {
+            fuse.add(article);
+          });
+          // download collections and index their articles
+          return Promise.all(json.collections.map(function(collection) {
+            return fetch(offsetURL(collection)).then(function(response) {
+              if (response.status === 200) {
+                return response.json().then(function(articles) {
+                  articles.forEach(function(article) {
+                    fuse.add(article);
+                  });
+                })
+              } else {
+                return Promise.reject(
+                  new Error('Unexpected status from search index request: ' +
+                            response.status)
+                );
+              }
+            });
+          })).then(function() {
+            return fuse;
+          });
+        });
+
+      } else {
+        return Promise.reject(
+          new Error('Unexpected status from search index request: ' +
+                      response.status)
+        );
+      }
+    });
+}
+
+window.document.addEventListener("DOMContentLoaded", function (event) {
+
+  // get search element (bail if we don't have one)
+  var searchEl = window.document.getElementById('distill-search');
+  if (!searchEl)
+    return;
+
+  createFuseIndex()
+    .then(function(fuse) {
+
+      // make search box visible
+      searchEl.classList.remove('hidden');
+
+      // initialize autocomplete
+      var options = {
+        autoselect: true,
+        hint: false,
+        minLength: 2,
+      };
+      window.autocomplete(searchEl, options, [{
+        source: function(query, callback) {
+          const searchOptions = {
+            isCaseSensitive: false,
+            shouldSort: true,
+            minMatchCharLength: 2,
+            limit: 10,
+          };
+          var results = fuse.search(query, searchOptions);
+          callback(results
+            .map(function(result) { return result.item; })
+          );
+        },
+        templates: {
+          suggestion: function(suggestion) {
+            var img = suggestion.preview && Object.keys(suggestion.preview).length > 0
+              ? `<img src="${offsetURL(suggestion.preview)}"</img>`
+              : '';
+            var html = `
+              <div class="search-item">
+                <h3>${suggestion.title}</h3>
+                <div class="search-item-description">
+                  ${suggestion.description || ''}
+                </div>
+                <div class="search-item-preview">
+                  ${img}
+                </div>
+              </div>
+            `;
+            return html;
+          }
+        }
+      }]).on('autocomplete:selected', function(event, suggestion) {
+        window.location.href = offsetURL(suggestion.path);
+      });
+      // remove inline display style on autocompleter (we want to
+      // manage responsive display via css)
+      $('.algolia-autocomplete').css("display", "");
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+
+});
+
+</script>
+
+<style type="text/css">
+
+.nav-search {
+  font-size: x-small;
+}
+
+/* Algolioa Autocomplete */
+
+.algolia-autocomplete {
+  display: inline-block;
+  margin-left: 10px;
+  vertical-align: sub;
+  background-color: white;
+  color: black;
+  padding: 6px;
+  padding-top: 8px;
+  padding-bottom: 0;
+  border-radius: 6px;
+  border: 1px #0F2E3D solid;
+  width: 180px;
+}
+
+
+@media screen and (max-width: 768px) {
+  .distill-site-nav .algolia-autocomplete {
+    display: none;
+    visibility: hidden;
+  }
+  .distill-site-nav.responsive .algolia-autocomplete {
+    display: inline-block;
+    visibility: visible;
+  }
+  .distill-site-nav.responsive .algolia-autocomplete .aa-dropdown-menu {
+    margin-left: 0;
+    width: 400px;
+    max-height: 400px;
+  }
+}
+
+.algolia-autocomplete .aa-input, .algolia-autocomplete .aa-hint {
+  width: 90%;
+  outline: none;
+  border: none;
+}
+
+.algolia-autocomplete .aa-hint {
+  color: #999;
+}
+.algolia-autocomplete .aa-dropdown-menu {
+  width: 550px;
+  max-height: 70vh;
+  overflow-x: visible;
+  overflow-y: scroll;
+  padding: 5px;
+  margin-top: 3px;
+  margin-left: -150px;
+  background-color: #fff;
+  border-radius: 5px;
+  border: 1px solid #999;
+  border-top: none;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion {
+  cursor: pointer;
+  padding: 5px 4px;
+  border-bottom: 1px solid #eee;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion:last-of-type {
+  border-bottom: none;
+  margin-bottom: 2px;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item {
+  overflow: hidden;
+  font-size: 0.8em;
+  line-height: 1.4em;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item h3 {
+  font-size: 1rem;
+  margin-block-start: 0;
+  margin-block-end: 5px;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-description {
+  display: inline-block;
+  overflow: hidden;
+  height: 2.8em;
+  width: 80%;
+  margin-right: 4%;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview {
+  display: inline-block;
+  width: 15%;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview img {
+  height: 3em;
+  width: auto;
+  display: none;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview img[src] {
+  display: initial;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion.aa-cursor {
+  background-color: #eee;
+}
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion em {
+  font-weight: bold;
+  font-style: normal;
+}
+
+</style>
+
+
+<!--/radix_placeholder_navigation_in_header-->
+  <!--radix_placeholder_distill-->
+
+<style type="text/css">
+
+body {
+  background-color: white;
+}
+
+.pandoc-table {
+  width: 100%;
+}
+
+.pandoc-table>caption {
+  margin-bottom: 10px;
+}
+
+.pandoc-table th:not([align]) {
+  text-align: left;
+}
+
+.pagedtable-footer {
+  font-size: 15px;
+}
+
+d-byline .byline {
+  grid-template-columns: 2fr 2fr;
+}
+
+d-byline .byline h3 {
+  margin-block-start: 1.5em;
+}
+
+d-byline .byline .authors-affiliations h3 {
+  margin-block-start: 0.5em;
+}
+
+.authors-affiliations .orcid-id {
+  width: 16px;
+  height:16px;
+  margin-left: 4px;
+  margin-right: 4px;
+  vertical-align: middle;
+  padding-bottom: 2px;
+}
+
+d-title .dt-tags {
+  margin-top: 1em;
+  grid-column: text;
+}
+
+.dt-tags .dt-tag {
+  text-decoration: none;
+  display: inline-block;
+  color: rgba(0,0,0,0.6);
+  padding: 0em 0.4em;
+  margin-right: 0.5em;
+  margin-bottom: 0.4em;
+  font-size: 70%;
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 3px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+d-article table.gt_table td,
+d-article table.gt_table th {
+  border-bottom: none;
+  font-size: 100%;
+}
+
+.html-widget {
+  margin-bottom: 2.0em;
+}
+
+.l-screen-inset {
+  padding-right: 16px;
+}
+
+.l-screen .caption {
+  margin-left: 10px;
+}
+
+.shaded {
+  background: rgb(247, 247, 247);
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.shaded .html-widget {
+  margin-bottom: 0;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.shaded .shaded-content {
+  background: white;
+}
+
+.text-output {
+  margin-top: 0;
+  line-height: 1.5em;
+}
+
+.hidden {
+  display: none !important;
+}
+
+d-article {
+  padding-top: 2.5rem;
+  padding-bottom: 30px;
+}
+
+d-appendix {
+  padding-top: 30px;
+}
+
+d-article>p>img {
+  width: 100%;
+}
+
+d-article h2 {
+  margin: 1rem 0 1.5rem 0;
+}
+
+d-article h3 {
+  margin-top: 1.5rem;
+}
+
+d-article iframe {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  margin-bottom: 2.0em;
+  width: 100%;
+}
+
+/* Tweak code blocks */
+
+d-article div.sourceCode code,
+d-article pre code {
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+}
+
+d-article pre,
+d-article div.sourceCode,
+d-article div.sourceCode pre {
+  overflow: auto;
+}
+
+d-article div.sourceCode {
+  background-color: white;
+}
+
+d-article div.sourceCode pre {
+  padding-left: 10px;
+  font-size: 12px;
+  border-left: 2px solid rgba(0,0,0,0.1);
+}
+
+d-article pre {
+  font-size: 12px;
+  color: black;
+  background: none;
+  margin-top: 0;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+d-article pre a {
+  border-bottom: none;
+}
+
+d-article pre a:hover {
+  border-bottom: none;
+  text-decoration: underline;
+}
+
+d-article details {
+  grid-column: text;
+  margin-bottom: 0.8em;
+}
+
+@media(min-width: 768px) {
+
+d-article pre,
+d-article div.sourceCode,
+d-article div.sourceCode pre {
+  overflow: visible !important;
+}
+
+d-article div.sourceCode pre {
+  padding-left: 18px;
+  font-size: 14px;
+}
+
+d-article pre {
+  font-size: 14px;
+}
+
+}
+
+figure img.external {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+/* CSS for d-contents */
+
+.d-contents {
+  grid-column: text;
+  color: rgba(0,0,0,0.8);
+  font-size: 0.9em;
+  padding-bottom: 1em;
+  margin-bottom: 1em;
+  padding-bottom: 0.5em;
+  margin-bottom: 1em;
+  padding-left: 0.25em;
+  justify-self: start;
+}
+
+@media(min-width: 1000px) {
+  .d-contents.d-contents-float {
+    height: 0;
+    grid-column-start: 1;
+    grid-column-end: 4;
+    justify-self: center;
+    padding-right: 3em;
+    padding-left: 2em;
+  }
+}
+
+.d-contents nav h3 {
+  font-size: 18px;
+  margin-top: 0;
+  margin-bottom: 1em;
+}
+
+.d-contents li {
+  list-style-type: none
+}
+
+.d-contents nav > ul {
+  padding-left: 0;
+}
+
+.d-contents ul {
+  padding-left: 1em
+}
+
+.d-contents nav ul li {
+  margin-top: 0.6em;
+  margin-bottom: 0.2em;
+}
+
+.d-contents nav a {
+  font-size: 13px;
+  border-bottom: none;
+  text-decoration: none
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.d-contents nav a:hover {
+  text-decoration: underline solid rgba(0, 0, 0, 0.6)
+}
+
+.d-contents nav > ul > li > a {
+  font-weight: 600;
+}
+
+.d-contents nav > ul > li > ul {
+  font-weight: inherit;
+}
+
+.d-contents nav > ul > li > ul > li {
+  margin-top: 0.2em;
+}
+
+
+.d-contents nav ul {
+  margin-top: 0;
+  margin-bottom: 0.25em;
+}
+
+.d-article-with-toc h2:nth-child(2) {
+  margin-top: 0;
+}
+
+
+/* Figure */
+
+.figure {
+  position: relative;
+  margin-bottom: 2.5em;
+  margin-top: 1.5em;
+}
+
+.figure .caption {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 12px;
+  line-height: 1.5em;
+}
+
+.figure img.external {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+.figure .caption a {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.figure .caption b,
+.figure .caption strong, {
+  font-weight: 600;
+  color: rgba(0, 0, 0, 1.0);
+}
+
+/* Citations */
+
+d-article .citation {
+  color: inherit;
+  cursor: inherit;
+}
+
+div.hanging-indent{
+  margin-left: 1em; text-indent: -1em;
+}
+
+/* Citation hover box */
+
+.tippy-box[data-theme~=light-border] {
+  background-color: rgba(250, 250, 250, 0.95);
+}
+
+.tippy-content > p {
+  margin-bottom: 0;
+  padding: 2px;
+}
+
+
+/* Tweak 1000px media break to show more text */
+
+@media(min-width: 1000px) {
+  .base-grid,
+  distill-header,
+  d-title,
+  d-abstract,
+  d-article,
+  d-appendix,
+  distill-appendix,
+  d-byline,
+  d-footnote-list,
+  d-citation-list,
+  distill-footer {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start] 80px [middle-start] 50px [text-start kicker-end] 65px 65px 65px 65px 65px 65px 65px 65px [text-end gutter-start] 65px [middle-end] 65px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 16px;
+  }
+
+  .grid {
+    grid-column-gap: 16px;
+  }
+
+  d-article {
+    font-size: 1.06rem;
+    line-height: 1.7em;
+  }
+  figure .caption, .figure .caption, figure figcaption {
+    font-size: 13px;
+  }
+}
+
+@media(min-width: 1180px) {
+  .base-grid,
+  distill-header,
+  d-title,
+  d-abstract,
+  d-article,
+  d-appendix,
+  distill-appendix,
+  d-byline,
+  d-footnote-list,
+  d-citation-list,
+  distill-footer {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 32px;
+  }
+
+  .grid {
+    grid-column-gap: 32px;
+  }
+}
+
+
+/* Get the citation styles for the appendix (not auto-injected on render since
+   we do our own rendering of the citation appendix) */
+
+d-appendix .citation-appendix,
+.d-appendix .citation-appendix {
+  font-size: 11px;
+  line-height: 15px;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  padding-left: 18px;
+  border: 1px solid rgba(0,0,0,0.1);
+  background: rgba(0, 0, 0, 0.02);
+  padding: 10px 18px;
+  border-radius: 3px;
+  color: rgba(150, 150, 150, 1);
+  overflow: hidden;
+  margin-top: -12px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* Include appendix styles here so they can be overridden */
+
+d-appendix {
+  contain: layout style;
+  font-size: 0.8em;
+  line-height: 1.7em;
+  margin-top: 60px;
+  margin-bottom: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  color: rgba(0,0,0,0.5);
+  padding-top: 60px;
+  padding-bottom: 48px;
+}
+
+d-appendix h3 {
+  grid-column: page-start / text-start;
+  font-size: 15px;
+  font-weight: 500;
+  margin-top: 1em;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.65);
+}
+
+d-appendix h3 + * {
+  margin-top: 1em;
+}
+
+d-appendix ol {
+  padding: 0 0 0 15px;
+}
+
+@media (min-width: 768px) {
+  d-appendix ol {
+    padding: 0 0 0 30px;
+    margin-left: -30px;
+  }
+}
+
+d-appendix li {
+  margin-bottom: 1em;
+}
+
+d-appendix a {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+d-appendix > * {
+  grid-column: text;
+}
+
+d-appendix > d-footnote-list,
+d-appendix > d-citation-list,
+d-appendix > distill-appendix {
+  grid-column: screen;
+}
+
+/* Include footnote styles here so they can be overridden */
+
+d-footnote-list {
+  contain: layout style;
+}
+
+d-footnote-list > * {
+  grid-column: text;
+}
+
+d-footnote-list a.footnote-backlink {
+  color: rgba(0,0,0,0.3);
+  padding-left: 0.5em;
+}
+
+
+
+/* Anchor.js */
+
+.anchorjs-link {
+  /*transition: all .25s linear; */
+  text-decoration: none;
+  border-bottom: none;
+}
+*:hover > .anchorjs-link {
+  margin-left: -1.125em !important;
+  text-decoration: none;
+  border-bottom: none;
+}
+
+/* Social footer */
+
+.social_footer {
+  margin-top: 30px;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.67);
+}
+
+.disqus-comments {
+  margin-right: 30px;
+}
+
+.disqus-comment-count {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+}
+
+#disqus_thread {
+  margin-top: 30px;
+}
+
+.article-sharing a {
+  border-bottom: none;
+  margin-right: 8px;
+}
+
+.article-sharing a:hover {
+  border-bottom: none;
+}
+
+.sidebar-section.subscribe {
+  font-size: 12px;
+  line-height: 1.6em;
+}
+
+.subscribe p {
+  margin-bottom: 0.5em;
+}
+
+
+.article-footer .subscribe {
+  font-size: 15px;
+  margin-top: 45px;
+}
+
+
+.sidebar-section.custom {
+  font-size: 12px;
+  line-height: 1.6em;
+}
+
+.custom p {
+  margin-bottom: 0.5em;
+}
+
+/* Styles for listing layout (hide title) */
+.layout-listing d-title, .layout-listing .d-title {
+  display: none;
+}
+
+/* Styles for posts lists (not auto-injected) */
+
+
+.posts-with-sidebar {
+  padding-left: 45px;
+  padding-right: 45px;
+}
+
+.posts-list .description h2,
+.posts-list .description p {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+}
+
+.posts-list .description h2 {
+  font-weight: 700;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.posts-list h2.post-tag {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  padding-bottom: 12px;
+}
+.posts-list {
+  margin-top: 60px;
+  margin-bottom: 24px;
+}
+
+.posts-list .post-preview {
+  text-decoration: none;
+  overflow: hidden;
+  display: block;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 24px 0;
+}
+
+.post-preview-last {
+  border-bottom: none !important;
+}
+
+.posts-list .posts-list-caption {
+  grid-column: screen;
+  font-weight: 400;
+}
+
+.posts-list .post-preview h2 {
+  margin: 0 0 6px 0;
+  line-height: 1.2em;
+  font-style: normal;
+  font-size: 24px;
+}
+
+.posts-list .post-preview p {
+  margin: 0 0 12px 0;
+  line-height: 1.4em;
+  font-size: 16px;
+}
+
+.posts-list .post-preview .thumbnail {
+  box-sizing: border-box;
+  margin-bottom: 24px;
+  position: relative;
+  max-width: 500px;
+}
+.posts-list .post-preview img {
+  width: 100%;
+  display: block;
+}
+
+.posts-list .metadata {
+  font-size: 12px;
+  line-height: 1.4em;
+  margin-bottom: 18px;
+}
+
+.posts-list .metadata > * {
+  display: inline-block;
+}
+
+.posts-list .metadata .publishedDate {
+  margin-right: 2em;
+}
+
+.posts-list .metadata .dt-authors {
+  display: block;
+  margin-top: 0.3em;
+  margin-right: 2em;
+}
+
+.posts-list .dt-tags {
+  display: block;
+  line-height: 1em;
+}
+
+.posts-list .dt-tags .dt-tag {
+  display: inline-block;
+  color: rgba(0,0,0,0.6);
+  padding: 0.3em 0.4em;
+  margin-right: 0.2em;
+  margin-bottom: 0.4em;
+  font-size: 60%;
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 3px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.posts-list img {
+  opacity: 1;
+}
+
+.posts-list img[data-src] {
+  opacity: 0;
+}
+
+.posts-more {
+  clear: both;
+}
+
+
+.posts-sidebar {
+  font-size: 16px;
+}
+
+.posts-sidebar h3 {
+  font-size: 16px;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.sidebar-section {
+  margin-bottom: 30px;
+}
+
+.categories ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.categories li {
+  color: rgba(0, 0, 0, 0.8);
+  margin-bottom: 0;
+}
+
+.categories li>a {
+  border-bottom: none;
+}
+
+.categories li>a:hover {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+}
+
+.categories .active {
+  font-weight: 600;
+}
+
+.categories .category-count {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+
+@media(min-width: 768px) {
+  .posts-list .post-preview h2 {
+    font-size: 26px;
+  }
+  .posts-list .post-preview .thumbnail {
+    float: right;
+    width: 30%;
+    margin-bottom: 0;
+  }
+  .posts-list .post-preview .description {
+    float: left;
+    width: 45%;
+  }
+  .posts-list .post-preview .metadata {
+    float: left;
+    width: 20%;
+    margin-top: 8px;
+  }
+  .posts-list .post-preview p {
+    margin: 0 0 12px 0;
+    line-height: 1.5em;
+    font-size: 16px;
+  }
+  .posts-with-sidebar .posts-list {
+    float: left;
+    width: 75%;
+  }
+  .posts-with-sidebar .posts-sidebar {
+    float: right;
+    width: 20%;
+    margin-top: 60px;
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+}
+
+
+/* Improve display for browsers without grid (IE/Edge <= 15) */
+
+.downlevel {
+  line-height: 1.6em;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  margin: 0;
+}
+
+.downlevel .d-title {
+  padding-top: 6rem;
+  padding-bottom: 1.5rem;
+}
+
+.downlevel .d-title h1 {
+  font-size: 50px;
+  font-weight: 700;
+  line-height: 1.1em;
+  margin: 0 0 0.5rem;
+}
+
+.downlevel .d-title p {
+  font-weight: 300;
+  font-size: 1.2rem;
+  line-height: 1.55em;
+  margin-top: 0;
+}
+
+.downlevel .d-byline {
+  padding-top: 0.8em;
+  padding-bottom: 0.8em;
+  font-size: 0.8rem;
+  line-height: 1.8em;
+}
+
+.downlevel .section-separator {
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.downlevel .d-article {
+  font-size: 1.06rem;
+  line-height: 1.7em;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+}
+
+
+.downlevel .d-appendix {
+  padding-left: 0;
+  padding-right: 0;
+  max-width: none;
+  font-size: 0.8em;
+  line-height: 1.7em;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.5);
+  padding-top: 40px;
+  padding-bottom: 48px;
+}
+
+.downlevel .footnotes ol {
+  padding-left: 13px;
+}
+
+.downlevel .base-grid,
+.downlevel .distill-header,
+.downlevel .d-title,
+.downlevel .d-abstract,
+.downlevel .d-article,
+.downlevel .d-appendix,
+.downlevel .distill-appendix,
+.downlevel .d-byline,
+.downlevel .d-footnote-list,
+.downlevel .d-citation-list,
+.downlevel .distill-footer,
+.downlevel .appendix-bottom,
+.downlevel .posts-container {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+@media(min-width: 768px) {
+  .downlevel .base-grid,
+  .downlevel .distill-header,
+  .downlevel .d-title,
+  .downlevel .d-abstract,
+  .downlevel .d-article,
+  .downlevel .d-appendix,
+  .downlevel .distill-appendix,
+  .downlevel .d-byline,
+  .downlevel .d-footnote-list,
+  .downlevel .d-citation-list,
+  .downlevel .distill-footer,
+  .downlevel .appendix-bottom,
+  .downlevel .posts-container {
+  padding-left: 150px;
+  padding-right: 150px;
+  max-width: 900px;
+}
+}
+
+.downlevel pre code {
+  display: block;
+  border-left: 2px solid rgba(0, 0, 0, .1);
+  padding: 0 0 0 20px;
+  font-size: 14px;
+}
+
+.downlevel code, .downlevel pre {
+  color: black;
+  background: none;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+.downlevel .posts-list .post-preview {
+  color: inherit;
+}
+
+
+
+</style>
+
+<script type="application/javascript">
+
+function is_downlevel_browser() {
+  if (bowser.isUnsupportedBrowser({ msie: "12", msedge: "16"},
+                                 window.navigator.userAgent)) {
+    return true;
+  } else {
+    return window.load_distill_framework === undefined;
+  }
+}
+
+// show body when load is complete
+function on_load_complete() {
+
+  // add anchors
+  if (window.anchors) {
+    window.anchors.options.placement = 'left';
+    window.anchors.add('d-article > h2, d-article > h3, d-article > h4, d-article > h5');
+  }
+
+
+  // set body to visible
+  document.body.style.visibility = 'visible';
+
+  // force redraw for leaflet widgets
+  if (window.HTMLWidgets) {
+    var maps = window.HTMLWidgets.findAll(".leaflet");
+    $.each(maps, function(i, el) {
+      var map = this.getMap();
+      map.invalidateSize();
+      map.eachLayer(function(layer) {
+        if (layer instanceof L.TileLayer)
+          layer.redraw();
+      });
+    });
+  }
+
+  // trigger 'shown' so htmlwidgets resize
+  $('d-article').trigger('shown');
+}
+
+function init_distill() {
+
+  init_common();
+
+  // create front matter
+  var front_matter = $('<d-front-matter></d-front-matter>');
+  $('#distill-front-matter').wrap(front_matter);
+
+  // create d-title
+  $('.d-title').changeElementType('d-title');
+
+  // create d-byline
+  var byline = $('<d-byline></d-byline>');
+  $('.d-byline').replaceWith(byline);
+
+  // create d-article
+  var article = $('<d-article></d-article>');
+  $('.d-article').wrap(article).children().unwrap();
+
+  // move posts container into article
+  $('.posts-container').appendTo($('d-article'));
+
+  // create d-appendix
+  $('.d-appendix').changeElementType('d-appendix');
+
+  // flag indicating that we have appendix items
+  var appendix = $('.appendix-bottom').children('h3').length > 0;
+
+  // replace footnotes with <d-footnote>
+  $('.footnote-ref').each(function(i, val) {
+    appendix = true;
+    var href = $(this).attr('href');
+    var id = href.replace('#', '');
+    var fn = $('#' + id);
+    var fn_p = $('#' + id + '>p');
+    fn_p.find('.footnote-back').remove();
+    var text = fn_p.html();
+    var dtfn = $('<d-footnote></d-footnote>');
+    dtfn.html(text);
+    $(this).replaceWith(dtfn);
+  });
+  // remove footnotes
+  $('.footnotes').remove();
+
+  // move refs into #references-listing
+  $('#references-listing').replaceWith($('#refs'));
+
+  $('h1.appendix, h2.appendix').each(function(i, val) {
+    $(this).changeElementType('h3');
+  });
+  $('h3.appendix').each(function(i, val) {
+    var id = $(this).attr('id');
+    $('.d-contents a[href="#' + id + '"]').parent().remove();
+    appendix = true;
+    $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
+  });
+
+  // show d-appendix if we have appendix content
+  $("d-appendix").css('display', appendix ? 'grid' : 'none');
+
+  // localize layout chunks to just output
+  $('.layout-chunk').each(function(i, val) {
+
+    // capture layout
+    var layout = $(this).attr('data-layout');
+
+    // apply layout to markdown level block elements
+    var elements = $(this).children().not('details, div.sourceCode, pre, script');
+    elements.each(function(i, el) {
+      var layout_div = $('<div class="' + layout + '"></div>');
+      if (layout_div.hasClass('shaded')) {
+        var shaded_content = $('<div class="shaded-content"></div>');
+        $(this).wrap(shaded_content);
+        $(this).parent().wrap(layout_div);
+      } else {
+        $(this).wrap(layout_div);
+      }
+    });
+
+
+    // unwrap the layout-chunk div
+    $(this).children().unwrap();
+  });
+
+  // remove code block used to force  highlighting css
+  $('.distill-force-highlighting-css').parent().remove();
+
+  // remove empty line numbers inserted by pandoc when using a
+  // custom syntax highlighting theme
+  $('code.sourceCode a:empty').remove();
+
+  // load distill framework
+  load_distill_framework();
+
+  // wait for window.distillRunlevel == 4 to do post processing
+  function distill_post_process() {
+
+    if (!window.distillRunlevel || window.distillRunlevel < 4)
+      return;
+
+    // hide author/affiliations entirely if we have no authors
+    var front_matter = JSON.parse($("#distill-front-matter").html());
+    var have_authors = front_matter.authors && front_matter.authors.length > 0;
+    if (!have_authors)
+      $('d-byline').addClass('hidden');
+
+    // article with toc class
+    $('.d-contents').parent().addClass('d-article-with-toc');
+
+    // strip links that point to #
+    $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
+
+    // add orcid ids
+    $('.authors-affiliations').find('.author').each(function(i, el) {
+      var orcid_id = front_matter.authors[i].orcidID;
+      if (orcid_id) {
+        var a = $('<a></a>');
+        a.attr('href', 'https://orcid.org/' + orcid_id);
+        var img = $('<img></img>');
+        img.addClass('orcid-id');
+        img.attr('alt', 'ORCID ID');
+        img.attr('src','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==');
+        a.append(img);
+        $(this).append(a);
+      }
+    });
+
+    // hide elements of author/affiliations grid that have no value
+    function hide_byline_column(caption) {
+      $('d-byline').find('h3:contains("' + caption + '")').parent().css('visibility', 'hidden');
+    }
+
+    // affiliations
+    var have_affiliations = false;
+    for (var i = 0; i<front_matter.authors.length; ++i) {
+      var author = front_matter.authors[i];
+      if (author.affiliation !== "&nbsp;") {
+        have_affiliations = true;
+        break;
+      }
+    }
+    if (!have_affiliations)
+      $('d-byline').find('h3:contains("Affiliations")').css('visibility', 'hidden');
+
+    // published date
+    if (!front_matter.publishedDate)
+      hide_byline_column("Published");
+
+    // document object identifier
+    var doi = $('d-byline').find('h3:contains("DOI")');
+    var doi_p = doi.next().empty();
+    if (!front_matter.doi) {
+      // if we have a citation and valid citationText then link to that
+      if ($('#citation').length > 0 && front_matter.citationText) {
+        doi.html('Citation');
+        $('<a href="#citation"></a>')
+          .text(front_matter.citationText)
+          .appendTo(doi_p);
+      } else {
+        hide_byline_column("DOI");
+      }
+    } else {
+      $('<a></a>')
+         .attr('href', "https://doi.org/" + front_matter.doi)
+         .html(front_matter.doi)
+         .appendTo(doi_p);
+    }
+
+     // change plural form of authors/affiliations
+    if (front_matter.authors.length === 1) {
+      var grid = $('.authors-affiliations');
+      grid.children('h3:contains("Authors")').text('Author');
+      grid.children('h3:contains("Affiliations")').text('Affiliation');
+    }
+
+    // remove d-appendix and d-footnote-list local styles
+    $('d-appendix > style:first-child').remove();
+    $('d-footnote-list > style:first-child').remove();
+
+    // move appendix-bottom entries to the bottom
+    $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
+    $('.appendix-bottom').remove();
+
+    // hoverable references
+    $('span.citation[data-cites]').each(function() {
+      const citeChild = $(this).children()[0]
+      // Do not process if @xyz has been used without escaping and without bibliography activated
+      // https://github.com/rstudio/distill/issues/466
+      if (citeChild === undefined) return true
+
+      if (citeChild.nodeName == "D-FOOTNOTE") {
+        var fn = citeChild
+        $(this).html(fn.shadowRoot.querySelector("sup"))
+        $(this).id = fn.id
+        fn.remove()
+      }
+      var refs = $(this).attr('data-cites').split(" ");
+      var refHtml = refs.map(function(ref) {
+        // Could use CSS.escape too here, we insure backward compatibility in navigator
+        return "<p>" + $('div[id="ref-' + ref + '"]').html() + "</p>";
+      }).join("\n");
+      window.tippy(this, {
+        allowHTML: true,
+        content: refHtml,
+        maxWidth: 500,
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'light-border',
+        placement: 'bottom-start'
+      });
+    });
+
+    // fix footnotes in tables (#411)
+    // replacing broken distill.pub feature
+    $('table d-footnote').each(function() {
+      // we replace internal showAtNode methode which is triggered when hovering a footnote
+      this.hoverBox.showAtNode = function(node) {
+        // ported from https://github.com/distillpub/template/pull/105/files
+        calcOffset = function(elem) {
+            let x = elem.offsetLeft;
+            let y = elem.offsetTop;
+            // Traverse upwards until an `absolute` element is found or `elem`
+            // becomes null.
+            while (elem = elem.offsetParent && elem.style.position != 'absolute') {
+                x += elem.offsetLeft;
+                y += elem.offsetTop;
+            }
+
+            return { left: x, top: y };
+        }
+        // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetTop
+        const bbox = node.getBoundingClientRect();
+        const offset = calcOffset(node);
+        this.show([offset.left + bbox.width, offset.top + bbox.height]);
+      }
+    })
+
+    // clear polling timer
+    clearInterval(tid);
+
+    // show body now that everything is ready
+    on_load_complete();
+  }
+
+  var tid = setInterval(distill_post_process, 50);
+  distill_post_process();
+
+}
+
+function init_downlevel() {
+
+  init_common();
+
+   // insert hr after d-title
+  $('.d-title').after($('<hr class="section-separator"/>'));
+
+  // check if we have authors
+  var front_matter = JSON.parse($("#distill-front-matter").html());
+  var have_authors = front_matter.authors && front_matter.authors.length > 0;
+
+  // manage byline/border
+  if (!have_authors)
+    $('.d-byline').remove();
+  $('.d-byline').after($('<hr class="section-separator"/>'));
+  $('.d-byline a').remove();
+
+  // remove toc
+  $('.d-contents').remove();
+
+  // move appendix elements
+  $('h1.appendix, h2.appendix').each(function(i, val) {
+    $(this).changeElementType('h3');
+  });
+  $('h3.appendix').each(function(i, val) {
+    $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('.d-appendix'));
+  });
+
+
+  // inject headers into references and footnotes
+  var refs_header = $('<h3></h3>');
+  refs_header.text('References');
+  $('#refs').prepend(refs_header);
+
+  var footnotes_header = $('<h3></h3');
+  footnotes_header.text('Footnotes');
+  $('.footnotes').children('hr').first().replaceWith(footnotes_header);
+
+  // move appendix-bottom entries to the bottom
+  $('.appendix-bottom').appendTo('.d-appendix').children().unwrap();
+  $('.appendix-bottom').remove();
+
+  // remove appendix if it's empty
+  if ($('.d-appendix').children().length === 0)
+    $('.d-appendix').remove();
+
+  // prepend separator above appendix
+  $('.d-appendix').before($('<hr class="section-separator" style="clear: both"/>'));
+
+  // trim code
+  $('pre>code').each(function(i, val) {
+    $(this).html($.trim($(this).html()));
+  });
+
+  // move posts-container right before article
+  $('.posts-container').insertBefore($('.d-article'));
+
+  $('body').addClass('downlevel');
+
+  on_load_complete();
+}
+
+
+function init_common() {
+
+  // jquery plugin to change element types
+  (function($) {
+    $.fn.changeElementType = function(newType) {
+      var attrs = {};
+
+      $.each(this[0].attributes, function(idx, attr) {
+        attrs[attr.nodeName] = attr.nodeValue;
+      });
+
+      this.replaceWith(function() {
+        return $("<" + newType + "/>", attrs).append($(this).contents());
+      });
+    };
+  })(jQuery);
+
+  // prevent underline for linked images
+  $('a > img').parent().css({'border-bottom' : 'none'});
+
+  // mark non-body figures created by knitr chunks as 100% width
+  $('.layout-chunk').each(function(i, val) {
+    var figures = $(this).find('img, .html-widget');
+    // ignore leaflet img layers (#106)
+    figures = figures.filter(':not(img[class*="leaflet"])')
+    if ($(this).attr('data-layout') !== "l-body") {
+      figures.css('width', '100%');
+    } else {
+      figures.css('max-width', '100%');
+      figures.filter("[width]").each(function(i, val) {
+        var fig = $(this);
+        fig.css('width', fig.attr('width') + 'px');
+      });
+
+    }
+  });
+
+  // auto-append index.html to post-preview links in file: protocol
+  // and in rstudio ide preview
+  $('.post-preview').each(function(i, val) {
+    if (window.location.protocol === "file:")
+      $(this).attr('href', $(this).attr('href') + "index.html");
+  });
+
+  // get rid of index.html references in header
+  if (window.location.protocol !== "file:") {
+    $('.distill-site-header a[href]').each(function(i,val) {
+      $(this).attr('href', $(this).attr('href').replace(/^index[.]html/, "./"));
+    });
+  }
+
+  // add class to pandoc style tables
+  $('tr.header').parent('thead').parent('table').addClass('pandoc-table');
+  $('.kable-table').children('table').addClass('pandoc-table');
+
+  // add figcaption style to table captions
+  $('caption').parent('table').addClass("figcaption");
+
+  // initialize posts list
+  if (window.init_posts_list)
+    window.init_posts_list();
+
+  // implmement disqus comment link
+  $('.disqus-comment-count').click(function() {
+    window.headroom_prevent_pin = true;
+    $('#disqus_thread').toggleClass('hidden');
+    if (!$('#disqus_thread').hasClass('hidden')) {
+      var offset = $(this).offset();
+      $(window).resize();
+      $('html, body').animate({
+        scrollTop: offset.top - 35
+      });
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  if (is_downlevel_browser())
+    init_downlevel();
+  else
+    window.addEventListener('WebComponentsReady', init_distill);
+});
+
+</script>
+
+<!--/radix_placeholder_distill-->
+  <script src="../../site_libs/header-attrs/header-attrs.js"></script>
+  <script src="../../site_libs/jquery/jquery-3.6.0.min.js"></script>
+  <script src="../../site_libs/popper/popper.min.js"></script>
+  <link href="../../site_libs/tippy/tippy.css" rel="stylesheet" />
+  <link href="../../site_libs/tippy/tippy-light-border.css" rel="stylesheet" />
+  <script src="../../site_libs/tippy/tippy.umd.min.js"></script>
+  <script src="../../site_libs/anchor/anchor.min.js"></script>
+  <script src="../../site_libs/bowser/bowser.min.js"></script>
+  <script src="../../site_libs/webcomponents/webcomponents.js"></script>
+  <script src="../../site_libs/distill/template.v2.js"></script>
+  <!--radix_placeholder_site_in_header-->
+<!--/radix_placeholder_site_in_header-->
+
+
+</head>
+
+<body>
+
+<!--radix_placeholder_front_matter-->
+
+<script id="distill-front-matter" type="text/json">
+{"title":"Local Moran's I","description":"Are the selected locations different from each other?","authors":[{"author":"Jasper Lok","authorURL":"https://jasperlok.netlify.app/","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2023-03-19T00:00:00.000+08:00","citationText":"Lok, 2023"}
+</script>
+
+<!--/radix_placeholder_front_matter-->
+<!--radix_placeholder_navigation_before_body-->
+<header class="header header--fixed" role="banner">
+<nav class="distill-site-nav distill-site-header">
+<div class="nav-left">
+<a href="../../index.html" class="title">When Actuarial Science Collides with Data Science</a>
+<input id="distill-search" class="nav-search hidden" type="text" placeholder="Search..."/>
+</div>
+<div class="nav-right">
+<a href="../../index.html">Home</a>
+<a href="../../about.html">About</a>
+<a href="../../past_proj.html">Past Projects &amp; Talks</a>
+<a href="../../blog_disclaimer.html">Blog Disclaimer</a>
+<a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
+</div>
+</nav>
+</header>
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="d-title">
+<h1>Local Moran’s I</h1>
+<!--radix_placeholder_categories-->
+<div class="dt-tags">
+  <a href="../../index.html#category:Geospatial_Analytics" class="dt-tag">Geospatial Analytics</a>
+</div>
+<!--/radix_placeholder_categories-->
+<p><p>Are the selected locations different from each other?</p></p>
+</div>
+
+<div class="d-byline">
+  Jasper Lok <a href="https://jasperlok.netlify.app/" class="uri">https://jasperlok.netlify.app/</a> 
+  
+<br/>03-19-2023
+</div>
+
+<div class="d-article">
+<div class="d-contents d-contents-float">
+<nav class="l-text toc figcaption" id="TOC">
+<h3>Contents</h3>
+<ul>
+<li><a href="#what-is-local-spatial-autocorrelation" id="toc-what-is-local-spatial-autocorrelation">What is local spatial autocorrelation?</a></li>
+<li><a href="#local-morans-i" id="toc-local-morans-i">Local Moran’s I</a></li>
+<li><a href="#demonstration" id="toc-demonstration">Demonstration</a>
+<ul>
+<li><a href="#setup-the-environment" id="toc-setup-the-environment">Setup the environment</a></li>
+<li><a href="#import-the-data" id="toc-import-the-data">Import the data</a>
+<ul>
+<li><a href="#import-shp-files" id="toc-import-shp-files">Import shp files</a></li>
+<li><a href="#import-malaysia-2015---2021-birth-rate-dataset" id="toc-import-malaysia-2015---2021-birth-rate-dataset">Import Malaysia 2015 - 2021 birth rate dataset</a></li>
+</ul></li>
+<li><a href="#join-the-datasets-together" id="toc-join-the-datasets-together">Join the datasets together</a></li>
+<li><a href="#spatial-weights" id="toc-spatial-weights">Spatial weights</a></li>
+<li><a href="#local-spatial-autocorrelation" id="toc-local-spatial-autocorrelation">Local Spatial Autocorrelation</a>
+<ul>
+<li><a href="#local-morans-i-1" id="toc-local-morans-i-1">Local Moran’s I</a></li>
+<li><a href="#visualization" id="toc-visualization">Visualization</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#conclusion" id="toc-conclusion">Conclusion</a></li>
+</ul>
+</nav>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="image/apples.jpg" width="100%" /></p>
+</div>
+<p>Photo by <a href="https://unsplash.com/@jccards?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Marek Studzinski</a> on <a href="https://unsplash.com/photos/JpuD4qCINbM?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a></p>
+<p>Previously, we explored how we could check whether there is any spatial autocorrelation within the dataset.</p>
+<p>In this post, I will be exploring how to check the local measures of spatial autocorrelation.</p>
+<h1 id="what-is-local-spatial-autocorrelation">What is local spatial autocorrelation?</h1>
+<p>In this post, I will use local Moran’s I to perform analysis.</p>
+<h1 id="local-morans-i">Local Moran’s I</h1>
+<p>The formula can be written as follows:</p>
+<p><span class="math display">\[I_i=\frac{x_i-\bar{X}}{m_2}\sum_jw_{ij}(x_j-\bar{X})\]</span></p>
+<p><span class="math display">\[m_2=\frac{\sum_i(x_j-\bar{X})^2}{n}\]</span></p>
+<p>where</p>
+<p>n is the total number of observations (spatial objects)</p>
+<p><span class="math inline">\(x_i\)</span> is the attribute value of feature i</p>
+<p><span class="math inline">\(x_j\)</span> is the attribute value of feature j</p>
+<p><span class="math inline">\(\bar{X}\)</span> is the mean of this attribute</p>
+<p><span class="math inline">\(w_{ij}\)</span> is the spatial weight between feature i and j</p>
+<p><span class="math inline">\(m_2\)</span> is the constant for all locations. It is a consistent but not unbiased estimate of the variance</p>
+<p>The interpretation of local Moran’s values is similar to global Moran’s I values.</p>
+<p>If the p-value is less than 0.05, we will reject the null hypothesis and conclude that there is statistical evidence that there is spatial autocorrelation.</p>
+<ul>
+<li><p>If the z-value is negative, it suggests spatial outlier presence</p></li>
+<li><p>If the z-value is positive, it indicates intense clustering of either low or high values</p></li>
+</ul>
+<h1 id="demonstration">Demonstration</h1>
+<p>I will download Malaysia shape files from <a href="https://earthworks.stanford.edu/catalog/stanford-nv753sn0493">this link</a>.</p>
+<p>For more explanations on shape files, please refer to my <a href="https://jasperlok.netlify.app/posts/2022-02-12-point-pattern-analysis/">previous post</a>.</p>
+<p>I will also use the <a href="https://www.data.gov.my/data/en_US/dataset/live-births-by-state-administrative-district-and-sex/resource/4d65fb23-3c35-448f-b2c9-49ee57e6fac8">total number of newborn babies data</a> between 2015 and 2021.</p>
+<h2 id="setup-the-environment">Setup the environment</h2>
+<p>First, I will set up the environment by calling the necessary packages.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'>pacman</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/pacman/man/p_load.html'>p_load</a></span><span class='op'>(</span><span class='va'>tidyverse</span>, <span class='va'>sf</span>, <span class='va'>spdep</span>, <span class='va'>tmap</span>, <span class='va'>janitor</span>, <span class='va'>crosstalk</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'>tmap_mode</span><span class='op'>(</span><span class='st'>'plot'</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>1234</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<h2 id="import-the-data">Import the data</h2>
+<h3 id="import-shp-files">Import shp files</h3>
+<p>Next, I will import the dataset into the environment.</p>
+<p>In this demonstration, I will focus on the total number of new birth in West Malaysia.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>msia_map</span> <span class='op'>&lt;-</span> </span>
+<span>  <span class='fu'>st_read</span><span class='op'>(</span>dsn <span class='op'>=</span> <span class='st'>"data"</span>, layer <span class='op'>=</span> <span class='st'>"MYS_adm2"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='op'>!</span><span class='va'>NAME_1</span> <span class='op'><a href='https://rdrr.io/r/base/match.html'>%in%</a></span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Sabah"</span>, <span class='st'>"Sarawak"</span>, <span class='st'>"Labuan"</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>Reading layer `MYS_adm2&#39; from data source 
+  `C:\Users\jaspe\OneDrive\Documents\2_Data Science\98_my-blog\_posts\2023-03-19-local-spatial-autocorrelation\data&#39; 
+  using driver `ESRI Shapefile&#39;
+Simple feature collection with 144 features and 14 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: 99.64072 ymin: 0.855001 xmax: 119.2697 ymax: 7.380556
+Geodetic CRS:  WGS 84</code></pre>
+</div>
+<h3 id="import-malaysia-2015---2021-birth-rate-dataset">Import Malaysia 2015 - 2021 birth rate dataset</h3>
+<p>I will also import the dataset on 2015 - 2021 birth rate by the administrative district into the environment.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>msia_birth</span> <span class='op'>&lt;-</span> </span>
+<span>  <span class='fu'>read_csv</span><span class='op'>(</span><span class='st'>"data/live-births-by-state-administrative-district-and-sex-2015-2021.csv"</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>clean_names</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>year</span> <span class='op'>!=</span> <span class='fl'>2021</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>year</span>, <span class='va'>state</span>, <span class='va'>administrative_district</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>summarize</span><span class='op'>(</span>total <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>ungroup</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>pivot_wider</span><span class='op'>(</span>names_from <span class='op'>=</span> <span class='va'>year</span>,</span>
+<span>              names_prefix <span class='op'>=</span> <span class='st'>"total_birth_"</span>,</span>
+<span>              values_from <span class='op'>=</span> <span class='va'>total</span>,</span>
+<span>              values_fill <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='co'># change the first letter of each word to capital letter</span></span>
+<span>  <span class='fu'>mutate</span><span class='op'>(</span>administrative_district <span class='op'>=</span> <span class='fu'>str_to_title</span><span class='op'>(</span><span class='va'>administrative_district</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='co'># recode the districts</span></span>
+<span>  <span class='fu'>mutate</span><span class='op'>(</span>administrative_district_recoded <span class='op'>=</span> </span>
+<span>           <span class='fu'>case_when</span><span class='op'>(</span><span class='va'>administrative_district</span> <span class='op'>==</span> <span class='st'>"Mualim"</span> <span class='op'>~</span> <span class='st'>"Batang Padang"</span>,</span>
+<span>                     <span class='va'>administrative_district</span> <span class='op'>==</span> <span class='st'>"Kuala Nerus"</span> <span class='op'>~</span> <span class='st'>"Kuala Terengganu"</span>,</span>
+<span>                     <span class='va'>administrative_district</span> <span class='op'>==</span> <span class='st'>"Bagan Datuk"</span> <span class='op'>~</span> <span class='st'>"Hilir Perak"</span>,</span>
+<span>                     <span class='va'>administrative_district</span> <span class='op'>==</span> <span class='st'>"Kecil Lojing"</span> <span class='op'>~</span> <span class='st'>"Gua Musang"</span>,</span>
+<span>                     <span class='va'>administrative_district</span> <span class='op'>==</span> <span class='st'>"Selama"</span> <span class='op'>~</span> <span class='st'>"Larut and Matang"</span>,</span>
+<span>                     <span class='va'>administrative_district</span> <span class='op'>==</span> <span class='st'>"Larut &amp; Matang"</span> <span class='op'>~</span> <span class='st'>"Larut and Matang"</span>,</span>
+<span>                     <span class='va'>administrative_district</span> <span class='op'>==</span> <span class='st'>"Johor Bahru"</span> <span class='op'>~</span> <span class='st'>"Johor Baharu"</span>,</span>
+<span>                     <span class='va'>administrative_district</span> <span class='op'>==</span> <span class='st'>"Kluang"</span> <span class='op'>~</span> <span class='st'>"Keluang"</span>,</span>
+<span>                     <span class='va'>administrative_district</span> <span class='op'>==</span> <span class='st'>"Kulai"</span> <span class='op'>~</span> <span class='st'>"Kulaijaya"</span>,</span>
+<span>                     <span class='va'>administrative_district</span> <span class='op'>==</span> <span class='st'>"Tangkak"</span> <span class='op'>~</span> <span class='st'>"Ledang"</span>,</span>
+<span>                     <span class='va'>administrative_district</span> <span class='op'>==</span> <span class='st'>"Pasir Puteh"</span> <span class='op'>~</span> <span class='st'>"Pasir Putih"</span>,</span>
+<span>                     <span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>administrative_district</span><span class='op'>)</span> <span class='op'>==</span> <span class='cn'>TRUE</span> <span class='op'>~</span> <span class='va'>state</span>,</span>
+<span>                     <span class='cn'>TRUE</span> <span class='op'>~</span> <span class='va'>administrative_district</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='co'># remove the string so that it can be matched with the naming stated in map data frame</span></span>
+<span>  <span class='fu'>mutate</span><span class='op'>(</span>administrative_district_recoded <span class='op'>=</span> </span>
+<span>           <span class='fu'>str_replace</span><span class='op'>(</span><span class='va'>administrative_district_recoded</span>, <span class='st'>"W.P. "</span>, <span class='st'>""</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='co'># sum the total number of birth by the recoded administrative districts</span></span>
+<span>  <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>state</span>, <span class='va'>administrative_district_recoded</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>summarise_at</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"total_birth_2015"</span>,</span>
+<span>                 <span class='st'>"total_birth_2016"</span>,</span>
+<span>                 <span class='st'>"total_birth_2017"</span>,</span>
+<span>                 <span class='st'>"total_birth_2018"</span>,</span>
+<span>                 <span class='st'>"total_birth_2019"</span>,</span>
+<span>                 <span class='st'>"total_birth_2020"</span><span class='op'>)</span>,</span>
+<span>               <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>ungroup</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>mutate</span><span class='op'>(</span>change_in_birth_2015_2020 <span class='op'>=</span> <span class='va'>total_birth_2020</span><span class='op'>/</span><span class='va'>total_birth_2015</span> <span class='op'>-</span> <span class='fl'>1</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<h2 id="join-the-datasets-together">Join the datasets together</h2>
+<p>As the map is imported as simple features (i.e. one of the data types), this allows us to use the <code>left_join</code> function with the total new birth data file.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>msia_map_birth</span> <span class='op'>&lt;-</span></span>
+<span>  <span class='va'>msia_map</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>left_join</span><span class='op'>(</span><span class='va'>msia_birth</span>,</span>
+<span>            by <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"NAME_2"</span> <span class='op'>=</span> <span class='st'>"administrative_district_recoded"</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<p>I will calculate the longitude and latitude.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>longitude</span> <span class='op'>&lt;-</span> <span class='fu'>map_dbl</span><span class='op'>(</span><span class='va'>msia_map</span><span class='op'>$</span><span class='va'>geometry</span>, <span class='op'>~</span><span class='fu'>st_centroid</span><span class='op'>(</span><span class='va'>.x</span><span class='op'>)</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span></span>
+<span><span class='va'>latitude</span> <span class='op'>&lt;-</span> <span class='fu'>map_dbl</span><span class='op'>(</span><span class='va'>msia_map</span><span class='op'>$</span><span class='va'>geometry</span>, <span class='op'>~</span><span class='fu'>st_centroid</span><span class='op'>(</span><span class='va'>.x</span><span class='op'>)</span><span class='op'>[[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span></span>
+<span><span class='va'>coords</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span><span class='op'>(</span><span class='va'>longitude</span>, <span class='va'>latitude</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<h2 id="spatial-weights">Spatial weights</h2>
+<p>Next, I will derive the spatial weights by using K nearest neighbors.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>kneigh</span> <span class='op'>&lt;-</span> <span class='fu'>knearneigh</span><span class='op'>(</span><span class='va'>coords</span><span class='op'>)</span></span>
+<span><span class='va'>knn</span> <span class='op'>&lt;-</span> <span class='fu'>knn2nb</span><span class='op'>(</span><span class='va'>kneigh</span><span class='op'>)</span></span>
+<span><span class='va'>weight_list_knn</span> <span class='op'>&lt;-</span> <span class='fu'>nb2listw</span><span class='op'>(</span><span class='va'>knn</span>, </span>
+<span>                   style <span class='op'>=</span> <span class='st'>"W"</span>, </span>
+<span>                   zero.policy <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<h2 id="local-spatial-autocorrelation">Local Spatial Autocorrelation</h2>
+<h3 id="local-morans-i-1">Local Moran’s I</h3>
+<p>Now, I will calculate the local Moran I values.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>locan_moran</span> <span class='op'>&lt;-</span></span>
+<span>  <span class='fu'>localmoran</span><span class='op'>(</span><span class='va'>msia_map_birth</span><span class='op'>$</span><span class='va'>change_in_birth_2015_2020</span>,</span>
+<span>             listw <span class='op'>=</span> <span class='va'>weight_list_knn</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>locan_moran</span></span></code></pre>
+</div>
+<pre><code>             Ii          E.Ii       Var.Ii        Z.Ii Pr(z != E(Ii))
+1  -0.255918361 -2.928453e-03 2.540293e-01 -0.50195095   0.6157020254
+2  -0.407279506 -1.035266e-02 8.913573e-01 -0.42042114   0.6741778248
+3  -0.287809568 -3.824506e-03 3.314594e-01 -0.49326500   0.6218253588
+4   0.424312241 -2.351376e-03 2.040887e-01  0.94444383   0.3449428924
+5  -0.170060580 -2.166387e-03 1.880674e-01 -0.38714971   0.6986453762
+6  -0.284783406 -3.870537e-04 3.366064e-02 -1.55011123   0.1211148213
+7   0.161828068 -9.258391e-04 8.047342e-02  0.57372686   0.5661526493
+8   0.093039617 -3.023902e-03 2.622840e-01  0.18757399   0.8512106135
+9  -0.170060580 -1.804988e-03 1.567505e-01 -0.42497660   0.6708537306
+10 -0.060985607 -1.299232e-03 1.128863e-01 -0.17764565   0.8590012686
+11 -0.788797632 -3.721631e-02 3.117319e+00 -0.42568206   0.6703395377
+12  0.088139506 -7.841682e-04 6.816913e-02  0.34058343   0.7334172040
+13 -0.026641998 -6.215507e-07 5.407487e-05 -3.62292138   0.0002912944
+14 -0.173167407 -1.037058e-03 9.013044e-02 -0.57335250   0.5664060481
+15 -0.040130857 -6.175640e-05 5.372475e-03 -0.54666642   0.5846079275
+16 -0.006598121 -1.652334e-06 1.437528e-04 -0.55017809   0.5821972275
+17  0.766514936 -2.253027e-02 1.915971e+00  0.57004275   0.5686486999
+18 -1.667680625 -2.435391e-03 2.113630e-01 -3.62212727   0.0002921903
+19  3.760882629 -1.238576e-02 1.064214e+00  3.65765846   0.0002545299
+20 -0.026641998 -1.544046e-01 1.135905e+01  0.03790815   0.9697609115
+21 -0.788797632 -2.260482e-03 1.962174e-01 -1.77562203   0.0757952361
+22  0.598447384 -3.909602e-03 3.388056e-01  1.03485303   0.3007375547
+23 -0.035527887 -1.747523e-03 1.517688e-01 -0.08671078   0.9309014054
+24  0.873236250 -1.749050e-02 1.495059e+00  0.72847620   0.4663221342
+25 -0.804003827 -3.554695e-02 2.982653e+00 -0.44495709   0.6563507667
+26 -0.035527887 -9.766053e-05 8.495636e-03 -0.38439345   0.7006868549
+27  1.232301772 -5.894736e-03 5.098190e-01  1.73412972   0.0828950693
+28  0.606381613 -3.483156e-02 2.924794e+00  0.37493399   0.7077095628
+29  0.050419432 -3.519492e-03 3.051181e-01  0.09764911   0.9222109291
+30  0.135822268 -1.427323e-03 1.239999e-01  0.38976287   0.6967119037
+31 -0.795872240 -2.458764e-03 2.133865e-01 -1.71757636   0.0858739159
+32 -0.038743570 -2.078181e-03 1.804260e-01 -0.08631907   0.9312127785
+33  0.065261528 -5.396032e-04 4.692015e-02  0.30377615   0.7612984408
+34  0.130622067 -1.309666e-02 1.124487e+00  0.13553022   0.8921926711
+35  0.192117491 -2.833096e-02 2.394963e+00  0.14244841   0.8867258262
+36  0.130622067 -1.761472e-04 1.532210e-02  1.05667789   0.2906586210
+37  0.721971960 -1.035466e-02 8.915276e-01  0.77559932   0.4379855996
+38  0.218924028 -1.225608e-02 1.053211e+00  0.22526453   0.8217734914
+39 -0.146205454 -5.287353e-04 4.597565e-02 -0.67940108   0.4968837647
+40  0.406607235 -4.089416e-03 3.543243e-01  0.68995489   0.4902225537
+41 -0.146205454 -5.466281e-03 4.729669e-01 -0.20464429   0.8378500527
+42  0.449539545 -6.681555e-03 5.774114e-01  0.60038897   0.5482470388
+43 -0.954340169 -4.346586e-03 3.765093e-01 -1.54822056   0.1215692028
+44  0.217213428 -3.839666e-03 3.327683e-01  0.38320012   0.7015713913
+45  1.463297207 -2.362199e-02 2.006567e+00  1.04968865   0.2938612844
+46 -0.657191913 -8.717226e-03 7.517875e-01 -0.74790335   0.4545184578
+47 -0.757911282 -1.546074e-02 1.324288e+00 -0.64517307   0.5188150335
+48  0.370166726 -4.219181e-03 3.655200e-01  0.61924702   0.5357536377
+49  0.569104956 -5.023536e-03 4.348521e-01  0.87063936   0.3839510967
+50  0.664443090 -3.592822e-02 3.013452e+00  0.40345602   0.6866127839
+51 -0.244022451 -3.744820e-03 3.245793e-01 -0.42174791   0.6732090302
+52 -0.074495922 -8.125827e-04 7.063725e-02 -0.27723777   0.7815975396
+53  0.143733369 -2.149967e-03 1.866449e-01  0.33767396   0.7356089035
+54  0.217213428 -1.661434e-03 1.443046e-01  0.57617688   0.5644956276
+55  0.245342111 -6.002743e-04 5.219252e-02  1.07653771   0.2816868434
+56  0.274277547 -1.355806e-02 1.163559e+00  0.26683966   0.7895926201
+57 -1.918144851 -1.336696e-02 1.147381e+00 -1.77824085   0.0753643057
+58  0.514070773 -4.556588e-02 3.783598e+00  0.28770916   0.7735693814
+59 -0.221212465 -8.437486e-03 7.278677e-01 -0.24939879   0.8030523230
+60  0.128876654 -6.698988e-03 5.789077e-01  0.17818740   0.8585758050
+61  0.128876654 -3.352296e-04 2.915520e-02  0.75673610   0.4492079836
+62  0.289988711 -1.347573e-03 1.170808e-01  0.85143534   0.3945275696
+63 -1.390469117 -2.163763e-02 1.841742e+00 -1.00863865   0.3131479660
+64 -1.390469117 -1.208137e-02 1.038380e+00 -1.35267412   0.1761597633
+65 -0.040130857 -3.525965e-03 3.056773e-01 -0.06620755   0.9472125879
+66 -1.540161952 -8.074053e-03 6.967710e-01 -1.83543344   0.0664414932
+67  0.088139506 -1.339477e-03 1.163784e-01  0.26229192   0.7930963915
+68  0.052810130 -3.562425e-03 3.088269e-01  0.10144022   0.9192010139
+69  0.052810130 -1.058502e-04 9.207995e-03  0.55144767   0.5813268334
+70 -1.540161952 -3.972321e-02 3.318639e+00 -0.82364161   0.4101432249
+71  2.678019169 -6.179080e-02 5.043625e+00  1.21996974   0.2224763477
+72  0.414484487 -4.304722e-02 3.583892e+00  0.24168170   0.8090268139
+73  0.164812300 -6.806248e-03 5.881133e-01  0.22378641   0.8229235038
+74  0.542214663 -9.234226e-04 8.026358e-02  1.91712748   0.0552217384
+75  0.336404225 -1.433781e-02 1.229505e+00  0.31631710   0.7517618306
+76 -1.847440570 -2.940610e-02 2.483100e+00 -1.15373216   0.2486099955
+77 -0.022188928 -7.209004e-05 6.271381e-03 -0.27928103   0.7800291595
+78  0.065261528 -1.067193e-03 9.274672e-02  0.21779723   0.8275871054
+79  0.274277547 -7.502156e-04 6.521979e-02  1.07692839   0.2815122583
+80  2.678019169 -1.569302e-02 1.343867e+00  2.32366207   0.0201436128
+81  0.290569697 -7.998001e-03 6.902609e-01  0.35936534   0.7193218036
+82  1.540231871 -8.617752e-03 7.432833e-01  1.79652001   0.0724118528
+83  0.193665731 -2.844657e-04 2.474148e-02  1.23304074   0.2175605636
+84  0.529030022 -4.391064e-03 3.803451e-01  0.86493066   0.3870768486
+85  1.591226637 -1.782702e-02 1.523302e+00  1.30369960   0.1923360265
+86  2.215279271 -3.722042e-02 3.117651e+00  1.27570725   0.2020590233
+87  1.591226637 -1.920386e-02 1.638651e+00  1.25805252   0.2083727627
+attr(,&quot;call&quot;)
+localmoran(x = msia_map_birth$change_in_birth_2015_2020, listw = weight_list_knn)
+attr(,&quot;class&quot;)
+[1] &quot;localmoran&quot; &quot;matrix&quot;     &quot;array&quot;     
+attr(,&quot;quadr&quot;)
+        mean    median     pysal
+1   High-Low  High-Low  High-Low
+2   High-Low  High-Low  High-Low
+3   Low-High  Low-High  Low-High
+4  High-High High-High High-High
+5   Low-High  Low-High  Low-High
+6   Low-High  Low-High  Low-High
+7    Low-Low   Low-Low   Low-Low
+8    Low-Low   Low-Low   Low-Low
+9   High-Low  High-Low  High-Low
+10  High-Low  High-Low  High-Low
+11  High-Low  High-Low  High-Low
+12 High-High High-High High-High
+13  High-Low   Low-Low  High-Low
+14  High-Low  High-Low  High-Low
+15  Low-High  Low-High  Low-High
+16  High-Low  High-Low  High-Low
+17 High-High High-High High-High
+18  High-Low  High-Low  High-Low
+19   Low-Low   Low-Low   Low-Low
+20  Low-High  Low-High  Low-High
+21  Low-High  Low-High  Low-High
+22   Low-Low   Low-Low   Low-Low
+23  High-Low  High-Low  High-Low
+24 High-High High-High High-High
+25  High-Low  High-Low  High-Low
+26  Low-High  Low-High  Low-High
+27 High-High High-High High-High
+28 High-High High-High High-High
+29   Low-Low   Low-Low   Low-Low
+30 High-High High-High High-High
+31  Low-High  Low-High  Low-High
+32  High-Low  High-Low  High-Low
+33   Low-Low   Low-Low   Low-Low
+34 High-High High-High High-High
+35 High-High High-High High-High
+36 High-High High-High High-High
+37   Low-Low   Low-Low   Low-Low
+38   Low-Low   Low-Low   Low-Low
+39  Low-High  Low-High  Low-High
+40 High-High High-High High-High
+41  High-Low  High-Low  High-Low
+42 High-High High-High High-High
+43  Low-High  Low-High  Low-High
+44   Low-Low   Low-Low   Low-Low
+45   Low-Low   Low-Low   Low-Low
+46  High-Low  High-Low  High-Low
+47  Low-High  Low-High  Low-High
+48 High-High High-High High-High
+49 High-High High-High High-High
+50   Low-Low   Low-Low   Low-Low
+51  Low-High  Low-High  Low-High
+52  High-Low  High-Low  High-Low
+53 High-High High-High High-High
+54   Low-Low   Low-Low   Low-Low
+55   Low-Low   Low-Low   Low-Low
+56   Low-Low   Low-Low   Low-Low
+57  Low-High  Low-High  Low-High
+58 High-High High-High High-High
+59  Low-High  Low-High  Low-High
+60   Low-Low   Low-Low   Low-Low
+61   Low-Low   Low-Low   Low-Low
+62   Low-Low   Low-Low   Low-Low
+63  Low-High  Low-High  Low-High
+64  High-Low  High-Low  High-Low
+65  High-Low High-High  High-Low
+66  High-Low  High-Low  High-Low
+67 High-High High-High High-High
+68   Low-Low   Low-Low   Low-Low
+69   Low-Low   Low-Low   Low-Low
+70  Low-High  Low-High  Low-High
+71   Low-Low   Low-Low   Low-Low
+72   Low-Low   Low-Low   Low-Low
+73   Low-Low   Low-Low   Low-Low
+74   Low-Low   Low-Low   Low-Low
+75   Low-Low   Low-Low   Low-Low
+76  High-Low  High-Low  High-Low
+77  High-Low  High-Low  High-Low
+78   Low-Low   Low-Low   Low-Low
+79   Low-Low   Low-Low   Low-Low
+80   Low-Low   Low-Low   Low-Low
+81 High-High High-High High-High
+82 High-High High-High High-High
+83 High-High High-High High-High
+84 High-High High-High High-High
+85 High-High High-High High-High
+86 High-High High-High High-High
+87 High-High High-High High-High</code></pre>
+</div>
+<h3 id="visualization">Visualization</h3>
+<p>To visualize the result, I will merge it with the map data.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>locan_moran_maps</span> <span class='op'>&lt;-</span></span>
+<span>  <span class='fu'>bind_cols</span><span class='op'>(</span><span class='va'>msia_map_birth</span>, <span class='va'>locan_moran</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<p>First I will create the graph objects.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>plot_local_moran</span> <span class='op'>&lt;-</span> <span class='fu'>tm_shape</span><span class='op'>(</span><span class='va'>locan_moran_maps</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>tm_polygons</span><span class='op'>(</span><span class='st'>"Ii"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>plot_local_moran_pvalue</span> <span class='op'>&lt;-</span> <span class='fu'>tm_shape</span><span class='op'>(</span><span class='va'>locan_moran_maps</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>tm_polygons</span><span class='op'>(</span><span class='st'>"Pr(z != E(Ii))"</span>,</span>
+<span>              breaks<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='cn'>Inf</span>, <span class='fl'>0.001</span>, <span class='fl'>0.01</span>, <span class='fl'>0.05</span>, <span class='fl'>0.1</span>, <span class='cn'>Inf</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<p>Then I will visualize both graphs by using <code>tmap_arrange</code> function.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'>tmap_arrange</span><span class='op'>(</span><span class='va'>plot_local_moran</span>, </span>
+<span>             <span class='va'>plot_local_moran_pvalue</span>,</span>
+<span>             ncol <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="local-spatial-autocorrelation_files/figure-html5/unnamed-chunk-13-1.png" width="100%" /></p>
+</div>
+<p>From the results above, we observe the following:</p>
+<ul>
+<li><p>Three of the states in the north have values that statistically different from the neighbors</p></li>
+<li><p>Among the three states, the one in the middle seems to have a higher new birth rate than the surrounding</p></li>
+<li><p>The state on the right seems to have a lower new birth rate than the surrounding</p></li>
+</ul>
+<h1 id="conclusion">Conclusion</h1>
+<p>That’s all for the day!</p>
+<p>Thanks for reading the post until the end.</p>
+<p>Feel free to contact me through <a href="mailto:jasper.jh.lok@gmail.com">email</a> or <a href="https://www.linkedin.com/in/jasper-l-13426232/">LinkedIn</a> if you have any suggestions on future topics to share.</p>
+<p>Refer to this link for the <a href="https://jasperlok.netlify.app/blog_disclaimer.html">blog disclaimer</a>.</p>
+<p>Till next time, happy learning!</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="image/red%20green%20apples.jpg" width="100%" /></p>
+</div>
+<p>Photo by <a href="https://unsplash.com/@jamesyarema?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">James Yarema</a> on <a href="https://unsplash.com/images/food/apple?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<!--radix_placeholder_article_footer-->
+<!--/radix_placeholder_article_footer-->
+</div>
+
+<div class="d-appendix">
+</div>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+<!--radix_placeholder_site_after_body-->
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_appendices-->
+<div class="appendix-bottom">
+  <h3 id="references">References</h3>
+  <div id="references-listing"></div>
+</div>
+<!--/radix_placeholder_appendices-->
+<!--radix_placeholder_navigation_after_body-->
+<!--/radix_placeholder_navigation_after_body-->
+
+</body>
+
+</html>

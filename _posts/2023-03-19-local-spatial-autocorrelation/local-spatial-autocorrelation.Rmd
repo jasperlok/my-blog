@@ -1,0 +1,297 @@
+---
+title: "Local Moran's I"
+description: |
+   Are the selected locations different from each other?
+author:
+  - name: Jasper Lok 
+    url: https://jasperlok.netlify.app/
+date: 03-19-2023
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 4
+    self_contained: false
+bibliography: ["ref.bib"]
+biblio-style: "apa"
+link-citations: true
+categories:
+  - Geospatial Analytics
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+pacman::p_load(captioner, knitr, kableExtra, tidyverse)
+
+knitr::opts_chunk$set(fig.retina = 3,                       
+                      echo = TRUE,                       
+                      eval = TRUE,                       
+                      message = FALSE,                       
+                      warning = FALSE,
+                      out.width="100%")
+
+```
+
+
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/apples.jpg")
+
+```
+
+Photo by <a href="https://unsplash.com/@jccards?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Marek Studzinski</a> on <a href="https://unsplash.com/photos/JpuD4qCINbM?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+  
+Previously, we explored how we could check whether there is any spatial autocorrelation within the dataset. 
+
+In this post, I will be exploring how to check the local measures of spatial autocorrelation.
+
+# What is local spatial autocorrelation?
+
+
+In this post, I will use local Moran's I to perform analysis.
+
+# Local Moran's I
+
+The formula can be written as follows:
+
+$$I_i=\frac{x_i-\bar{X}}{m_2}\sum_jw_{ij}(x_j-\bar{X})$$
+
+$$m_2=\frac{\sum_i(x_j-\bar{X})^2}{n}$$
+
+where
+
+n is the total number of observations (spatial objects)
+
+$x_i$ is the attribute value of feature i
+
+$x_j$ is the attribute value of feature j
+
+$\bar{X}$ is the mean of this attribute
+
+$w_{ij}$ is the spatial weight between feature i and j
+
+$m_2$ is the constant for all locations. It is a consistent but not unbiased estimate of the variance
+
+
+The interpretation of local Moran's values is similar to global Moran's I values.
+
+
+If the p-value is less than 0.05, we will reject the null hypothesis and conclude that there is statistical evidence that there is spatial autocorrelation.
+
+- If the z-value is negative, it suggests spatial outlier presence
+
+- If the z-value is positive, it indicates intense clustering of either low or high values
+
+
+# Demonstration
+
+I will download Malaysia shape files from [this link](https://earthworks.stanford.edu/catalog/stanford-nv753sn0493).
+
+For more explanations on shape files, please refer to my [previous post](https://jasperlok.netlify.app/posts/2022-02-12-point-pattern-analysis/).
+
+I will also use the [total number of newborn babies data](https://www.data.gov.my/data/en_US/dataset/live-births-by-state-administrative-district-and-sex/resource/4d65fb23-3c35-448f-b2c9-49ee57e6fac8) between 2015 and 2021.
+
+
+
+## Setup the environment
+
+First, I will set up the environment by calling the necessary packages.
+
+```{r}
+pacman::p_load(tidyverse, sf, spdep, tmap, janitor, crosstalk)
+
+```
+
+
+```{r}
+tmap_mode('plot')
+
+```
+
+
+```{r}
+set.seed(1234)
+
+```
+
+
+
+## Import the data
+
+### Import shp files
+
+Next, I will import the dataset into the environment.
+
+In this demonstration, I will focus on the total number of new birth in West Malaysia.
+
+```{r}
+msia_map <- 
+  st_read(dsn = "data", layer = "MYS_adm2") %>% 
+  filter(!NAME_1 %in% c("Sabah", "Sarawak", "Labuan"))
+
+```
+
+### Import Malaysia 2015 - 2021 birth rate dataset
+
+I will also import the dataset on 2015 - 2021 birth rate by the administrative district into the environment.
+
+```{r}
+msia_birth <- 
+  read_csv("data/live-births-by-state-administrative-district-and-sex-2015-2021.csv") %>%
+  clean_names() %>%
+  filter(year != 2021) %>%
+  group_by(year, state, administrative_district) %>%
+  summarize(total = sum(value)) %>%
+  ungroup() %>%
+  pivot_wider(names_from = year,
+              names_prefix = "total_birth_",
+              values_from = total,
+              values_fill = 0) %>%
+  # change the first letter of each word to capital letter
+  mutate(administrative_district = str_to_title(administrative_district)) %>%
+  # recode the districts
+  mutate(administrative_district_recoded = 
+           case_when(administrative_district == "Mualim" ~ "Batang Padang",
+                     administrative_district == "Kuala Nerus" ~ "Kuala Terengganu",
+                     administrative_district == "Bagan Datuk" ~ "Hilir Perak",
+                     administrative_district == "Kecil Lojing" ~ "Gua Musang",
+                     administrative_district == "Selama" ~ "Larut and Matang",
+                     administrative_district == "Larut & Matang" ~ "Larut and Matang",
+                     administrative_district == "Johor Bahru" ~ "Johor Baharu",
+                     administrative_district == "Kluang" ~ "Keluang",
+                     administrative_district == "Kulai" ~ "Kulaijaya",
+                     administrative_district == "Tangkak" ~ "Ledang",
+                     administrative_district == "Pasir Puteh" ~ "Pasir Putih",
+                     is.na(administrative_district) == TRUE ~ state,
+                     TRUE ~ administrative_district)) %>%
+  # remove the string so that it can be matched with the naming stated in map data frame
+  mutate(administrative_district_recoded = 
+           str_replace(administrative_district_recoded, "W.P. ", "")) %>%
+  # sum the total number of birth by the recoded administrative districts
+  group_by(state, administrative_district_recoded) %>%
+  summarise_at(c("total_birth_2015",
+                 "total_birth_2016",
+                 "total_birth_2017",
+                 "total_birth_2018",
+                 "total_birth_2019",
+                 "total_birth_2020"),
+               function(x) sum(x)) %>%
+  ungroup() %>%
+  mutate(change_in_birth_2015_2020 = total_birth_2020/total_birth_2015 - 1)
+
+```
+
+## Join the datasets together
+
+As the map is imported as simple features (i.e. one of the data types), this allows us to use the `left_join` function with the total new birth data file.
+
+```{r}
+msia_map_birth <-
+  msia_map %>%
+  left_join(msia_birth,
+            by = c("NAME_2" = "administrative_district_recoded"))
+
+```
+
+
+I will calculate the longitude and latitude.
+
+```{r}
+longitude <- map_dbl(msia_map$geometry, ~st_centroid(.x)[[1]])
+latitude <- map_dbl(msia_map$geometry, ~st_centroid(.x)[[2]])
+coords <- cbind(longitude, latitude)
+
+```
+
+
+## Spatial weights
+
+Next, I will derive the spatial weights by using K nearest neighbors.
+
+```{r}
+kneigh <- knearneigh(coords)
+knn <- knn2nb(kneigh)
+weight_list_knn <- nb2listw(knn, 
+                   style = "W", 
+                   zero.policy = TRUE)
+
+```
+
+
+## Local Spatial Autocorrelation
+
+### Local Moran's I
+
+Now, I will calculate the local Moran I values.
+
+```{r}
+locan_moran <-
+  localmoran(msia_map_birth$change_in_birth_2015_2020,
+             listw = weight_list_knn)
+
+locan_moran
+
+```
+
+### Visualization
+
+To visualize the result, I will merge it with the map data.
+
+```{r}
+locan_moran_maps <-
+  bind_cols(msia_map_birth, locan_moran)
+
+```
+
+First I will create the graph objects.
+
+```{r}
+plot_local_moran <- tm_shape(locan_moran_maps) +
+  tm_polygons("Ii")
+
+plot_local_moran_pvalue <- tm_shape(locan_moran_maps) +
+  tm_polygons("Pr(z != E(Ii))",
+              breaks=c(-Inf, 0.001, 0.01, 0.05, 0.1, Inf))
+
+```
+
+Then I will visualize both graphs by using `tmap_arrange` function.
+
+```{r}
+tmap_arrange(plot_local_moran, 
+             plot_local_moran_pvalue,
+             ncol = 2)
+
+```
+
+
+From the results above, we observe the following:
+
+- Three of the states in the north have values that statistically different from the neighbors
+
+- Among the three states, the one in the middle seems to have a higher new birth rate than the surrounding
+
+- The state on the right seems to have a lower new birth rate than the surrounding
+
+
+# Conclusion
+
+That's all for the day!
+
+Thanks for reading the post until the end.
+
+Feel free to contact me through [email](mailto:jasper.jh.lok@gmail.com) or [LinkedIn](https://www.linkedin.com/in/jasper-l-13426232/) if you have any suggestions on future topics to share.
+
+Refer to this link for the [blog disclaimer](https://jasperlok.netlify.app/blog_disclaimer.html).
+
+Till next time, happy learning!
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/red green apples.jpg")
+
+```
+
+Photo by <a href="https://unsplash.com/@jamesyarema?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">James Yarema</a> on <a href="https://unsplash.com/images/food/apple?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+  
+  
+
