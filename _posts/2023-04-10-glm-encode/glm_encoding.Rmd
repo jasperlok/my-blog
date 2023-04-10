@@ -1,0 +1,422 @@
+---
+title: "Encoding Categorical Variables Using GLM"
+description: |
+   
+author:
+  - name: Jasper Lok 
+    url: https://jasperlok.netlify.app/
+date: 04-10-2023
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 4
+    self_contained: false
+bibliography: ["ref.bib"]
+biblio-style: "apa"
+link-citations: true
+categories:
+  - Machine Learning
+  - Supervised Learning
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+pacman::p_load(captioner, knitr, kableExtra, tidyverse)
+
+knitr::opts_chunk$set(fig.retina = 3,                       
+                      echo = TRUE,                       
+                      eval = TRUE,                       
+                      message = FALSE,                       
+                      warning = FALSE,
+                      out.width="100%")
+
+```
+
+In this post, I will be exploring GLM encoding method.
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/encode.jpg")
+
+```
+
+Photo by [cottonbro studio](https://www.pexels.com/photo/photo-of-person-using-magnifying-glass-7319077/)
+
+# What is encoding?
+
+Some of the machine learning models require numerical variables.
+
+For example, the generalized linear model algorithm is unable to handle categorical variables while fitting the model.
+
+Therefore, often we need to encode the categorical variables into something that can be used by the machine learning algorithm.
+
+## Dummy encoding
+
+One of the common approaches is to create dummy variables/indicators to capture the info under categorical variables.
+
+Each indicator will capture one level from the categorical variable.
+
+So, one of the main drawbacks of such encoding method is that the indicator columns could increase quickly when the number of levels increases.
+
+Therefore, we will be considering two other types of encoding below.
+
+## GLM encoding
+
+Under this method, the categorical variables are converted into a set of scores derived from the generalized linear model.
+
+I will demonstrate how this could be done by using functions in `tidymodels` package.
+
+# Important notes
+
+# Issues of Encoding
+
+[@Kuhn2019] mentioned that the increase of overfitting likelihood is one of the issues of using such effect encoding method.
+
+To overcome this issue, the author suggests the following methods:
+
+-   Using different datasets for training and encoding
+
+-   Use resampling (eg. cross-validation)
+
+# Demonstration
+
+## Setup the environment
+
+In this demonstration, I will be using the `embed` package to perform the encoding.
+
+```{r}
+pacman::p_load(tidyverse, janitor, readr, tidymodels, embed, skimr, themis)
+
+```
+
+## Import Data
+
+I will be using the [insurance dataset](https://www.kaggle.com/datasets/mhdzahier/travel-insurance) from Kaggle for this demonstration.
+
+```{r}
+df <- 
+  read_csv("https://raw.githubusercontent.com/jasperlok/my-blog/master/_posts/2021-08-31-naive-bayes/data/travel%20insurance.csv") %>%
+  # rename the column
+  rename("Commission" = "Commision (in value)") %>%
+  # clean the column names
+  clean_names() %>% 
+  # mutate the variable to the necessary format
+  mutate(claim = factor(claim, levels = c("Yes", "No"))) %>% 
+  select(-gender)
+
+```
+
+For simplicity, I will drop "Gender" column since there are many missing values under this column.
+
+## Encoding
+
+Next, I will perform encoding on one of the columns and see how values differ under different encoding approaches.
+
+First, I will define the recipe with GLM encoding.
+
+```{r}
+gen_recipe_glmEcode <-
+  recipe(claim ~ . , data = df) %>%
+  step_lencode_glm(product_name, outcome = vars(claim)) %>% 
+  step_nzv(all_predictors()) 
+
+```
+
+Note that to indicate the outcome variable, we will need to wrap the target variable with `vars` function.
+
+```{r}
+gen_recipe_glmEcode %>% 
+  prep(df) %>% 
+  tidy(number = 1)
+
+```
+
+If I were to build a simple GLM model with the selected encoded variable, below are the coefficients from the model:
+
+```{r}
+coef_glm <-
+  glm(claim ~ product_name 
+      ,data = df
+      ,family = binomial()) %>% 
+  tidy()
+
+coef_glm
+
+```
+
+From the result, we could see those coefficients of the different levels are similar to the coefficients from the encoding step, except the signs of the coefficients are swapped.
+
+This is probably due to the difference in what is deemed as a "positive" class under the classification model, which is not a big issue since the machine learning will be able to recognize the sign is swapped in model fitting.
+
+Also, note that the coefficients generated from GLM are the "relative" to the reference group.
+
+For example, in this demonstration, the category of "1 way Comprehensive Plan" is being used as the reference group.
+
+Hence to match the coefficient from the encoded variable, we will need to add the intercept coefficient and coefficient of the selected variable together.
+
+```{r}
+# intercept + 2 way Comprehensive Plan
+coef_glm[1,2] + coef_glm[2,2] 
+
+```
+
+Below are the coefficients of encoded levels:
+
+```{r}
+gen_recipe_glmEcode %>% 
+  prep(df) %>% 
+  tidy(number = 1) %>% 
+  ggplot(aes(fct_reorder(level, value), value)) +
+  geom_col() +
+  xlab("Product Name") +
+  coord_flip() +
+  theme_minimal()
+
+```
+
+Note that the encoding will include a new factor called "..new".
+
+According to the [documentation page](https://embed.tidymodels.org/articles/Applications/GLM.html), these new factors represents the average effect.
+
+If we were to plot the proportion of claims within each product name, we could observe the negative encoded value represent a lower likelihood of claim.
+
+```{r}
+df %>% 
+  mutate(product_name = forcats::fct_reorder(.f = product_name, 
+                                             .x = claim,
+                                             .fun = function(.x) mean(.x == "Yes"),
+                                             .desc = FALSE)) %>%
+  ggplot(aes(product_name, fill = claim)) +
+  geom_bar(position = "fill") +
+  scale_y_continuous(labels = scales::percent) +
+  coord_flip() +
+  theme_minimal()
+
+```
+
+This would provide the model of the "relativity" of the outcome under different levels.
+
+## Model Building
+
+For the model building, I will build two models with different ways (i.e. one-hot encoding and GLM encoding) of handling categorical variables.
+
+First, I will define the common parameters for the model building.
+
+```{r}
+set.seed(1234)
+prop_split <- 0.6
+grid_num <- 5
+metrics_optim <- metric_set(sens)
+
+```
+
+## Split data into training and testing
+
+Next, I will split the data into training and testing datasets for model fitting later.
+
+```{r}
+df_split <-
+  initial_split(df, prop = prop_split, strata = claim)
+
+df_train <- training(df_split)
+df_test <- testing(df_split)
+
+df_folds <- vfold_cv(df_train, strata = claim)
+
+```
+
+## Define the Model Recipes
+
+```{r}
+# dummy
+xgb_recipe_dummy <-
+  recipe(claim ~ . , data = df_train) %>%
+  step_dummy(all_nominal_predictors()) %>% 
+  step_nzv(all_predictors()) %>% 
+  step_smote(claim)
+
+# glm encoding
+xgb_recipe_glmEncode <-
+  recipe(claim ~ . , data = df_train) %>%
+  step_lencode_glm(all_nominal_predictors(), outcome = vars(claim)) %>% 
+  step_nzv(all_predictors()) %>% 
+  step_smote(claim)
+
+```
+
+## Model Specifications
+
+Next, I will specify the model specification.
+
+```{r}
+xgb_spec <-
+  boost_tree() %>% 
+  set_engine("xgboost") %>% 
+  set_mode("classification")
+
+```
+
+## Workflow
+
+Then, I will create the workflow for two models.
+
+```{r}
+# dummy
+xgb_wk_dummy <-
+  workflow() %>% 
+  add_model(xgb_spec) %>% 
+  add_recipe(xgb_recipe_dummy)
+
+# glm encoding
+xgb_wk_glmEncode <-
+  workflow() %>% 
+  add_model(xgb_spec) %>% 
+  add_recipe(xgb_recipe_glmEncode)
+
+```
+
+## Cross Validation
+
+Once the recipes and models are defined, I will start tuning the models.
+
+```{r}
+# dummy
+xgb_tune_dummy <-
+  tune_grid(xgb_wk_dummy,
+            resample = df_folds,
+            grid = grid_num,
+            metrics = metrics_optim)
+
+# glm encoding
+xgb_tune_glmEncode <-
+  tune_grid(xgb_wk_glmEncode,
+            resample = df_folds,
+            grid = grid_num,
+            metrics = metrics_optim)
+
+```
+
+## Extract the last fit
+
+Once the parameters are tuned, I will extract the parameters that would give us the best fit from each model.
+
+```{r}
+# dummy
+xgb_fit_dummy <-
+  xgb_wk_dummy %>% 
+  finalize_workflow(select_best(xgb_tune_dummy)) %>%
+  last_fit(df_split)
+
+# glm encoding
+xgb_fit_glmEncode <-
+ xgb_wk_glmEncode %>% 
+  finalize_workflow(select_best(xgb_tune_glmEncode)) %>%
+  last_fit(df_split)
+
+```
+
+## Model Predictions
+
+In this next section, I will extract the predictions from the models.
+
+First, I will define the list of models.
+
+```{r}
+model_name_list <- c("dummy", "glmEncode")
+model_list <- c("Dummy Encode", "GLM Encode")
+
+```
+
+Then, I will use for loop to compute the predictions for the models.
+
+```{r}
+predictions <- as_tibble()
+
+for(i in 1:length(model_list)){
+  predictions <- 
+    predictions %>% 
+    bind_rows(
+      get(paste0("xgb_fit_", model_name_list[i])) %>% 
+        collect_predictions() %>% 
+        mutate(model = model_list[i]) %>% 
+        relocate(model, .before = id)
+    )
+}
+
+```
+
+## Model Performance
+
+In this section, I will compare the different performances under different models.
+
+I will compute the ROC curve for the two models.
+
+```{r}
+predictions %>%
+  group_by(model) %>%
+  roc_curve(claim, .pred_Yes) %>%
+  autoplot()
+
+```
+
+Based on the results above, it seems like the model performances of the three models are rather similar.
+
+Lastly, I will specify the metrics to be used to measure the model performance.
+
+```{r}
+multi_metric <- 
+  metric_set(accuracy, sensitivity, specificity, ppv)
+
+```
+
+Then, I will calculate the model performances for different models.
+
+```{r}
+predictions %>% 
+  group_by(model) %>% 
+  multi_metric(truth = claim,
+                estimate = .pred_class) %>%
+  bind_rows(
+    predictions %>%
+      group_by(model) %>% 
+      roc_auc(truth = claim,
+              estimate = .pred_Yes)
+  ) %>%
+  select(-`.estimator`) %>%
+  pivot_wider(names_from = .metric,
+              values_from = .estimate)
+
+```
+
+From the results above, we observe the following:
+
+-   In general, the model performances are rather similar across the two models
+
+-   While the model performance under the dummy encoding method is slightly better than GLM encoding, the sensitivity performance is slightly worse for the dummy encoding
+
+-   From positive predictive value, both models perform badly in picking up the claim policies
+
+    -   Out of all the predicted claim policies, slightly more than 7% of the policies are truly claimed policies
+
+Nevertheless, the purpose of this post is to explore how to encode categorical variables by using GLM.
+
+Hence I won't be exploring how to improve the model performance.
+
+# Conclusion
+
+That's all for the day!
+
+Thanks for reading the post until the end.
+
+Feel free to contact me through [email](mailto:jasper.jh.lok@gmail.com) or [LinkedIn](https://www.linkedin.com/in/jasper-l-13426232/) if you have any suggestions on future topics to share.
+
+Refer to this link for the [blog disclaimer](https://jasperlok.netlify.app/blog_disclaimer.html).
+
+Till next time, happy learning!
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/code.jpg")
+
+```
+
+Photo by [cottonbro studio](https://www.pexels.com/photo/photo-of-cryptic-character-codes-and-magnifying-glass-on-table-top-7319068/)
