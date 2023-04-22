@@ -1,0 +1,300 @@
+---
+title: "Prophet"
+description: |
+   Not the usual "Prophet" actuaries refer to
+author:
+  - name: Jasper Lok 
+    url: https://jasperlok.netlify.app/
+date: 04-22-2023
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 4
+    self_contained: false
+bibliography: ["ref.bib"]
+biblio-style: "apa"
+link-citations: true
+categories:
+  - Time Series
+  - Time Series Forecasting
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+pacman::p_load(captioner, knitr, kableExtra, tidyverse)
+
+knitr::opts_chunk$set(fig.retina = 3,                       
+                      echo = TRUE,                       
+                      eval = TRUE,                       
+                      message = FALSE,                       
+                      warning = FALSE,
+                      out.width="100%")
+
+```
+
+In this post, I will be exploring Prophet.
+
+When I first came across Prophet, I thought the article was referring to the actuarial software until I realised it was for time series forecasting.
+
+Funny enough, the actuarial software Prophet also helps actuaries perform forecasting. Just that the forecasting from the software is more for insurance cashflows.
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/rain_forecast.jpg")
+
+```
+
+Photo by <a href="https://unsplash.com/@rosssneddon?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Ross Sneddon</a> on <a href="https://unsplash.com/photos/zNGPmIVPQf4?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+  
+Nevertheless, in this post, I will exploring Prophet, i.e. one of the time series forecasting method.
+
+
+# What is Prophet?
+
+Prophet is an open-source library developed by Facebook. 
+
+This method works best with time series that have strong seasonality and several seasons of historical data [@Hyndman2023].
+
+The formula can be written as follows:
+
+$$y_t = g(t) + s(t) + h(t) + \epsilon_t$$
+
+Where
+
+$g(t)$ is the piecewise-linear trend (or “growth term”)
+
+$s(t)$ is the seasonal pattern
+
+$h(t)$ is the holiday effects
+
+$\epsilon_t$ is the white noise error term
+
+
+
+# Demonstration
+
+## Setup the environment
+
+First, I will set up the environment by calling all the relevant packages.
+
+I will be using `prophet` package to perform the analysis.
+
+```{r}
+pacman::p_load(tidyverse, prophet, readxl)
+
+```
+
+
+## Import the data
+
+In this demonstration, I will be using the data on outbound departures of Singapore residents by air.
+
+The relevant data can be downloaded from [Singstat website](https://www.singstat.gov.sg/find-data/search-by-theme/industry/tourism/latest-data).
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/travel.jpg")
+
+```
+
+Photo by <a href="https://unsplash.com/@wistomsin?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Tom Barrett</a> on <a href="https://unsplash.com/images/travel?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+
+
+
+```{r}
+tour_df <- 
+  read_xlsx("data/outputFile.xlsx",
+            sheet = "T1",
+            range = "A11:EP14") %>% 
+  filter(`Data Series` == "Air") %>%
+  pivot_longer(!`Data Series`,
+               names_to = "time",
+               values_to = "value") %>% 
+  select(-c(`Data Series`)) %>% 
+  mutate(time = ym(time)) %>% 
+  filter(time < "2019-01-01") %>% 
+  arrange(time)
+
+```
+
+
+
+## Visualising the chart
+
+Next, I will visualize the time series by using various `ggplot` functions.
+
+```{r}
+ggplot(tour_df, aes(time, value)) +
+  geom_line()
+
+```
+
+
+From the data, we could see that there is some sort of seasonality within the time series.
+
+
+## Model Building
+
+I will start the time series model.
+
+```{r}
+prophet_fit <-
+  tour_df %>% 
+  rename(ds = time,
+         y = value) %>% 
+  prophet()
+
+```
+
+
+
+## Cross validation
+
+Based on the [documentation page](https://facebook.github.io/prophet/docs/diagnostics.html#:~:text=Cross%20validation,up%20to%20that%20cutoff%20point.), the cross validation can be used to measure the forecast error by using historical data.
+
+To do so, I will be using the `cross_validation` function from the package.
+
+```{r}
+prophet_cv <-
+  cross_validation(prophet_fit,
+                   initial = 365 * 6, # training period
+                   period = 30, # how frequent is the estimated value
+                   horizon = 365, # forecast horizon
+                   units = "days")
+
+```
+
+Note that according to the [documentation page](https://facebook.github.io/prophet/docs/diagnostics.html#:~:text=Cross%20validation,up%20to%20that%20cutoff%20point.), the units in the `cross_validation` function must be some units can be accepted by `as.difftime` function.
+
+
+Refer to [this link](https://stat.ethz.ch/R-manual/R-devel/library/base/html/difftime.html) on the units can be accepted by `as.difftime` function.
+
+
+We could calculate the performance by passing the cross validation results into `performance_metrics` function.
+
+```{r}
+performance_metrics(prophet_cv) %>% 
+  as_tibble()
+
+```
+
+
+We could visualize the result by passing the cross validation result to `plot_cross_validation_metric` function.
+
+```{r}
+plot_cross_validation_metric(prophet_cv, metric = 'mape')
+
+```
+
+According to the [documentation page](https://facebook.github.io/prophet/docs/diagnostics.html#:~:text=Cross%20validation,up%20to%20that%20cutoff%20point.), the dots show the absolutate percent error for each prediction.
+
+The blue line represents the MAPE, where the mean is taken over a rolling window of the dots.
+
+From the graph, we could see that the forecast errors hover between 3% to 4% most of the times.
+
+The errors seem to increase to somewhere closer to 4% when the predictions are more into the future. 
+
+
+## Predictions
+
+Next, I will perform predictions on the time series.
+
+I will first append the future time series to the fitted object.
+
+```{r}
+future <-
+  make_future_dataframe(prophet_fit,
+                        periods = 12,
+                        freq = "month")
+
+```
+
+If I were to slice the last 12 values from the created object, we can see that its the future values we indicated.
+
+```{r}
+tail(future, 12)
+
+```
+
+Then, I will pass the fitted object and created data frame into `predict` function as shown below.
+
+```{r}
+forecast <- 
+  predict(prophet_fit, future)
+
+```
+
+```{r}
+tail(forecast)
+
+```
+
+
+
+
+## Visualization
+
+To visualize the time series, we could pass the fitted object and forecasted values into `plot` function.
+
+```{r}
+plot(prophet_fit, forecast)
+
+```
+
+As the generated plot object is a ggplot object as shown below, we could add on ggplot functions to further modify the graph.
+
+```{r}
+class(plot(prophet_fit, forecast))
+
+```
+
+```{r}
+plot(prophet_fit, forecast) +
+  scale_y_continuous(labels = scales::comma) +
+  xlab("") +
+  ylab("") +
+  labs(title = "Number of SG travellers by Air",
+       caption = "Data Source: Singstat") +
+  theme_minimal()
+
+```
+
+
+Alternatively, we could visualize the interactive graph by passing the fitted object into `dyplot.prophet` function.
+
+```{r}
+dyplot.prophet(prophet_fit, forecast)
+
+```
+
+
+## Decompose the time series
+
+`prophet_plot_components` function can help us to break the forecast into trend, weekly seasonality, and yearly seasonality.
+
+```{r}
+prophet_plot_components(prophet_fit,forecast)
+
+```
+
+From the graph, we note that the number of Singapore residents going overseas through air has increased over the years.
+
+
+# Conclusion
+
+That's all for the day!
+
+Thanks for reading the post until the end.
+
+Feel free to contact me through [email](mailto:jasper.jh.lok@gmail.com) or [LinkedIn](https://www.linkedin.com/in/jasper-l-13426232/) if you have any suggestions on future topics to share.
+
+Refer to this link for the [blog disclaimer](https://jasperlok.netlify.app/blog_disclaimer.html).
+
+Till next time, happy learning!
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/future.jpg")
+
+```
+
+Photo by <a href="https://unsplash.com/@maximalfocus?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Maximalfocus</a> on <a href="https://unsplash.com/photos/HakTxidk36I?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+  
