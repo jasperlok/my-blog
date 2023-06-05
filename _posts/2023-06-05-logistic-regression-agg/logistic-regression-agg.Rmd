@@ -1,0 +1,279 @@
+---
+title: "Logistic Regression on Aggregated Data"
+description: |
+   Different methods but give the same results
+author:
+  - name: Jasper Lok 
+    url: https://jasperlok.netlify.app/
+date: 06-05-2023
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 4
+    self_contained: false
+categories:
+  - Machine Learning
+  - Supervised Learning
+  
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+pacman::p_load(captioner, knitr, kableExtra, tidyverse, probably)
+
+knitr::opts_chunk$set(fig.retina = 3,                       
+                      echo = TRUE,                       
+                      eval = TRUE,                       
+                      message = FALSE,                       
+                      warning = FALSE,
+                      out.width="100%")
+
+```
+
+In this post, I will be exploring how to build logistic regression on aggregated dataset.
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/sort.jpg")
+
+```
+
+Photo by <a href="https://unsplash.com/@pawel_czerwinski?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Pawel Czerwinski</a> on <a href="https://unsplash.com/s/photos/sorting?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+  
+
+
+# Demonstration
+
+In this demonstration, I will be using base GLM function to build models by using following three methods:
+
+- **1st method:** Logistic regression on non-aggregated data
+
+- **2nd method:** Logistic regression on aggregated data + use `cbind` argument
+
+- **3rd method:** Logistic regression on aggregated data + weights
+
+Once the models are built, I will be comparing their coefficients and predictions from the three models.
+
+First, I will call the necessary packages.
+
+```{r}
+pacman::p_load(tidyverse, tidymodels, janitor)
+
+```
+
+
+## Import Data
+
+I will also reuse the employee attrition data from my previous analysis in this demonstration.
+
+```{r}
+df <- read_csv("https://raw.githubusercontent.com/jasperlok/my-blog/master/_posts/2022-03-12-marketbasket/data/general_data.csv") %>%
+  # clean up the column naming
+  clean_names() %>% 
+  # convert the attrition column to the correct column types
+  mutate(attrition = as.factor(attrition))
+
+```
+
+The original dataset can be found under [this link](https://www.kaggle.com/datasets/vjchoudhary7/hr-analytics-case-study).
+
+For simplicity, I will use following variables to build the model.
+
+```{r}
+df_1 <-
+  df %>% 
+  select(c(age
+           ,attrition
+           ,business_travel
+           ,department
+           ,job_role
+           ,marital_status))
+
+```
+
+
+## Model Building
+
+### 1st method: Logistic regression on non-aggregated data
+
+For the first method, I will be building a logistic regression on the non-aggregated data.
+
+
+```{r}
+logit_fit <-
+  glm(attrition ~ .
+      ,family = "binomial" 
+      ,data = df_1
+      )
+
+```
+
+Next, I will pass the fit model to `anova` function.
+
+```{r}
+anova(logit_fit)
+
+```
+
+
+### 2nd method: Logistic regression on aggregated data + use `cbind`
+
+Next, I will build a logistic regression on the aggregated data.
+
+With that, I will first derive the aggregated data.
+
+```{r}
+df_agg <-
+  df_1 %>% 
+  group_by(across(!attrition)) %>% 
+  summarise(count = n()
+            ,nonattrition_count = sum(attrition == "No")
+            ,attrition_count = sum(attrition == "Yes")) %>% 
+  ungroup()
+  
+
+```
+
+Once the data is derived, I will start building the model.
+
+In the `cbind` argument, we just need to pass in 
+
+
+```{r}
+logit_agg <-
+  glm(cbind(attrition_count, nonattrition_count) ~ . - count
+      ,family = "binomial"
+      ,data = df_agg)
+
+```
+
+Similar to 1st method, I will pass the fit model into the `anova` function.
+
+```{r}
+anova(logit_agg)
+
+```
+From the result above, we can see that the deviance results from the model is same as the deviance results from 1st model.
+
+
+### 3rd method: Logistic regression on aggregated data + weights
+
+We could model on the proportion, instead of the absolute count.
+
+This would give us the same result so long we specify the weights correctly in the modeling.
+
+First, I will derive the proportion from the data.
+
+```{r}
+df_agg_rate <-
+  df_agg %>% 
+  mutate(attrition_rate = attrition_count/count) %>% 
+  select(-c(attrition_count
+            ,nonattrition_count))
+
+```
+
+Once that is done, I will fit the model by specifying the proportion as the target.
+
+```{r}
+logit_agg_rate <-
+  glm(attrition_rate ~ . - count
+      ,weights = count
+      ,family = "binomial"
+      ,data = df_agg_rate)
+
+```
+
+If we were to pass the fit object into `anova` function, we could see that the deviance results are same as previous two fit objects.
+
+```{r}
+anova(logit_agg_rate)
+
+```
+
+
+
+## Compare the coefficients from different models
+
+If we were to put the coefficients of the three fit objects into the same table, we could see that all the coefficients from the three models are the same.
+
+```{r}
+# first method
+logit_fit %>% 
+  tidy() %>% 
+  select(term, estimate) %>% 
+  rename(logit_fit = estimate) %>% 
+  # second method
+  left_join(
+    logit_agg %>% 
+      tidy() %>% 
+      select(term, estimate) %>% 
+      rename(logit_agg = estimate)
+  ) %>% 
+  # third method
+  left_join(
+    logit_agg_rate %>% 
+      tidy() %>% 
+      select(term, estimate) %>% 
+      rename(logit_agg_rate = estimate)
+  )
+
+```
+
+## Compare the predictions
+
+Lastly, I will extract the predictions from the last two fit models.
+
+```{r}
+predict(logit_agg, type = "response") %>% 
+  as_tibble()
+
+predict(logit_agg_rate, type = "response") %>% 
+  as_tibble()
+
+```
+
+From the results, we could see that regardless whether we model on the count or proportion, both methods would give us the same results.
+
+If we were to extract the predictions for the same profile from the first model, we would see that the predicted values are the same as the predictions from the two models above.
+
+```{r}
+logit_fit %>% 
+  augment(type.predict = "response") %>% 
+  select(1:8) %>% 
+  rename(logit_fitted = .fitted
+         ,logit_fit_resid = .resid) %>% 
+  filter(age == 18
+         ,business_travel == "Non-Travel"
+         ,department == "Research & Development"
+         ,job_role == "Laboratory Technician")
+
+```
+
+
+
+
+
+# Conclusion
+
+That's all for the day!
+
+Thanks for reading the post until the end.
+
+Feel free to contact me through [email](mailto:jasper.jh.lok@gmail.com) or [LinkedIn](https://www.linkedin.com/in/jasper-l-13426232/) if you have any suggestions on future topics to share.
+
+Refer to this link for the [blog disclaimer](https://jasperlok.netlify.app/blog_disclaimer.html).
+
+Till next time, happy learning!
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/sticky_note.jpg")
+
+```
+
+Photo by <a href="https://unsplash.com/pt-br/@uxindo?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">UX Indonesia</a> on <a href="https://unsplash.com/s/photos/sorting?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+  
+  
+
+
+
