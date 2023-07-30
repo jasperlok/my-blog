@@ -1,0 +1,379 @@
+---
+title: "Multi-state Risk"
+description: |
+   When the survival analysis is no longer straightforward
+author:
+  - name: Jasper Lok 
+    url: https://jasperlok.netlify.app/
+date: 07-30-2023
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 4
+    self_contained: false
+bibliography: ["ref.bib"]
+biblio-style: "apa"
+link-citations: true
+categories:
+  - Machine Learning
+  - Survival Model
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+pacman::p_load(captioner, knitr, kableExtra, tidyverse)
+
+knitr::opts_chunk$set(fig.retina = 3,                       
+                      echo = TRUE,                       
+                      eval = TRUE,                       
+                      message = FALSE,                       
+                      warning = FALSE,
+                      out.width="100%")
+
+```
+
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/compete.jpg")
+
+```
+
+Photo by <a href="https://unsplash.com/ko/@philipparosetite?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Philippa Rose-Tite</a> on <a href="https://unsplash.com/photos/Yhr2hkV5Up0?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+  
+
+In my [previous post](https://jasperlok.netlify.app/posts/2023-01-10-cox-ph/) on Cox Proportional Hazard, I have explored how to perform survival analysis on one event, i.e. the subjects can either experience the event or being censored. 
+
+However, this scenario is often too simplified for real life scenario. We may want to know the subjects "move" around different "states".
+
+This is where multi-state modeling become very handy.
+
+`Survival` package has a nice writeup on [multi-state models and competing risk](https://cran.r-project.org/web/packages/survival/vignettes/compete.pdf).
+
+
+# Demonstration
+
+According to CRAN, there are different packages that would help us to model multi-state (e.g. mstate, msm).
+
+In this demonstration, I will be using the functions from `survival` package to model multi-state.
+
+
+## Setup the environment
+
+First, I will load the necessary packages into the environment.
+
+```{r}
+pacman::p_load(tidyverse, survival, tidymodels, condSURV, finalfit)
+
+```
+
+
+
+## Import Data
+
+I will be using the German breast cancer dataset from `condSURV` package for the study.
+
+In this dataset, the subjects could have a recurrent breast cancer or died before having another breast cancer. Once have a recurrent breast cancer, the subjects could also "go" to the death state.
+
+The data dictionary for this dataset can be found under this [link](https://web.archive.org/web/20170318010905/http://www.umass.edu/statdata/statdata/data/gbcs.txt).
+
+```{r}
+data(gbcsCS)
+
+df <- gbcsCS %>% 
+  select(-c(diagdateb, recdate, deathdate)) %>% 
+  mutate(
+    censdead_comb = case_when(rectime == survtime ~ 1
+                              ,rectime != survtime & censdead == 1 ~ 1
+                              ,TRUE ~ 0))
+
+rm(gbcsCS)
+
+```
+
+## Model Building
+### Single State
+
+One way to model such multiple event is to treat all other non-interest events as "censored" event. However, this could give us a different results, compared to if we were to consider all the events.
+
+For comparison purpose, I will build a simple model with age.
+
+I will fit a Cox Proportional Model on all the death events.
+
+```{r}
+cox_fit_single_age <-
+  coxph(Surv(survtime, censdead_comb) ~ age
+        ,data = df)
+
+cox_fit_single_age
+
+```
+
+From the result, we saw that the likelihood of death decreases when age increases.
+
+This could be there are other significant factors not being captured by the model.
+
+
+
+
+### Multi State
+
+Next, I will use `coxph` function to fit a multi-state model.
+
+First, I will slice the dataset by only keeping the ID and respective predictors to be used in building survival models later on.
+
+```{r}
+df_subset <-
+  df %>% select(-c(rectime, censrec, survtime, censdead))
+
+```
+
+In order to model the multi-state, we will need to slice the data into the respective exposure.
+
+- `data1` is the dataset that captures the id and respective predictors
+
+- `data2` is the dataset that captures the remaining required by the other arguments
+
+- `id` is the unique identifier for the subject
+
+
+`tmerge` function also allows us to create new variable within the function.
+
+Below are the variables I created within the `tmerge` function:
+
+- `tstart` and `tstop` to indicate the start and end of each exposure
+
+- `stat_rec` is to indicate whether there is any recurrent of the breast cancer
+
+- `stat_death_comb` is to indicate whether the observed has passed away
+
+- `prior_rec` is to capture whether the observed has recurrent breast cancer
+
+```{r}
+df_tmerge <-
+  tmerge(
+    data1 = df_subset
+    ,data2 = df
+    ,id = id
+    ,stat_death_comb = event(survtime, censdead_comb)
+    ,stat_rec = event(rectime, censrec)
+    ,prior_rec = tdc(rectime)
+    )
+
+```
+
+If we were to call the data, we could see that now each observation is being split into the exposure under each event.
+
+```{r}
+head(df_tmerge)
+
+```
+
+
+If we were to pass the new object to `class` function, we will note that the new object has an additional class, which is "tmerge".
+
+```{r}
+class(df_tmerge)
+
+```
+
+Before building the survival model, I will create an additional indicator to capture the event under each time step.
+
+```{r}
+df_tmerge_2 <-
+  df_tmerge %>% 
+  mutate(event = case_when(stat_death_comb == 1 ~ "death"
+                           ,stat_rec == 1 ~ "recurrent"
+                           ,stat_death_comb == 0 ~ "censored"
+                           ,TRUE ~ "check")
+         ,event = factor(event))
+
+```
+
+
+`survival` package offers `survcheck` function to check the data. What I like about this function is it will show the transition matrix.
+
+This would help us in gaining understanding how does the subjects move from states to states.
+
+```{r}
+survcheck(Surv(tstart, tstop, event) ~ 1
+        ,id = id
+        ,data = df_tmerge_2)
+
+```
+
+
+
+Again, I will build the multi-state model with just age as the predictor. 
+
+```{r}
+cox_fit_multi_age <-
+  coxph(Surv(tstart, tstop, event) ~ age
+        ,id = id
+        ,data = df_tmerge_2)
+
+cox_fit_multi_age
+
+```
+
+From the result, we could see that there are multiple sections since we are trying to fit a multi-state model. The descriptions for the different state can be found in the bottom of the result.
+
+Also, we also noted that the coefficients for age are different under the different transition states.
+
+In general, the likelihood decreases with age when the subjects go from initial state to either death or recurrent states. 
+
+However, the death likelihood increases with age when the subjects have previously experienced a recurrent breast cancer.
+
+Once that is done, I will pass the info to `coxph` function to fit the multi-state model.
+
+Note that at each time step, the data behaves like interval censoring, hence we will indicate the start time and end time of each time step.
+
+We will also need to indicate the unique identifier to the function so that the function knows which rows are belonging to the same group.
+
+```{r}
+cox_fit_multi <-
+  coxph(Surv(tstart, tstop, event) ~ 
+          age
+        + menopause
+        + hormone
+        + size
+        + grade
+        + nodes
+        + prog_recp
+        + estrg_recp
+        ,id = id
+        ,data = df_tmerge_2)
+
+```
+
+If we were to call the fitted object, we can see that the function will fit a model for each possible transition as indicated in the dataset.
+
+```{r}
+summary(cox_fit_multi)
+
+```
+
+
+Alternatively, we will call the `transitions` within the fitted object to see how many observations are under each state.
+
+```{r}
+cox_fit_multi$transitions
+
+```
+
+We can check the proportional hazard assumptions by using `cox.zph` function. The proportional hazard assumption should still hold under a multi-state model.
+
+```{r}
+cox.zph(cox_fit_multi)
+
+```
+
+#### Graphs
+
+According to the documentation, the `survfit` outputs the probability in state for multi-state model.
+
+Next, we will visualize the probability in state for different events.
+
+Before that, I will generate the `survfit` output.
+
+```{r}
+survfit(Surv(tstart, tstop, event) ~ 1, data = df_tmerge_2, id = id)
+
+```
+I will use base R plotting function to visualize the result.
+
+```{r}
+plot(
+  survfit(Surv(tstart, tstop, event) ~ 1
+          ,data = df_tmerge_2
+          ,id = id)
+  ,col=c(1,2,1,2)
+  ,lty=c(2,2,1,1)
+  ,xlab = "Time"
+  ,ylab = "Probability in State")
+
+legend(1800, 0.6, c("death"
+                    ,"recurrent")
+       ,col=c(1,2)
+       ,lwd=2
+       ,bty='n')
+
+
+```
+
+
+Alternatively, we can use `ggplot` function to plot the probability in state.
+
+```{r}
+survfit(Surv(tstart, tstop, event) ~ 1, data = df_tmerge_2, id = id) %>%
+  tidy() %>% 
+  filter(state != "(s0)") %>% 
+  ggplot(aes(time, estimate, color = state)) +
+  geom_line() +
+  xlab("Time") +
+  ylab("Probability in state") +
+  theme_minimal()
+
+```
+
+
+
+### Another package to fit multi-state Cox model
+
+Also, I happened to come across `finalfit` package that provides a more modular way to fit the multi-state model.
+
+```{r}
+explanatory_var <- 
+  c("age"
+    ,"menopause"
+    ,"hormone"
+    ,"size"
+    ,"grade"
+    ,"nodes"
+    ,"prog_recp"
+    ,"estrg_recp")
+
+dependent_variable <-
+  c("Surv(tstart, tstop, event)")
+
+```
+
+
+```{r}
+cox_fit_multi_finalfit <-
+  coxphmulti(df_tmerge_2
+             ,dependent_variable
+             ,explanatory_var
+             ,id = df_tmerge_2$id)
+
+```
+
+```{r}
+cox_fit_multi_finalfit
+
+```
+
+
+
+
+# Conclusion
+
+That's all for the day!
+
+Thanks for reading the post until the end.
+
+Feel free to contact me through [email](mailto:jasper.jh.lok@gmail.com) or [LinkedIn](https://www.linkedin.com/in/jasper-l-13426232/) if you have any suggestions on future topics to share.
+
+
+Refer to this link for the [blog disclaimer](https://jasperlok.netlify.app/blog_disclaimer.html).
+
+
+Till next time, happy learning!
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/football.jpg")
+
+```
+
+Photo by [football wife](https://www.pexels.com/photo/football-game-1618200/)
+  
