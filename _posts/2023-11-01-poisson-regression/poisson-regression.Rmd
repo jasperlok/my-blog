@@ -1,0 +1,502 @@
+---
+title: "Poisson Regression"
+description: |
+   A fish regression? Google translate from French to English to check what "poisson" means
+author:
+  - name: Jasper Lok 
+    url: https://jasperlok.netlify.app/
+date: 11-01-2023
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 4
+    self_contained: false
+bibliography: ["ref.bib"]
+biblio-style: "apa"
+link-citations: true
+categories:
+  - Machine Learning
+  - Supervised Learning
+  
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+pacman::p_load(captioner, knitr, kableExtra, tidyverse)
+
+knitr::opts_chunk$set(fig.retina = 3,                       
+                      echo = TRUE,                       
+                      eval = TRUE,                       
+                      message = FALSE,                       
+                      warning = FALSE,
+                      out.width="100%")
+
+```
+
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/lock.jpg")
+
+```
+
+Photo by <a href="https://unsplash.com/@polarmermaid?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Anne Nygård</a> on <a href="https://unsplash.com/photos/rTC5SF27jIc?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+
+In this post, I will be exploring a special type of regression model, which is Poisson regression.
+
+Before jumping into Poisson regression, let's look at what is count regression. 
+
+# What is Count Regression?
+
+As the name suggested, the target variable for this type of regression is count.
+
+This type of regression are intrinsically heteroskedastic, right-skewed and have a variance that increases with the mean of the distribution [@Hilbe].
+
+Hence, this type of model will not fulfill the usual linear regression assumptions.
+
+In this post, I will be focusing on Poisson regression.
+
+# Poisson Regression
+
+In this model, below are the assumptions of using this model:
+
+- Assume the dependent variable follows Poisson distribution.
+
+- Assume the mean and variance are equal under this model.
+
+
+I will be using Poisson log loss formula from `yardstick` package to check how well the fitted model captures the underlying pattern.
+
+
+# Demonstration
+
+In this post, I will be using both base R `glm` function and `tidymodels` package to build Poisson regression.
+
+```{r}
+pacman::p_load(tidyverse, CASdatasets, tidymodels, poissonreg, janitor, DHARMa)
+
+```
+
+
+
+## Import Data
+
+First, I will import the claim frequency data from `CASdatasets` package.
+
+```{r}
+data(freMTPLfreq)
+
+df <-
+  freMTPLfreq %>% 
+  clean_names() %>% 
+  mutate(policy_id = as.character(policy_id)
+         ,clm_rate = claim_nb/exposure)
+
+rm(freMTPLfreq)
+
+```
+
+
+## Model Building
+
+Great! Now, we will start building the model.
+
+In the model building, I will be building model to predict the claim rate of the dataset by two different methods:
+
+- **1st method**: Use `offset` function
+
+- **2nd method**: Use `weight` function
+
+
+### Poisson Regression - Offset
+
+First, I will build a Poisson regression with `offset` function.
+
+```{r}
+glm_fit <-
+  glm(claim_nb ~ 
+      power
+    + car_age
+    + driver_age
+    + brand
+    + gas
+    + region
+    + density
+    ,offset = log(exposure)
+    ,data = df
+    ,family = poisson)
+
+```
+
+Note that we need to take log transformation on the offset variable since the link function for Poisson distribution is log.
+
+We could extract the coefficient of the model by using `tidy` function.
+
+I will also take the exponential of estimate so that its easier to interpret the meaning of the different estimates.
+
+```{r}
+glm_fit %>% 
+  tidy() %>% 
+  mutate(exp_estimate = exp(estimate)) %>% 
+  relocate(exp_estimate, .before = std.error)
+
+```
+
+From the result above, we noted on the following:
+
+- If all else being equal, the claim risk will decrease by approximately 1% when the driver age increases
+
+- Not all regions have the same effect on the claim rate. Some regions tends to have higher influence on the claim rate.
+
+
+
+
+#### Assumptions
+
+I will be using `DHARMa` package to check the assumptions.
+
+##### Check - QQ plot & residuals
+
+```{r}
+simulated_residuals <- simulateResiduals(glm_fit)
+
+plot(simulated_residuals)
+
+```
+
+Although the KS test result is significant, it seems like the fitted model is not too bad. 
+
+
+
+##### Check - Is the number of zero inflated in the dataset?
+
+In fitting Poisson regression, one of the concerns is whether there is any sign of excessive zeros within the data. 
+
+To test this, I will use `testZeroInflation` function.
+
+```{r}
+testZeroInflation(glm_fit)
+
+```
+
+As the p-value is less than 0.05, there is statistical evidence that the number of zeros are more than expected.
+
+
+However, as mentioned in the [vignette](https://cran.r-project.org/web/packages/DHARMa/vignettes/DHARMa.html) by `DHMARMa` package, overdispersion could lead to excess zeros. Hence, I will perform dispersion test next.
+
+
+
+##### Check - Is there any overdispersion?
+
+Next, I will perform dispersion test by using `testDispersion` function.
+
+```{r}
+testDispersion(glm_fit)
+
+```
+
+As the p-value is less than 0.05, we reject null hypothesis and the statistics is higher than 1, suggesting that there is statistical evidence that there is over dispersion.
+
+
+#### Model Predictions
+
+I will generate the predictions by using `augment` function.
+
+I will also round the predicted claim counts to the nearest number.
+
+```{r}
+glm_pred <-
+  glm_fit %>% 
+  augment(df, type.predict = "response") %>% 
+  mutate(pred_round = round(.fitted))
+
+glm_pred
+
+```
+
+Alternatively, we could extract the `fitted.values` from the model object if we are interested in the fitted values from the training dataset.
+
+```{r}
+glm_fit$fitted.values %>% 
+  as_tibble()
+
+```
+
+
+#### Model Performance
+
+##### Anova Test
+
+I will run chi-square test by using the `anova` function.
+
+```{r}
+anova(glm_fit, test = "Chisq")
+
+```
+
+From the result, we note the following:
+
+- Although all the variables have p-value less than 0.05, some variables seem to be more important than the rest
+
+- Driver_age seems to be the most important variable as the reduction in deviance is the biggest when we include this variable in model building
+
+
+##### Actual vs Predicted
+
+As mentioned in the earlier section, I will use `poisson_log_loss` function to check the model fit.
+
+```{r}
+poisson_log_loss(glm_pred
+                 ,truth = claim_nb
+                 ,estimate = .fitted)
+
+```
+
+Next, I will plot the bar charts by showing the actual claim count and predicted claim count side by side.
+
+```{r}
+graph_pred_act_df <-
+  tibble("claim_count" = c(0, 1, 2, 3, 4)) %>% 
+  # frequency count based on actual claim count
+  left_join(
+    glm_pred %>% 
+      group_by(claim_nb) %>% 
+      summarise(`actual claim count` = n())
+    ,by = c("claim_count" = "claim_nb")
+  ) %>% 
+  # frequency count based on predicted claim count
+  left_join(
+    glm_pred %>% 
+      group_by(pred_round) %>% 
+      summarise(`predicted claim count` = n())
+    ,by = c("claim_count" = "pred_round")
+  ) %>% 
+  # replace any NA with 0
+  mutate_at(vars(everything())
+            ,function(x) replace_na(x, 0)) %>% 
+  pivot_longer(!claim_count
+               ,names_to = "claim_type"
+               ,values_to = "count")
+
+# visualize the bar chart
+graph_pred_act_df %>% 
+  ggplot(aes(claim_count, count, fill = claim_type)) +
+  geom_col(position = "dodge") +
+  scale_y_continuous(labels = scales::comma) +
+  theme_minimal() +
+  labs(title = "Actual vs Predicted Claim Count"
+       ,subtitle = "Poisson Regression with Log(Exposure) Offset")  
+
+```
+
+It seems like the model did poorly in capturing the claim policies based on the result shown.
+
+
+If we were to plot the actual claim rate versus the predicted claim rate by using scatter points, we can see that some of the actual claim rates are much higher than the rest.
+
+```{r}
+ggplot(glm_pred, aes(clm_rate, .fitted/exposure)) +
+  geom_point()
+
+```
+
+If we were to extract policy, it seems like these policies have made at least a claim within 3 days after the policy inception.
+
+```{r}
+glm_pred %>% 
+  filter(clm_rate > 100) %>% 
+  arrange(exposure)
+
+```
+
+Nevertheless, as we are not trying to build the most accurate model over here, hence I will leave the model as it is in this post.
+
+
+### Poisson with weight 
+
+When I was reading the different materials about building Poisson regression, I happened to come across [this post](https://stats.stackexchange.com/questions/264071/how-is-a-poisson-rate-regression-equal-to-a-poisson-regression-with-correspondin) on how the model with `offset` and model with `weight` would give us the same result if we pass in all the relevant parameters to the model.
+
+Hence, to satisfy my own curiosity, I have built another Poisson regression by using `weight`.
+
+
+I will use 'clm_rate' as the target variable and also indicate exposure as the `weight`.
+
+```{r}
+glm_fit_rate <-
+  glm(clm_rate ~ 
+     power
+    + car_age
+    + driver_age
+    + brand
+    + gas
+    + region
+    + density
+    ,weight = exposure
+    ,data = df
+    ,family = poisson)
+
+```
+
+If we were to extract the model info, we will realize that the estimate and all other model info are same as the Poisson regression with `offset` function we have built earlier.
+
+```{r}
+glm_fit_rate %>% 
+  tidy() %>% 
+  mutate(exp_coef = exp(estimate)) %>%
+  relocate(exp_coef, .before = std.error)
+
+```
+
+This shows that we could model the claim rate directly if the claim rate is the interest of the study. However, the `weight` needs to be specified when we are modeling on the claim rate directly.
+
+
+#### Model Performance
+
+```{r}
+glm_pred_weight <-
+  predict(glm_fit_rate, type = "response") %>% 
+  as_tibble() %>% 
+  bind_cols(df) %>%
+  mutate(pred = value * exposure
+         ,pred_round = round(pred, 0))
+
+```
+
+
+```{r}
+graph_pred_act_df <-
+  tibble("claim_count" = c(0, 1, 2, 3, 4)) %>% 
+  left_join(
+    glm_pred_weight %>% 
+      group_by(claim_nb) %>% 
+      summarise(`actual claim count` = n())
+    ,by = c("claim_count" = "claim_nb")
+  ) %>% 
+  left_join(
+    glm_pred_weight %>% 
+      group_by(pred_round) %>% 
+      summarise(`predicted claim count` = n())
+    ,by = c("claim_count" = "pred_round")
+  ) %>% 
+  mutate_at(vars(everything())
+            ,function(x) replace_na(x, 0)) %>% 
+  pivot_longer(!claim_count
+               ,names_to = "claim_type"
+               ,values_to = "count")
+
+graph_pred_act_df %>% 
+  ggplot(aes(claim_count, count, fill = claim_type)) +
+  geom_col(position = "dodge") +
+  scale_y_continuous(labels = scales::comma) +
+  theme_minimal() +
+  labs(title = "Actual vs Predicted Claim Count")  
+
+```
+
+
+#### Use `case_weights` function in Tidymodels
+
+`Tidymodels` also offers a weighting function to allow us in building a Poisson model with weights.
+
+First, I will need to mutate the `exposure` column to indicate this column should be used as `weights` in the modeling.
+
+```{r}
+df_rate <-
+  df %>% 
+  mutate(exposure = importance_weights(exposure))
+
+```
+
+Note that as the point of writing this post, `tidymodels` has two types of `weights` functions:
+
+- `frequency_weight`, which only allows integers
+
+- `importance_weight`, which allows non-negative doubles
+
+As the exposure is not an integer, hence I have used `importance_weights` function over here.
+
+Once the column is mutated, we can see the column type has changed when we call the tibble table.
+
+```{r}
+df_rate %>% 
+  slice_head(n = 10)
+
+```
+
+To build the Poisson model with weights, we will follow the usual steps in building machine learning models under tidymodels framework:
+
+- Define the recipe
+
+- Define the model specification
+
+- Define the workflow
+
+- Fit the model
+
+The only difference is we will need to specify the "weight" by using `add_case_weights` function and add to the workflow.
+
+```{r}
+gen_recipe <- 
+  recipe(clm_rate ~ power + car_age + driver_age + brand + gas + region + density + exposure
+         ,data = df_rate)
+
+pois_specs <-
+  poisson_reg() %>% 
+  set_engine("glm")
+  
+pois_wf <-
+  workflow() %>% 
+  add_case_weights(exposure) %>% 
+  add_recipe(gen_recipe) %>% 
+  add_model(pois_specs)
+
+```
+
+If we were to call the workflow, we will see that exposure is being captured as "weight" in the workflow.
+
+```{r}
+pois_wf
+
+```
+
+Finally, we will fit the model.
+
+```{r}
+pois_fit <-
+  pois_wf %>% 
+  fit(data = df_rate)
+
+```
+
+We can see that the estimate and relevant results are same as the weighted poisson model built by using `glm` function directly.
+
+```{r}
+tidy(pois_fit)
+
+```
+
+
+
+
+# Conclusion
+
+That's all for the day!
+
+Thanks for reading the post until the end.
+
+Feel free to contact me through [email](mailto:jasper.jh.lok@gmail.com) or [LinkedIn](https://www.linkedin.com/in/jasper-l-13426232/) if you have any suggestions on future topics to share.
+
+Refer to this link for the [blog disclaimer](https://jasperlok.netlify.app/blog_disclaimer.html).
+
+Till next time, happy learning!
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/blessing.jpg")
+
+```
+
+Photo by <a href="https://unsplash.com/@sixteenmilesout?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Sixteen Miles Out</a> on <a href="https://unsplash.com/photos/pPPbmx0Tfxc?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+  
+
+
+

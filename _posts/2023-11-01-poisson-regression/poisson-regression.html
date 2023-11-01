@@ -1,0 +1,2138 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <meta name="generator" content="distill" />
+
+  <style type="text/css">
+  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
+  body {
+    visibility: hidden;
+  }
+  </style>
+
+ <!--radix_placeholder_import_source-->
+ <!--/radix_placeholder_import_source-->
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  { color: #00769e; background-color: #f1f3f5; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span { color: #00769e; } /* Normal */
+code span.al { color: #ad0000; } /* Alert */
+code span.an { color: #5e5e5e; } /* Annotation */
+code span.at { color: #657422; } /* Attribute */
+code span.bn { color: #ad0000; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #00769e; } /* ControlFlow */
+code span.ch { color: #20794d; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #5e5e5e; } /* Comment */
+code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+code span.dt { color: #ad0000; } /* DataType */
+code span.dv { color: #ad0000; } /* DecVal */
+code span.er { color: #ad0000; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #ad0000; } /* Float */
+code span.fu { color: #4758ab; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #5e5e5e; } /* Information */
+code span.kw { color: #00769e; } /* Keyword */
+code span.op { color: #5e5e5e; } /* Operator */
+code span.ot { color: #00769e; } /* Other */
+code span.pp { color: #ad0000; } /* Preprocessor */
+code span.sc { color: #5e5e5e; } /* SpecialChar */
+code span.ss { color: #20794d; } /* SpecialString */
+code span.st { color: #20794d; } /* String */
+code span.va { color: #111111; } /* Variable */
+code span.vs { color: #20794d; } /* VerbatimString */
+code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+</style>
+
+<style>
+  div.csl-bib-body { }
+  div.csl-entry {
+    clear: both;
+    }
+  .hanging div.csl-entry {
+    margin-left:2em;
+    text-indent:-2em;
+  }
+  div.csl-left-margin {
+    min-width:2em;
+    float:left;
+  }
+  div.csl-right-inline {
+    margin-left:2em;
+    padding-left:1em;
+  }
+  div.csl-indent {
+    margin-left: 2em;
+  }
+</style>
+
+  <!--radix_placeholder_meta_tags-->
+  <title>Poisson Regression</title>
+
+  <meta property="description" itemprop="description" content="A fish regression? Google translate from French to English to check what &quot;poisson&quot; means"/>
+
+
+  <!--  https://schema.org/Article -->
+  <meta property="article:published" itemprop="datePublished" content="2023-11-01"/>
+  <meta property="article:created" itemprop="dateCreated" content="2023-11-01"/>
+  <meta name="article:author" content="Jasper Lok"/>
+
+  <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
+  <meta property="og:title" content="Poisson Regression"/>
+  <meta property="og:type" content="article"/>
+  <meta property="og:description" content="A fish regression? Google translate from French to English to check what &quot;poisson&quot; means"/>
+  <meta property="og:locale" content="en_US"/>
+
+  <!--  https://dev.twitter.com/cards/types/summary -->
+  <meta property="twitter:card" content="summary"/>
+  <meta property="twitter:title" content="Poisson Regression"/>
+  <meta property="twitter:description" content="A fish regression? Google translate from French to English to check what &quot;poisson&quot; means"/>
+
+  <!--/radix_placeholder_meta_tags-->
+  
+  <meta name="citation_reference" content="citation_title=Negative binomial regression;citation_publisher=Cambridge University Press;citation_author=Joseph M. Hilbe"/>
+  <!--radix_placeholder_rmarkdown_metadata-->
+
+  <script type="text/json" id="radix-rmarkdown-metadata">
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","bibliography","biblio-style","link-citations","categories"]}},"value":[{"type":"character","attributes":{},"value":["Poisson Regression"]},{"type":"character","attributes":{},"value":["A fish regression? Google translate from French to English to check what \"poisson\" means\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Jasper Lok"]},{"type":"character","attributes":{},"value":["https://jasperlok.netlify.app/"]}]}]},{"type":"character","attributes":{},"value":["11-01-2023"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","toc_depth","self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[4]},{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["ref.bib"]},{"type":"character","attributes":{},"value":["apa"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["Machine Learning","Supervised Learning"]}]}
+  </script>
+  <!--/radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["image/blessing.jpg","image/lock.jpg","poisson-regression_files/figure-html5/unnamed-chunk-13-1.png","poisson-regression_files/figure-html5/unnamed-chunk-14-1.png","poisson-regression_files/figure-html5/unnamed-chunk-19-1.png","poisson-regression_files/figure-html5/unnamed-chunk-6-1.png","poisson-regression_files/figure-html5/unnamed-chunk-7-1.png","poisson-regression_files/figure-html5/unnamed-chunk-8-1.png","ref.bib"]}
+  </script>
+  <!--radix_placeholder_navigation_in_header-->
+  <!--/radix_placeholder_navigation_in_header-->
+  <!--radix_placeholder_distill-->
+
+  <style type="text/css">
+
+  body {
+    background-color: white;
+  }
+
+  .pandoc-table {
+    width: 100%;
+  }
+
+  .pandoc-table>caption {
+    margin-bottom: 10px;
+  }
+
+  .pandoc-table th:not([align]) {
+    text-align: left;
+  }
+
+  .pagedtable-footer {
+    font-size: 15px;
+  }
+
+  d-byline .byline {
+    grid-template-columns: 2fr 2fr;
+  }
+
+  d-byline .byline h3 {
+    margin-block-start: 1.5em;
+  }
+
+  d-byline .byline .authors-affiliations h3 {
+    margin-block-start: 0.5em;
+  }
+
+  .authors-affiliations .orcid-id {
+    width: 16px;
+    height:16px;
+    margin-left: 4px;
+    margin-right: 4px;
+    vertical-align: middle;
+    padding-bottom: 2px;
+  }
+
+  d-title .dt-tags {
+    margin-top: 1em;
+    grid-column: text;
+  }
+
+  .dt-tags .dt-tag {
+    text-decoration: none;
+    display: inline-block;
+    color: rgba(0,0,0,0.6);
+    padding: 0em 0.4em;
+    margin-right: 0.5em;
+    margin-bottom: 0.4em;
+    font-size: 70%;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  d-article table.gt_table td,
+  d-article table.gt_table th {
+    border-bottom: none;
+    font-size: 100%;
+  }
+
+  .html-widget {
+    margin-bottom: 2.0em;
+  }
+
+  .l-screen-inset {
+    padding-right: 16px;
+  }
+
+  .l-screen .caption {
+    margin-left: 10px;
+  }
+
+  .shaded {
+    background: rgb(247, 247, 247);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .shaded .html-widget {
+    margin-bottom: 0;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .shaded .shaded-content {
+    background: white;
+  }
+
+  .text-output {
+    margin-top: 0;
+    line-height: 1.5em;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  d-article {
+    padding-top: 2.5rem;
+    padding-bottom: 30px;
+  }
+
+  d-appendix {
+    padding-top: 30px;
+  }
+
+  d-article>p>img {
+    width: 100%;
+  }
+
+  d-article h2 {
+    margin: 1rem 0 1.5rem 0;
+  }
+
+  d-article h3 {
+    margin-top: 1.5rem;
+  }
+
+  d-article iframe {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 2.0em;
+    width: 100%;
+  }
+
+  /* Tweak code blocks */
+
+  d-article div.sourceCode code,
+  d-article pre code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  d-article pre,
+  d-article div.sourceCode,
+  d-article div.sourceCode pre {
+    overflow: auto;
+  }
+
+  d-article div.sourceCode {
+    background-color: white;
+  }
+
+  d-article div.sourceCode pre {
+    padding-left: 10px;
+    font-size: 12px;
+    border-left: 2px solid rgba(0,0,0,0.1);
+  }
+
+  d-article pre {
+    font-size: 12px;
+    color: black;
+    background: none;
+    margin-top: 0;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+
+  d-article pre a {
+    border-bottom: none;
+  }
+
+  d-article pre a:hover {
+    border-bottom: none;
+    text-decoration: underline;
+  }
+
+  d-article details {
+    grid-column: text;
+    margin-bottom: 0.8em;
+  }
+
+  @media(min-width: 768px) {
+
+  d-article pre,
+  d-article div.sourceCode,
+  d-article div.sourceCode pre {
+    overflow: visible !important;
+  }
+
+  d-article div.sourceCode pre {
+    padding-left: 18px;
+    font-size: 14px;
+  }
+
+  d-article pre {
+    font-size: 14px;
+  }
+
+  }
+
+  figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+
+  /* CSS for d-contents */
+
+  .d-contents {
+    grid-column: text;
+    color: rgba(0,0,0,0.8);
+    font-size: 0.9em;
+    padding-bottom: 1em;
+    margin-bottom: 1em;
+    padding-bottom: 0.5em;
+    margin-bottom: 1em;
+    padding-left: 0.25em;
+    justify-self: start;
+  }
+
+  @media(min-width: 1000px) {
+    .d-contents.d-contents-float {
+      height: 0;
+      grid-column-start: 1;
+      grid-column-end: 4;
+      justify-self: center;
+      padding-right: 3em;
+      padding-left: 2em;
+    }
+  }
+
+  .d-contents nav h3 {
+    font-size: 18px;
+    margin-top: 0;
+    margin-bottom: 1em;
+  }
+
+  .d-contents li {
+    list-style-type: none
+  }
+
+  .d-contents nav > ul {
+    padding-left: 0;
+  }
+
+  .d-contents ul {
+    padding-left: 1em
+  }
+
+  .d-contents nav ul li {
+    margin-top: 0.6em;
+    margin-bottom: 0.2em;
+  }
+
+  .d-contents nav a {
+    font-size: 13px;
+    border-bottom: none;
+    text-decoration: none
+    color: rgba(0, 0, 0, 0.8);
+  }
+
+  .d-contents nav a:hover {
+    text-decoration: underline solid rgba(0, 0, 0, 0.6)
+  }
+
+  .d-contents nav > ul > li > a {
+    font-weight: 600;
+  }
+
+  .d-contents nav > ul > li > ul {
+    font-weight: inherit;
+  }
+
+  .d-contents nav > ul > li > ul > li {
+    margin-top: 0.2em;
+  }
+
+
+  .d-contents nav ul {
+    margin-top: 0;
+    margin-bottom: 0.25em;
+  }
+
+  .d-article-with-toc h2:nth-child(2) {
+    margin-top: 0;
+  }
+
+
+  /* Figure */
+
+  .figure {
+    position: relative;
+    margin-bottom: 2.5em;
+    margin-top: 1.5em;
+  }
+
+  .figure .caption {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 12px;
+    line-height: 1.5em;
+  }
+
+  .figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+
+  .figure .caption a {
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  .figure .caption b,
+  .figure .caption strong, {
+    font-weight: 600;
+    color: rgba(0, 0, 0, 1.0);
+  }
+
+  /* Citations */
+
+  d-article .citation {
+    color: inherit;
+    cursor: inherit;
+  }
+
+  div.hanging-indent{
+    margin-left: 1em; text-indent: -1em;
+  }
+
+  /* Citation hover box */
+
+  .tippy-box[data-theme~=light-border] {
+    background-color: rgba(250, 250, 250, 0.95);
+  }
+
+  .tippy-content > p {
+    margin-bottom: 0;
+    padding: 2px;
+  }
+
+
+  /* Tweak 1000px media break to show more text */
+
+  @media(min-width: 1000px) {
+    .base-grid,
+    distill-header,
+    d-title,
+    d-abstract,
+    d-article,
+    d-appendix,
+    distill-appendix,
+    d-byline,
+    d-footnote-list,
+    d-citation-list,
+    distill-footer {
+      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 80px [middle-start] 50px [text-start kicker-end] 65px 65px 65px 65px 65px 65px 65px 65px [text-end gutter-start] 65px [middle-end] 65px [page-end gutter-end] 1fr [screen-end];
+      grid-column-gap: 16px;
+    }
+
+    .grid {
+      grid-column-gap: 16px;
+    }
+
+    d-article {
+      font-size: 1.06rem;
+      line-height: 1.7em;
+    }
+    figure .caption, .figure .caption, figure figcaption {
+      font-size: 13px;
+    }
+  }
+
+  @media(min-width: 1180px) {
+    .base-grid,
+    distill-header,
+    d-title,
+    d-abstract,
+    d-article,
+    d-appendix,
+    distill-appendix,
+    d-byline,
+    d-footnote-list,
+    d-citation-list,
+    distill-footer {
+      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
+      grid-column-gap: 32px;
+    }
+
+    .grid {
+      grid-column-gap: 32px;
+    }
+  }
+
+
+  /* Get the citation styles for the appendix (not auto-injected on render since
+     we do our own rendering of the citation appendix) */
+
+  d-appendix .citation-appendix,
+  .d-appendix .citation-appendix {
+    font-size: 11px;
+    line-height: 15px;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    padding-left: 18px;
+    border: 1px solid rgba(0,0,0,0.1);
+    background: rgba(0, 0, 0, 0.02);
+    padding: 10px 18px;
+    border-radius: 3px;
+    color: rgba(150, 150, 150, 1);
+    overflow: hidden;
+    margin-top: -12px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  /* Include appendix styles here so they can be overridden */
+
+  d-appendix {
+    contain: layout style;
+    font-size: 0.8em;
+    line-height: 1.7em;
+    margin-top: 60px;
+    margin-bottom: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    color: rgba(0,0,0,0.5);
+    padding-top: 60px;
+    padding-bottom: 48px;
+  }
+
+  d-appendix h3 {
+    grid-column: page-start / text-start;
+    font-size: 15px;
+    font-weight: 500;
+    margin-top: 1em;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.65);
+  }
+
+  d-appendix h3 + * {
+    margin-top: 1em;
+  }
+
+  d-appendix ol {
+    padding: 0 0 0 15px;
+  }
+
+  @media (min-width: 768px) {
+    d-appendix ol {
+      padding: 0 0 0 30px;
+      margin-left: -30px;
+    }
+  }
+
+  d-appendix li {
+    margin-bottom: 1em;
+  }
+
+  d-appendix a {
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  d-appendix > * {
+    grid-column: text;
+  }
+
+  d-appendix > d-footnote-list,
+  d-appendix > d-citation-list,
+  d-appendix > distill-appendix {
+    grid-column: screen;
+  }
+
+  /* Include footnote styles here so they can be overridden */
+
+  d-footnote-list {
+    contain: layout style;
+  }
+
+  d-footnote-list > * {
+    grid-column: text;
+  }
+
+  d-footnote-list a.footnote-backlink {
+    color: rgba(0,0,0,0.3);
+    padding-left: 0.5em;
+  }
+
+
+
+  /* Anchor.js */
+
+  .anchorjs-link {
+    /*transition: all .25s linear; */
+    text-decoration: none;
+    border-bottom: none;
+  }
+  *:hover > .anchorjs-link {
+    margin-left: -1.125em !important;
+    text-decoration: none;
+    border-bottom: none;
+  }
+
+  /* Social footer */
+
+  .social_footer {
+    margin-top: 30px;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.67);
+  }
+
+  .disqus-comments {
+    margin-right: 30px;
+  }
+
+  .disqus-comment-count {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+  }
+
+  #disqus_thread {
+    margin-top: 30px;
+  }
+
+  .article-sharing a {
+    border-bottom: none;
+    margin-right: 8px;
+  }
+
+  .article-sharing a:hover {
+    border-bottom: none;
+  }
+
+  .sidebar-section.subscribe {
+    font-size: 12px;
+    line-height: 1.6em;
+  }
+
+  .subscribe p {
+    margin-bottom: 0.5em;
+  }
+
+
+  .article-footer .subscribe {
+    font-size: 15px;
+    margin-top: 45px;
+  }
+
+
+  .sidebar-section.custom {
+    font-size: 12px;
+    line-height: 1.6em;
+  }
+
+  .custom p {
+    margin-bottom: 0.5em;
+  }
+
+  /* Styles for listing layout (hide title) */
+  .layout-listing d-title, .layout-listing .d-title {
+    display: none;
+  }
+
+  /* Styles for posts lists (not auto-injected) */
+
+
+  .posts-with-sidebar {
+    padding-left: 45px;
+    padding-right: 45px;
+  }
+
+  .posts-list .description h2,
+  .posts-list .description p {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  }
+
+  .posts-list .description h2 {
+    font-weight: 700;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .posts-list h2.post-tag {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    padding-bottom: 12px;
+  }
+  .posts-list {
+    margin-top: 60px;
+    margin-bottom: 24px;
+  }
+
+  .posts-list .post-preview {
+    text-decoration: none;
+    overflow: hidden;
+    display: block;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 24px 0;
+  }
+
+  .post-preview-last {
+    border-bottom: none !important;
+  }
+
+  .posts-list .posts-list-caption {
+    grid-column: screen;
+    font-weight: 400;
+  }
+
+  .posts-list .post-preview h2 {
+    margin: 0 0 6px 0;
+    line-height: 1.2em;
+    font-style: normal;
+    font-size: 24px;
+  }
+
+  .posts-list .post-preview p {
+    margin: 0 0 12px 0;
+    line-height: 1.4em;
+    font-size: 16px;
+  }
+
+  .posts-list .post-preview .thumbnail {
+    box-sizing: border-box;
+    margin-bottom: 24px;
+    position: relative;
+    max-width: 500px;
+  }
+  .posts-list .post-preview img {
+    width: 100%;
+    display: block;
+  }
+
+  .posts-list .metadata {
+    font-size: 12px;
+    line-height: 1.4em;
+    margin-bottom: 18px;
+  }
+
+  .posts-list .metadata > * {
+    display: inline-block;
+  }
+
+  .posts-list .metadata .publishedDate {
+    margin-right: 2em;
+  }
+
+  .posts-list .metadata .dt-authors {
+    display: block;
+    margin-top: 0.3em;
+    margin-right: 2em;
+  }
+
+  .posts-list .dt-tags {
+    display: block;
+    line-height: 1em;
+  }
+
+  .posts-list .dt-tags .dt-tag {
+    display: inline-block;
+    color: rgba(0,0,0,0.6);
+    padding: 0.3em 0.4em;
+    margin-right: 0.2em;
+    margin-bottom: 0.4em;
+    font-size: 60%;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .posts-list img {
+    opacity: 1;
+  }
+
+  .posts-list img[data-src] {
+    opacity: 0;
+  }
+
+  .posts-more {
+    clear: both;
+  }
+
+
+  .posts-sidebar {
+    font-size: 16px;
+  }
+
+  .posts-sidebar h3 {
+    font-size: 16px;
+    margin-top: 0;
+    margin-bottom: 0.5em;
+    font-weight: 400;
+    text-transform: uppercase;
+  }
+
+  .sidebar-section {
+    margin-bottom: 30px;
+  }
+
+  .categories ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .categories li {
+    color: rgba(0, 0, 0, 0.8);
+    margin-bottom: 0;
+  }
+
+  .categories li>a {
+    border-bottom: none;
+  }
+
+  .categories li>a:hover {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  }
+
+  .categories .active {
+    font-weight: 600;
+  }
+
+  .categories .category-count {
+    color: rgba(0, 0, 0, 0.4);
+  }
+
+
+  @media(min-width: 768px) {
+    .posts-list .post-preview h2 {
+      font-size: 26px;
+    }
+    .posts-list .post-preview .thumbnail {
+      float: right;
+      width: 30%;
+      margin-bottom: 0;
+    }
+    .posts-list .post-preview .description {
+      float: left;
+      width: 45%;
+    }
+    .posts-list .post-preview .metadata {
+      float: left;
+      width: 20%;
+      margin-top: 8px;
+    }
+    .posts-list .post-preview p {
+      margin: 0 0 12px 0;
+      line-height: 1.5em;
+      font-size: 16px;
+    }
+    .posts-with-sidebar .posts-list {
+      float: left;
+      width: 75%;
+    }
+    .posts-with-sidebar .posts-sidebar {
+      float: right;
+      width: 20%;
+      margin-top: 60px;
+      padding-top: 24px;
+      padding-bottom: 24px;
+    }
+  }
+
+
+  /* Improve display for browsers without grid (IE/Edge <= 15) */
+
+  .downlevel {
+    line-height: 1.6em;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+  }
+
+  .downlevel .d-title {
+    padding-top: 6rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .downlevel .d-title h1 {
+    font-size: 50px;
+    font-weight: 700;
+    line-height: 1.1em;
+    margin: 0 0 0.5rem;
+  }
+
+  .downlevel .d-title p {
+    font-weight: 300;
+    font-size: 1.2rem;
+    line-height: 1.55em;
+    margin-top: 0;
+  }
+
+  .downlevel .d-byline {
+    padding-top: 0.8em;
+    padding-bottom: 0.8em;
+    font-size: 0.8rem;
+    line-height: 1.8em;
+  }
+
+  .downlevel .section-separator {
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .downlevel .d-article {
+    font-size: 1.06rem;
+    line-height: 1.7em;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+  }
+
+
+  .downlevel .d-appendix {
+    padding-left: 0;
+    padding-right: 0;
+    max-width: none;
+    font-size: 0.8em;
+    line-height: 1.7em;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.5);
+    padding-top: 40px;
+    padding-bottom: 48px;
+  }
+
+  .downlevel .footnotes ol {
+    padding-left: 13px;
+  }
+
+  .downlevel .base-grid,
+  .downlevel .distill-header,
+  .downlevel .d-title,
+  .downlevel .d-abstract,
+  .downlevel .d-article,
+  .downlevel .d-appendix,
+  .downlevel .distill-appendix,
+  .downlevel .d-byline,
+  .downlevel .d-footnote-list,
+  .downlevel .d-citation-list,
+  .downlevel .distill-footer,
+  .downlevel .appendix-bottom,
+  .downlevel .posts-container {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  @media(min-width: 768px) {
+    .downlevel .base-grid,
+    .downlevel .distill-header,
+    .downlevel .d-title,
+    .downlevel .d-abstract,
+    .downlevel .d-article,
+    .downlevel .d-appendix,
+    .downlevel .distill-appendix,
+    .downlevel .d-byline,
+    .downlevel .d-footnote-list,
+    .downlevel .d-citation-list,
+    .downlevel .distill-footer,
+    .downlevel .appendix-bottom,
+    .downlevel .posts-container {
+    padding-left: 150px;
+    padding-right: 150px;
+    max-width: 900px;
+  }
+  }
+
+  .downlevel pre code {
+    display: block;
+    border-left: 2px solid rgba(0, 0, 0, .1);
+    padding: 0 0 0 20px;
+    font-size: 14px;
+  }
+
+  .downlevel code, .downlevel pre {
+    color: black;
+    background: none;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+
+  .downlevel .posts-list .post-preview {
+    color: inherit;
+  }
+
+
+
+  </style>
+
+  <script type="application/javascript">
+
+  function is_downlevel_browser() {
+    if (bowser.isUnsupportedBrowser({ msie: "12", msedge: "16"},
+                                   window.navigator.userAgent)) {
+      return true;
+    } else {
+      return window.load_distill_framework === undefined;
+    }
+  }
+
+  // show body when load is complete
+  function on_load_complete() {
+
+    // add anchors
+    if (window.anchors) {
+      window.anchors.options.placement = 'left';
+      window.anchors.add('d-article > h2, d-article > h3, d-article > h4, d-article > h5');
+    }
+
+
+    // set body to visible
+    document.body.style.visibility = 'visible';
+
+    // force redraw for leaflet widgets
+    if (window.HTMLWidgets) {
+      var maps = window.HTMLWidgets.findAll(".leaflet");
+      $.each(maps, function(i, el) {
+        var map = this.getMap();
+        map.invalidateSize();
+        map.eachLayer(function(layer) {
+          if (layer instanceof L.TileLayer)
+            layer.redraw();
+        });
+      });
+    }
+
+    // trigger 'shown' so htmlwidgets resize
+    $('d-article').trigger('shown');
+  }
+
+  function init_distill() {
+
+    init_common();
+
+    // create front matter
+    var front_matter = $('<d-front-matter></d-front-matter>');
+    $('#distill-front-matter').wrap(front_matter);
+
+    // create d-title
+    $('.d-title').changeElementType('d-title');
+
+    // create d-byline
+    var byline = $('<d-byline></d-byline>');
+    $('.d-byline').replaceWith(byline);
+
+    // create d-article
+    var article = $('<d-article></d-article>');
+    $('.d-article').wrap(article).children().unwrap();
+
+    // move posts container into article
+    $('.posts-container').appendTo($('d-article'));
+
+    // create d-appendix
+    $('.d-appendix').changeElementType('d-appendix');
+
+    // flag indicating that we have appendix items
+    var appendix = $('.appendix-bottom').children('h3').length > 0;
+
+    // replace footnotes with <d-footnote>
+    $('.footnote-ref').each(function(i, val) {
+      appendix = true;
+      var href = $(this).attr('href');
+      var id = href.replace('#', '');
+      var fn = $('#' + id);
+      var fn_p = $('#' + id + '>p');
+      fn_p.find('.footnote-back').remove();
+      var text = fn_p.html();
+      var dtfn = $('<d-footnote></d-footnote>');
+      dtfn.html(text);
+      $(this).replaceWith(dtfn);
+    });
+    // remove footnotes
+    $('.footnotes').remove();
+
+    // move refs into #references-listing
+    $('#references-listing').replaceWith($('#refs'));
+
+    $('h1.appendix, h2.appendix').each(function(i, val) {
+      $(this).changeElementType('h3');
+    });
+    $('h3.appendix').each(function(i, val) {
+      var id = $(this).attr('id');
+      $('.d-contents a[href="#' + id + '"]').parent().remove();
+      appendix = true;
+      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
+    });
+
+    // show d-appendix if we have appendix content
+    $("d-appendix").css('display', appendix ? 'grid' : 'none');
+
+    // localize layout chunks to just output
+    $('.layout-chunk').each(function(i, val) {
+
+      // capture layout
+      var layout = $(this).attr('data-layout');
+
+      // apply layout to markdown level block elements
+      var elements = $(this).children().not('details, div.sourceCode, pre, script');
+      elements.each(function(i, el) {
+        var layout_div = $('<div class="' + layout + '"></div>');
+        if (layout_div.hasClass('shaded')) {
+          var shaded_content = $('<div class="shaded-content"></div>');
+          $(this).wrap(shaded_content);
+          $(this).parent().wrap(layout_div);
+        } else {
+          $(this).wrap(layout_div);
+        }
+      });
+
+
+      // unwrap the layout-chunk div
+      $(this).children().unwrap();
+    });
+
+    // remove code block used to force  highlighting css
+    $('.distill-force-highlighting-css').parent().remove();
+
+    // remove empty line numbers inserted by pandoc when using a
+    // custom syntax highlighting theme
+    $('code.sourceCode a:empty').remove();
+
+    // load distill framework
+    load_distill_framework();
+
+    // wait for window.distillRunlevel == 4 to do post processing
+    function distill_post_process() {
+
+      if (!window.distillRunlevel || window.distillRunlevel < 4)
+        return;
+
+      // hide author/affiliations entirely if we have no authors
+      var front_matter = JSON.parse($("#distill-front-matter").html());
+      var have_authors = front_matter.authors && front_matter.authors.length > 0;
+      if (!have_authors)
+        $('d-byline').addClass('hidden');
+
+      // article with toc class
+      $('.d-contents').parent().addClass('d-article-with-toc');
+
+      // strip links that point to #
+      $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
+
+      // add orcid ids
+      $('.authors-affiliations').find('.author').each(function(i, el) {
+        var orcid_id = front_matter.authors[i].orcidID;
+        if (orcid_id) {
+          var a = $('<a></a>');
+          a.attr('href', 'https://orcid.org/' + orcid_id);
+          var img = $('<img></img>');
+          img.addClass('orcid-id');
+          img.attr('alt', 'ORCID ID');
+          img.attr('src','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==');
+          a.append(img);
+          $(this).append(a);
+        }
+      });
+
+      // hide elements of author/affiliations grid that have no value
+      function hide_byline_column(caption) {
+        $('d-byline').find('h3:contains("' + caption + '")').parent().css('visibility', 'hidden');
+      }
+
+      // affiliations
+      var have_affiliations = false;
+      for (var i = 0; i<front_matter.authors.length; ++i) {
+        var author = front_matter.authors[i];
+        if (author.affiliation !== "&nbsp;") {
+          have_affiliations = true;
+          break;
+        }
+      }
+      if (!have_affiliations)
+        $('d-byline').find('h3:contains("Affiliations")').css('visibility', 'hidden');
+
+      // published date
+      if (!front_matter.publishedDate)
+        hide_byline_column("Published");
+
+      // document object identifier
+      var doi = $('d-byline').find('h3:contains("DOI")');
+      var doi_p = doi.next().empty();
+      if (!front_matter.doi) {
+        // if we have a citation and valid citationText then link to that
+        if ($('#citation').length > 0 && front_matter.citationText) {
+          doi.html('Citation');
+          $('<a href="#citation"></a>')
+            .text(front_matter.citationText)
+            .appendTo(doi_p);
+        } else {
+          hide_byline_column("DOI");
+        }
+      } else {
+        $('<a></a>')
+           .attr('href', "https://doi.org/" + front_matter.doi)
+           .html(front_matter.doi)
+           .appendTo(doi_p);
+      }
+
+       // change plural form of authors/affiliations
+      if (front_matter.authors.length === 1) {
+        var grid = $('.authors-affiliations');
+        grid.children('h3:contains("Authors")').text('Author');
+        grid.children('h3:contains("Affiliations")').text('Affiliation');
+      }
+
+      // remove d-appendix and d-footnote-list local styles
+      $('d-appendix > style:first-child').remove();
+      $('d-footnote-list > style:first-child').remove();
+
+      // move appendix-bottom entries to the bottom
+      $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
+      $('.appendix-bottom').remove();
+
+      // hoverable references
+      $('span.citation[data-cites]').each(function() {
+        const citeChild = $(this).children()[0]
+        // Do not process if @xyz has been used without escaping and without bibliography activated
+        // https://github.com/rstudio/distill/issues/466
+        if (citeChild === undefined) return true
+
+        if (citeChild.nodeName == "D-FOOTNOTE") {
+          var fn = citeChild
+          $(this).html(fn.shadowRoot.querySelector("sup"))
+          $(this).id = fn.id
+          fn.remove()
+        }
+        var refs = $(this).attr('data-cites').split(" ");
+        var refHtml = refs.map(function(ref) {
+          // Could use CSS.escape too here, we insure backward compatibility in navigator
+          return "<p>" + $('div[id="ref-' + ref + '"]').html() + "</p>";
+        }).join("\n");
+        window.tippy(this, {
+          allowHTML: true,
+          content: refHtml,
+          maxWidth: 500,
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'light-border',
+          placement: 'bottom-start'
+        });
+      });
+
+      // fix footnotes in tables (#411)
+      // replacing broken distill.pub feature
+      $('table d-footnote').each(function() {
+        // we replace internal showAtNode methode which is triggered when hovering a footnote
+        this.hoverBox.showAtNode = function(node) {
+          // ported from https://github.com/distillpub/template/pull/105/files
+          calcOffset = function(elem) {
+              let x = elem.offsetLeft;
+              let y = elem.offsetTop;
+              // Traverse upwards until an `absolute` element is found or `elem`
+              // becomes null.
+              while (elem = elem.offsetParent && elem.style.position != 'absolute') {
+                  x += elem.offsetLeft;
+                  y += elem.offsetTop;
+              }
+
+              return { left: x, top: y };
+          }
+          // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetTop
+          const bbox = node.getBoundingClientRect();
+          const offset = calcOffset(node);
+          this.show([offset.left + bbox.width, offset.top + bbox.height]);
+        }
+      })
+
+      // clear polling timer
+      clearInterval(tid);
+
+      // show body now that everything is ready
+      on_load_complete();
+    }
+
+    var tid = setInterval(distill_post_process, 50);
+    distill_post_process();
+
+  }
+
+  function init_downlevel() {
+
+    init_common();
+
+     // insert hr after d-title
+    $('.d-title').after($('<hr class="section-separator"/>'));
+
+    // check if we have authors
+    var front_matter = JSON.parse($("#distill-front-matter").html());
+    var have_authors = front_matter.authors && front_matter.authors.length > 0;
+
+    // manage byline/border
+    if (!have_authors)
+      $('.d-byline').remove();
+    $('.d-byline').after($('<hr class="section-separator"/>'));
+    $('.d-byline a').remove();
+
+    // remove toc
+    $('.d-contents').remove();
+
+    // move appendix elements
+    $('h1.appendix, h2.appendix').each(function(i, val) {
+      $(this).changeElementType('h3');
+    });
+    $('h3.appendix').each(function(i, val) {
+      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('.d-appendix'));
+    });
+
+
+    // inject headers into references and footnotes
+    var refs_header = $('<h3></h3>');
+    refs_header.text('References');
+    $('#refs').prepend(refs_header);
+
+    var footnotes_header = $('<h3></h3');
+    footnotes_header.text('Footnotes');
+    $('.footnotes').children('hr').first().replaceWith(footnotes_header);
+
+    // move appendix-bottom entries to the bottom
+    $('.appendix-bottom').appendTo('.d-appendix').children().unwrap();
+    $('.appendix-bottom').remove();
+
+    // remove appendix if it's empty
+    if ($('.d-appendix').children().length === 0)
+      $('.d-appendix').remove();
+
+    // prepend separator above appendix
+    $('.d-appendix').before($('<hr class="section-separator" style="clear: both"/>'));
+
+    // trim code
+    $('pre>code').each(function(i, val) {
+      $(this).html($.trim($(this).html()));
+    });
+
+    // move posts-container right before article
+    $('.posts-container').insertBefore($('.d-article'));
+
+    $('body').addClass('downlevel');
+
+    on_load_complete();
+  }
+
+
+  function init_common() {
+
+    // jquery plugin to change element types
+    (function($) {
+      $.fn.changeElementType = function(newType) {
+        var attrs = {};
+
+        $.each(this[0].attributes, function(idx, attr) {
+          attrs[attr.nodeName] = attr.nodeValue;
+        });
+
+        this.replaceWith(function() {
+          return $("<" + newType + "/>", attrs).append($(this).contents());
+        });
+      };
+    })(jQuery);
+
+    // prevent underline for linked images
+    $('a > img').parent().css({'border-bottom' : 'none'});
+
+    // mark non-body figures created by knitr chunks as 100% width
+    $('.layout-chunk').each(function(i, val) {
+      var figures = $(this).find('img, .html-widget');
+      // ignore leaflet img layers (#106)
+      figures = figures.filter(':not(img[class*="leaflet"])')
+      if ($(this).attr('data-layout') !== "l-body") {
+        figures.css('width', '100%');
+      } else {
+        figures.css('max-width', '100%');
+        figures.filter("[width]").each(function(i, val) {
+          var fig = $(this);
+          fig.css('width', fig.attr('width') + 'px');
+        });
+
+      }
+    });
+
+    // auto-append index.html to post-preview links in file: protocol
+    // and in rstudio ide preview
+    $('.post-preview').each(function(i, val) {
+      if (window.location.protocol === "file:")
+        $(this).attr('href', $(this).attr('href') + "index.html");
+    });
+
+    // get rid of index.html references in header
+    if (window.location.protocol !== "file:") {
+      $('.distill-site-header a[href]').each(function(i,val) {
+        $(this).attr('href', $(this).attr('href').replace(/^index[.]html/, "./"));
+      });
+    }
+
+    // add class to pandoc style tables
+    $('tr.header').parent('thead').parent('table').addClass('pandoc-table');
+    $('.kable-table').children('table').addClass('pandoc-table');
+
+    // add figcaption style to table captions
+    $('caption').parent('table').addClass("figcaption");
+
+    // initialize posts list
+    if (window.init_posts_list)
+      window.init_posts_list();
+
+    // implmement disqus comment link
+    $('.disqus-comment-count').click(function() {
+      window.headroom_prevent_pin = true;
+      $('#disqus_thread').toggleClass('hidden');
+      if (!$('#disqus_thread').hasClass('hidden')) {
+        var offset = $(this).offset();
+        $(window).resize();
+        $('html, body').animate({
+          scrollTop: offset.top - 35
+        });
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    if (is_downlevel_browser())
+      init_downlevel();
+    else
+      window.addEventListener('WebComponentsReady', init_distill);
+  });
+
+  </script>
+
+  <!--/radix_placeholder_distill-->
+  <script src="poisson-regression_files/header-attrs/header-attrs.js"></script>
+  <script src="poisson-regression_files/jquery/jquery-3.6.0.min.js"></script>
+  <script src="poisson-regression_files/popper/popper.min.js"></script>
+  <link href="poisson-regression_files/tippy/tippy.css" rel="stylesheet" />
+  <link href="poisson-regression_files/tippy/tippy-light-border.css" rel="stylesheet" />
+  <script src="poisson-regression_files/tippy/tippy.umd.min.js"></script>
+  <script src="poisson-regression_files/anchor/anchor.min.js"></script>
+  <script src="poisson-regression_files/bowser/bowser.min.js"></script>
+  <script src="poisson-regression_files/webcomponents/webcomponents.js"></script>
+  <script src="poisson-regression_files/distill/template.v2.js"></script>
+  <!--radix_placeholder_site_in_header-->
+  <!--/radix_placeholder_site_in_header-->
+
+
+</head>
+
+<body>
+
+<!--radix_placeholder_front_matter-->
+
+<script id="distill-front-matter" type="text/json">
+{"title":"Poisson Regression","description":"A fish regression? Google translate from French to English to check what \"poisson\" means","authors":[{"author":"Jasper Lok","authorURL":"https://jasperlok.netlify.app/","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2023-11-01T00:00:00.000+08:00","citationText":"Lok, 2023"}
+</script>
+
+<!--/radix_placeholder_front_matter-->
+<!--radix_placeholder_navigation_before_body-->
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="d-title">
+<h1>Poisson Regression</h1>
+<!--radix_placeholder_categories-->
+<div class="dt-tags">
+<div class="dt-tag">Machine Learning</div>
+<div class="dt-tag">Supervised Learning</div>
+</div>
+<!--/radix_placeholder_categories-->
+<p><p>A fish regression? Google translate from French to English to check what “poisson” means</p></p>
+</div>
+
+<div class="d-byline">
+  Jasper Lok <a href="https://jasperlok.netlify.app/" class="uri">https://jasperlok.netlify.app/</a> 
+  
+<br/>11-01-2023
+</div>
+
+<div class="d-article">
+<div class="d-contents d-contents-float">
+<nav class="l-text toc figcaption" id="TOC">
+<h3>Contents</h3>
+<ul>
+<li><a href="#what-is-count-regression" id="toc-what-is-count-regression">What is Count Regression?</a></li>
+<li><a href="#poisson-regression" id="toc-poisson-regression">Poisson Regression</a></li>
+<li><a href="#demonstration" id="toc-demonstration">Demonstration</a>
+<ul>
+<li><a href="#import-data" id="toc-import-data">Import Data</a></li>
+<li><a href="#model-building" id="toc-model-building">Model Building</a>
+<ul>
+<li><a href="#poisson-regression---offset" id="toc-poisson-regression---offset">Poisson Regression - Offset</a>
+<ul>
+<li><a href="#assumptions" id="toc-assumptions">Assumptions</a></li>
+<li><a href="#model-predictions" id="toc-model-predictions">Model Predictions</a></li>
+<li><a href="#model-performance" id="toc-model-performance">Model Performance</a></li>
+</ul></li>
+<li><a href="#poisson-with-weight" id="toc-poisson-with-weight">Poisson with weight</a>
+<ul>
+<li><a href="#model-performance-1" id="toc-model-performance-1">Model Performance</a></li>
+<li><a href="#use-case_weights-function-in-tidymodels" id="toc-use-case_weights-function-in-tidymodels">Use <code>case_weights</code> function in Tidymodels</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li><a href="#conclusion" id="toc-conclusion">Conclusion</a></li>
+</ul>
+</nav>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="image/lock.jpg" width="100%" /></p>
+</div>
+<p>Photo by <a href="https://unsplash.com/@polarmermaid?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Anne Nygård</a> on <a href="https://unsplash.com/photos/rTC5SF27jIc?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a></p>
+<p>In this post, I will be exploring a special type of regression model, which is Poisson regression.</p>
+<p>Before jumping into Poisson regression, let’s look at what is count regression.</p>
+<h1 id="what-is-count-regression">What is Count Regression?</h1>
+<p>As the name suggested, the target variable for this type of regression is count.</p>
+<p>This type of regression are intrinsically heteroskedastic, right-skewed and have a variance that increases with the mean of the distribution <span class="citation" data-cites="Hilbe">(<a href="#ref-Hilbe" role="doc-biblioref">Hilbe 2011</a>)</span>.</p>
+<p>Hence, this type of model will not fulfill the usual linear regression assumptions.</p>
+<p>In this post, I will be focusing on Poisson regression.</p>
+<h1 id="poisson-regression">Poisson Regression</h1>
+<p>In this model, below are the assumptions of using this model:</p>
+<ul>
+<li><p>Assume the dependent variable follows Poisson distribution.</p></li>
+<li><p>Assume the mean and variance are equal under this model.</p></li>
+</ul>
+<p>I will be using Poisson log loss formula from <code>yardstick</code> package to check how well the fitted model captures the underlying pattern.</p>
+<h1 id="demonstration">Demonstration</h1>
+<p>In this post, I will be using both base R <code>glm</code> function and <code>tidymodels</code> package to build Poisson regression.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'>pacman</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/pacman/man/p_load.html'>p_load</a></span><span class='op'>(</span><span class='va'>tidyverse</span>, <span class='va'>CASdatasets</span>, <span class='va'>tidymodels</span>, <span class='va'>poissonreg</span>, <span class='va'>janitor</span>, <span class='va'>DHARMa</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<h2 id="import-data">Import Data</h2>
+<p>First, I will import the claim frequency data from <code>CASdatasets</code> package.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>freMTPLfreq</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>df</span> <span class='op'>&lt;-</span></span>
+<span>  <span class='va'>freMTPLfreq</span> <span class='op'>%&gt;%</span> </span>
+<span>  <span class='fu'>clean_names</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> </span>
+<span>  <span class='fu'>mutate</span><span class='op'>(</span>policy_id <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span><span class='op'>(</span><span class='va'>policy_id</span><span class='op'>)</span></span>
+<span>         ,clm_rate <span class='op'>=</span> <span class='va'>claim_nb</span><span class='op'>/</span><span class='va'>exposure</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/rm.html'>rm</a></span><span class='op'>(</span><span class='va'>freMTPLfreq</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<h2 id="model-building">Model Building</h2>
+<p>Great! Now, we will start building the model.</p>
+<p>In the model building, I will be building model to predict the claim rate of the dataset by two different methods:</p>
+<ul>
+<li><p><strong>1st method</strong>: Use <code>offset</code> function</p></li>
+<li><p><strong>2nd method</strong>: Use <code>weight</code> function</p></li>
+</ul>
+<h3 id="poisson-regression---offset">Poisson Regression - Offset</h3>
+<p>First, I will build a Poisson regression with <code>offset</code> function.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>glm_fit</span> <span class='op'>&lt;-</span></span>
+<span>  <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span><span class='op'>(</span><span class='va'>claim_nb</span> <span class='op'>~</span> </span>
+<span>      <span class='va'>power</span></span>
+<span>    <span class='op'>+</span> <span class='va'>car_age</span></span>
+<span>    <span class='op'>+</span> <span class='va'>driver_age</span></span>
+<span>    <span class='op'>+</span> <span class='va'>brand</span></span>
+<span>    <span class='op'>+</span> <span class='va'>gas</span></span>
+<span>    <span class='op'>+</span> <span class='va'>region</span></span>
+<span>    <span class='op'>+</span> <span class='va'>density</span></span>
+<span>    ,offset <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>exposure</span><span class='op'>)</span></span>
+<span>    ,data <span class='op'>=</span> <span class='va'>df</span></span>
+<span>    ,family <span class='op'>=</span> <span class='va'>poisson</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<p>Note that we need to take log transformation on the offset variable since the link function for Poisson distribution is log.</p>
+<p>We could extract the coefficient of the model by using <code>tidy</code> function.</p>
+<p>I will also take the exponential of estimate so that its easier to interpret the meaning of the different estimates.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>glm_fit</span> <span class='op'>%&gt;%</span> </span>
+<span>  <span class='fu'>tidy</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> </span>
+<span>  <span class='fu'>mutate</span><span class='op'>(</span>exp_estimate <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='va'>estimate</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> </span>
+<span>  <span class='fu'>relocate</span><span class='op'>(</span><span class='va'>exp_estimate</span>, .before <span class='op'>=</span> <span class='va'>std.error</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 31 x 6
+   term        estimate exp_estimate std.error statistic   p.value
+   &lt;chr&gt;          &lt;dbl&gt;        &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+ 1 (Intercept)  -2.00          0.136    0.0584    -34.2  4.69e-256
+ 2 powere        0.0643        1.07     0.0280      2.29 2.18e-  2
+ 3 powerf        0.0810        1.08     0.0273      2.96 3.04e-  3
+ 4 powerg        0.0489        1.05     0.0272      1.80 7.25e-  2
+ 5 powerh        0.0928        1.10     0.0389      2.39 1.70e-  2
+ 6 poweri        0.189         1.21     0.0430      4.40 1.07e-  5
+ 7 powerj        0.168         1.18     0.0438      3.84 1.25e-  4
+ 8 powerk        0.232         1.26     0.0561      4.14 3.40e-  5
+ 9 powerl        0.0978        1.10     0.0834      1.17 2.41e-  1
+10 powerm        0.149         1.16     0.119       1.25 2.11e-  1
+# ... with 21 more rows</code></pre>
+</div>
+<p>From the result above, we noted on the following:</p>
+<ul>
+<li><p>If all else being equal, the claim risk will decrease by approximately 1% when the driver age increases</p></li>
+<li><p>Not all regions have the same effect on the claim rate. Some regions tends to have higher influence on the claim rate.</p></li>
+</ul>
+<h4 id="assumptions">Assumptions</h4>
+<p>I will be using <code>DHARMa</code> package to check the assumptions.</p>
+<h5 id="check---qq-plot-residuals">Check - QQ plot &amp; residuals</h5>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>simulated_residuals</span> <span class='op'>&lt;-</span> <span class='fu'>simulateResiduals</span><span class='op'>(</span><span class='va'>glm_fit</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>simulated_residuals</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="poisson-regression_files/figure-html5/unnamed-chunk-6-1.png" width="100%" /></p>
+</div>
+<p>Although the KS test result is significant, it seems like the fitted model is not too bad.</p>
+<h5 id="check---is-the-number-of-zero-inflated-in-the-dataset">Check - Is the number of zero inflated in the dataset?</h5>
+<p>In fitting Poisson regression, one of the concerns is whether there is any sign of excessive zeros within the data.</p>
+<p>To test this, I will use <code>testZeroInflation</code> function.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'>testZeroInflation</span><span class='op'>(</span><span class='va'>glm_fit</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="poisson-regression_files/figure-html5/unnamed-chunk-7-1.png" width="100%" /></p>
+<pre><code>
+    DHARMa zero-inflation test via comparison to expected zeros
+    with simulation under H0 = fitted model
+
+data:  simulationOutput
+ratioObsSim = 1.0009, p-value &lt; 2.2e-16
+alternative hypothesis: two.sided</code></pre>
+</div>
+<p>As the p-value is less than 0.05, there is statistical evidence that the number of zeros are more than expected.</p>
+<p>However, as mentioned in the <a href="https://cran.r-project.org/web/packages/DHARMa/vignettes/DHARMa.html">vignette</a> by <code>DHMARMa</code> package, overdispersion could lead to excess zeros. Hence, I will perform dispersion test next.</p>
+<h5 id="check---is-there-any-overdispersion">Check - Is there any overdispersion?</h5>
+<p>Next, I will perform dispersion test by using <code>testDispersion</code> function.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'>testDispersion</span><span class='op'>(</span><span class='va'>glm_fit</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="poisson-regression_files/figure-html5/unnamed-chunk-8-1.png" width="100%" /></p>
+<pre><code>
+    DHARMa nonparametric dispersion test via sd of residuals
+    fitted vs. simulated
+
+data:  simulationOutput
+dispersion = 1.0568, p-value &lt; 2.2e-16
+alternative hypothesis: two.sided</code></pre>
+</div>
+<p>As the p-value is less than 0.05, we reject null hypothesis and the statistics is higher than 1, suggesting that there is statistical evidence that there is over dispersion.</p>
+<h4 id="model-predictions">Model Predictions</h4>
+<p>I will generate the predictions by using <code>augment</code> function.</p>
+<p>I will also round the predicted claim counts to the nearest number.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>glm_pred</span> <span class='op'>&lt;-</span></span>
+<span>  <span class='va'>glm_fit</span> <span class='op'>%&gt;%</span> </span>
+<span>  <span class='fu'>augment</span><span class='op'>(</span><span class='va'>df</span>, type.predict <span class='op'>=</span> <span class='st'>"response"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> </span>
+<span>  <span class='fu'>mutate</span><span class='op'>(</span>pred_round <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span><span class='va'>.fitted</span><span class='op'>)</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>glm_pred</span></span></code></pre>
+</div>
+<pre><code># A tibble: 413,169 x 18
+   policy_id claim_nb expos~1 power car_age drive~2 brand gas   region
+   &lt;chr&gt;        &lt;int&gt;   &lt;dbl&gt; &lt;fct&gt;   &lt;int&gt;   &lt;int&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; 
+ 1 1                0    0.09 g           0      46 Japa~ Dies~ Aquit~
+ 2 2                0    0.84 g           0      46 Japa~ Dies~ Aquit~
+ 3 3                0    0.52 f           2      38 Japa~ Regu~ Nord-~
+ 4 4                0    0.45 f           2      38 Japa~ Regu~ Nord-~
+ 5 5                0    0.15 g           0      41 Japa~ Dies~ Pays-~
+ 6 6                0    0.75 g           0      41 Japa~ Dies~ Pays-~
+ 7 7                0    0.81 d           1      27 Japa~ Regu~ Aquit~
+ 8 8                0    0.05 d           0      27 Japa~ Regu~ Aquit~
+ 9 9                0    0.76 d           9      23 Fiat  Regu~ Nord-~
+10 10               0    0.34 i           0      44 Japa~ Regu~ Ile-d~
+# ... with 413,159 more rows, 9 more variables: density &lt;int&gt;,
+#   clm_rate &lt;dbl&gt;, .fitted &lt;dbl&gt;, .resid &lt;dbl&gt;, .std.resid &lt;dbl&gt;,
+#   .hat &lt;dbl&gt;, .sigma &lt;dbl&gt;, .cooksd &lt;dbl&gt;, pred_round &lt;dbl&gt;, and
+#   abbreviated variable names 1: exposure, 2: driver_age</code></pre>
+</div>
+<p>Alternatively, we could extract the <code>fitted.values</code> from the model object if we are interested in the fitted values from the training dataset.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>glm_fit</span><span class='op'>$</span><span class='va'>fitted.values</span> <span class='op'>%&gt;%</span> </span>
+<span>  <span class='fu'>as_tibble</span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 413,169 x 1
+     value
+     &lt;dbl&gt;
+ 1 0.00592
+ 2 0.0552 
+ 3 0.0374 
+ 4 0.0324 
+ 5 0.00994
+ 6 0.0497 
+ 7 0.0555 
+ 8 0.00347
+ 9 0.0790 
+10 0.0383 
+# ... with 413,159 more rows</code></pre>
+</div>
+<h4 id="model-performance">Model Performance</h4>
+<h5 id="anova-test">Anova Test</h5>
+<p>I will run chi-square test by using the <code>anova</code> function.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/stats/anova.html'>anova</a></span><span class='op'>(</span><span class='va'>glm_fit</span>, test <span class='op'>=</span> <span class='st'>"Chisq"</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>Analysis of Deviance Table
+
+Model: poisson, link: log
+
+Response: claim_nb
+
+Terms added sequentially (first to last)
+
+           Df Deviance Resid. Df Resid. Dev  Pr(&gt;Chi)    
+NULL                      413168     105613              
+power      11    66.25    413157     105546 6.262e-10 ***
+car_age     1    77.87    413156     105469 &lt; 2.2e-16 ***
+driver_age  1   414.08    413155     105054 &lt; 2.2e-16 ***
+brand       6    76.06    413149     104978 2.317e-14 ***
+gas         1    17.84    413148     104961 2.397e-05 ***
+region      9   199.84    413139     104761 &lt; 2.2e-16 ***
+density     1    63.93    413138     104697 1.289e-15 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+</div>
+<p>From the result, we note the following:</p>
+<ul>
+<li><p>Although all the variables have p-value less than 0.05, some variables seem to be more important than the rest</p></li>
+<li><p>Driver_age seems to be the most important variable as the reduction in deviance is the biggest when we include this variable in model building</p></li>
+</ul>
+<h5 id="actual-vs-predicted">Actual vs Predicted</h5>
+<p>As mentioned in the earlier section, I will use <code>poisson_log_loss</code> function to check the model fit.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'>poisson_log_loss</span><span class='op'>(</span><span class='va'>glm_pred</span></span>
+<span>                 ,truth <span class='op'>=</span> <span class='va'>claim_nb</span></span>
+<span>                 ,estimate <span class='op'>=</span> <span class='va'>.fitted</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 1 x 3
+  .metric          .estimator .estimate
+  &lt;chr&gt;            &lt;chr&gt;          &lt;dbl&gt;
+1 poisson_log_loss standard       0.165</code></pre>
+</div>
+<p>Next, I will plot the bar charts by showing the actual claim count and predicted claim count side by side.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>graph_pred_act_df</span> <span class='op'>&lt;-</span></span>
+<span>  <span class='fu'>tibble</span><span class='op'>(</span><span class='st'>"claim_count"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>4</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> </span>
+<span>  <span class='co'># frequency count based on actual claim count</span></span>
+<span>  <span class='fu'>left_join</span><span class='op'>(</span></span>
+<span>    <span class='va'>glm_pred</span> <span class='op'>%&gt;%</span> </span>
+<span>      <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>claim_nb</span><span class='op'>)</span> <span class='op'>%&gt;%</span> </span>
+<span>      <span class='fu'>summarise</span><span class='op'>(</span>`actual claim count` <span class='op'>=</span> <span class='fu'>n</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+<span>    ,by <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"claim_count"</span> <span class='op'>=</span> <span class='st'>"claim_nb"</span><span class='op'>)</span></span>
+<span>  <span class='op'>)</span> <span class='op'>%&gt;%</span> </span>
+<span>  <span class='co'># frequency count based on predicted claim count</span></span>
+<span>  <span class='fu'>left_join</span><span class='op'>(</span></span>
+<span>    <span class='va'>glm_pred</span> <span class='op'>%&gt;%</span> </span>
+<span>      <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>pred_round</span><span class='op'>)</span> <span class='op'>%&gt;%</span> </span>
+<span>      <span class='fu'>summarise</span><span class='op'>(</span>`predicted claim count` <span class='op'>=</span> <span class='fu'>n</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+<span>    ,by <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"claim_count"</span> <span class='op'>=</span> <span class='st'>"pred_round"</span><span class='op'>)</span></span>
+<span>  <span class='op'>)</span> <span class='op'>%&gt;%</span> </span>
+<span>  <span class='co'># replace any NA with 0</span></span>
+<span>  <span class='fu'>mutate_at</span><span class='op'>(</span><span class='fu'>vars</span><span class='op'>(</span><span class='fu'>everything</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+<span>            ,<span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'>replace_na</span><span class='op'>(</span><span class='va'>x</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> </span>
+<span>  <span class='fu'>pivot_longer</span><span class='op'>(</span><span class='op'>!</span><span class='va'>claim_count</span></span>
+<span>               ,names_to <span class='op'>=</span> <span class='st'>"claim_type"</span></span>
+<span>               ,values_to <span class='op'>=</span> <span class='st'>"count"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># visualize the bar chart</span></span>
+<span><span class='va'>graph_pred_act_df</span> <span class='op'>%&gt;%</span> </span>
+<span>  <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span><span class='va'>claim_count</span>, <span class='va'>count</span>, fill <span class='op'>=</span> <span class='va'>claim_type</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>geom_col</span><span class='op'>(</span>position <span class='op'>=</span> <span class='st'>"dodge"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>scale_y_continuous</span><span class='op'>(</span>labels <span class='op'>=</span> <span class='fu'>scales</span><span class='fu'>::</span><span class='va'><a href='https://scales.r-lib.org/reference/comma.html'>comma</a></span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>theme_minimal</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>labs</span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Actual vs Predicted Claim Count"</span></span>
+<span>       ,subtitle <span class='op'>=</span> <span class='st'>"Poisson Regression with Log(Exposure) Offset"</span><span class='op'>)</span>  </span></code></pre>
+</div>
+<p><img src="poisson-regression_files/figure-html5/unnamed-chunk-13-1.png" width="100%" /></p>
+</div>
+<p>It seems like the model did poorly in capturing the claim policies based on the result shown.</p>
+<p>If we were to plot the actual claim rate versus the predicted claim rate by using scatter points, we can see that some of the actual claim rates are much higher than the rest.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>glm_pred</span>, <span class='fu'>aes</span><span class='op'>(</span><span class='va'>clm_rate</span>, <span class='va'>.fitted</span><span class='op'>/</span><span class='va'>exposure</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>geom_point</span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="poisson-regression_files/figure-html5/unnamed-chunk-14-1.png" width="100%" /></p>
+</div>
+<p>If we were to extract policy, it seems like these policies have made at least a claim within 3 days after the policy inception.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>glm_pred</span> <span class='op'>%&gt;%</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>clm_rate</span> <span class='op'>&gt;</span> <span class='fl'>100</span><span class='op'>)</span> <span class='op'>%&gt;%</span> </span>
+<span>  <span class='fu'>arrange</span><span class='op'>(</span><span class='va'>exposure</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 28 x 18
+   policy_id claim_nb expos~1 power car_age drive~2 brand gas   region
+   &lt;chr&gt;        &lt;int&gt;   &lt;dbl&gt; &lt;fct&gt;   &lt;int&gt;   &lt;int&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; 
+ 1 171344           1 0.00274 d          16      20 Fiat  Regu~ Centre
+ 2 188359           1 0.00274 d           1      43 Volk~ Regu~ Centre
+ 3 249311           1 0.00274 d           8      28 Rena~ Regu~ Centre
+ 4 24492            1 0.00546 f           7      28 Rena~ Dies~ Ile-d~
+ 5 26305            1 0.00546 d          15      33 Rena~ Regu~ Centre
+ 6 360082           1 0.00546 d          20      19 Rena~ Regu~ Centre
+ 7 72149            1 0.00548 e          10      55 Rena~ Regu~ Pays-~
+ 8 96106            1 0.00548 f           8      51 Rena~ Dies~ Centre
+ 9 102385           1 0.00548 f          11      34 Opel~ Regu~ Centre
+10 155312           1 0.00548 i          10      43 Rena~ Regu~ Centre
+# ... with 18 more rows, 9 more variables: density &lt;int&gt;,
+#   clm_rate &lt;dbl&gt;, .fitted &lt;dbl&gt;, .resid &lt;dbl&gt;, .std.resid &lt;dbl&gt;,
+#   .hat &lt;dbl&gt;, .sigma &lt;dbl&gt;, .cooksd &lt;dbl&gt;, pred_round &lt;dbl&gt;, and
+#   abbreviated variable names 1: exposure, 2: driver_age</code></pre>
+</div>
+<p>Nevertheless, as we are not trying to build the most accurate model over here, hence I will leave the model as it is in this post.</p>
+<h3 id="poisson-with-weight">Poisson with weight</h3>
+<p>When I was reading the different materials about building Poisson regression, I happened to come across <a href="https://stats.stackexchange.com/questions/264071/how-is-a-poisson-rate-regression-equal-to-a-poisson-regression-with-correspondin">this post</a> on how the model with <code>offset</code> and model with <code>weight</code> would give us the same result if we pass in all the relevant parameters to the model.</p>
+<p>Hence, to satisfy my own curiosity, I have built another Poisson regression by using <code>weight</code>.</p>
+<p>I will use ‘clm_rate’ as the target variable and also indicate exposure as the <code>weight</code>.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>glm_fit_rate</span> <span class='op'>&lt;-</span></span>
+<span>  <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span><span class='op'>(</span><span class='va'>clm_rate</span> <span class='op'>~</span> </span>
+<span>     <span class='va'>power</span></span>
+<span>    <span class='op'>+</span> <span class='va'>car_age</span></span>
+<span>    <span class='op'>+</span> <span class='va'>driver_age</span></span>
+<span>    <span class='op'>+</span> <span class='va'>brand</span></span>
+<span>    <span class='op'>+</span> <span class='va'>gas</span></span>
+<span>    <span class='op'>+</span> <span class='va'>region</span></span>
+<span>    <span class='op'>+</span> <span class='va'>density</span></span>
+<span>    ,weight <span class='op'>=</span> <span class='va'>exposure</span></span>
+<span>    ,data <span class='op'>=</span> <span class='va'>df</span></span>
+<span>    ,family <span class='op'>=</span> <span class='va'>poisson</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<p>If we were to extract the model info, we will realize that the estimate and all other model info are same as the Poisson regression with <code>offset</code> function we have built earlier.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>glm_fit_rate</span> <span class='op'>%&gt;%</span> </span>
+<span>  <span class='fu'>tidy</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> </span>
+<span>  <span class='fu'>mutate</span><span class='op'>(</span>exp_coef <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='va'>estimate</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>relocate</span><span class='op'>(</span><span class='va'>exp_coef</span>, .before <span class='op'>=</span> <span class='va'>std.error</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 31 x 6
+   term        estimate exp_coef std.error statistic   p.value
+   &lt;chr&gt;          &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+ 1 (Intercept)  -2.00      0.136    0.0584    -34.2  4.79e-256
+ 2 powere        0.0643    1.07     0.0280      2.29 2.18e-  2
+ 3 powerf        0.0810    1.08     0.0273      2.96 3.04e-  3
+ 4 powerg        0.0489    1.05     0.0272      1.80 7.26e-  2
+ 5 powerh        0.0928    1.10     0.0389      2.39 1.70e-  2
+ 6 poweri        0.189     1.21     0.0430      4.40 1.07e-  5
+ 7 powerj        0.168     1.18     0.0438      3.84 1.25e-  4
+ 8 powerk        0.232     1.26     0.0561      4.14 3.40e-  5
+ 9 powerl        0.0978    1.10     0.0834      1.17 2.41e-  1
+10 powerm        0.149     1.16     0.119       1.25 2.11e-  1
+# ... with 21 more rows</code></pre>
+</div>
+<p>This shows that we could model the claim rate directly if the claim rate is the interest of the study. However, the <code>weight</code> needs to be specified when we are modeling on the claim rate directly.</p>
+<h4 id="model-performance-1">Model Performance</h4>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>glm_pred_weight</span> <span class='op'>&lt;-</span></span>
+<span>  <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>glm_fit_rate</span>, type <span class='op'>=</span> <span class='st'>"response"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> </span>
+<span>  <span class='fu'>as_tibble</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> </span>
+<span>  <span class='fu'>bind_cols</span><span class='op'>(</span><span class='va'>df</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>mutate</span><span class='op'>(</span>pred <span class='op'>=</span> <span class='va'>value</span> <span class='op'>*</span> <span class='va'>exposure</span></span>
+<span>         ,pred_round <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span><span class='va'>pred</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>graph_pred_act_df</span> <span class='op'>&lt;-</span></span>
+<span>  <span class='fu'>tibble</span><span class='op'>(</span><span class='st'>"claim_count"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>4</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> </span>
+<span>  <span class='fu'>left_join</span><span class='op'>(</span></span>
+<span>    <span class='va'>glm_pred_weight</span> <span class='op'>%&gt;%</span> </span>
+<span>      <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>claim_nb</span><span class='op'>)</span> <span class='op'>%&gt;%</span> </span>
+<span>      <span class='fu'>summarise</span><span class='op'>(</span>`actual claim count` <span class='op'>=</span> <span class='fu'>n</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+<span>    ,by <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"claim_count"</span> <span class='op'>=</span> <span class='st'>"claim_nb"</span><span class='op'>)</span></span>
+<span>  <span class='op'>)</span> <span class='op'>%&gt;%</span> </span>
+<span>  <span class='fu'>left_join</span><span class='op'>(</span></span>
+<span>    <span class='va'>glm_pred_weight</span> <span class='op'>%&gt;%</span> </span>
+<span>      <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>pred_round</span><span class='op'>)</span> <span class='op'>%&gt;%</span> </span>
+<span>      <span class='fu'>summarise</span><span class='op'>(</span>`predicted claim count` <span class='op'>=</span> <span class='fu'>n</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+<span>    ,by <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"claim_count"</span> <span class='op'>=</span> <span class='st'>"pred_round"</span><span class='op'>)</span></span>
+<span>  <span class='op'>)</span> <span class='op'>%&gt;%</span> </span>
+<span>  <span class='fu'>mutate_at</span><span class='op'>(</span><span class='fu'>vars</span><span class='op'>(</span><span class='fu'>everything</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+<span>            ,<span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'>replace_na</span><span class='op'>(</span><span class='va'>x</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> </span>
+<span>  <span class='fu'>pivot_longer</span><span class='op'>(</span><span class='op'>!</span><span class='va'>claim_count</span></span>
+<span>               ,names_to <span class='op'>=</span> <span class='st'>"claim_type"</span></span>
+<span>               ,values_to <span class='op'>=</span> <span class='st'>"count"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>graph_pred_act_df</span> <span class='op'>%&gt;%</span> </span>
+<span>  <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span><span class='va'>claim_count</span>, <span class='va'>count</span>, fill <span class='op'>=</span> <span class='va'>claim_type</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>geom_col</span><span class='op'>(</span>position <span class='op'>=</span> <span class='st'>"dodge"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>scale_y_continuous</span><span class='op'>(</span>labels <span class='op'>=</span> <span class='fu'>scales</span><span class='fu'>::</span><span class='va'><a href='https://scales.r-lib.org/reference/comma.html'>comma</a></span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>theme_minimal</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>labs</span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Actual vs Predicted Claim Count"</span><span class='op'>)</span>  </span></code></pre>
+</div>
+<p><img src="poisson-regression_files/figure-html5/unnamed-chunk-19-1.png" width="100%" /></p>
+</div>
+<h4 id="use-case_weights-function-in-tidymodels">Use <code>case_weights</code> function in Tidymodels</h4>
+<p><code>Tidymodels</code> also offers a weighting function to allow us in building a Poisson model with weights.</p>
+<p>First, I will need to mutate the <code>exposure</code> column to indicate this column should be used as <code>weights</code> in the modeling.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>df_rate</span> <span class='op'>&lt;-</span></span>
+<span>  <span class='va'>df</span> <span class='op'>%&gt;%</span> </span>
+<span>  <span class='fu'>mutate</span><span class='op'>(</span>exposure <span class='op'>=</span> <span class='fu'>importance_weights</span><span class='op'>(</span><span class='va'>exposure</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<p>Note that as the point of writing this post, <code>tidymodels</code> has two types of <code>weights</code> functions:</p>
+<ul>
+<li><p><code>frequency_weight</code>, which only allows integers</p></li>
+<li><p><code>importance_weight</code>, which allows non-negative doubles</p></li>
+</ul>
+<p>As the exposure is not an integer, hence I have used <code>importance_weights</code> function over here.</p>
+<p>Once the column is mutated, we can see the column type has changed when we call the tibble table.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>df_rate</span> <span class='op'>%&gt;%</span> </span>
+<span>  <span class='fu'>slice_head</span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>   policy_id claim_nb exposure power car_age driver_age
+1          1        0     0.09     g       0         46
+2          2        0     0.84     g       0         46
+3          3        0     0.52     f       2         38
+4          4        0     0.45     f       2         38
+5          5        0     0.15     g       0         41
+6          6        0     0.75     g       0         41
+7          7        0     0.81     d       1         27
+8          8        0     0.05     d       0         27
+9          9        0     0.76     d       9         23
+10        10        0     0.34     i       0         44
+                                brand     gas             region
+1  Japanese (except Nissan) or Korean  Diesel          Aquitaine
+2  Japanese (except Nissan) or Korean  Diesel          Aquitaine
+3  Japanese (except Nissan) or Korean Regular Nord-Pas-de-Calais
+4  Japanese (except Nissan) or Korean Regular Nord-Pas-de-Calais
+5  Japanese (except Nissan) or Korean  Diesel   Pays-de-la-Loire
+6  Japanese (except Nissan) or Korean  Diesel   Pays-de-la-Loire
+7  Japanese (except Nissan) or Korean Regular          Aquitaine
+8  Japanese (except Nissan) or Korean Regular          Aquitaine
+9                                Fiat Regular Nord-Pas-de-Calais
+10 Japanese (except Nissan) or Korean Regular      Ile-de-France
+   density clm_rate
+1       76        0
+2       76        0
+3     3003        0
+4     3003        0
+5       60        0
+6       60        0
+7      695        0
+8      695        0
+9     7887        0
+10   27000        0</code></pre>
+</div>
+<p>To build the Poisson model with weights, we will follow the usual steps in building machine learning models under tidymodels framework:</p>
+<ul>
+<li><p>Define the recipe</p></li>
+<li><p>Define the model specification</p></li>
+<li><p>Define the workflow</p></li>
+<li><p>Fit the model</p></li>
+</ul>
+<p>The only difference is we will need to specify the “weight” by using <code>add_case_weights</code> function and add to the workflow.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>gen_recipe</span> <span class='op'>&lt;-</span> </span>
+<span>  <span class='fu'>recipe</span><span class='op'>(</span><span class='va'>clm_rate</span> <span class='op'>~</span> <span class='va'>power</span> <span class='op'>+</span> <span class='va'>car_age</span> <span class='op'>+</span> <span class='va'>driver_age</span> <span class='op'>+</span> <span class='va'>brand</span> <span class='op'>+</span> <span class='va'>gas</span> <span class='op'>+</span> <span class='va'>region</span> <span class='op'>+</span> <span class='va'>density</span> <span class='op'>+</span> <span class='va'>exposure</span></span>
+<span>         ,data <span class='op'>=</span> <span class='va'>df_rate</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>pois_specs</span> <span class='op'>&lt;-</span></span>
+<span>  <span class='fu'>poisson_reg</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> </span>
+<span>  <span class='fu'>set_engine</span><span class='op'>(</span><span class='st'>"glm"</span><span class='op'>)</span></span>
+<span>  </span>
+<span><span class='va'>pois_wf</span> <span class='op'>&lt;-</span></span>
+<span>  <span class='fu'>workflow</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> </span>
+<span>  <span class='fu'>add_case_weights</span><span class='op'>(</span><span class='va'>exposure</span><span class='op'>)</span> <span class='op'>%&gt;%</span> </span>
+<span>  <span class='fu'>add_recipe</span><span class='op'>(</span><span class='va'>gen_recipe</span><span class='op'>)</span> <span class='op'>%&gt;%</span> </span>
+<span>  <span class='fu'>add_model</span><span class='op'>(</span><span class='va'>pois_specs</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<p>If we were to call the workflow, we will see that exposure is being captured as “weight” in the workflow.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>pois_wf</span></span></code></pre>
+</div>
+<pre><code>== Workflow ==========================================================
+Preprocessor: Recipe
+Model: poisson_reg()
+
+-- Preprocessor ------------------------------------------------------
+0 Recipe Steps
+
+-- Case Weights ------------------------------------------------------
+exposure
+
+-- Model -------------------------------------------------------------
+Poisson Regression Model Specification (regression)
+
+Computational engine: glm </code></pre>
+</div>
+<p>Finally, we will fit the model.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>pois_fit</span> <span class='op'>&lt;-</span></span>
+<span>  <span class='va'>pois_wf</span> <span class='op'>%&gt;%</span> </span>
+<span>  <span class='fu'>fit</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>df_rate</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<p>We can see that the estimate and relevant results are same as the weighted poisson model built by using <code>glm</code> function directly.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'>tidy</span><span class='op'>(</span><span class='va'>pois_fit</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 31 x 5
+   term        estimate std.error statistic   p.value
+   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+ 1 (Intercept)  -2.00      0.0584    -34.2  4.79e-256
+ 2 powere        0.0643    0.0280      2.29 2.18e-  2
+ 3 powerf        0.0810    0.0273      2.96 3.04e-  3
+ 4 powerg        0.0489    0.0272      1.80 7.26e-  2
+ 5 powerh        0.0928    0.0389      2.39 1.70e-  2
+ 6 poweri        0.189     0.0430      4.40 1.07e-  5
+ 7 powerj        0.168     0.0438      3.84 1.25e-  4
+ 8 powerk        0.232     0.0561      4.14 3.40e-  5
+ 9 powerl        0.0978    0.0834      1.17 2.41e-  1
+10 powerm        0.149     0.119       1.25 2.11e-  1
+# ... with 21 more rows</code></pre>
+</div>
+<h1 id="conclusion">Conclusion</h1>
+<p>That’s all for the day!</p>
+<p>Thanks for reading the post until the end.</p>
+<p>Feel free to contact me through <a href="mailto:jasper.jh.lok@gmail.com">email</a> or <a href="https://www.linkedin.com/in/jasper-l-13426232/">LinkedIn</a> if you have any suggestions on future topics to share.</p>
+<p>Refer to this link for the <a href="https://jasperlok.netlify.app/blog_disclaimer.html">blog disclaimer</a>.</p>
+<p>Till next time, happy learning!</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="image/blessing.jpg" width="100%" /></p>
+</div>
+<p>Photo by <a href="https://unsplash.com/@sixteenmilesout?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Sixteen Miles Out</a> on <a href="https://unsplash.com/photos/pPPbmx0Tfxc?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a></p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-Hilbe" class="csl-entry" role="listitem">
+Hilbe, Joseph M. 2011. <em>Negative Binomial Regression</em>. Cambridge University Press.
+</div>
+</div>
+<!--radix_placeholder_article_footer-->
+<!--/radix_placeholder_article_footer-->
+</div>
+
+<div class="d-appendix">
+</div>
+
+
+<!--radix_placeholder_site_after_body-->
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_appendices-->
+<div class="appendix-bottom">
+<h3 id="references">References</h3>
+<div id="references-listing"></div>
+</div>
+<!--/radix_placeholder_appendices-->
+<!--radix_placeholder_navigation_after_body-->
+<!--/radix_placeholder_navigation_after_body-->
+
+</body>
+
+</html>
