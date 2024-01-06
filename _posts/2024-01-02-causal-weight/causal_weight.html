@@ -136,12 +136,12 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","bibliography","biblio-style","link-citations","categories"]}},"value":[{"type":"character","attributes":{},"value":["Causal Inference - Weight"]},{"type":"NULL"},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Jasper Lok"]},{"type":"character","attributes":{},"value":["https://jasperlok.netlify.app/"]}]}]},{"type":"character","attributes":{},"value":["01-02-2024"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","toc_depth","self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[4]},{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["ref.bib"]},{"type":"character","attributes":{},"value":["apa"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["Machine Learning"]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","bibliography","biblio-style","link-citations","categories"]}},"value":[{"type":"character","attributes":{},"value":["Causal Inference - Weight"]},{"type":"NULL"},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Jasper Lok"]},{"type":"character","attributes":{},"value":["https://jasperlok.netlify.app/"]}]}]},{"type":"character","attributes":{},"value":["01-02-2024"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","toc_depth","self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[4]},{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["ref.bib"]},{"type":"character","attributes":{},"value":["apa"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["Machine Learning","Causal Inference"]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["causal_weight_files/figure-html5/unnamed-chunk-11-1.png","causal_weight_files/figure-html5/unnamed-chunk-13-1.png","causal_weight_files/figure-html5/unnamed-chunk-13-2.png","causal_weight_files/figure-html5/unnamed-chunk-14-1.png","causal_weight_files/figure-html5/unnamed-chunk-6-1.png","causal_weight_files/figure-html5/unnamed-chunk-7-1.png","causal_weight_files/figure-html5/unnamed-chunk-8-1.png","image/scale.jpg","image/weight.jpg","ref.bib"]}
+  {"type":"character","attributes":{},"value":["causal_weight_files/anchor/anchor.min.js","causal_weight_files/bowser/bowser.min.js","causal_weight_files/distill/template.v2.js","causal_weight_files/figure-html5/unnamed-chunk-11-1.png","causal_weight_files/figure-html5/unnamed-chunk-13-1.png","causal_weight_files/figure-html5/unnamed-chunk-13-2.png","causal_weight_files/figure-html5/unnamed-chunk-14-1.png","causal_weight_files/figure-html5/unnamed-chunk-6-1.png","causal_weight_files/figure-html5/unnamed-chunk-7-1.png","causal_weight_files/figure-html5/unnamed-chunk-8-1.png","causal_weight_files/header-attrs/header-attrs.js","causal_weight_files/jquery/jquery-3.6.0.js","causal_weight_files/jquery/jquery-3.6.0.min.js","causal_weight_files/jquery/jquery-3.6.0.min.map","causal_weight_files/popper/popper.min.js","causal_weight_files/tippy/tippy-bundle.umd.min.js","causal_weight_files/tippy/tippy-light-border.css","causal_weight_files/tippy/tippy.css","causal_weight_files/tippy/tippy.umd.min.js","causal_weight_files/webcomponents/webcomponents.js","image/scale.jpg","image/weight.jpg","ref.bib"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1533,6 +1533,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--radix_placeholder_categories-->
 <div class="dt-tags">
 <div class="dt-tag">Machine Learning</div>
+<div class="dt-tag">Causal Inference</div>
 </div>
 <!--/radix_placeholder_categories-->
 
@@ -1572,9 +1573,9 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 <p>Photo by <a href="https://unsplash.com/@miracleday?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Elena Mozhvilo</a> on <a href="https://unsplash.com/photos/gold-and-silver-round-frame-magnifying-glass-j06gLuKK0GM?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a></p>
 <p>In this post, I will be continuing my journey in exploring causal inference.</p>
-<p>Previously, I looked at how to draw directed acyclic graph in my <a href="https://jasperlok.netlify.app/posts/2023-11-05-causal-dag/#graph">previous post</a>.</p>
+<p>Previously, I looked at how to draw a direct acyclic graph in my <a href="https://jasperlok.netlify.app/posts/2023-11-05-causal-dag/#graph">previous post</a>.</p>
 <h1 id="steps-to-perform-causal-inference">Steps to perform causal inference</h1>
-<p>Once the assumptions are made, following are the basic steps in performing a causal analysis using data preprocessing <span class="citation" data-cites="Greifer2023">(<a href="#ref-Greifer2023" role="doc-biblioref">Greifer 2023</a>)</span>:</p>
+<p>Once the assumptions are made, the following are the basic steps in performing a causal analysis using data preprocessing <span class="citation" data-cites="Greifer2023">(<a href="#ref-Greifer2023" role="doc-biblioref">Greifer 2023</a>)</span>:</p>
 <ol type="1">
 <li>Decide on covariates for which balance must be achieved</li>
 <li>Estimate the distance measure (e.g., propensity score)</li>
@@ -1593,10 +1594,10 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <h1 id="different-estimands">Different estimands</h1>
 <p>As part of the causal inference, we will need to choose the estimands depending on what question we are trying to answer.</p>
 <p>I find this summary table from this book is rather helpful in guiding one in choosing the appropriate estimands <span class="citation" data-cites="Barrett2023-11">(<a href="#ref-Barrett2023-11" role="doc-biblioref">Barrett, McGowan, and Gerke 2023a</a>)</span>.</p>
-<p>For simplicity, I will be using average treatment effect in this analysis.</p>
+<p>For simplicity, I will be using the average treatment effect in this analysis.</p>
 <h2 id="what-is-average-treament-effect-ate">What is ‘Average Treament Effect’ (ATE)?</h2>
 <p>ATE is the difference in means of the treated and control groups <span class="citation" data-cites="nguyen2020guide">(<a href="#ref-nguyen2020guide" role="doc-biblioref">Nguyen 2023</a>)</span>.</p>
-<p>The author mentioned in the section that with random assignment, the observed means difference between the two groups is an unbiased estimator of the average treatment effect.</p>
+<p>The author mentioned in the section that with random assignment, the observed mean difference between the two groups is an unbiased estimator of the average treatment effect.</p>
 <h1 id="demonstration">Demonstration</h1>
 <p>In this demonstration, I will be using a <a href="https://www.kaggle.com/datasets/vjchoudhary7/hr-analytics-case-study">Kaggle dataset</a> on the employee resignation dataset.</p>
 <div class="layout-chunk" data-layout="l-body">
@@ -1630,7 +1631,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 </div>
 <h3 id="balance-statistics">Balance statistics</h3>
-<p>First, I will use <code>bal.tab</code> function from <code>cobalt</code> package to check whether any of the variables are imbalance.</p>
+<p>First, I will use <code>bal.tab</code> function from <code>cobalt</code> package to check whether any of the variables are imbalanced.</p>
 <p>This is corresponding to the first step mentioned in the earlier section.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
@@ -1668,9 +1669,9 @@ Sample sizes
       no  yes
 All 1596 2814</code></pre>
 </div>
-<p>We could set the threshold of the mean by passing the threshold to the <code>threshold</code> argument as shown above. Similar logic applies to variance as well.</p>
-<p>Based on the result shown above, we could see that age is not balanced in this dataset as the unadjusted difference exceeds the threshold.</p>
-<p>The function also allows one to include interactions and polynomial function through <code>int</code> and <code>poly</code> argument respectively.</p>
+<p>We could set the threshold of the mean bypassing the threshold to the <code>threshold</code> argument as shown above. Similar logic applies to variance as well.</p>
+<p>Based on the result shown above, we can see that age is not balanced in this dataset as the unadjusted difference exceeds the threshold.</p>
+<p>The function also allows one to include interactions and polynomial functions through <code>int</code> and <code>poly</code> arguments respectively.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'>bal.tab</span><span class='op'>(</span><span class='va'>ind_promoted_in_last1Yr</span> <span class='op'>~</span> <span class='va'>age</span> <span class='op'>+</span> <span class='va'>gender</span> <span class='op'>+</span> <span class='va'>department</span></span>
@@ -1751,8 +1752,8 @@ Sample sizes
 All 1596 2814</code></pre>
 </div>
 <p>But, for simplicity, I will not include any interaction and polynomial terms in the formula.</p>
-<p><code>cobalt</code> package also offers the users to visualize the density plot, allowing users to access the independence between treatment and selected covariate.</p>
-<p>For example, below is the density plot for age. As shown below, the average age of individual being promoted in last 1 year is lower than those who are not.</p>
+<p><code>cobalt</code> package also offers users to visualize the density plot, allowing users to access the independence between treatment and selected covariate.</p>
+<p>For example, below is the density plot for age. As shown below, the average age of individuals being promoted in the last 1 year is lower than those who are not.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'>bal.plot</span><span class='op'>(</span><span class='va'>ind_promoted_in_last1Yr</span> <span class='op'>~</span> <span class='va'>age</span> <span class='op'>+</span> <span class='va'>gender</span> <span class='op'>+</span> <span class='va'>department</span></span>
@@ -1761,7 +1762,7 @@ All 1596 2814</code></pre>
 </div>
 <p><img src="causal_weight_files/figure-html5/unnamed-chunk-6-1.png" width="100%" /></p>
 </div>
-<p>Another cool thing about this function is the plot will be changed to bar plot when the covariate is categorical variable.</p>
+<p>Another cool thing about this function is the plot will be changed to a bar plot when the covariate is a categorical variable.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'>bal.plot</span><span class='op'>(</span><span class='va'>ind_promoted_in_last1Yr</span> <span class='op'>~</span> <span class='va'>age</span> <span class='op'>+</span> <span class='va'>gender</span> <span class='op'>+</span> <span class='va'>department</span></span>
@@ -1809,13 +1810,13 @@ All 1596 2814</code></pre>
 <ul>
 <li><p>The algorithm is using <code>glm</code> in performing the weighting</p>
 <ul>
-<li>According to the documentation, the function supports different formula for weighting purpose</li>
+<li>According to the documentation, the function supports different formulas for weighting purposes</li>
 </ul></li>
 <li><p>We are using <code>ATE</code> as the estimand</p></li>
 </ul>
 <p>Considerations when building propensity model <span class="citation" data-cites="Barrett2023-07">(<a href="#ref-Barrett2023-07" role="doc-biblioref">Barrett, McGowan, and Gerke 2023c</a>)</span>:</p>
 <ul>
-<li><p>Goal is not predict the outcome as much as possible</p></li>
+<li><p>The goal is not to predict the outcome as much as possible</p></li>
 <li><p>But these metrics may help us in identifying the best functional form</p>
 <ul>
 <li>Misspecifying this relationship can lead to residual confounding, leaving some bias in the estimate</li>
@@ -1907,7 +1908,7 @@ Adjusted   1533.05 2766.48</code></pre>
 </div>
 <p><img src="causal_weight_files/figure-html5/unnamed-chunk-13-2.png" width="100%" /></p>
 </div>
-<p>Now, if we were to call the <code>love.plot</code> function on <code>weightit</code> object, we could see the all the covariates are below the threshold.</p>
+<p>Now, if we were to call the <code>love.plot</code> function on <code>weightit</code> object, we could see that all the covariates are below the threshold.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'>love.plot</span><span class='op'>(</span><span class='va'>w_outcome</span></span>

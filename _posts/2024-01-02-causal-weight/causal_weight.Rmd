@@ -16,7 +16,7 @@ biblio-style: "apa"
 link-citations: true
 categories:
   - Machine Learning
-  
+  - Causal Inference
 ---
 
 ```{r setup, include=FALSE}
@@ -45,12 +45,12 @@ Photo by <a href="https://unsplash.com/@miracleday?utm_content=creditCopyText&ut
   
 In this post, I will be continuing my journey in exploring causal inference.
 
-Previously, I looked at how to draw directed acyclic graph in my [previous post](https://jasperlok.netlify.app/posts/2023-11-05-causal-dag/#graph).
+Previously, I looked at how to draw a direct acyclic graph in my [previous post](https://jasperlok.netlify.app/posts/2023-11-05-causal-dag/#graph).
 
 
 # Steps to perform causal inference
 
-Once the assumptions are made, following are the basic steps in performing a causal analysis using data preprocessing [@Greifer2023]:
+Once the assumptions are made, the following are the basic steps in performing a causal analysis using data preprocessing [@Greifer2023]:
 
 1. Decide on covariates for which balance must be achieved
 2. Estimate the distance measure (e.g., propensity score)
@@ -79,13 +79,13 @@ As part of the causal inference, we will need to choose the estimands depending 
 
 I find this summary table from this book is rather helpful in guiding one in choosing the appropriate estimands [@Barrett2023-11].
 
-For simplicity, I will be using average treatment effect in this analysis.
+For simplicity, I will be using the average treatment effect in this analysis.
 
 ## What is 'Average Treament Effect' (ATE)?
 
 ATE is the difference in means of the treated and control groups [@nguyen2020guide].
 
-The author mentioned in the section that with random assignment, the observed means difference between the two groups is an unbiased estimator of the average treatment effect.
+The author mentioned in the section that with random assignment, the observed mean difference between the two groups is an unbiased estimator of the average treatment effect.
 
 
 # Demonstration
@@ -132,7 +132,7 @@ df <- read_csv("https://raw.githubusercontent.com/jasperlok/my-blog/master/_post
 
 ### Balance statistics
 
-First, I will use `bal.tab` function from `cobalt` package to check whether any of the variables are imbalance.
+First, I will use `bal.tab` function from `cobalt` package to check whether any of the variables are imbalanced.
 
 This is corresponding to the first step mentioned in the earlier section.
 
@@ -146,12 +146,12 @@ bal.tab(ind_promoted_in_last1Yr ~ age + gender + department
 
 ```
 
-We could set the threshold of the mean by passing the threshold to the `threshold` argument as shown above. Similar logic applies to variance as well.
+We could set the threshold of the mean bypassing the threshold to the `threshold` argument as shown above. Similar logic applies to variance as well.
 
-Based on the result shown above, we could see that age is not balanced in this dataset as the unadjusted difference exceeds the threshold. 
+Based on the result shown above, we can see that age is not balanced in this dataset as the unadjusted difference exceeds the threshold. 
 
 
-The function also allows one to include interactions and polynomial function through `int` and `poly` argument respectively.
+The function also allows one to include interactions and polynomial functions through `int` and `poly` arguments respectively.
 
 ```{r}
 bal.tab(ind_promoted_in_last1Yr ~ age + gender + department
@@ -167,9 +167,9 @@ bal.tab(ind_promoted_in_last1Yr ~ age + gender + department
 
 But, for simplicity, I will not include any interaction and polynomial terms in the formula.
 
-`cobalt` package also offers the users to visualize the density plot, allowing users to access the independence between treatment and selected covariate.
+`cobalt` package also offers users to visualize the density plot, allowing users to access the independence between treatment and selected covariate.
 
-For example, below is the density plot for age. As shown below, the average age of individual being promoted in last 1 year is lower than those who are not.
+For example, below is the density plot for age. As shown below, the average age of individuals being promoted in the last 1 year is lower than those who are not.
 
 ```{r}
 bal.plot(ind_promoted_in_last1Yr ~ age + gender + department
@@ -178,7 +178,7 @@ bal.plot(ind_promoted_in_last1Yr ~ age + gender + department
 
 ```
 
-Another cool thing about this function is the plot will be changed to bar plot when the covariate is categorical variable.
+Another cool thing about this function is the plot will be changed to a bar plot when the covariate is a categorical variable.
 
 ```{r}
 bal.plot(ind_promoted_in_last1Yr ~ age + gender + department
@@ -227,14 +227,14 @@ Based on the output, we noted the following:
 
 - The algorithm is using `glm` in performing the weighting
 
-    - According to the documentation, the function supports different formula for weighting purpose
+    - According to the documentation, the function supports different formulas for weighting purposes
 
 - We are using `ATE` as the estimand
 
 
 Considerations when building propensity model [@Barrett2023-07]:
 
-- Goal is not predict the outcome as much as possible
+- The goal is not to predict the outcome as much as possible
 
 - But these metrics may help us in identifying the best functional form
 
@@ -274,7 +274,7 @@ bal.plot(w_outcome, "department", which = "both")
 
 ```
 
-Now, if we were to call the `love.plot` function on `weightit` object, we could see the all the covariates are below the threshold.
+Now, if we were to call the `love.plot` function on `weightit` object, we could see that all the covariates are below the threshold.
 
 ```{r}
 love.plot(w_outcome

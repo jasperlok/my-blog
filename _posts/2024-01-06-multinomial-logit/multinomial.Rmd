@@ -1,0 +1,321 @@
+---
+title: "Multinomial Logistic Regression"
+description: |
+   When the target is more than 2 classes
+author:
+  - name: Jasper Lok 
+    url: https://jasperlok.netlify.app/
+date: 01-06-2024
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 4
+    self_contained: false
+bibliography: ["ref.bib"]
+biblio-style: "apa"
+link-citations: true
+categories:
+  - Machine Learning
+  - Supervised Learning
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+pacman::p_load(captioner, knitr, kableExtra, tidyverse)
+
+knitr::opts_chunk$set(fig.retina = 3,                       
+                      echo = TRUE,                       
+                      eval = TRUE,                       
+                      message = FALSE,                       
+                      warning = FALSE,
+                      out.width="100%")
+
+```
+
+
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/penguins.jpg")
+
+```
+
+Photo by <a href="https://unsplash.com/@photos_by_ryder?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Joshua Ryder</a> on <a href="https://unsplash.com/photos/white-and-black-penguin-in-water-aRD43BMqAp8?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+  
+In this post, I will be exploring what is multinomial logistic regression and how to build a multinomial logistic regression model.
+
+
+# What is multinomial logistic regression?
+
+As the name suggested, this model can predict more than 2 classes, which is different from the normal logistic regression.
+
+This would be very handy when the target variable has more than 2 categories and the categories are unordered.
+
+The author of this post gave a summary between multinomial logistic regression and one-vs-all logistic regression [@CrossValidated2013].
+
+# Assumptions of multinomial logistic regression
+
+Some of the assumptions of multinomial logistic regression include [@ASC2024]:
+
+- Independence of observations
+
+- Categories of the outcome variable must be mutually exclusive and exhaustive
+
+- No multicollinearity between independent variables
+
+- Linear relationship between continuous variables and the logit transformation of the outcome variable
+
+- No outliers or highly influential points
+
+
+# Demonstration
+
+According to CRAN, different packages would help us to model multi-state (e.g. `mstate`, `msm`).
+
+In this demonstration, I will be using different functions to fit a multinomial regression.
+
+
+## Setup the environment
+
+First, I will load the necessary packages into the environment.
+
+```{r}
+pacman::p_load(tidyverse, tidymodels, palmerpenguins, brulee, VGAM, nnet)
+
+```
+
+If we were to call the dataset, we would notice that there are some missing values within the dataset.
+
+```{r}
+penguins
+
+```
+
+For simplicity, I will be imputing the missing values in the dataset by using bagged trees.
+
+```{r}
+gen_recipe <- 
+  recipe(species ~ .
+         ,data = penguins) %>% 
+  step_impute_bag(all_predictors()) %>% 
+  prep()
+
+df_imputed <- bake(gen_recipe, penguins)
+
+```
+
+## `brulee` package
+
+For the first model, I will be using `brulee` package to fit the model.
+
+```{r}
+mulnorm_specs <-
+  multinom_reg() %>% 
+  set_engine("brulee")
+
+```
+
+
+Then, I define the pre-processing steps as suggested by the authors of Tidy Modeling with R [@Kuhn2023].
+
+```{r}
+mulnorm_recipe <-
+  recipe(species ~ flipper_length_mm + island
+         ,data = df_imputed) %>%
+  step_nzv(all_predictors()) %>% 
+  step_dummy(all_nominal_predictors()) %>% 
+  step_normalize(all_numeric_predictors())
+
+```
+
+Once that is done, I will "chain" all the different parts into a workflow.
+
+```{r}
+mulnorm_wk <-
+  workflow() %>% 
+  add_model(mulnorm_specs) %>% 
+  add_recipe(mulnorm_recipe)
+
+mulnorm_wk
+
+```
+
+I will then fit the model.
+
+```{r}
+mulnorm_fit <-
+  mulnorm_wk %>% 
+  fit(data = df_imputed)
+
+mulnorm_fit
+
+```
+I will extract the predicted values by using `augment` function.
+
+```{r}
+mulnorm_predict <-
+  augment(mulnorm_fit, df_imputed)
+
+mulnorm_predict %>% 
+  slice_head(n = 10)
+
+```
+
+`yardstick` package also offers `mn_log_loss` function to compute the logarithmic loss of the multinomial logistic model.
+
+```{r}
+mulnorm_predict %>% 
+  mn_log_loss(species, 10:12)
+
+```
+
+
+
+## `vglm` function from `VGAM` package
+
+Next, I will use `vglm` function from `VGAM` package to build the model.
+
+
+```{r}
+vglm_fit <- 
+  vglm(species ~ flipper_length_mm + island
+       ,data = df_imputed
+       ,family = multinomial)
+
+vglm_fit
+
+```
+
+We could pass the fitted object into the `summary` function to check the results.
+
+```{r}
+summary(vglm_fit)
+
+```
+
+Hmm, it seems there is an issue (i.e., Hauk-Donner effect) in the dataset.
+
+According to this [paper](https://arxiv.org/abs/2001.08431#:~:text=This%20paper%20develops%20on%20another,estimate%20and%20the%20null%20value.), Hauck-Donner effect (HDE) whereby a Wald test statistic is not monotonely increasing as a function of increasing distance between the parameter estimate and the null value.
+
+However, for simplicity, I won't be exploring what is Hauck-Donner effect and how to fix it.
+
+Alternatively, we could extract the coefficients from the fitted object by using `coef.vlm` function.
+
+```{r}
+coef.vlm(vglm_fit)
+
+```
+
+The cool thing about this function is that `ANOVA` function still works on the fitted object from this function.
+
+```{r}
+anova(vglm_fit)
+
+```
+
+To extract the predictions, we could use `predict.vlm` function from the package to do so.
+
+```{r}
+predict.vlm(vglm_fit, newdata = df_imputed, type = "response") %>% 
+  as_tibble()
+
+```
+
+## `multinom` function from `nnet` package
+
+Lastly, I will use `nultinom` function from `nnet` package to fit the model.
+
+```{r}
+nnet_fit <-
+  multinom(species ~ flipper_length_mm + island
+          ,data = df_imputed)
+
+nnet_fit
+
+```
+
+According to the [documentation](https://cran.r-project.org/web/packages/nnet/index.html), the function uses neutral network to fit a multinomial logistic regression.
+
+As such, some of the existing functions (e.g., ANOVA) would not work on the fitted object.
+
+
+Note that the formula uses the first factor as the reference group.
+
+We could change the reference level by using `relevel` function.
+
+```{r}
+df_imputed_relevel <- 
+  df_imputed %>% 
+  mutate(species = relevel(species, ref = "Gentoo"))
+
+nnet_fit_relevel <-
+  multinom(species ~ flipper_length_mm + island
+          ,data = df_imputed_relevel)
+
+nnet_fit_relevel
+
+```
+
+From the model, we noted the following:
+
+- One unit increase in flipper length increases the log odd of Chinstrap vs Adelie and Gentoo vs Adelie by 1.14 and 3.93 respectively
+
+- If the penguins are from Dream Island, the species of penguins would be very likely to be Chinstrap
+
+- If the penguins are from Torgersen, the species of penguins are likely to be Adelie
+
+
+```{r}
+# display odds ratios in transposed data frame
+odds_ratios <- exp(summary(nnet_fit)$coefficients)
+data.frame(t(odds_ratios))
+
+```
+
+Note that the log odds ratio is always calculated to the reference level. If we would like to compare the log ratio of Chinstrap and Gentoo, we will just need to exponential their coefficient difference to obtain the log ratio.
+
+```{r}
+coefs_c_to_b <- summary(nnet_fit)$coefficients[2, ] - 
+   summary(nnet_fit)$coefficients[1, ]
+
+data.frame(exp(coefs_c_to_b))
+
+```
+
+
+
+We could extract the fitted values by extracting the `fitted.values` object from the fitted model.
+
+```{r}
+nnet_fit$fitted.values %>% 
+  as_tibble()
+
+```
+
+The result shows the likelihood of the selected penguin belonging to a particular species.
+
+
+
+
+# Conclusion
+
+That's all for the day!
+
+Thanks for reading the post until the end.
+
+Feel free to contact me through [email](mailto:jasper.jh.lok@gmail.com) or [LinkedIn](https://www.linkedin.com/in/jasper-l-13426232/) if you have any suggestions on future topics to share.
+
+
+Refer to this link for the [blog disclaimer](https://jasperlok.netlify.app/blog_disclaimer.html).
+
+
+Till next time, happy learning!
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/penguins2.jpg")
+
+```
+
+Photo by <a href="https://unsplash.com/@thetdmaster?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Thomas Denton</a> on <a href="https://unsplash.com/photos/penguin-standing-on-brown-rock-during-daytime-pjt4AzvfTh0?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+  
+  
