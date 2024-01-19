@@ -1,0 +1,322 @@
+---
+title: "Recurrent Events"
+description: |
+   When its no longer a one-off event
+author:
+  - name: Jasper Lok 
+    url: https://jasperlok.netlify.app/
+date: 01-19-2024
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 4
+    self_contained: false
+bibliography: ["ref.bib"]
+biblio-style: "apa"
+link-citations: true
+categories:
+  - Machine Learning
+  - Survival Model
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+pacman::p_load(captioner, knitr, kableExtra, tidyverse)
+
+knitr::opts_chunk$set(fig.retina = 3,                       
+                      echo = TRUE,                       
+                      eval = TRUE,                       
+                      message = FALSE,                       
+                      warning = FALSE,
+                      out.width="100%")
+
+```
+
+In this post, I will be exploring the survival techniques that can be used to analyze recurrent events.
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/repeat.jpg")
+
+```
+
+Photo by <a href="https://unsplash.com/@chriscurry92?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Chris Curry</a> on <a href="https://unsplash.com/photos/UJij-wz7w88?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+  
+
+# Why do we need separate techniques for recurrent events?
+
+The traditional survival assumes the event of interest can only happen once.
+
+However, some of the event of interests could happen more than once. For example, the cancer survivors could have relapsed.
+
+Therefore, in this post, I will be exploring how to analyze recurrent events.
+
+# Different types of recurrent techniques
+
+Below are the comparisons of the different models:
+
+```{r, echo = FALSE}
+recurEvent_df <- tibble(Techniques = c("Counting Process"
+                                       ,"Conditional Model A"
+                                       ,"Conditional Model B"
+                                       ,"Marginal Model")
+                        ,Assumptions = c("Assume each event is independent from one another and the u=subject continue contributing to the risk set as long as the subject is under observation at the time the event occurs"
+                                         ,"Assume its not possible to be at risk for a subsequent event without having experiened the previous event"
+                                         ,"Very useful for modelling the time between each recurrent event rather than the full time course of the recurrent event process"
+                                         ,"Consider each event separately and models all the available data for the specific event")
+                        ,Remarks = c("- Also known as 'Anderson-Gill model' <br/> 
+                                     - Extension of Cox model"
+                                     ,"- Also known as 'Prentice-Williams-Peterson counting process' or 'PWP-CP' <br/> 
+                                     - Similar to counting process, but stratfied by event <br/> 
+                                     - Use this if the order of the event is important"
+                                     ,"- Also known as 'Prentice-Williams-Peterson gap process' or 'PWP-GT' <br/>
+                                     - Similar to conditional model A, but start time is the study entry time <br/>
+                                     - Use this if the interest is time to next recurrent event"
+                                     ,"- Strata by event + cluster by id <br/>
+                                     - Use this if we want to know the events occuring at different order <br/>
+                                     - Strata by event + cluster by id
+                                     - Each observation must have equal number of rows"))
+
+
+recurEvent_df %>%
+  kbl(escape = FALSE) %>%
+  #kable_styling()
+  kable_paper("hover", full_width = F, html_font = "Cambria", font_size = 15)
+
+```
+
+
+With the different types of recurrent models, it can be quite confusing which models we should be using. 
+
+This author summarizes a few key considerations in guiding us in picking the appropriate models [@Ghilotti2018]:
+
+- Is the order of the events important?  
+
+- Does the risk of recurrent event change as the number of previous events increases?
+
+- Are we interested in the overall effect or in the effect for the $k^{th}$ event?
+
+- Are there many recurrences per subject?
+
+
+The authors of this article have provided how the codes would look like under the different models [@Guo2009].
+
+
+# What is the difference between recurrent survival analysis and Poisson regression?
+
+[@Yang2017] explained following are the differences:
+
+- Poisson regression is a fully parametric model, where Cox model is semi-parametric
+
+- If the survival time follows an exponential distribution, then Poisson regression is equivalent to a parametric survival model assuming exponential distribution
+
+- If survival time is not exponentially distributed and the event count does not follow a Poisson distribution, the inference made from Poisson regression may be biased
+
+The author also highlighted one should be careful when using Poisson regression to analyze recurrent events because of the strong parametric assumptions.
+
+# Demonstration
+
+In this demonstration, I will be using the bladder dataset in `survival` package for the exploration.
+
+
+## Setup the environment
+
+First, I will load the necessary packages into the environment.
+
+```{r}
+pacman::p_load(tidyverse, janitor, survival, survminer)
+
+```
+
+
+
+## Import Data
+
+First I will import the dataset into the environment. 
+
+I will also clean the column names, drop the columns I don't need and transform the columns to be the right format.
+
+```{r}
+data(cancer, package = "survival")
+
+df <- bladder1
+
+```
+
+
+```{r}
+df_1 <- df %>% 
+  mutate(event = if_else(recur == 0, 0, 1))
+
+```
+
+# Counting Process
+
+First, I will build a counting process. 
+
+Under this model, each event is assumed to be independent. 
+
+```{r}
+recur_fit <-
+  coxph(Surv(start, stop, event) ~ treatment + status + cluster(id)
+        ,data = df_1)
+
+```
+
+```{r}
+summary(recur_fit)
+
+```
+
+
+```{r}
+ggsurvplot(survfit(recur_fit, data = df_1))
+
+```
+
+
+# Conditional Model A
+
+Next, I will be building a conditional model A.
+
+Under this model, we assume that it is not possible to be at risk for subsequent event without experiencing the prior event.
+
+```{r}
+recur_fit_conditional_a <-
+  coxph(Surv(start, stop, event) ~ treatment + status + cluster(id) + strata(enum)
+        ,data = df_1)
+
+```
+
+
+```{r}
+summary(recur_fit_conditional_a)
+
+```
+
+```{r}
+ggsurvplot(survfit(recur_fit_conditional_a, data = df_1))
+
+```
+
+
+# Conditional Model B
+
+I will build a conditional model B.
+
+```{r}
+recur_fit_conditional_b <-
+  coxph(Surv(stop - start, event) ~ treatment + status + cluster(id) + strata(enum)
+        ,data = df_1)
+
+```
+
+
+```{r}
+summary(recur_fit_conditional_b)
+
+```
+
+```{r}
+ggsurvplot(survfit(recur_fit_conditional_b, data = df_1))
+
+```
+
+
+# Marginal model
+
+Lastly, I will build a marginal model.
+
+Under this approach, each event is assumed to be a separate process. 
+
+```{r}
+recur_fit_marginal <-
+  coxph(Surv(stop, event) ~ treatment + status + cluster(id) + strata(enum)
+        ,data = df_1)
+
+```
+
+```{r}
+summary(recur_fit_marginal)
+
+```
+
+```{r}
+ggsurvplot(survfit(recur_fit_marginal, data = df_1))
+
+```
+
+Hmmm, it seems like the coefficients of the different models are different. It made me curious how different they are.
+
+To compare the different coefficients, I will first compile the results.
+
+```{r}
+recurrent_model_coef_df <- 
+  bind_rows(
+    # counting process
+    data.frame(summary(recur_fit)$coefficients) %>% 
+      rownames_to_column("variable") %>% 
+      clean_names() %>% 
+      mutate(model = "counting process")
+    # conditional model A
+    ,data.frame(summary(recur_fit_conditional_a)$coefficients) %>% 
+      rownames_to_column("variable") %>% 
+      clean_names() %>% 
+      mutate(model = "conditional model a")
+    # conditional model B
+    ,data.frame(summary(recur_fit_conditional_b)$coefficients) %>% 
+      rownames_to_column("variable") %>% 
+      clean_names() %>% 
+      mutate(model = "conditional model b")
+    # marginal model
+    ,data.frame(summary(recur_fit_marginal)$coefficients) %>% 
+      rownames_to_column("variable") %>% 
+      clean_names() %>% 
+      mutate(model = "marginal model")
+  )
+
+```
+
+Then, I will compare the results by using `ggplot` functions.
+
+```{r}
+recurrent_model_coef_df %>% 
+  ggplot(aes(variable, coef, color = model)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = coef - robust_se
+                    ,ymax = coef + robust_se)) +
+  xlab("Variables") +
+  ylab("Coefficients") +
+  labs(title = "Coefficients from Different Recurring Models")
+
+```
+
+Over here, I hasve used the robust errors in calculating the confidence interval as robust error terms would have account for the correlation.
+
+This is because an individual could have multiple events and this measurement will account for the correlation.
+
+Based on the graph, we could see that the confidence interval range for the coefficients overlap with one another.
+
+
+# Conclusion
+
+That's all for the day!
+
+Thanks for reading the post until the end.
+
+Feel free to contact me through [email](mailto:jasper.jh.lok@gmail.com) or [LinkedIn](https://www.linkedin.com/in/jasper-l-13426232/) if you have any suggestions on future topics to share.
+
+
+Refer to this link for the [blog disclaimer](https://jasperlok.netlify.app/blog_disclaimer.html).
+
+
+Till next time, happy learning!
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/inhale_exhale.jpg")
+
+```
+
+Photo by <a href="https://unsplash.com/@brett_jordan?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Brett Jordan</a> on <a href="https://unsplash.com/photos/osYax0ZmZRk?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+  
+  
