@@ -1,0 +1,379 @@
+---
+title: "Causal Inference - Difference-in-differences"
+description: |
+   
+author:
+  - name: Jasper Lok 
+    url: https://jasperlok.netlify.app/
+date: 02-14-2024
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 4
+    self_contained: false
+bibliography: ["ref.bib"]
+biblio-style: "apa"
+link-citations: true
+categories:
+  - Machine Learning
+  - Causal Inference
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+pacman::p_load(captioner, knitr, kableExtra, tidyverse)
+
+knitr::opts_chunk$set(fig.retina = 3,                       
+                      echo = TRUE,                       
+                      eval = TRUE,                       
+                      message = FALSE,                       
+                      warning = FALSE,
+                      out.width="100%")
+
+```
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/trees.jpg")
+
+```
+
+Photo by [KATRIN
+BOLOVTSOVA](https://www.pexels.com/photo/different-sizes-of-christmas-tree-shaped-and-star-shaped-gingerbread-cookies-on-white-background-5702703/)
+
+As discussed in the previous post, RCTs might not be practical in some
+occasions.
+
+Hence, this is where other techniques can be used to study the causal
+effect.
+
+In this post, we will be looking at how does difference-in-differences
+work.
+
+# What is difference-in-differences?
+
+[@DS4PS] This method allows us to analyze the effect by taking into
+consideration:
+
+-   how the group mean changes before and after a policy intervention
+    and
+
+-   compare this change with the mean over time of a similar group which
+    did not undergo the treatment (i.e., control group)
+
+The formula of difference-in-differences can be written as follows:
+$$Y = \beta_0 + \beta_1 * treatment + \beta_2 * post + \beta_3 * treatment * post + \epsilon$$
+
+Where Y is the outcome variable
+
+The key is to check whether the interaction term is statistically
+significant. If the term is significant, it would indicate that the
+before and after treatment effect is indeed not zero.
+
+# Why use this method?
+
+This method is rather easy to understand.
+
+Also, we need not to care about the effect of confounding variables
+while using this method.
+
+# Important considerations
+
+To use such a method, we need to check the following assumptions:
+
+-   Parallel trends
+
+We can check this by using visual inspection.
+
+This can also be checked by running a difference-in-difference analysis
+on the earlier period.
+
+The interaction term should not be statistically significant, otherwise
+it would indicate that the parallel trend assumption is being violated.
+
+-   Treatment timing
+
+One issue to take note of is when the groups receive treatment as this
+could distort the estimate.
+
+To resolve this issue, we could use Goodman-Bacon decomposition to
+study, which I won't be exploring this method in this analysis.
+
+# Best practices for performing differences-in-differences analysis
+
+Below are some best practices when using difference-in-difference
+approach [@Fernandez]:
+
+-   Be sure outcome trends did not influence the allocation of the
+    treatment/intervention
+
+-   Acquire more data points before and after to test parallel trend
+    assumption
+
+-   Use linear probability model to help with interpretability
+
+-   Be sure to examine composition of population in
+    treatment/intervention and control groups before and after
+    intervention
+
+-   Use robust standard errors to account for autocorrelation between
+    pre/post in same individual
+
+-   Perform sub-analysis to see if intervention had similar/different
+    effect on components of the outcome
+
+# Demonstration
+
+In this post, I will be using the following packages to perform the
+analysis.
+
+```{r}
+pacman::p_load(tidyverse, haven, broom)
+
+```
+
+## Import Data
+
+I will be using the dataset shared by Professor Andrew Heiss on his
+teaching website. I have also referenced the materials and problem set
+he posted on the course website.
+
+Refer to [this
+link](https://evalsp23.classes.andrewheiss.com/assignment/04-problem-set.html)
+for the dataset.
+
+```{r}
+eitc <- read_stata("data/eitc.dta") %>% 
+  mutate(children_cat = case_when(
+    children == 0 ~ "0",
+    children == 1 ~ "1",
+    children >= 2 ~ "2+"
+  ))
+
+```
+
+This dataset comes from US Census's Current Population Survey. The
+objective of the analysis is to find out whether the number of
+employment for women increased after the implementation of Earned Income
+Tax Credit in 1993.
+
+Below are the definitions of the columns in the dataset:
+
+-   `state`: The woman's state of residence. The numbers are Census/CPS
+    state numbers: <http://unionstats.gsu.edu/State_Code.htm>
+-   `year`: The tax year
+-   `urate`: The unemployment rate in the woman's state of residence
+-   `children`: The number of children the woman has
+-   `nonwhite`: Binary variable indicating if the woman is not white (1
+    = Hispanic/Black)
+-   `finc`: The woman's family income in 1997 dollars
+-   `earn`: The woman's personal income in 1997 dollars
+-   `age`: The woman's age
+-   `ed`: The number of years of education the woman has
+-   `unearn`: The woman's family income minus her personal income, in
+    *thousands* of 1997 dollars
+
+```{r}
+eitc <- 
+  eitc %>% 
+  mutate(ind_any_kids = if_else(children_cat == "0", "no", "yes")
+         ,ind_after_1993 = if_else(year <= 1993, "no", "yes"))
+
+```
+
+## Difference-in-differences analysis
+
+### Check assumptions
+
+#### Similar
+
+```{r}
+eitc %>% 
+  ggplot(aes(children_cat, work)) +
+  stat_summary(geom = "pointrange", fun.data = "mean_se", fun.args = list(mult = 1.96))
+
+```
+
+#### Parallel Assumptions
+
+First, I will calculate the average employment by year and whether the
+women have any kids.
+
+```{r}
+eitc_by_year_kids <-
+  eitc %>% 
+  group_by(year, ind_any_kids) %>% 
+  summarise(count_total = n()
+            ,work_total = sum(work)) %>% 
+  ungroup() %>% 
+  mutate(work_avg = work_total/count_total)
+
+```
+
+##### Visual Inspect
+
+Then, I will visualize the result by using `ggplot` function.
+
+```{r}
+ggplot(eitc_by_year_kids, aes(year, work_avg, color = ind_any_kids)) +
+  geom_line() +
+  theme_minimal() +
+  geom_vline(xintercept = 1994) +
+  annotate("text",x = 1992.9,y = 0.45,label = "<---- Before Treatment") +
+  annotate("text",x = 1995,y = 0.45,label = "After Treatment ---->") +
+  xlab("Year") +
+  ylab("Average Employment") +
+  labs(title = "Average Employment by Year")
+
+```
+
+It seems like the pre-treatment trends between the two groups appear to
+be the same.
+
+This is important as this would allow us to isolate the effect of the
+tax credit in the later step.
+
+##### Check by using earlier data
+
+Another method to check the parallel trend pattern is to build a model
+based on earlier period data.
+
+If the parallel trend assumption holds, then the interaction term would
+not be statistically significant.
+
+With that, I will build a model for a period between 1991 and 1993.
+
+```{r}
+eitc_fake_treatment <- eitc %>% 
+  filter(year < 1994) %>% 
+  mutate(after_1991 = year >= 1992
+         ,ind_year_1991 = if_else(year <= 1991, "yes", "no"))
+
+model_fit_fake_treat <-
+  lm(work ~ ind_any_kids + ind_year_1991 + ind_any_kids * ind_year_1991
+     ,data = eitc_fake_treatment)
+
+tidy(model_fit_fake_treat)
+
+```
+
+As shown in the result above, the interaction term is not statistical
+significant, suggesting that the parallel term assumption is
+appropriate.
+
+Nevertheless, let's start by estimating the causal effect.
+
+### Manual Calculation on the Treatment Effect
+
+Next, I will compute the average employment under each group.
+
+```{r}
+eitc_manul_calc <-
+  eitc %>% 
+  group_by(ind_any_kids, ind_after_1993) %>% 
+  summarise(work_avg = mean(work))
+
+eitc_manul_calc
+
+```
+
+Then, I will estimate the causal effect.
+
+```{r}
+eitc_manul_calc[1,3] - eitc_manul_calc[3,3] - (eitc_manul_calc[2,3] - eitc_manul_calc[4,3])
+
+```
+
+### Estimated Effect by using Regression
+
+Instead of calculating manually, we could also fit a regression line to
+compute the causal effect.
+
+```{r}
+model_fit_simple <-
+  lm(work ~ ind_after_1993 + ind_any_kids + ind_after_1993 * ind_any_kids
+     ,data = eitc)
+
+tidy(model_fit_simple)
+
+```
+
+Ta-da! Now we have computed the causal effect.
+
+Note that the estimated causal effect is the same as the computed figure
+in the earlier step.
+
+There is statistical evidence that the tax credits increases the average
+employment for women with kids.
+
+### Control the effects of other variables
+
+We could take one step further to include other variables in the formula
+so that we could control their respective effects.
+
+```{r}
+model_fit_complex <-
+  lm(work ~ ind_after_1993 + ind_any_kids + ind_after_1993 * ind_any_kids + unearn + children + nonwhite + poly(age, 2) + poly(ed, 2)
+     ,data = eitc)
+
+tidy(model_fit_complex)
+
+```
+
+After controlling for other effects, the treatment effect is about 0.058
+now. The causal effect of tax credits remains statistically significant.
+
+### Varying Treatment Effect
+
+As shown in the data, the subject could have more than 1 kid.
+
+Therefore, we could split the "having kids indicator" into two so that
+we could estimate the causal effect of having one kid and more than one
+kid separately.
+
+```{r}
+eitc <-
+  eitc %>% 
+  mutate(ind_one_kid = if_else(children_cat == "1", "yes", "no")
+         ,ind_two_plus_kids = if_else(children_cat == "2+", "yes", "no"))
+
+
+model_fit_two_simple <-
+  lm(work ~ ind_after_1993 + ind_one_kid + ind_two_plus_kids + ind_after_1993 * ind_one_kid + ind_after_1993 * ind_two_plus_kids
+     ,data = eitc)
+
+tidy(model_fit_two_simple)
+
+```
+
+It seems like the treatment effect is greater for women with two or more
+kids.
+
+Also, the causal effect is only significant for the women with more than
+1 kid.
+
+# Conclusion
+
+That's all for the day!
+
+Thanks for reading the post until the end.
+
+Feel free to contact me through [email](mailto:jasper.jh.lok@gmail.com)
+or [LinkedIn](https://www.linkedin.com/in/jasper-l-13426232/) if you
+have any suggestions on future topics to share.
+
+Refer to this link for the [blog
+disclaimer](https://jasperlok.netlify.app/blog_disclaimer.html).
+
+Till next time, happy learning!
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/spices.jpg")
+
+```
+
+Photo by [Karolina
+Grabowska](https://www.pexels.com/photo/tablespoons-with-dry-condiments-spilled-on-black-background-4198713/)
