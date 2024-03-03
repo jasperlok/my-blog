@@ -1,0 +1,304 @@
+---
+title: "Causal Inference - Inverse Probability Weighting"
+description: |
+   
+author:
+  - name: Jasper Lok 
+    url: https://jasperlok.netlify.app/
+date: 03-03-2024
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 4
+    self_contained: false
+bibliography: ["ref.bib"]
+biblio-style: "apa"
+link-citations: true
+categories:
+  - Machine Learning
+  - Causal Inference
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+pacman::p_load(captioner, knitr, kableExtra, tidyverse)
+
+knitr::opts_chunk$set(fig.retina = 3,                       
+                      echo = TRUE,                       
+                      eval = TRUE,                       
+                      message = FALSE,                       
+                      warning = FALSE,
+                      out.width="100%")
+
+```
+
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/car.jpg")
+
+```
+
+Photo by <a href="https://unsplash.com/@paulo_zamora?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Paulo Zamora</a> on <a href="https://unsplash.com/photos/a-red-car-on-a-yellow-building-g2x0W_F6qYs?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+  
+
+In this post, we will continue our quest, i.e., exploring how to do causal inferencing.
+
+I will be looking at how to perform inverse probability weighting.
+
+
+# Inverse Probability Weighting
+
+Effectively inverse probability weighting gives higher weights to the data points that have inconsistent actual and predicted values.
+
+For example, if the data point is predicted as a low propensity of getting treatment, but the profile did get treatment, the inverse probability weighting will assign a higher weight to this data point.
+
+In other words, "weird" observations will get a higher weight [@Heiss7].
+
+
+# Issues with the standard error and confidence interval
+
+[@HeissIPW] explained that the inherent uncertainty in the estimation of the propensity scores and inverse probability scores are not being "passed" when we estimate the causal inference. Hence, this resulted in an overly narrow standard error and confidence interval.
+
+As such, we will be using bootstrapping to fix this issue.
+
+
+# Demonstration
+
+In this post, I will be using both base R `glm` function and `tidymodels` package to build Poisson regression.
+
+```{r}
+pacman::p_load(tidyverse, tidymodels, broom, patchwork)
+
+```
+
+
+
+## Import Data
+
+First, I will import the data into the environment.
+
+```{r}
+barrels_obs <- read_csv("data/barrels_observational.csv") %>%
+  # This makes it so "No barrel" is the reference category
+  mutate(barrel = fct_relevel(barrel, "No barrel"))
+
+```
+
+
+## Naive Model
+
+For comparison purposes later, I will build a naive model (i.e., not adjusting for any effects from the confounders).
+
+```{r}
+model_naive <-
+  lm(water_bill ~ barrel
+     ,data = barrels_obs)
+
+tidy(model_naive)
+
+```
+
+As shown above, the barrel effect is estimated to be 29 from the model. This suggests that the water bill will be reduced by $29 after using the barrel.
+
+## Inverse Probability Weighting
+
+For simplicity, I will skip the DAG and will follow the recommended inverse probability model stated in problem set 3.
+
+I will first build the propensity model.
+
+```{r}
+model_logit <-
+  glm(barrel ~ yard_size + home_garden + attitude_env + temperature
+      ,data = barrels_obs
+      ,family = binomial(link = "logit"))
+
+tidy(model_logit, exponentiate = TRUE)
+
+```
+Then, I will generate the propensity for the model.
+
+```{r}
+barrels_prob <- 
+  augment_columns(model_logit
+                  ,barrels_obs
+                  ,type.predict = "response") %>% 
+  rename(propensity = .fitted)
+
+barrels_prob
+
+```
+
+Once that is done, I will calculate the inverse probability weighting.
+
+```{r}
+barrels_ipw <-
+  barrels_prob %>% 
+  mutate(ipw = (barrel_num / propensity) + ((1 - barrel_num) / (1 - propensity)))
+
+barrels_ipw
+
+```
+
+Finally, I will feed the info into the formula to estimate the causal effect.
+
+```{r}
+model_ipw <-
+  lm(water_bill ~ barrel
+     ,data = barrels_ipw
+     ,weights = ipw)
+
+tidy(model_ipw)
+
+```
+
+As shown in the result above, the barrel effect is estimated to be 39, instead of 29 from the naive model after we adjust for the confounder effects.
+
+## Check the distribution of the inverse probability weights
+
+As suggested by Prof Heiss in his [IPW example](https://evalsp23.classes.andrewheiss.com/example/matching-ipw.html#step-1-generate-propensity-scores), it is important to check the distribution of the inverse probability weighting.
+
+```{r}
+barrels_ipw %>% 
+  ggplot(aes(ipw)) +
+  geom_histogram() +
+  xlab("Inverse Probability Weighting") +
+  labs(title = "Distribution of Inverse Probability Weighting") +
+  theme_minimal()
+
+```
+
+As shown in the histogram, there are a few extreme weights.
+
+We can either discard those data points with too high IPW or cap the high IPW to a lower figure.
+
+Note that its no universal rule of thumb on what should be the cap of the IPW. I will use 10 in this demonstration.
+
+```{r}
+barrels_ipw <- 
+  barrels_ipw %>% 
+  mutate(ipw_capped = if_else(ipw > 10, 10, ipw))
+
+model_ipw_capped <-
+  lm(water_bill ~ barrel
+     ,data = barrels_ipw
+     ,weights = ipw_capped)
+
+tidy(model_ipw_capped)
+
+```
+
+The barrel effect has decreased slightly after capping the IPW.
+
+Next, I will compile all the model results into one single table so that it is easier to compare them side by side.
+
+```{r}
+modelsummary::modelsummary(list("Naive Model" = model_naive
+                                ,"IPW" = model_ipw
+                                ,"IPW with Cap" = model_ipw_capped))
+
+```
+
+## Bootstrapping
+
+As mentioned in the earlier section, one of the issues with IPW is the calculated standard error is understated and the confidence interval is too narrow.
+
+As such, we will use `bootstrap` function to estimate the standard error and confidence interval.
+
+First, I will define the model fitting function. I have taken the code from Prof Heiss's [IPW example](https://evalsp23.classes.andrewheiss.com/example/matching-ipw.html).
+
+```{r}
+fit_one_ipw <- function(split) {
+  # Work with just a sampled subset of the full data
+  current_data <- analysis(split)
+  
+  # Fit propensity score model
+  model_prob <- glm(barrel ~ yard_size + home_garden + attitude_env + temperature,
+                   data = current_data,
+                   family = binomial(link = "logit"))
+
+  # Calculate inverse probability weights
+  df_ipw <- augment_columns(model_prob,
+                             current_data,
+                             type.predict = "response") %>%
+    mutate(ipw = (barrel_num / .fitted) + ((1 - barrel_num) / (1 - .fitted)))
+  
+  # Fit outcome model with IPWs 
+  model_ipw <- lm(water_bill ~ barrel,
+                      data = df_ipw,
+                      weights = ipw)
+  
+  # Return a tidied version of the model results
+  return(tidy(model_ipw))
+}
+
+```
+
+
+Then, I will pass the info into the `bootstrap` function to compute the necessary results.
+
+```{r}
+set.seed(1234)
+
+ipw_bootstrap_df <-
+  bootstraps(barrels_obs, 1000, apparent = TRUE) %>% 
+  mutate(results = map(splits, fit_one_ipw))
+
+```
+
+As the results are nested, so we will need to `unnest` the results to see the values.
+
+```{r}
+ipw_bootstrap_df %>% 
+  unnest(results)
+
+```
+
+Finally, I will filter the results by looking at the barrel estimate and compute the mean and standard error.
+
+```{r}
+ipw_bootstrap_df %>% 
+  unnest(results) %>% 
+  filter(term == "barrelBarrel") %>%
+  summarise(avg_mean = mean(estimate)
+            ,avg_se = sqrt(mean(std.error ^ 2) + var(estimate)))
+
+```
+
+To extract the confiddence interval, we will use `int_t` function from `rsample` package.
+
+```{r}
+ipw_bootstrap_df %>% 
+  int_t(results) %>% 
+  filter(term == "barrelBarrel")
+
+```
+
+Voilà, that is how we obtain the estimated standard error and confidence interval.
+
+
+
+# Conclusion
+
+That's all for the day!
+
+Thanks for reading the post until the end.
+
+Feel free to contact me through [email](mailto:jasper.jh.lok@gmail.com) or [LinkedIn](https://www.linkedin.com/in/jasper-l-13426232/) if you have any suggestions on future topics to share.
+
+Refer to this link for the [blog disclaimer](https://jasperlok.netlify.app/blog_disclaimer.html).
+
+Till next time, happy learning!
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/cat.jpg")
+
+```
+
+Photo by [Pixabay](https://www.pexels.com/photo/close-up-of-cat-248280/)
+  
+  
+  
+
+
+
