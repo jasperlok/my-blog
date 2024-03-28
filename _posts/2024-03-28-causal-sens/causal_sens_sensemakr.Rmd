@@ -1,0 +1,248 @@
+---
+title: "Causal Inference - Sensitivity Testing (Sensemakr)"
+description: |
+   
+author:
+  - name: Jasper Lok 
+    url: https://jasperlok.netlify.app/
+date: 03-28-2024
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 4
+    self_contained: false
+bibliography: ["ref.bib"]
+biblio-style: "apa"
+link-citations: true
+categories:
+  - Machine Learning
+  - Causal Inference
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+pacman::p_load(captioner, knitr, kableExtra, tidyverse)
+
+knitr::opts_chunk$set(fig.retina = 3,                       
+                      echo = TRUE,                       
+                      eval = TRUE,                       
+                      message = FALSE,                       
+                      warning = FALSE,
+                      out.width="100%")
+
+```
+
+
+```{r wrap-hook, echo = FALSE}
+hook_output = knit_hooks$get('output')
+knit_hooks$set(output = function(x, options) {
+  # this hook is used only when the linewidth option is not NULL
+  if (!is.null(n <- options$linewidth)) {
+    x = xfun::split_lines(x)
+    # any lines wider than n should be wrapped
+    if (any(nchar(x) > n)) x = strwrap(x, width = n)
+    x = paste(x, collapse = '\n')
+  }
+  hook_output(x, options)
+})
+```
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/typing.jpg")
+
+```
+
+Photo by [Mojtaba Khosravi](https://www.pexels.com/photo/unsaid-unwritten-15781208/)
+
+
+# Sensitivity Testing
+
+Once we measure the causal effect, often we will perform sensitivity testing to check how sensitive the results might be if we miss out on any important confounders from the analysis.
+
+In this post, I will be using `sensemakr` to perform sensitivity testing.
+
+I will be also referring to this [post](https://evalsp23.classes.andrewheiss.com/example/confounding-sensitivity.html#sensitivity-analysis-with-sensemakr) on how to perform sensitivity testing.
+
+# `sensemakr` package
+
+This method measures how much variation in treatment and outcome might be explained by adding an unknown variable.
+
+This method would only work for regression models.
+
+
+# Partial R square
+
+Another important concept to introduce in this post is **Partial R square** (a.k.a. coefficient of partial determination).
+
+It shows that the percentage of the unexplained by selected variable can be explained all remaining variables.
+
+$$R^{2}_{partial} = \frac{SSE(reduced) - SSE(full)}{SSE(reduced)}$$
+
+I found [this article](https://online.stat.psu.edu/stat462/node/138/) explains the concept quite clearly.
+
+
+# Demonstration
+
+In this post, I will be using both [`sensemakr`](https://carloscinelli.com/sensemakr/articles/sensemakr.html) and [`rsq`](https://cran.r-project.org/web/packages/rsq/rsq.pdf) packages to perform sensitivity testing.
+
+```{r}
+pacman::p_load(tidyverse, tidymodels, broom, sensemakr, rsq)
+
+```
+
+
+The downside of this approach is it only works on models with $R^2$. Nevertheless, it is easy to understand, so let's look at how it works!
+
+
+## Import Data
+
+First, I will import the data into the environment.
+
+```{r}
+barrels_obs <- read_csv("data/barrels_observational.csv") %>%
+  # This makes it so "No barrel" is the reference category
+  mutate(barrel = fct_relevel(barrel, "No barrel"))
+
+```
+
+
+
+## Partial R squared
+
+First, I will be using `rsq.partial` function to check how many variations each variable explains. 
+
+```{r}
+model_barrel <-
+  lm(water_bill ~ barrel_num + yard_size + home_garden + attitude_env + temperature
+     ,data = barrels_obs)
+
+glance(model_barrel)
+
+rsq.partial(model_barrel)
+
+```
+
+Note that the $R^2$ calculated for each component would not add up the $R^2$ from the fitted model as explained under this [StackExchange post](https://stats.stackexchange.com/questions/155497/should-partial-r2-add-up-to-total-r2-in-multiple-regression/155508#155508).
+
+
+From the results, we noted that the `barrel` has the highest partial $R^2$. Interestingly, the $R^2$ of `yard_size` is very close to $R^2$ under `barrel` as well.
+
+
+## Sensitivity Testing
+
+Next, I will use `sensemakr` function to perform the sensitivity testing.
+
+To do so, I will pass the fitted model, treatment variable (which has to be in numeric form), a benchmark covariate, and kd (i.e., the hypothetical strength of the unknown covariate relative to the benchmark covariate).
+
+For the choice of benchmark covariate, we will choose a covariate that has a substantial impact on the treatment and outcome already. 
+
+```{r}
+barrel_sensitivity_yard <-
+  sensemakr(model = model_barrel
+            ,treatment = "barrel_num"
+            ,benchmark = "yard_size"
+            ,kd = c(1, 2, 3))
+
+barrel_sensitivity_yard
+
+```
+
+Following are the explanations for the results under the `Sensitivity Statistics` section:
+
+- The partial $R^2$ of treatment with outcome is the bare minimum strength of confounders required to explain away the effect
+
+- Robustness value refers to the amount of residual variation that could be explained by the unmeasured confounders to bring down the effect to 0
+
+- The third line is just a robustness value that would make it so the 95% confidence interval of the effect includes 0
+
+
+Alternatively, we could pass the object into the `summary` function as shown below. The generated result will contain a bit more description of what the result means.
+
+```{r, linewidth = 70}
+summary(barrel_sensitivity_yard)
+
+```
+
+We could also `ovb_minimal_reporting` function to summarise the results into a nice table. 
+
+
+If we want to use a categorical variable as the benchmark, we will need to use the dummy variable as the benchmark as the `sensemakr` function can only use the covariates in the fitted model to run the sensitivity testing.
+
+```{r}
+barrel_sensitivity_home_garden <-
+  sensemakr(model = model_barrel
+            ,treatment = "barrel_num"
+            ,benchmark = "home_gardenNo home garden"
+            ,kd = c(1, 2, 3))
+
+barrel_sensitivity_home_garden
+
+```
+
+# Now let's try to remove one significant variable
+
+If we were to rerun the inverse probability weighting to estimate the causal effect of `barrel` after removing one of the important covariates (i.e., `temperature` in this example), we would see that the estimated effect is outside of the confidence interval in our [previous post]().
+
+```{r}
+# fit the propensity model
+model_logit <-
+  glm(barrel ~ yard_size + home_garden + attitude_env
+      ,data = barrels_obs
+      ,family = binomial(link = "logit"))
+
+# calculate the inverse probability weighting
+barrels_ipw <- 
+  augment_columns(model_logit
+                  ,barrels_obs
+                  ,type.predict = "response") %>% 
+  rename(propensity = .fitted) %>% 
+  mutate(ipw = (barrel_num / propensity) + ((1 - barrel_num) / (1 - propensity)))
+
+# estimate the effect
+model_ipw <-
+  lm(water_bill ~ barrel
+     ,data = barrels_ipw
+     ,weights = ipw)
+
+model_ipw
+
+```
+
+If we were to rerun the sensitivity testing, we would see that the bare minimum strength is estimated to be 0.369, whereas the partial $R^2$ for temperature is estimated to be around 0.424.
+
+Hence, the estimated effect of `barrel` of the revised model is out of the confidence interval estimated in the [previous post]().
+
+```{r}
+barrel_sensitivity_yard_updated <-
+  sensemakr(model = lm(water_bill ~ barrel_num + yard_size + home_garden + attitude_env, data = barrels_obs)
+            ,treatment = "barrel_num"
+            ,benchmark = "yard_size"
+            ,kd = c(1, 2, 3))
+
+barrel_sensitivity_yard_updated
+
+```
+
+
+
+# Conclusion
+
+That's all for the day!
+
+Thanks for reading the post until the end.
+
+Feel free to contact me through [email](mailto:jasper.jh.lok@gmail.com) or [LinkedIn](https://www.linkedin.com/in/jasper-l-13426232/) if you have any suggestions on future topics to share.
+
+Refer to this link for the [blog disclaimer](https://jasperlok.netlify.app/blog_disclaimer.html).
+
+Till next time, happy learning!
+
+![](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaWpndTh4eWp5YXBvbmwxemU2cDF1a3VkNGdvMG05ajRoYXlodG41eiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/MqHkqekNL811K/giphy.gif)
+
+*Taken from giphy*
+  
+  
+
+
+
