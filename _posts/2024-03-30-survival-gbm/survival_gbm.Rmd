@@ -1,0 +1,304 @@
+---
+title: "Survival on Gradient Boosting Regression Model"
+description: |
+   Learn from the mistake!
+author:
+  - name: Jasper Lok 
+    url: https://jasperlok.netlify.app/
+date: 03-30-2024
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 4
+    self_contained: false
+link-citations: true
+categories:
+  - Machine Learning
+  - Survival Model
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+pacman::p_load(knitr, kableExtra, tidyverse)
+
+knitr::opts_chunk$set(fig.retina = 3,                       
+                      echo = TRUE,                       
+                      eval = TRUE,                       
+                      message = FALSE,                       
+                      warning = FALSE,
+                      out.width="100%")
+
+```
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/coffee.jpg")
+
+```
+
+Photo by <a href="https://unsplash.com/@nixcreative?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Tyler Nix</a> on <a href="https://unsplash.com/photos/person-pouring-liquid-on-drinking-glass-yKalliZTaQU?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+
+Previously I have explored how to perform survival analysis.
+
+In this post, I will continue the quest by using GBM models to perform survival analysis.
+
+# Demonstration
+
+In this demonstration, I will be using this [bank dataset](https://www.kaggle.com/datasets/shrutimechlearn/churn-modelling) from Kaggle.
+
+## Setup the environment
+
+First, I will load the necessary packages into the environment.
+
+```{r}
+pacman::p_load(tidyverse, lubridate, janitor, survival, survminer, censored, gbm, Hmisc)
+
+```
+
+## Import Data
+
+First I will import the dataset into the environment.
+
+I will also clean the column names, drop the columns I don't need, and transform the columns to be the right format.
+
+```{r}
+df <- read_csv("https://raw.githubusercontent.com/jasperlok/my-blog/master/_posts/2022-09-10-kaplan-meier/data/Churn_Modelling.csv") %>%
+  clean_names() %>%
+  select(-c(row_number, customer_id, surname)) %>%
+  filter(tenure > 0) %>% 
+  mutate(across(!where(is.numeric), as.factor))
+
+```
+
+Note that GBM algorithm is unable to accept character variables, hence I have converted all the characters into factors.
+
+Now, let's start building the GBM model!
+
+## Model Building
+
+For producibility purpose, I will specify the random seed.
+
+```{r}
+set.seed(1234)
+
+gbm_fit <-
+  gbm(Surv(tenure, exited) ~ .
+      ,distribution = "coxph"
+      ,data = df
+      ,interaction.depth = 2
+      ,n.trees = 1000
+      ,cv.folds = 5
+      ,n.cores = 5)
+
+```
+
+Note that I have specified the `interaction.depth` to be 2. This is to allow interaction terms within the model, otherwise the algorithm will assume an additive model as explained in the GBM documentation.
+
+I have also specified `cv.folds` and `n.cores` to use multiple cores to perform cross-validation.
+
+If the distribution is not specified, the algorithm will take a guess what is the appropriate distribution for this problem.
+
+```{r}
+gbm_fit_noDist <-
+  gbm(Surv(tenure, exited) ~ .
+      ,data = df
+      ,interaction.depth = 2
+      ,n.trees = 100
+      ,cv.folds = 5
+      ,n.cores = 5)
+
+```
+
+Nevertheless, let's go back to the original fitted model.
+
+```{r}
+gbm_fit
+
+```
+
+From the result, we can see which iteration gave the best result and how many variables were kept in the final model.
+
+We can see that one of the variables is not significant.
+
+Alternatively, we will get the same result if we pass the fitted object into `print` function.
+
+```{r}
+print(gbm_fit)
+
+```
+
+## Model Performance
+
+One of the common methods in measuring how good is the fitted model is to calculate the C Index.
+
+Before doing that, we need to generate the predicted values.
+
+```{r}
+gbm_predict <-
+  predict(gbm_fit, df)
+
+```
+
+Then, we will use `rcorr.cens` function from `Hmisc` package to compute the C Index.
+
+```{r}
+rcorr.cens(-gbm_predict, Surv(df$tenure, df$exited))["C Index"]
+
+```
+
+## Cross Validation
+
+```{r}
+best_iter <- gbm.perf(gbm_fit, method = 'cv')
+best_iter
+
+```
+
+The plot shows us the number for the best iteration, which is the blue dotted line.
+
+## Interaction
+
+`gbm` package also has a function to help us estimate the strength of the interaction effect.
+
+To do this, we will specify which interaction effect we would like to estimate.
+
+For example, I would like to estimate the interaction effect between age and geography.
+
+```{r}
+interact.gbm(gbm_fit, df, i.var = c("age", "geography"))
+
+```
+
+Alternatively, we would run a loop to estimate the interaction effects of all the variables.
+
+```{r}
+var_list <-
+  df %>% 
+  select(-c(tenure
+            ,exited)) %>% 
+  names()
+
+interact_result <-
+  tibble(variable_1 = character()
+         ,variable_2 = character()
+         ,interaction = numeric())
+
+for(i in var_list){
+  for(j in var_list){
+    if(i != j){
+      interact_result <-
+        interact_result %>% 
+        add_row(
+          variable_1 = i
+          ,variable_2 = j
+          ,interaction = interact.gbm(gbm_fit
+                                      ,df
+                                      ,i.var = c(i, j))
+        )
+    }
+  }
+}
+
+interact_result %>% 
+  ggplot(aes(variable_1, variable_2, fill = interaction)) +
+  geom_tile() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+## Variable Importance
+
+Another awesome feature of `gbm` package is the algorithm will estimate variable importance of all the variables.
+
+There are a few methods to obtain the variable importance results.
+
+### Method 1: Use `summary` function
+
+```{r}
+summary(gbm_fit)
+
+```
+
+### Method 2: Use `relative.influence` function
+
+```{r}
+relative.influence(gbm_fit)
+
+```
+
+Personally, I prefer method 2 as this would allow me to pass the result to `ggplot` function and visualize the result as shown below.
+
+```{r}
+as.data.frame(relative.influence(gbm_fit)) %>%
+  rownames_to_column("variable") %>% 
+  rename(variable_importance = `relative.influence(gbm_fit)`) %>% 
+  ggplot(aes(variable_importance, reorder(variable, variable_importance))) +
+  geom_col()
+  
+```
+
+## Partial Dependence
+
+`gbm` package also has a function to help the users to generate a partial dependence plot to understand the marginal effect of the variable.
+
+```{r}
+plot(gbm_fit
+     ,i.var = "age")
+
+```
+
+However, I prefer using `ggplot` function to plot the chart.
+
+Hence, I will specify `return.grid` to be TRUE so that the function will return the estimated results.
+
+```{r}
+plot(gbm_fit
+     ,i.var = "age"
+     ,return.grid = TRUE) %>% 
+  ggplot(aes(age, y)) +
+  geom_line() +
+  ylab("") +
+  labs(title = "Partial Dependence Plot for Age") +
+  theme_minimal() +
+  theme(axis.text.y = element_blank()
+        ,axis.ticks.y = element_blank())
+
+```
+
+If we would like to perform partial dependence on more than one variable, we just need to specify that in the `i.var` argument.
+
+```{r}
+# partial dependence of two variables
+plot(gbm_fit
+     ,i.var = c("balance", "geography")
+     ,return.grid = TRUE) %>% 
+  ggplot(aes(balance, y, color = geography)) +
+  geom_line() +
+  ylab("") +
+  labs(title = "Partial Dependence Plot for Age") +
+  theme_minimal() +
+  theme(axis.text.y = element_blank()
+        ,axis.ticks.y = element_blank())
+
+```
+
+Viola! That is how GBM can be used to perform survival analysis.
+
+# Conclusion
+
+That's all for the day!
+
+Thanks for reading the post until the end.
+
+Feel free to contact me through [email](mailto:jasper.jh.lok@gmail.com) or [LinkedIn](https://www.linkedin.com/in/jasper-l-13426232/) if you have any suggestions on future topics to share.
+
+Refer to this link for the [blog disclaimer](https://jasperlok.netlify.app/blog_disclaimer.html).
+
+Till next time, happy learning!
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/mistake.jpg")
+
+```
+
+Photo by [RDNE Stock project](https://www.pexels.com/photo/an-encouragement-quotes-on-brown-paper-8363153/)
