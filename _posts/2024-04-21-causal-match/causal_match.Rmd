@@ -1,0 +1,224 @@
+---
+title: "Causal Inference - Match"
+description: |
+   Are we similar?
+author:
+  - name: Jasper Lok 
+    url: https://jasperlok.netlify.app/
+date: 04-21-2024
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 4
+    self_contained: false
+bibliography: ["ref.bib"]
+biblio-style: "apa"
+link-citations: true
+categories:
+  - Machine Learning
+  - Causal Inference
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+pacman::p_load(captioner, knitr, kableExtra, tidyverse)
+
+knitr::opts_chunk$set(fig.retina = 3,                       
+                      echo = TRUE,                       
+                      eval = TRUE,                       
+                      message = FALSE,                       
+                      warning = FALSE,
+                      out.width="100%")
+
+```
+
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/matching.jpg")
+
+```
+
+Photo by <a href="https://unsplash.com/@anniespratt?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Annie Spratt</a> on <a href="https://unsplash.com/photos/top-view-of-green-succulent-plants-8mqOw4DBBSg?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+  
+This is to continue my journey to learn more on causal inference.
+
+In this post, I will be looking at how to perform matching.
+
+
+# What is matching?
+
+The objective of matching is to simulate the randomised controlled trials by using existing info, so we could remove the confounding effect.
+
+To do so, the algorithm will "find" the best closest match for the treated from the untreated group.
+
+There are many methods to find the "matching" group.
+
+In general, the steps of matching are:
+
+- Preprocessing
+
+- Estimation
+
+
+# Issues with matching
+
+The downside to matching is we will have to throw away a sizable chunk of the data - anything that's unmatched doesn't get included in the final matched data [@Heiss2023].
+
+
+
+# Demonstration
+
+In this post, I will be using both base R `glm` function and `tidymodels` package to build Poisson regression.
+
+```{r}
+pacman::p_load(tidyverse, tidymodels, janitor, MatchIt, halfmoon)
+
+```
+
+
+
+## Import Data
+
+First, I will import the data into the environment.
+
+```{r}
+df <- read_csv("https://raw.githubusercontent.com/jasperlok/my-blog/master/_posts/2022-03-12-marketbasket/data/general_data.csv") %>%
+  # drop the columns we don't need
+  dplyr::select(-c(EmployeeCount, StandardHours, EmployeeID)) %>%
+  clean_names() %>% 
+  # impute the missing values with the mean values
+  mutate(
+    num_companies_worked = case_when(
+      is.na(num_companies_worked) ~ mean(num_companies_worked, na.rm = TRUE),
+      TRUE ~ num_companies_worked),
+    total_working_years = case_when(
+      is.na(total_working_years) ~ mean(total_working_years, na.rm = TRUE),
+      TRUE ~ total_working_years),
+    ind_promoted_in_last1Yr = if_else(years_since_last_promotion <= 1, "yes", "no"),
+    ind_promoted_in_last1Yr = as.factor(ind_promoted_in_last1Yr),
+    attrition = as.factor(attrition),
+    job_level = as.factor(job_level)
+    ) %>%
+  droplevels()
+
+```
+
+
+### Matching
+
+Next, we will perform covariate balancing.
+
+```{r}
+m_outcome <-
+  matchit(ind_promoted_in_last1Yr ~ age + gender + department
+          ,data = df
+          ,replace = TRUE)
+
+```
+
+The default matching method is nearest neighbor matching.
+
+Refer to the [documentation](https://cran.r-project.org/web/packages/MatchIt/MatchIt.pdf) for the different matching method.
+
+Note that I also allow the data points to be repeatably matched.
+
+```{r}
+m_outcome
+
+```
+Based on the result, we could see that the default distance calculation is glm with logit function. We could change the distance calculation.
+
+For the estimand, it depends on the questions we would like to answer.
+
+Following are some materials that explain how to choose estimands:
+
+- https://www.r-causal.org/chapters/11-estimands.html#choosing-estimands
+
+- https://www.andrewheiss.com/blog/2024/03/21/demystifying-ate-att-atu/
+
+
+```{r}
+summary(m_outcome)
+
+```
+
+Below are some of the important definitions of the terms in the result above [@Greifer2023]:
+
+- **Standardized mean difference:** Difference in the means of each covariate between treatment groups standardized by a standardization factor so that it is on the same scale for all covariates
+
+    - Recommended thresholds: 0.1 & 0.05
+
+- **Variance ratio:** Ratio of the variance of a covariate in one group to that in the other
+
+    - Close to 1 means good balance, implying the variance of the samples are similar
+    
+- **Empirical CDF statistics:** Difference in the empirical cumulative distribution functions (eCDFs) of each covariate between groups allow assessment of imbalance across the entire covariate distribution of that covariate rather than just its mean or variance.
+
+    - Maximum eCDF difference is also known as "Kolmogorov-Smirnov statistic"
+
+### Plotting
+
+#### Love Plot
+
+We can also pass the `matchit` object into `plot` function to create the Love plot of the covariates.
+
+```{r}
+plot(summary(m_outcome))
+
+```
+
+The solid line and dotted line represents acceptable and good balance respectively.
+
+After matching, the absolute standardized mean difference for age have reduced below the both thresholds.
+
+The absolute standardized mean difference for gender increases after matching, but they are still below the 0.1 threshold. Hence for simplicity, I will leave it as it is.
+
+Alternatively, below is how to visualize the result by using `ggplot` function.
+
+```{r}
+as.data.frame(summary(m_outcome)$sum.all) %>% 
+  rownames_to_column("variable") %>% 
+  clean_names() %>% 
+  rename_at(vars(everything(), -c(variable)), ~paste0(., "_all")) %>% 
+  left_join(
+    as.data.frame(summary(m_outcome)$sum.matched) %>%
+      rownames_to_column("variable") %>%
+      clean_names() %>%
+      rename_at(vars(everything(), -c(variable)), ~paste0(., "_matched"))
+  ) %>% 
+  ggplot(aes(abs(std_mean_diff_all), variable)) +
+  geom_point(aes(color = "red")) + 
+  geom_point(aes(abs(std_mean_diff_matched), variable)) +
+  geom_vline(xintercept = 0.1) +
+  geom_vline(xintercept = 0.05, linetype = "dotted")
+
+
+```
+
+
+
+# Conclusion
+
+That's all for the day!
+
+Thanks for reading the post until the end.
+
+Feel free to contact me through [email](mailto:jasper.jh.lok@gmail.com) or [LinkedIn](https://www.linkedin.com/in/jasper-l-13426232/) if you have any suggestions on future topics to share.
+
+Refer to this link for the [blog disclaimer](https://jasperlok.netlify.app/blog_disclaimer.html).
+
+Till next time, happy learning!
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/color_pencil.jpg")
+
+```
+
+Photo by <a href="https://unsplash.com/@jessbaileydesigns?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Jess Bailey</a> on <a href="https://unsplash.com/photos/colored-pencil-lined-up-on-top-of-white-surface-l3N9Q27zULw?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+  
+  
+  
+
+
+
