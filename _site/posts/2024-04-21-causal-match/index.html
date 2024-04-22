@@ -142,7 +142,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["causal_match_files/figure-html5/unnamed-chunk-7-1.png","causal_match_files/figure-html5/unnamed-chunk-8-1.png","image/color_pencil.jpg","image/matching.jpg","ref.bib"]}
+  {"type":"character","attributes":{},"value":["causal_match_files/anchor/anchor.min.js","causal_match_files/bowser/bowser.min.js","causal_match_files/distill/template.v2.js","causal_match_files/figure-html5/unnamed-chunk-7-1.png","causal_match_files/figure-html5/unnamed-chunk-8-1.png","causal_match_files/header-attrs/header-attrs.js","causal_match_files/jquery/jquery-3.6.0.js","causal_match_files/jquery/jquery-3.6.0.min.js","causal_match_files/jquery/jquery-3.6.0.min.map","causal_match_files/popper/popper.min.js","causal_match_files/tippy/tippy-bundle.umd.min.js","causal_match_files/tippy/tippy-light-border.css","causal_match_files/tippy/tippy.css","causal_match_files/tippy/tippy.umd.min.js","causal_match_files/webcomponents/webcomponents.js","image/color_pencil.jpg","image/matching.jpg","ref.bib"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
 <meta name="distill:offset" content="../.."/>
@@ -2219,10 +2219,10 @@ document.addEventListener('DOMContentLoaded', function() {
 <p><img src="image/matching.jpg" width="100%" /></p>
 </div>
 <p>Photo by <a href="https://unsplash.com/@anniespratt?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Annie Spratt</a> on <a href="https://unsplash.com/photos/top-view-of-green-succulent-plants-8mqOw4DBBSg?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a></p>
-<p>This is to continue my journey to learn more on causal inference.</p>
+<p>This is to continue my journey to learn more about causal inference.</p>
 <p>In this post, I will be looking at how to perform matching.</p>
 <h1 id="what-is-matching">What is matching?</h1>
-<p>The objective of matching is to simulate the randomised controlled trials by using existing info, so we could remove the confounding effect.</p>
+<p>The objective of matching is to simulate the randomized controlled trials by using existing info, so we could remove the confounding effect.</p>
 <p>To do so, the algorithm will “find” the best closest match for the treated from the untreated group.</p>
 <p>There are many methods to find the “matching” group.</p>
 <p>In general, the steps of matching are:</p>
@@ -2274,7 +2274,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 </div>
 <p>The default matching method is nearest neighbor matching.</p>
-<p>Refer to the <a href="https://cran.r-project.org/web/packages/MatchIt/MatchIt.pdf">documentation</a> for the different matching method.</p>
+<p>Refer to the <a href="https://cran.r-project.org/web/packages/MatchIt/MatchIt.pdf">documentation</a> for the different matching methods.</p>
 <p>Note that I also allow the data points to be repeatably matched.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
@@ -2372,11 +2372,11 @@ Discarded        0.         0</code></pre>
 </ul></li>
 <li><p><strong>Variance ratio:</strong> Ratio of the variance of a covariate in one group to that in the other</p>
 <ul>
-<li>Close to 1 means good balance, implying the variance of the samples are similar</li>
+<li>Close to 1 means good balance, implying the variance of the samples is similar</li>
 </ul></li>
-<li><p><strong>Empirical CDF statistics:</strong> Difference in the empirical cumulative distribution functions (eCDFs) of each covariate between groups allow assessment of imbalance across the entire covariate distribution of that covariate rather than just its mean or variance.</p>
+<li><p><strong>Empirical CDF statistics:</strong> Difference in the empirical cumulative distribution functions (eCDFs) of each covariate between groups allows assessment of imbalance across the entire covariate distribution of that covariate rather than just it is mean or variance.</p>
 <ul>
-<li>Maximum eCDF difference is also known as “Kolmogorov-Smirnov statistic”</li>
+<li>Maximum eCDF difference is also known as the “Kolmogorov-Smirnov statistic”</li>
 </ul></li>
 </ul>
 <h3 id="plotting">Plotting</h3>
@@ -2388,8 +2388,8 @@ Discarded        0.         0</code></pre>
 </div>
 <p><img src="causal_match_files/figure-html5/unnamed-chunk-7-1.png" width="100%" /></p>
 </div>
-<p>The solid line and dotted line represents acceptable and good balance respectively.</p>
-<p>After matching, the absolute standardized mean difference for age have reduced below the both thresholds.</p>
+<p>The solid line and dotted line represent acceptable and good balance respectively.</p>
+<p>After matching, the absolute standardized mean difference for age has reduced below both thresholds.</p>
 <p>The absolute standardized mean difference for gender increases after matching, but they are still below the 0.1 threshold. Hence for simplicity, I will leave it as it is.</p>
 <p>Alternatively, below is how to visualize the result by using <code>ggplot</code> function.</p>
 <div class="layout-chunk" data-layout="l-body">

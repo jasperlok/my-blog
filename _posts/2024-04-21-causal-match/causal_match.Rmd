@@ -41,14 +41,14 @@ knitr::include_graphics("image/matching.jpg")
 
 Photo by <a href="https://unsplash.com/@anniespratt?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Annie Spratt</a> on <a href="https://unsplash.com/photos/top-view-of-green-succulent-plants-8mqOw4DBBSg?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
   
-This is to continue my journey to learn more on causal inference.
+This is to continue my journey to learn more about causal inference.
 
 In this post, I will be looking at how to perform matching.
 
 
 # What is matching?
 
-The objective of matching is to simulate the randomised controlled trials by using existing info, so we could remove the confounding effect.
+The objective of matching is to simulate the randomized controlled trials by using existing info, so we could remove the confounding effect.
 
 To do so, the algorithm will "find" the best closest match for the treated from the untreated group.
 
@@ -119,7 +119,7 @@ m_outcome <-
 
 The default matching method is nearest neighbor matching.
 
-Refer to the [documentation](https://cran.r-project.org/web/packages/MatchIt/MatchIt.pdf) for the different matching method.
+Refer to the [documentation](https://cran.r-project.org/web/packages/MatchIt/MatchIt.pdf) for the different matching methods.
 
 Note that I also allow the data points to be repeatably matched.
 
@@ -151,11 +151,11 @@ Below are some of the important definitions of the terms in the result above [@G
 
 - **Variance ratio:** Ratio of the variance of a covariate in one group to that in the other
 
-    - Close to 1 means good balance, implying the variance of the samples are similar
+    - Close to 1 means good balance, implying the variance of the samples is similar
     
-- **Empirical CDF statistics:** Difference in the empirical cumulative distribution functions (eCDFs) of each covariate between groups allow assessment of imbalance across the entire covariate distribution of that covariate rather than just its mean or variance.
+- **Empirical CDF statistics:** Difference in the empirical cumulative distribution functions (eCDFs) of each covariate between groups allows assessment of imbalance across the entire covariate distribution of that covariate rather than just it is mean or variance.
 
-    - Maximum eCDF difference is also known as "Kolmogorov-Smirnov statistic"
+    - Maximum eCDF difference is also known as the "Kolmogorov-Smirnov statistic"
 
 ### Plotting
 
@@ -168,9 +168,9 @@ plot(summary(m_outcome))
 
 ```
 
-The solid line and dotted line represents acceptable and good balance respectively.
+The solid line and dotted line represent acceptable and good balance respectively.
 
-After matching, the absolute standardized mean difference for age have reduced below the both thresholds.
+After matching, the absolute standardized mean difference for age has reduced below both thresholds.
 
 The absolute standardized mean difference for gender increases after matching, but they are still below the 0.1 threshold. Hence for simplicity, I will leave it as it is.
 
