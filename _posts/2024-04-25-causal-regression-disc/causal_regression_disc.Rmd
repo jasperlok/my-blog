@@ -1,0 +1,405 @@
+---
+title: "Causal Inference - Regression Discontinuity"
+description: |
+   
+author:
+  - name: Jasper Lok 
+    url: https://jasperlok.netlify.app/
+date: 04-25-2024
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 4
+    self_contained: false
+bibliography: ["ref.bib"]
+biblio-style: "apa"
+link-citations: true
+categories:
+  - Machine Learning
+  - Causal Inference
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+pacman::p_load(captioner, knitr, kableExtra, tidyverse)
+
+knitr::opts_chunk$set(fig.retina = 3,                       
+                      echo = TRUE,                       
+                      eval = TRUE,                       
+                      message = FALSE,                       
+                      warning = FALSE,
+                      out.width="100%")
+
+```
+
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/school.jpg")
+
+```
+
+Photo by <a href="https://unsplash.com/@taypaigey?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Taylor Flowe</a> on <a href="https://unsplash.com/photos/woman-in-gray-sweater-sitting-beside-woman-in-gray-sweater-NTur2_QKpg0?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+  
+  
+In this post, I will be exploring another causal inference technique, which is regression discontinuity.
+
+
+# What is regression discontinuity?
+
+Before we start, let's look at some terminology:
+
+- Running variable: a.k.a. Forcing variable, the continuous variable that determines whether one is in the treatment or control group
+
+- Cutoff: the cutoff value on the running variable to determine whether one is in treatment or control group
+
+- Bandwidth: the bandwidth is used to determine the value range around the cutoff that should be included in the study
+
+
+The idea is that the people near the threshold should be similar. This allows us to have the pseudo-treatment and control group to measure the causal effect.
+
+# Why use this method?
+
+[@Heiss2023] explained in his lecture slides that this method is less susceptible to p-hacking and selective publication than DID and IV.
+
+# Important considerations
+
+## Bandwidth
+
+One of the important considerations is the bandwidth.
+
+If the bandwidth is too narrow, we are throwing away a lot of the data in measuring the causal effect.
+
+If the bandwidth is too wide, then the data points might not be comparable, which contradicts the similarity assumption we made in this analysis.
+
+One method to overcome this is to double and halve the selected bandwidth and measure the effect.
+
+## Local average treatment effect (LATE)
+
+Another issue is we are only measuring the average treatment effect for the people in the bandwidth [@Heiss2023].
+
+Hence, we are unable to make a population-level claim with a LATE.
+
+
+## Manipulation
+
+People might "manipulate" the results if they are aware of the threshold.
+
+The issue is that the people near the threshold are no longer comparable treatment/control groups.
+
+To check this, we can run a McCrary density test.
+
+
+## Noncompliance
+
+Sometimes the cutoff may not be very "clean" as well. 
+
+So, we could use fuzzy discontinuities.
+
+We will leave the exploration of this technique to a future post.
+
+# Demonstration
+
+In this post, I will be using the following packages to perform the analysis.
+
+```{r}
+pacman::p_load(tidyverse, rdrobust, rddensity, broom, modelsummary)
+
+```
+
+
+
+## Import Data
+
+I will be using the fake policy dataset shared by Professor Andrew Heiss on his teaching website. I have also referred to the materials and problem set he posted on the course website.
+
+Refer to [this link](https://evalsp23.classes.andrewheiss.com/assignment/06-problem-set.html) for the dataset.
+
+```{r}
+program <- read_csv("data/attendance_program.csv")
+
+```
+
+This is a fake dataset on the effect of a hypothetical program on hypothetical student grades. Students with less than 80% attendance would be required to attend a mandatory school attendance program.
+
+At the end of their senior year, they will take a final test to assess their overall learning in the high school.
+
+Below are the definitions of the columns in the dataset:
+
+- `id`: A randomly assigned student ID number
+- `attendance`: The proportion of days of school attended during a student's junior year (ranges from 0 to 100)
+- `treatment`: Binary variable indicating if a student was assigned to the attendance program during their senior year
+- `grade`: A student's final test grade at the end of their senior year
+
+## Visual Inspection
+
+### Overall
+
+First, I will inspect the results.
+
+```{r}
+ggplot(program, aes(attendance, grade, color = treatment)) +
+  geom_point(size = 0.9, alpha = 0.3) +
+  geom_vline(xintercept = 80)
+
+```
+
+It seems like there is a discontinuity, especially around the attendance 80.
+
+We could further add the regression lines to the chart.
+
+```{r}
+ggplot(program, aes(attendance, grade, color = treatment)) +
+  geom_point(size = 0.9, alpha = 0.3) +
+  geom_smooth(data = program %>% filter(attendance <= 80)
+              ,method = "lm") +
+  geom_smooth(data = program %>% filter(attendance > 80)
+              ,method = "lm") +
+  geom_vline(xintercept = 80)
+
+```
+
+Based on the chart, it looks like the program does have some effects on the student's final exam results.
+
+
+### Check for any manipulation
+
+One important check in any regression discontinuity analysis is to check for any manipulation around the threshold.
+
+We can do that by plotting the histogram of attendance.
+
+```{r}
+ggplot(program, aes(attendance, fill = treatment)) +
+  geom_histogram(binwidth = 2, color = "white", boundary = 80) +
+  geom_vline(xintercept = 80)
+
+```
+
+
+It doesn't seem like there is a big jump around the cutoff.
+
+We can further check this by using McCrary density test.
+
+```{r}
+density_test <- rddensity(program$attendance, c = 80)
+
+summary(density_test)
+
+```
+
+
+From the results above, we noted the following:
+
+- The total number of data points in the data is 1,200
+
+    - Left side has 681 data and right side has 519
+
+- The algorithm uses a triangular kernel with the bandwidth of 13.574 and 12.521
+
+    - The effective sample sizes become 384 and 421 after applying the kernel
+
+- The p-value is 0.4384, suggesting that there is no statistical evidence of systematic manipulation of the running variables
+
+
+We could also visualize the output by passing the created `density_test` object into `rdplotdensity` function as shown below.
+
+```{r}
+mccrary_test <-
+  rdplotdensity(rdd = density_test
+                ,X = program$attendance
+                ,type = "both")
+
+```
+
+
+## Estimation
+
+Next, I will start estimating the effect of the program.
+
+Before fitting the linear model, I will center the attendance. This would make the intercept easier to interpret.
+
+```{r}
+program <- program %>% 
+  mutate(attendance_centered = attendance - 80)
+
+```
+
+
+### Linear model
+
+First, I will use a linear model to estimate the effect of the program. I will be using all the full data to perform the estimation as well.
+
+```{r}
+model_lm_all <-
+  lm(grade ~ attendance_centered + treatment
+                ,data = program)
+
+tidy(model_lm_all)
+
+```
+
+Based on the result above, the p-value for treatment is less than 0.05, suggesting that there is statistical evidence that the program effect is not zero.
+
+We can control the effects of other covariates in the same formula as well.
+
+However, the characteristics of the students may not be similar across the entire dataset.
+
+The students are likely to be more similar to one another around the threshold.
+
+With that, we could build the linear model with a smaller subset of the data.
+
+```{r}
+model_lm_5 <-
+  lm(grade ~ attendance_centered + treatment
+                ,data = program %>% filter(abs(attendance_centered) <= 5))
+
+model_lm_10 <-
+  lm(grade ~ attendance_centered + treatment
+                ,data = program %>% filter(abs(attendance_centered) <= 10))
+
+```
+
+
+We could compile the model results by using `modelsummary` function for further comparison.
+
+```{r}
+modelsummary(list(model_lm_all, model_lm_5, model_lm_10))
+
+```
+
+From the results above, we can see that the estimated effect will differ widely depending on the bandwidths we are using.
+
+Then, how do we know which bandwidth should we be using?
+
+### Nonparametric estimation
+
+Next, I will use a nonparametric approach to estimate the appropriate bandwidth for estimation.
+
+I will use `rdrobust` function as shown below.
+
+```{r}
+rdrobust(y = program$grade
+         ,x = program$attendance
+         ,c = 80) %>% 
+  summary()
+
+```
+
+Below are some explanations of the results:
+
+- Similarly, the number of observations is 681 and 519 respectively
+
+- The bandwidth used is +/- 8.112
+
+- The default kernel is triangular
+
+- Effect is estimated to be 12.013
+
+    - The p-value is less than 0.05, suggesting that there is statistical evidence that the program effect is not zero
+
+
+We can also plot out the results by using `rdplot` function.
+
+```{r}
+rdplot(y = program$grade
+       ,x = program$attendance
+       ,c = 80)
+
+```
+
+
+We could modify the items in the graph through the usual `ggplot` approach.
+
+However, we need to do an extra step to save the plot into an object and extract the plot by using `$` as shown below.
+
+```{r}
+plot_rdrobust <- 
+  rdplot(y = program$grade
+         ,x = program$attendance
+         ,c = 80)
+
+plot_rdrobust$rdplot +
+  xlab("Attendance") +
+  ylab("Grade")
+
+```
+
+
+### Sentivity of the bandwidth
+
+By default, `rdrobust` function will choose the bandwidth. We could also use `rdbwselect` function to see what other bandwidth choices we have.
+
+```{r}
+rdbwselect(y = program$grade
+           ,x = program$attendance
+           ,c = 80) %>% 
+  summary()
+
+```
+
+Including `TRUE` in the `all` argument will show us all the different bandwidths under different algorithms.
+
+```{r}
+rdbwselect(y = program$grade
+           ,x = program$attendance
+           ,c = 80
+           ,all = TRUE) %>% 
+  summary()
+
+```
+
+Another common approach to performing sensitivity testing on the bandwidth is to use ideal bandwidth, twice the ideal and half the ideal [@exampleHeiss2023].
+
+**Twice the ideal**
+
+```{r}
+rdrobust(y = program$grade
+         ,x = program$attendance
+         ,c = 80
+         ,h = 8.112 * 2) %>% 
+  summary()
+
+```
+
+**Half the ideal**
+
+```{r}
+rdrobust(y = program$grade
+         ,x = program$attendance
+         ,c = 80
+         ,h = 8.112 / 2) %>% 
+  summary()
+
+```
+
+Based on the results of the revised bandwidth, it doesn't seem like there are any significant differences in estimated effect.
+
+
+I will explore how to perform fuzzy regression discontinuity in the future post.
+
+
+# Conclusion
+
+That's all for the day!
+
+Thanks for reading the post until the end.
+
+Feel free to contact me through [email](mailto:jasper.jh.lok@gmail.com) or [LinkedIn](https://www.linkedin.com/in/jasper-l-13426232/) if you have any suggestions on future topics to share.
+
+Refer to this link for the [blog disclaimer](https://jasperlok.netlify.app/blog_disclaimer.html).
+
+Till next time, happy learning!
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/break.jpg")
+
+```
+
+Photo by <a href="https://unsplash.com/@pickledstardust?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Pickled Stardust</a> on <a href="https://unsplash.com/photos/red-and-blue-ball-illustration-ELxsvsbGCo4?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+  
+  
+  
+  
+
+
+
