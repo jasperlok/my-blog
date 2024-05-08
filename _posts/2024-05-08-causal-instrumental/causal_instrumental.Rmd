@@ -1,0 +1,331 @@
+---
+title: "Causal Inference - Instrumental Variable"
+description: |
+   Finding a close enough variable
+author:
+  - name: Jasper Lok 
+    url: https://jasperlok.netlify.app/
+date: 05-08-2024
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 4
+    self_contained: false
+bibliography: ["ref.bib"]
+biblio-style: "apa"
+link-citations: true
+categories:
+  - Machine Learning
+  - Causal Inference
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+pacman::p_load(knitr, kableExtra, tidyverse)
+
+knitr::opts_chunk$set(fig.retina = 3,                       
+                      echo = TRUE,                       
+                      eval = TRUE,                       
+                      message = FALSE,                       
+                      warning = FALSE,
+                      out.width="100%")
+
+```
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/violin.jpg")
+
+```
+
+Photo by <a href="https://unsplash.com/@johanna_vogt?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Johanna Vogt</a> on <a href="https://unsplash.com/photos/brown-violin-H7kVzJgum3M?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+
+In this post, I will continue my quest in acquiring causal inference knowledge.
+
+I will be exploring instrumental variable.
+
+# What is instrumental variable?
+
+Instrumental variable is one of the method in helping us isolating the front door so that we can estimate causal effect.
+
+Below is how the author explained the instrumental variable [@Bobbitt2020]:
+
+> An instrumental variable is a third variable introduced into regression analysis that is correlated with the predictor variable, but uncorrelated with the response variable.
+
+I personally quite like how this author explained instrumental variable as well [@Huntington-Klein2023]:
+
+> Instrumental variables are more like using a mold because instead of trying to strip away all the undesirable variation using controls, it finds a source of variation that allows you to isolate just the front-door path you are interested in.
+
+[@Bobbitt2020] mentioned in his post that instrumental variable should only be used if it meets the following criteria:
+
+-   It is highly correlated with the predictor variable.
+
+-   It is not correlated with the response variable.
+
+-   It is not correlated with the other variables that are left out of the model (e.g. proximity is not correlated with exercise, diet, or stress).
+
+# Why uses this method?
+
+To use instrumental variable to estimate causal effect, we will perform a two-stage least square.
+
+First, we use the instrumental variable to predict the treatment variable.
+
+Then, we will use the predicted values of the treatment variable from first model to predict the outcome.
+
+# Important considerations
+
+To use instrument variable, it would need to fulfill 3 criteria:
+
+-   Relevance
+
+-   Excludability
+
+-   Exogeneity
+
+# Demonstration
+
+In this post, I will be using the following packages to perform the analysis.
+
+```{r}
+pacman::p_load(tidyverse, estimatr, broom, modelsummary, janitor)
+
+```
+
+## Import Data
+
+I will be using the fake policy dataset shared by Professor Andrew Heiss on his teaching website. I have also made reference to the materials and problem set he posted on the course website.
+
+Refer to [this link](https://evalsp23.classes.andrewheiss.com/assignment/06-problem-set.html) for the dataset.
+
+```{r}
+housing <- read_csv("data/public_housing.csv") %>% 
+  clean_names() %>% 
+  mutate(race = as.factor(race)
+         ,education = as.factor(education)
+         ,marital_status = as.factor(marital_status))
+
+```
+
+In this analysis, we will attempt to measure how does public housing affect the health status.
+
+## Causal Effect
+
+### Forbidden Model
+
+We are given the omitted variable in the data. Therefore, I will first build a model by using `public_housing` and `health_behavior` variables to measure the causal effect.
+
+```{r}
+model_forbidden <-
+  lm(health_status ~ public_housing + health_behavior
+     ,data = housing)
+
+tidy(model_forbidden)
+
+```
+
+### Naive Model
+
+As mentioned in the earlier section, often one of the challenges in performing causal inference is to remove the confounding effect.
+
+The result could be misleading if we ignore the confounding effect.
+
+Therefore, this is how the model result would look like if we just use `public_housing` in measuring the causal effect.
+
+```{r}
+model_naive <-
+  lm(health_status ~ public_housing
+     ,data = housing)
+
+tidy(model_naive)
+
+```
+
+## Instrumental Variable
+
+As discussed in the earlier section, the instrument variable would need to fulfill 3 criteria:
+
+-   Relevance
+
+-   Excludability
+
+-   Exogeneity
+
+### Relevance
+
+To check this, we could run a simple linear regression of the variable (i.e., `public_housing` in this context) and respective instrumental variables.
+
+```{r}
+var_list <-
+  list("supply", "parents_health_status", "waiting_time")
+
+```
+
+```{r}
+for(i in var_list){
+  print(i)
+  
+  lm(public_housing ~ get(i)
+     ,data = housing) %>% 
+    summary() %>% 
+    print()
+  
+}
+
+```
+
+From the p-value of the results, it seems like variables `supply` and `waiting_time` are somewhat correlated with the `public_housing`.
+
+Also, the F-statistics for both `supply` and `waiting_time` are also above 10, suggesting that these two variables pass the relevance test.
+
+### Excludability
+
+There is no statistical test available for excludability test.
+
+We could plot out the chart between the outcome (i.e., `health_status`) and the respective variables.
+
+```{r}
+for(i in var_list){
+  print(
+    ggplot(housing, aes(!!sym(i), health_status)) +
+      geom_point() +
+      geom_smooth(method = "lm")
+  )
+}
+
+```
+
+It seems like `waiting_time` is more correlated with health_status as compared to other variables.
+
+Nevertheless, this test also requires us to use domain knowledge to check whether the selected variable pass this test.
+
+### Exogeneity
+
+Again there is no statistical test available for exogeneity. Hence, we have to use to domain knowledge to determine whether the selected variable pass this test.
+
+For simplicity, I will skip this in this analysis.
+
+### Model Building
+
+Once we have checked the instrument validity, we can start estimating the causal effect.
+
+Over here, I will be using `iv_robust` function to estimate the causal effect.
+
+This function allows us to perform a two-stage linear regression to estimate the causal effect.
+
+```{r}
+model_iv_supply <-
+  iv_robust(health_status ~ public_housing | supply
+            ,data = housing)
+
+tidy(model_iv_supply)
+
+```
+
+We also use `glance` function to extract the model fit results.
+
+```{r}
+glance(model_iv_supply)
+
+```
+
+I will estimate the effect by using `parent_health_status` and `waiting_time` respectively.
+
+```{r}
+model_iv_parents_health <-
+  iv_robust(health_status ~ public_housing | parents_health_status
+            ,data = housing)
+
+tidy(model_iv_parents_health)
+
+```
+
+```{r}
+model_iv_waiting_time <-
+  iv_robust(health_status ~ public_housing | waiting_time
+            ,data = housing)
+
+tidy(model_iv_waiting_time)
+
+```
+
+Awesome!
+
+Now, we can compile all the model results into one table so that its easier to compare.
+
+```{r}
+modelsummary(
+  list("Forbidden" = model_forbidden
+       ,"Naive" = model_naive
+       ,"IV = 'Supply'" = model_iv_supply
+       ,"IV = 'Parents Health'" = model_iv_parents_health
+       ,"IV = 'waiting Time'" = model_iv_waiting_time)
+  )
+
+```
+
+As shown in the table, the estimated causal effect would be incorrect if we ignore the confounding effect.
+
+Also, it seems like `waiting_time` variable is indeed a good instrument to use.
+
+## Build the model by using two stage
+
+Instead of using `iv_robust` function, we could also build a two-stage model to estimate the causal effect as shown below.
+
+```{r}
+model_first <-
+  lm(public_housing ~ waiting_time
+     ,data = housing)
+
+predict_first <-
+  augment(model_first
+          ,data = housing) %>% 
+  rename(public_housing_hat = .fitted)
+
+```
+
+```{r}
+model_second <-
+  lm(health_status ~ public_housing_hat
+     ,data = predict_first)
+
+tidy(model_second)
+
+```
+
+Ta-da!
+
+We could see that the estimated causal effect is same as the one under `iv_robust` function.
+
+### Control for other variables
+
+We could also control the effect of other variables while estimating the causal effect.
+
+To do so, we have to include those variables into both stages as shown below.
+
+```{r}
+model_iv_waiting_time_controlled <-
+  iv_robust(health_status ~ public_housing + race + education + age + marital_status | waiting_time + race + education + age + marital_status
+            ,data = housing)
+
+tidy(model_iv_waiting_time_controlled)
+
+```
+
+# Conclusion
+
+That's all for the day!
+
+Thanks for reading the post until the end.
+
+Feel free to contact me through [email](mailto:jasper.jh.lok@gmail.com) or [LinkedIn](https://www.linkedin.com/in/jasper-l-13426232/) if you have any suggestions on future topics to share.
+
+Refer to this link for the [blog disclaimer](https://jasperlok.netlify.app/blog_disclaimer.html).
+
+Till next time, happy learning!
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/piano.jpg")
+
+```
+
+Photo by <a href="https://unsplash.com/@tadasmikuckis?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Tadas Mikuckis</a> on <a href="https://unsplash.com/photos/person-playing-piano-hbnH0ILjUZE?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>

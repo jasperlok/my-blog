@@ -1,0 +1,311 @@
+---
+title: "Support Vector Machine"
+description: |
+   Don’t trust stairs, they’re always up to something, but at least they support you step by step.
+author:
+  - name: Jasper Lok 
+    url: https://jasperlok.netlify.app/
+date: 05-07-2024
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 4
+    self_contained: false
+bibliography: ["ref.bib"]
+biblio-style: "apa"
+link-citations: true
+categories:
+  - Machine Learning
+  - Supervised Learning
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+pacman::p_load(knitr, kableExtra, tidyverse)
+
+knitr::opts_chunk$set(fig.retina = 3,                       
+                      echo = TRUE,                       
+                      eval = TRUE,                       
+                      message = FALSE,                       
+                      warning = FALSE,
+                      out.width="100%")
+
+```
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/krakenimages-Y5bvRlcCx8k-unsplash.jpg")
+
+```
+
+Photo by <a href="https://unsplash.com/@krakenimages?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">krakenimages</a> on <a href="https://unsplash.com/photos/person-in-black-long-sleeve-shirt-holding-persons-hand-Y5bvRlcCx8k?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+  
+  
+# What is support vector machine?
+
+A support vector machine (SVM) is a supervised machine learning algorithm that classifies data by finding an optimal line or hyperplane that maximizes the distance between each class in an N-dimensional space [@IBM2023].
+
+
+The author also explained that when the data is not linearly separable, kernel functions are used to transform the data higher-dimensional space to enable linear separation. This application of kernel functions can be known as the “kernel trick”, and the choice of kernel function, such as linear kernels, polynomial kernels, radial basis function (RBF) kernels, or sigmoid kernels, depends on data characteristics and the specific use case.
+
+
+# Different types of kernels
+
+From `kernlab` package [documentation page]( https://cran.r-project.org/web/packages/kernlab/vignettes/kernlab.pdf), below are the different types of kernels and what they are suitable for:
+
+```{r, echo = FALSE}
+kernel_df <-
+  tibble(
+    `Kernel Type` = c("Linear vanilladot"
+                      ,"Gaussian radial basis function rbfdot"
+                      ,"Polynomial kernel polydot"
+                      ,"Hyperbolic tangent kernel"
+                      ,"Bessel function besseldot"
+                      ,"Laplace radial basis kernel laplacedot"
+                      ,"ANOVA radial basis kernel avovadot")
+    ,Description = c("Useful specially when dealing with large sparse data (e.g., text categorisation)"
+                     ,"General purpose kernel and is typically used when no further prior knowledge is available about the data"
+                     ,"Image classfication"
+                     ,"Mainly used as a proxy for neural networks"
+                     ,"General purpose kernel and is typically used when no further prior knowledge is available about the data"
+                     ,"General purpose kernel and is typically used when no further prior knowledge is available about the data"
+                     ,"Perform well in multidimensional regression problems")
+  )
+
+kernel_df %>% 
+  kbl() %>% 
+  kable_paper("hover", full_width = F, html_font = "Cambria", font_size = 15)
+
+```
+
+[Scikit Learn website](https://scikit-learn.org/stable/auto_examples/svm/plot_svm_kernels.html#sphx-glr-auto-examples-svm-plot-svm-kernels-py) has some great illustrations on how different kernels work.
+
+
+
+
+
+# Demonstration
+
+In this demonstration, I will be using several methods to fit models.
+
+```{r}
+pacman::p_load(tidyverse, tidymodels, janitor, kernlab, doMC, themis, yardstick, probably)
+
+```
+
+## Import Data
+
+For this demonstration, I will be using attrition data.
+
+```{r}
+df <- read_csv("https://raw.githubusercontent.com/jasperlok/my-blog/master/_posts/2022-03-12-marketbasket/data/general_data.csv") %>%
+  # clean up the column naming
+  clean_names() %>% 
+  # convert the attrition column to the correct column types
+  mutate(attrition = as.factor(attrition)) %>% 
+  select(c(age
+           ,attrition
+           ,business_travel
+           ,department
+           ,job_role
+           ,marital_status))
+
+```
+
+
+## Model Building
+
+Now, let's start building the models!
+
+I will be exploring using different methods to fit support vector machine.
+
+## Kernlab
+
+```{r}
+kernlab_fit <-
+  ksvm(attrition ~ .
+       ,data = df
+       ,prob.model = TRUE)
+
+kernlab_fit
+
+```
+
+We can change the `kernel` type and the parameters by passing the necessary information to the arguments.
+
+```{r}
+kernlab_fit_otherParam <-
+  ksvm(attrition ~ .
+       ,data = df
+       ,kernel = "anovadot"
+       ,kpar = list(sigma = 1.1, degree = 2)
+       ,prob.model = TRUE)
+
+kernlab_fit_otherParam
+
+```
+
+Below is how we obtain predicted probabilities of each class from fitted SVM model:
+
+```{r}
+head(predict(kernlab_fit, newdata = df, type = "probabilities"))
+
+```
+
+If `type` is not indicated, then `predict` function will return us the predicted class instead.
+
+```{r}
+head(predict(kernlab_fit, newdata = df))
+
+```
+
+To compute the confusion matrix, I will first generate the predictions before passing into `conf_mat` function.
+
+```{r}
+# prediction
+kernlab_pred <-
+  tibble(pred = predict(kernlab_fit, newdata = df)) %>% 
+  bind_cols(df)
+
+# confusion matrix
+conf_mat(kernlab_pred
+         ,attrition
+         ,pred)
+
+```
+
+
+
+
+## Tidymodels
+
+Next, I will use `tidymodels` to build SVM.
+
+First, I will set the necessary parameters.
+
+```{r}
+set.seed(1234)
+
+prop_split <- 0.6
+grid_num <- 5
+
+registerDoMC(cores = 8)
+
+```
+
+I will split the data into training and testing dataset.
+
+```{r}
+df_split <- initial_split(df, prop = prop_split, strata = attrition)
+df_train <- training(df_split)
+df_test <- testing(df_split)
+
+df_folds <- vfold_cv(df_train, strata = attrition)
+
+```
+
+
+Then, I will define the data wrangling steps.
+
+```{r}
+gen_recipe <- 
+  recipe(attrition ~., data = df_train) %>% 
+  step_dummy(all_nominal_predictors()) %>% 
+  step_zv(all_predictors()) %>% 
+  step_normalize(all_predictors()) %>% 
+  step_corr(all_numeric_predictors()) %>% 
+  step_smote(attrition)
+
+```
+
+I will also define the model I want to build.
+
+```{r}
+svm_spec <-
+  svm_linear(cost = tune()
+             ,margin = tune()) %>% 
+  set_engine("kernlab") %>% 
+  set_mode("classification")
+
+```
+
+
+
+```{r}
+svm_workflow <-
+  workflow() %>% 
+  add_recipe(gen_recipe) %>% 
+  add_model(svm_spec)
+
+```
+
+
+After that, I will tune the parameters of the model.
+
+```{r}
+svm_tune <-
+  tune_grid(svm_workflow
+            ,resample = df_folds
+            ,grid = grid_num)
+
+```
+
+I will pick the best parameters based on ROC.
+
+```{r}
+svm_fit <-
+  svm_workflow %>% 
+  finalize_workflow(select_best(svm_tune)) %>% 
+  last_fit(df_split)
+
+```
+
+We can extract performance metric from the fitted model.
+
+```{r}
+svm_fit$.metrics
+
+```
+
+To calculate the confusion matrix, I will generate the predictions before passing the results to `conf_mat` function.
+
+```{r}
+svm_pred <-
+  svm_fit %>% 
+  collect_predictions()
+
+```
+
+
+
+```{r}
+conf_mat(svm_pred
+         ,attrition
+         ,`.pred_class`)
+
+```
+
+
+
+
+
+# Conclusion
+
+That's all for the day!
+
+Thanks for reading the post until the end.
+
+Feel free to contact me through [email](mailto:jasper.jh.lok@gmail.com) or [LinkedIn](https://www.linkedin.com/in/jasper-l-13426232/) if you have any suggestions on future topics to share.
+
+Refer to this link for the [blog disclaimer](https://jasperlok.netlify.app/blog_disclaimer.html).
+
+Till next time, happy learning!
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/riccardo-annandale-7e2pe9wjL9M-unsplash.jpg")
+
+```
+
+Photo by <a href="https://unsplash.com/@pavement_special?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Riccardo Annandale</a> on <a href="https://unsplash.com/photos/man-holding-incandescent-bulb-7e2pe9wjL9M?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+  
+  
