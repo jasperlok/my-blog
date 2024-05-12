@@ -1,0 +1,2040 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <meta name="generator" content="distill" />
+
+  <style type="text/css">
+  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
+  body {
+    visibility: hidden;
+  }
+  </style>
+
+ <!--radix_placeholder_import_source-->
+ <!--/radix_placeholder_import_source-->
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  { color: #00769e; background-color: #f1f3f5; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span { color: #00769e; } /* Normal */
+code span.al { color: #ad0000; } /* Alert */
+code span.an { color: #5e5e5e; } /* Annotation */
+code span.at { color: #657422; } /* Attribute */
+code span.bn { color: #ad0000; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #00769e; } /* ControlFlow */
+code span.ch { color: #20794d; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #5e5e5e; } /* Comment */
+code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+code span.dt { color: #ad0000; } /* DataType */
+code span.dv { color: #ad0000; } /* DecVal */
+code span.er { color: #ad0000; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #ad0000; } /* Float */
+code span.fu { color: #4758ab; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #5e5e5e; } /* Information */
+code span.kw { color: #00769e; } /* Keyword */
+code span.op { color: #5e5e5e; } /* Operator */
+code span.ot { color: #00769e; } /* Other */
+code span.pp { color: #ad0000; } /* Preprocessor */
+code span.sc { color: #5e5e5e; } /* SpecialChar */
+code span.ss { color: #20794d; } /* SpecialString */
+code span.st { color: #20794d; } /* String */
+code span.va { color: #111111; } /* Variable */
+code span.vs { color: #20794d; } /* VerbatimString */
+code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+</style>
+
+<style>
+  div.csl-bib-body { }
+  div.csl-entry {
+    clear: both;
+    }
+  .hanging div.csl-entry {
+    margin-left:2em;
+    text-indent:-2em;
+  }
+  div.csl-left-margin {
+    min-width:2em;
+    float:left;
+  }
+  div.csl-right-inline {
+    margin-left:2em;
+    padding-left:1em;
+  }
+  div.csl-indent {
+    margin-left: 2em;
+  }
+</style>
+
+  <!--radix_placeholder_meta_tags-->
+  <title>Model Performance on Survival Models</title>
+
+  <meta property="description" itemprop="description" content="How do you survival a fall without a parachute? Just like any other season"/>
+
+
+  <!--  https://schema.org/Article -->
+  <meta property="article:published" itemprop="datePublished" content="2024-05-12"/>
+  <meta property="article:created" itemprop="dateCreated" content="2024-05-12"/>
+  <meta name="article:author" content="Jasper Lok"/>
+
+  <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
+  <meta property="og:title" content="Model Performance on Survival Models"/>
+  <meta property="og:type" content="article"/>
+  <meta property="og:description" content="How do you survival a fall without a parachute? Just like any other season"/>
+  <meta property="og:locale" content="en_US"/>
+
+  <!--  https://dev.twitter.com/cards/types/summary -->
+  <meta property="twitter:card" content="summary"/>
+  <meta property="twitter:title" content="Model Performance on Survival Models"/>
+  <meta property="twitter:description" content="How do you survival a fall without a parachute? Just like any other season"/>
+
+  <!--/radix_placeholder_meta_tags-->
+  
+  <!--radix_placeholder_rmarkdown_metadata-->
+
+  <script type="text/json" id="radix-rmarkdown-metadata">
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","bibliography","biblio-style","link-citations","categories"]}},"value":[{"type":"character","attributes":{},"value":["Model Performance on Survival Models"]},{"type":"character","attributes":{},"value":["How do you survival a fall without a parachute? Just like any other season\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Jasper Lok"]},{"type":"character","attributes":{},"value":["https://jasperlok.netlify.app/"]}]}]},{"type":"character","attributes":{},"value":["05-12-2024"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","toc_depth","self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[4]},{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["ref.bib"]},{"type":"character","attributes":{},"value":["apa"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["Machine Learning","Survival Model"]}]}
+  </script>
+  <!--/radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["image/brier-score.png","image/campfire.jpg","image/concordance-index.png","image/cumulative-dynamic-auc.png","image/plants.jpg","ref.bib","survival_survex_files/figure-html5/unnamed-chunk-12-1.png","survival_survex_files/figure-html5/unnamed-chunk-16-1.png","survival_survex_files/figure-html5/unnamed-chunk-20-1.png","survival_survex_files/figure-html5/unnamed-chunk-22-1.png","survival_survex_files/figure-html5/unnamed-chunk-24-1.png"]}
+  </script>
+  <!--radix_placeholder_navigation_in_header-->
+  <!--/radix_placeholder_navigation_in_header-->
+  <!--radix_placeholder_distill-->
+
+  <style type="text/css">
+
+  body {
+    background-color: white;
+  }
+
+  .pandoc-table {
+    width: 100%;
+  }
+
+  .pandoc-table>caption {
+    margin-bottom: 10px;
+  }
+
+  .pandoc-table th:not([align]) {
+    text-align: left;
+  }
+
+  .pagedtable-footer {
+    font-size: 15px;
+  }
+
+  d-byline .byline {
+    grid-template-columns: 2fr 2fr;
+  }
+
+  d-byline .byline h3 {
+    margin-block-start: 1.5em;
+  }
+
+  d-byline .byline .authors-affiliations h3 {
+    margin-block-start: 0.5em;
+  }
+
+  .authors-affiliations .orcid-id {
+    width: 16px;
+    height:16px;
+    margin-left: 4px;
+    margin-right: 4px;
+    vertical-align: middle;
+    padding-bottom: 2px;
+  }
+
+  d-title .dt-tags {
+    margin-top: 1em;
+    grid-column: text;
+  }
+
+  .dt-tags .dt-tag {
+    text-decoration: none;
+    display: inline-block;
+    color: rgba(0,0,0,0.6);
+    padding: 0em 0.4em;
+    margin-right: 0.5em;
+    margin-bottom: 0.4em;
+    font-size: 70%;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  d-article table.gt_table td,
+  d-article table.gt_table th {
+    border-bottom: none;
+    font-size: 100%;
+  }
+
+  .html-widget {
+    margin-bottom: 2.0em;
+  }
+
+  .l-screen-inset {
+    padding-right: 16px;
+  }
+
+  .l-screen .caption {
+    margin-left: 10px;
+  }
+
+  .shaded {
+    background: rgb(247, 247, 247);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .shaded .html-widget {
+    margin-bottom: 0;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .shaded .shaded-content {
+    background: white;
+  }
+
+  .text-output {
+    margin-top: 0;
+    line-height: 1.5em;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  hr.section-separator {
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    margin: 0px;
+  }
+
+
+  d-byline {
+    border-top: none;
+  }
+
+  d-article {
+    padding-top: 2.5rem;
+    padding-bottom: 30px;
+    border-top: none;
+  }
+
+  d-appendix {
+    padding-top: 30px;
+  }
+
+  d-article>p>img {
+    width: 100%;
+  }
+
+  d-article h2 {
+    margin: 1rem 0 1.5rem 0;
+  }
+
+  d-article h3 {
+    margin-top: 1.5rem;
+  }
+
+  d-article iframe {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 2.0em;
+    width: 100%;
+  }
+
+  /* Tweak code blocks */
+
+  d-article div.sourceCode code,
+  d-article pre code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  d-article pre,
+  d-article div.sourceCode,
+  d-article div.sourceCode pre {
+    overflow: auto;
+  }
+
+  d-article div.sourceCode {
+    background-color: white;
+  }
+
+  d-article div.sourceCode pre {
+    padding-left: 10px;
+    font-size: 12px;
+    border-left: 2px solid rgba(0,0,0,0.1);
+  }
+
+  d-article pre {
+    font-size: 12px;
+    color: black;
+    background: none;
+    margin-top: 0;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+
+  d-article pre a {
+    border-bottom: none;
+  }
+
+  d-article pre a:hover {
+    border-bottom: none;
+    text-decoration: underline;
+  }
+
+  d-article details {
+    grid-column: text;
+    margin-bottom: 0.8em;
+  }
+
+  @media(min-width: 768px) {
+
+  d-article pre,
+  d-article div.sourceCode,
+  d-article div.sourceCode pre {
+    overflow: visible !important;
+  }
+
+  d-article div.sourceCode pre {
+    padding-left: 18px;
+    font-size: 14px;
+  }
+
+  /* tweak for Pandoc numbered line within distill */
+  d-article pre.numberSource code > span {
+      left: -2em;
+  }
+
+  d-article pre {
+    font-size: 14px;
+  }
+
+  }
+
+  figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+
+  /* CSS for d-contents */
+
+  .d-contents {
+    grid-column: text;
+    color: rgba(0,0,0,0.8);
+    font-size: 0.9em;
+    padding-bottom: 1em;
+    margin-bottom: 1em;
+    padding-bottom: 0.5em;
+    margin-bottom: 1em;
+    padding-left: 0.25em;
+    justify-self: start;
+  }
+
+  @media(min-width: 1000px) {
+    .d-contents.d-contents-float {
+      height: 0;
+      grid-column-start: 1;
+      grid-column-end: 4;
+      justify-self: center;
+      padding-right: 3em;
+      padding-left: 2em;
+    }
+  }
+
+  .d-contents nav h3 {
+    font-size: 18px;
+    margin-top: 0;
+    margin-bottom: 1em;
+  }
+
+  .d-contents li {
+    list-style-type: none
+  }
+
+  .d-contents nav > ul {
+    padding-left: 0;
+  }
+
+  .d-contents ul {
+    padding-left: 1em
+  }
+
+  .d-contents nav ul li {
+    margin-top: 0.6em;
+    margin-bottom: 0.2em;
+  }
+
+  .d-contents nav a {
+    font-size: 13px;
+    border-bottom: none;
+    text-decoration: none
+    color: rgba(0, 0, 0, 0.8);
+  }
+
+  .d-contents nav a:hover {
+    text-decoration: underline solid rgba(0, 0, 0, 0.6)
+  }
+
+  .d-contents nav > ul > li > a {
+    font-weight: 600;
+  }
+
+  .d-contents nav > ul > li > ul {
+    font-weight: inherit;
+  }
+
+  .d-contents nav > ul > li > ul > li {
+    margin-top: 0.2em;
+  }
+
+
+  .d-contents nav ul {
+    margin-top: 0;
+    margin-bottom: 0.25em;
+  }
+
+  .d-article-with-toc h2:nth-child(2) {
+    margin-top: 0;
+  }
+
+
+  /* Figure */
+
+  .figure {
+    position: relative;
+    margin-bottom: 2.5em;
+    margin-top: 1.5em;
+  }
+
+  .figure .caption {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 12px;
+    line-height: 1.5em;
+  }
+
+  .figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+
+  .figure .caption a {
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  .figure .caption b,
+  .figure .caption strong, {
+    font-weight: 600;
+    color: rgba(0, 0, 0, 1.0);
+  }
+
+  /* Citations */
+
+  d-article .citation {
+    color: inherit;
+    cursor: inherit;
+  }
+
+  div.hanging-indent{
+    margin-left: 1em; text-indent: -1em;
+  }
+
+  /* Citation hover box */
+
+  .tippy-box[data-theme~=light-border] {
+    background-color: rgba(250, 250, 250, 0.95);
+  }
+
+  .tippy-content > p {
+    margin-bottom: 0;
+    padding: 2px;
+  }
+
+
+  /* Tweak 1000px media break to show more text */
+
+  @media(min-width: 1000px) {
+    .base-grid,
+    distill-header,
+    d-title,
+    d-abstract,
+    d-article,
+    d-appendix,
+    distill-appendix,
+    d-byline,
+    d-footnote-list,
+    d-citation-list,
+    distill-footer {
+      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 80px [middle-start] 50px [text-start kicker-end] 65px 65px 65px 65px 65px 65px 65px 65px [text-end gutter-start] 65px [middle-end] 65px [page-end gutter-end] 1fr [screen-end];
+      grid-column-gap: 16px;
+    }
+
+    .grid {
+      grid-column-gap: 16px;
+    }
+
+    d-article {
+      font-size: 1.06rem;
+      line-height: 1.7em;
+    }
+    figure .caption, .figure .caption, figure figcaption {
+      font-size: 13px;
+    }
+  }
+
+  @media(min-width: 1180px) {
+    .base-grid,
+    distill-header,
+    d-title,
+    d-abstract,
+    d-article,
+    d-appendix,
+    distill-appendix,
+    d-byline,
+    d-footnote-list,
+    d-citation-list,
+    distill-footer {
+      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
+      grid-column-gap: 32px;
+    }
+
+    .grid {
+      grid-column-gap: 32px;
+    }
+  }
+
+
+  /* Get the citation styles for the appendix (not auto-injected on render since
+     we do our own rendering of the citation appendix) */
+
+  d-appendix .citation-appendix,
+  .d-appendix .citation-appendix {
+    font-size: 11px;
+    line-height: 15px;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    padding-left: 18px;
+    border: 1px solid rgba(0,0,0,0.1);
+    background: rgba(0, 0, 0, 0.02);
+    padding: 10px 18px;
+    border-radius: 3px;
+    color: rgba(150, 150, 150, 1);
+    overflow: hidden;
+    margin-top: -12px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  /* Include appendix styles here so they can be overridden */
+
+  d-appendix {
+    contain: layout style;
+    font-size: 0.8em;
+    line-height: 1.7em;
+    margin-top: 60px;
+    margin-bottom: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    color: rgba(0,0,0,0.5);
+    padding-top: 60px;
+    padding-bottom: 48px;
+  }
+
+  d-appendix h3 {
+    grid-column: page-start / text-start;
+    font-size: 15px;
+    font-weight: 500;
+    margin-top: 1em;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.65);
+  }
+
+  d-appendix h3 + * {
+    margin-top: 1em;
+  }
+
+  d-appendix ol {
+    padding: 0 0 0 15px;
+  }
+
+  @media (min-width: 768px) {
+    d-appendix ol {
+      padding: 0 0 0 30px;
+      margin-left: -30px;
+    }
+  }
+
+  d-appendix li {
+    margin-bottom: 1em;
+  }
+
+  d-appendix a {
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  d-appendix > * {
+    grid-column: text;
+  }
+
+  d-appendix > d-footnote-list,
+  d-appendix > d-citation-list,
+  d-appendix > distill-appendix {
+    grid-column: screen;
+  }
+
+  /* Include footnote styles here so they can be overridden */
+
+  d-footnote-list {
+    contain: layout style;
+  }
+
+  d-footnote-list > * {
+    grid-column: text;
+  }
+
+  d-footnote-list a.footnote-backlink {
+    color: rgba(0,0,0,0.3);
+    padding-left: 0.5em;
+  }
+
+
+
+  /* Anchor.js */
+
+  .anchorjs-link {
+    /*transition: all .25s linear; */
+    text-decoration: none;
+    border-bottom: none;
+  }
+  *:hover > .anchorjs-link {
+    margin-left: -1.125em !important;
+    text-decoration: none;
+    border-bottom: none;
+  }
+
+  /* Social footer */
+
+  .social_footer {
+    margin-top: 30px;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.67);
+  }
+
+  .disqus-comments {
+    margin-right: 30px;
+  }
+
+  .disqus-comment-count {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+  }
+
+  #disqus_thread {
+    margin-top: 30px;
+  }
+
+  .article-sharing a {
+    border-bottom: none;
+    margin-right: 8px;
+  }
+
+  .article-sharing a:hover {
+    border-bottom: none;
+  }
+
+  .sidebar-section.subscribe {
+    font-size: 12px;
+    line-height: 1.6em;
+  }
+
+  .subscribe p {
+    margin-bottom: 0.5em;
+  }
+
+
+  .article-footer .subscribe {
+    font-size: 15px;
+    margin-top: 45px;
+  }
+
+
+  .sidebar-section.custom {
+    font-size: 12px;
+    line-height: 1.6em;
+  }
+
+  .custom p {
+    margin-bottom: 0.5em;
+  }
+
+  /* Styles for listing layout (hide title) */
+  .layout-listing d-title, .layout-listing .d-title {
+    display: none;
+  }
+
+  /* Styles for posts lists (not auto-injected) */
+
+
+  .posts-with-sidebar {
+    padding-left: 45px;
+    padding-right: 45px;
+  }
+
+  .posts-list .description h2,
+  .posts-list .description p {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  }
+
+  .posts-list .description h2 {
+    font-weight: 700;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .posts-list h2.post-tag {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    padding-bottom: 12px;
+  }
+  .posts-list {
+    margin-top: 60px;
+    margin-bottom: 24px;
+  }
+
+  .posts-list .post-preview {
+    text-decoration: none;
+    overflow: hidden;
+    display: block;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 24px 0;
+  }
+
+  .post-preview-last {
+    border-bottom: none !important;
+  }
+
+  .posts-list .posts-list-caption {
+    grid-column: screen;
+    font-weight: 400;
+  }
+
+  .posts-list .post-preview h2 {
+    margin: 0 0 6px 0;
+    line-height: 1.2em;
+    font-style: normal;
+    font-size: 24px;
+  }
+
+  .posts-list .post-preview p {
+    margin: 0 0 12px 0;
+    line-height: 1.4em;
+    font-size: 16px;
+  }
+
+  .posts-list .post-preview .thumbnail {
+    box-sizing: border-box;
+    margin-bottom: 24px;
+    position: relative;
+    max-width: 500px;
+  }
+  .posts-list .post-preview img {
+    width: 100%;
+    display: block;
+  }
+
+  .posts-list .metadata {
+    font-size: 12px;
+    line-height: 1.4em;
+    margin-bottom: 18px;
+  }
+
+  .posts-list .metadata > * {
+    display: inline-block;
+  }
+
+  .posts-list .metadata .publishedDate {
+    margin-right: 2em;
+  }
+
+  .posts-list .metadata .dt-authors {
+    display: block;
+    margin-top: 0.3em;
+    margin-right: 2em;
+  }
+
+  .posts-list .dt-tags {
+    display: block;
+    line-height: 1em;
+  }
+
+  .posts-list .dt-tags .dt-tag {
+    display: inline-block;
+    color: rgba(0,0,0,0.6);
+    padding: 0.3em 0.4em;
+    margin-right: 0.2em;
+    margin-bottom: 0.4em;
+    font-size: 60%;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .posts-list img {
+    opacity: 1;
+  }
+
+  .posts-list img[data-src] {
+    opacity: 0;
+  }
+
+  .posts-more {
+    clear: both;
+  }
+
+
+  .posts-sidebar {
+    font-size: 16px;
+  }
+
+  .posts-sidebar h3 {
+    font-size: 16px;
+    margin-top: 0;
+    margin-bottom: 0.5em;
+    font-weight: 400;
+    text-transform: uppercase;
+  }
+
+  .sidebar-section {
+    margin-bottom: 30px;
+  }
+
+  .categories ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .categories li {
+    color: rgba(0, 0, 0, 0.8);
+    margin-bottom: 0;
+  }
+
+  .categories li>a {
+    border-bottom: none;
+  }
+
+  .categories li>a:hover {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  }
+
+  .categories .active {
+    font-weight: 600;
+  }
+
+  .categories .category-count {
+    color: rgba(0, 0, 0, 0.4);
+  }
+
+
+  @media(min-width: 768px) {
+    .posts-list .post-preview h2 {
+      font-size: 26px;
+    }
+    .posts-list .post-preview .thumbnail {
+      float: right;
+      width: 30%;
+      margin-bottom: 0;
+    }
+    .posts-list .post-preview .description {
+      float: left;
+      width: 45%;
+    }
+    .posts-list .post-preview .metadata {
+      float: left;
+      width: 20%;
+      margin-top: 8px;
+    }
+    .posts-list .post-preview p {
+      margin: 0 0 12px 0;
+      line-height: 1.5em;
+      font-size: 16px;
+    }
+    .posts-with-sidebar .posts-list {
+      float: left;
+      width: 75%;
+    }
+    .posts-with-sidebar .posts-sidebar {
+      float: right;
+      width: 20%;
+      margin-top: 60px;
+      padding-top: 24px;
+      padding-bottom: 24px;
+    }
+  }
+
+
+  /* Improve display for browsers without grid (IE/Edge <= 15) */
+
+  .downlevel {
+    line-height: 1.6em;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+  }
+
+  .downlevel .d-title {
+    padding-top: 6rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .downlevel .d-title h1 {
+    font-size: 50px;
+    font-weight: 700;
+    line-height: 1.1em;
+    margin: 0 0 0.5rem;
+  }
+
+  .downlevel .d-title p {
+    font-weight: 300;
+    font-size: 1.2rem;
+    line-height: 1.55em;
+    margin-top: 0;
+  }
+
+  .downlevel .d-byline {
+    padding-top: 0.8em;
+    padding-bottom: 0.8em;
+    font-size: 0.8rem;
+    line-height: 1.8em;
+  }
+
+  .downlevel .section-separator {
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .downlevel .d-article {
+    font-size: 1.06rem;
+    line-height: 1.7em;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+  }
+
+
+  .downlevel .d-appendix {
+    padding-left: 0;
+    padding-right: 0;
+    max-width: none;
+    font-size: 0.8em;
+    line-height: 1.7em;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.5);
+    padding-top: 40px;
+    padding-bottom: 48px;
+  }
+
+  .downlevel .footnotes ol {
+    padding-left: 13px;
+  }
+
+  .downlevel .base-grid,
+  .downlevel .distill-header,
+  .downlevel .d-title,
+  .downlevel .d-abstract,
+  .downlevel .d-article,
+  .downlevel .d-appendix,
+  .downlevel .distill-appendix,
+  .downlevel .d-byline,
+  .downlevel .d-footnote-list,
+  .downlevel .d-citation-list,
+  .downlevel .distill-footer,
+  .downlevel .appendix-bottom,
+  .downlevel .posts-container {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  @media(min-width: 768px) {
+    .downlevel .base-grid,
+    .downlevel .distill-header,
+    .downlevel .d-title,
+    .downlevel .d-abstract,
+    .downlevel .d-article,
+    .downlevel .d-appendix,
+    .downlevel .distill-appendix,
+    .downlevel .d-byline,
+    .downlevel .d-footnote-list,
+    .downlevel .d-citation-list,
+    .downlevel .distill-footer,
+    .downlevel .appendix-bottom,
+    .downlevel .posts-container {
+    padding-left: 150px;
+    padding-right: 150px;
+    max-width: 900px;
+  }
+  }
+
+  .downlevel pre code {
+    display: block;
+    border-left: 2px solid rgba(0, 0, 0, .1);
+    padding: 0 0 0 20px;
+    font-size: 14px;
+  }
+
+  .downlevel code, .downlevel pre {
+    color: black;
+    background: none;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+
+  .downlevel .posts-list .post-preview {
+    color: inherit;
+  }
+
+
+
+  </style>
+
+  <script type="application/javascript">
+
+  function is_downlevel_browser() {
+    if (bowser.isUnsupportedBrowser({ msie: "12", msedge: "16"},
+                                   window.navigator.userAgent)) {
+      return true;
+    } else {
+      return window.load_distill_framework === undefined;
+    }
+  }
+
+  // show body when load is complete
+  function on_load_complete() {
+
+    // add anchors
+    if (window.anchors) {
+      window.anchors.options.placement = 'left';
+      window.anchors.add('d-article > h2, d-article > h3, d-article > h4, d-article > h5');
+    }
+
+
+    // set body to visible
+    document.body.style.visibility = 'visible';
+
+    // force redraw for leaflet widgets
+    if (window.HTMLWidgets) {
+      var maps = window.HTMLWidgets.findAll(".leaflet");
+      $.each(maps, function(i, el) {
+        var map = this.getMap();
+        map.invalidateSize();
+        map.eachLayer(function(layer) {
+          if (layer instanceof L.TileLayer)
+            layer.redraw();
+        });
+      });
+    }
+
+    // trigger 'shown' so htmlwidgets resize
+    $('d-article').trigger('shown');
+  }
+
+  function init_distill() {
+
+    init_common();
+
+    // create front matter
+    var front_matter = $('<d-front-matter></d-front-matter>');
+    $('#distill-front-matter').wrap(front_matter);
+
+    // create d-title
+    $('.d-title').changeElementType('d-title');
+
+    // separator
+    var separator = '<hr class="section-separator" style="clear: both"/>';
+    // prepend separator above appendix
+    $('.d-byline').before(separator);
+    $('.d-article').before(separator);
+
+    // create d-byline
+    var byline = $('<d-byline></d-byline>');
+    $('.d-byline').replaceWith(byline);
+
+    // create d-article
+    var article = $('<d-article></d-article>');
+    $('.d-article').wrap(article).children().unwrap();
+
+    // move posts container into article
+    $('.posts-container').appendTo($('d-article'));
+
+    // create d-appendix
+    $('.d-appendix').changeElementType('d-appendix');
+
+    // flag indicating that we have appendix items
+    var appendix = $('.appendix-bottom').children('h3').length > 0;
+
+    // replace footnotes with <d-footnote>
+    $('.footnote-ref').each(function(i, val) {
+      appendix = true;
+      var href = $(this).attr('href');
+      var id = href.replace('#', '');
+      var fn = $('#' + id);
+      var fn_p = $('#' + id + '>p');
+      fn_p.find('.footnote-back').remove();
+      var text = fn_p.html();
+      var dtfn = $('<d-footnote></d-footnote>');
+      dtfn.html(text);
+      $(this).replaceWith(dtfn);
+    });
+    // remove footnotes
+    $('.footnotes').remove();
+
+    // move refs into #references-listing
+    $('#references-listing').replaceWith($('#refs'));
+
+    $('h1.appendix, h2.appendix').each(function(i, val) {
+      $(this).changeElementType('h3');
+    });
+    $('h3.appendix').each(function(i, val) {
+      var id = $(this).attr('id');
+      $('.d-contents a[href="#' + id + '"]').parent().remove();
+      appendix = true;
+      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
+    });
+
+    // show d-appendix if we have appendix content
+    $("d-appendix").css('display', appendix ? 'grid' : 'none');
+
+    // localize layout chunks to just output
+    $('.layout-chunk').each(function(i, val) {
+
+      // capture layout
+      var layout = $(this).attr('data-layout');
+
+      // apply layout to markdown level block elements
+      var elements = $(this).children().not('details, div.sourceCode, pre, script');
+      elements.each(function(i, el) {
+        var layout_div = $('<div class="' + layout + '"></div>');
+        if (layout_div.hasClass('shaded')) {
+          var shaded_content = $('<div class="shaded-content"></div>');
+          $(this).wrap(shaded_content);
+          $(this).parent().wrap(layout_div);
+        } else {
+          $(this).wrap(layout_div);
+        }
+      });
+
+
+      // unwrap the layout-chunk div
+      $(this).children().unwrap();
+    });
+
+    // remove code block used to force  highlighting css
+    $('.distill-force-highlighting-css').parent().remove();
+
+    // remove empty line numbers inserted by pandoc when using a
+    // custom syntax highlighting theme, except when numbering line
+    // in code chunk
+    $('pre:not(.numberLines) code.sourceCode a:empty').remove();
+
+    // load distill framework
+    load_distill_framework();
+
+    // wait for window.distillRunlevel == 4 to do post processing
+    function distill_post_process() {
+
+      if (!window.distillRunlevel || window.distillRunlevel < 4)
+        return;
+
+      // hide author/affiliations entirely if we have no authors
+      var front_matter = JSON.parse($("#distill-front-matter").html());
+      var have_authors = front_matter.authors && front_matter.authors.length > 0;
+      if (!have_authors)
+        $('d-byline').addClass('hidden');
+
+      // article with toc class
+      $('.d-contents').parent().addClass('d-article-with-toc');
+
+      // strip links that point to #
+      $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
+
+      // add orcid ids
+      $('.authors-affiliations').find('.author').each(function(i, el) {
+        var orcid_id = front_matter.authors[i].orcidID;
+        var author_name = front_matter.authors[i].author
+        if (orcid_id) {
+          var a = $('<a></a>');
+          a.attr('href', 'https://orcid.org/' + orcid_id);
+          var img = $('<img></img>');
+          img.addClass('orcid-id');
+          img.attr('alt', author_name ? 'ORCID ID for ' + author_name : 'ORCID ID');
+          img.attr('src','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==');
+          a.append(img);
+          $(this).append(a);
+        }
+      });
+
+      // hide elements of author/affiliations grid that have no value
+      function hide_byline_column(caption) {
+        $('d-byline').find('h3:contains("' + caption + '")').parent().css('visibility', 'hidden');
+      }
+
+      // affiliations
+      var have_affiliations = false;
+      for (var i = 0; i<front_matter.authors.length; ++i) {
+        var author = front_matter.authors[i];
+        if (author.affiliation !== "&nbsp;") {
+          have_affiliations = true;
+          break;
+        }
+      }
+      if (!have_affiliations)
+        $('d-byline').find('h3:contains("Affiliations")').css('visibility', 'hidden');
+
+      // published date
+      if (!front_matter.publishedDate)
+        hide_byline_column("Published");
+
+      // document object identifier
+      var doi = $('d-byline').find('h3:contains("DOI")');
+      var doi_p = doi.next().empty();
+      if (!front_matter.doi) {
+        // if we have a citation and valid citationText then link to that
+        if ($('#citation').length > 0 && front_matter.citationText) {
+          doi.html('Citation');
+          $('<a href="#citation"></a>')
+            .text(front_matter.citationText)
+            .appendTo(doi_p);
+        } else {
+          hide_byline_column("DOI");
+        }
+      } else {
+        $('<a></a>')
+           .attr('href', "https://doi.org/" + front_matter.doi)
+           .html(front_matter.doi)
+           .appendTo(doi_p);
+      }
+
+       // change plural form of authors/affiliations
+      if (front_matter.authors.length === 1) {
+        var grid = $('.authors-affiliations');
+        grid.children('h3:contains("Authors")').text('Author');
+        grid.children('h3:contains("Affiliations")').text('Affiliation');
+      }
+
+      // remove d-appendix and d-footnote-list local styles
+      $('d-appendix > style:first-child').remove();
+      $('d-footnote-list > style:first-child').remove();
+
+      // move appendix-bottom entries to the bottom
+      $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
+      $('.appendix-bottom').remove();
+
+      // hoverable references
+      $('span.citation[data-cites]').each(function() {
+        const citeChild = $(this).children()[0]
+        // Do not process if @xyz has been used without escaping and without bibliography activated
+        // https://github.com/rstudio/distill/issues/466
+        if (citeChild === undefined) return true
+
+        if (citeChild.nodeName == "D-FOOTNOTE") {
+          var fn = citeChild
+          $(this).html(fn.shadowRoot.querySelector("sup"))
+          $(this).id = fn.id
+          fn.remove()
+        }
+        var refs = $(this).attr('data-cites').split(" ");
+        var refHtml = refs.map(function(ref) {
+          // Could use CSS.escape too here, we insure backward compatibility in navigator
+          return "<p>" + $('div[id="ref-' + ref + '"]').html() + "</p>";
+        }).join("\n");
+        window.tippy(this, {
+          allowHTML: true,
+          content: refHtml,
+          maxWidth: 500,
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'light-border',
+          placement: 'bottom-start'
+        });
+      });
+
+      // fix footnotes in tables (#411)
+      // replacing broken distill.pub feature
+      $('table d-footnote').each(function() {
+        // we replace internal showAtNode methode which is triggered when hovering a footnote
+        this.hoverBox.showAtNode = function(node) {
+          // ported from https://github.com/distillpub/template/pull/105/files
+          calcOffset = function(elem) {
+              let x = elem.offsetLeft;
+              let y = elem.offsetTop;
+              // Traverse upwards until an `absolute` element is found or `elem`
+              // becomes null.
+              while (elem = elem.offsetParent && elem.style.position != 'absolute') {
+                  x += elem.offsetLeft;
+                  y += elem.offsetTop;
+              }
+
+              return { left: x, top: y };
+          }
+          // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetTop
+          const bbox = node.getBoundingClientRect();
+          const offset = calcOffset(node);
+          this.show([offset.left + bbox.width, offset.top + bbox.height]);
+        }
+      })
+
+      // clear polling timer
+      clearInterval(tid);
+
+      // show body now that everything is ready
+      on_load_complete();
+    }
+
+    var tid = setInterval(distill_post_process, 50);
+    distill_post_process();
+
+  }
+
+  function init_downlevel() {
+
+    init_common();
+
+     // insert hr after d-title
+    $('.d-title').after($('<hr class="section-separator"/>'));
+
+    // check if we have authors
+    var front_matter = JSON.parse($("#distill-front-matter").html());
+    var have_authors = front_matter.authors && front_matter.authors.length > 0;
+
+    // manage byline/border
+    if (!have_authors)
+      $('.d-byline').remove();
+    $('.d-byline').after($('<hr class="section-separator"/>'));
+    $('.d-byline a').remove();
+
+    // remove toc
+    $('.d-contents').remove();
+
+    // move appendix elements
+    $('h1.appendix, h2.appendix').each(function(i, val) {
+      $(this).changeElementType('h3');
+    });
+    $('h3.appendix').each(function(i, val) {
+      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('.d-appendix'));
+    });
+
+
+    // inject headers into references and footnotes
+    var refs_header = $('<h3></h3>');
+    refs_header.text('References');
+    $('#refs').prepend(refs_header);
+
+    var footnotes_header = $('<h3></h3');
+    footnotes_header.text('Footnotes');
+    $('.footnotes').children('hr').first().replaceWith(footnotes_header);
+
+    // move appendix-bottom entries to the bottom
+    $('.appendix-bottom').appendTo('.d-appendix').children().unwrap();
+    $('.appendix-bottom').remove();
+
+    // remove appendix if it's empty
+    if ($('.d-appendix').children().length === 0)
+      $('.d-appendix').remove();
+
+    // prepend separator above appendix
+    $('.d-appendix').before($('<hr class="section-separator" style="clear: both"/>'));
+
+    // trim code
+    $('pre>code').each(function(i, val) {
+      $(this).html($.trim($(this).html()));
+    });
+
+    // move posts-container right before article
+    $('.posts-container').insertBefore($('.d-article'));
+
+    $('body').addClass('downlevel');
+
+    on_load_complete();
+  }
+
+
+  function init_common() {
+
+    // jquery plugin to change element types
+    (function($) {
+      $.fn.changeElementType = function(newType) {
+        var attrs = {};
+
+        $.each(this[0].attributes, function(idx, attr) {
+          attrs[attr.nodeName] = attr.nodeValue;
+        });
+
+        this.replaceWith(function() {
+          return $("<" + newType + "/>", attrs).append($(this).contents());
+        });
+      };
+    })(jQuery);
+
+    // prevent underline for linked images
+    $('a > img').parent().css({'border-bottom' : 'none'});
+
+    // mark non-body figures created by knitr chunks as 100% width
+    $('.layout-chunk').each(function(i, val) {
+      var figures = $(this).find('img, .html-widget');
+      // ignore leaflet img layers (#106)
+      figures = figures.filter(':not(img[class*="leaflet"])')
+      if ($(this).attr('data-layout') !== "l-body") {
+        figures.css('width', '100%');
+      } else {
+        figures.css('max-width', '100%');
+        figures.filter("[width]").each(function(i, val) {
+          var fig = $(this);
+          fig.css('width', fig.attr('width') + 'px');
+        });
+
+      }
+    });
+
+    // auto-append index.html to post-preview links in file: protocol
+    // and in rstudio ide preview
+    $('.post-preview').each(function(i, val) {
+      if (window.location.protocol === "file:")
+        $(this).attr('href', $(this).attr('href') + "index.html");
+    });
+
+    // get rid of index.html references in header
+    if (window.location.protocol !== "file:") {
+      $('.distill-site-header a[href]').each(function(i,val) {
+        $(this).attr('href', $(this).attr('href').replace(/^index[.]html/, "./"));
+      });
+    }
+
+    // add class to pandoc style tables
+    $('tr.header').parent('thead').parent('table').addClass('pandoc-table');
+    $('.kable-table').children('table').addClass('pandoc-table');
+
+    // add figcaption style to table captions
+    $('caption').parent('table').addClass("figcaption");
+
+    // initialize posts list
+    if (window.init_posts_list)
+      window.init_posts_list();
+
+    // implmement disqus comment link
+    $('.disqus-comment-count').click(function() {
+      window.headroom_prevent_pin = true;
+      $('#disqus_thread').toggleClass('hidden');
+      if (!$('#disqus_thread').hasClass('hidden')) {
+        var offset = $(this).offset();
+        $(window).resize();
+        $('html, body').animate({
+          scrollTop: offset.top - 35
+        });
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    if (is_downlevel_browser())
+      init_downlevel();
+    else
+      window.addEventListener('WebComponentsReady', init_distill);
+  });
+
+  </script>
+
+  <!--/radix_placeholder_distill-->
+  <script src="survival_survex_files/header-attrs/header-attrs.js"></script>
+  <script src="survival_survex_files/jquery/jquery-3.6.0.min.js"></script>
+  <script src="survival_survex_files/popper/popper.min.js"></script>
+  <link href="survival_survex_files/tippy/tippy.css" rel="stylesheet" />
+  <link href="survival_survex_files/tippy/tippy-light-border.css" rel="stylesheet" />
+  <script src="survival_survex_files/tippy/tippy.umd.min.js"></script>
+  <script src="survival_survex_files/anchor/anchor.min.js"></script>
+  <script src="survival_survex_files/bowser/bowser.min.js"></script>
+  <script src="survival_survex_files/webcomponents/webcomponents.js"></script>
+  <script src="survival_survex_files/distill/template.v2.js"></script>
+  <!--radix_placeholder_site_in_header-->
+  <!--/radix_placeholder_site_in_header-->
+
+
+</head>
+
+<body>
+
+<!--radix_placeholder_front_matter-->
+
+<script id="distill-front-matter" type="text/json">
+{"title":"Model Performance on Survival Models","description":"How do you survival a fall without a parachute? Just like any other season","authors":[{"author":"Jasper Lok","authorURL":"https://jasperlok.netlify.app/","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2024-05-12T00:00:00.000+08:00","citationText":"Lok, 2024"}
+</script>
+
+<!--/radix_placeholder_front_matter-->
+<!--radix_placeholder_navigation_before_body-->
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="d-title">
+<h1>Model Performance on Survival Models</h1>
+
+<!--radix_placeholder_categories-->
+<div class="dt-tags">
+<div class="dt-tag">Machine Learning</div>
+<div class="dt-tag">Survival Model</div>
+</div>
+<!--/radix_placeholder_categories-->
+<p><p>How do you survival a fall without a parachute? Just like any other season</p></p>
+</div>
+
+<div class="d-byline">
+  Jasper Lok <a href="https://jasperlok.netlify.app/" class="uri">https://jasperlok.netlify.app/</a> 
+  
+<br/>05-12-2024
+</div>
+
+<div class="d-article">
+<div class="d-contents d-contents-float">
+<nav class="l-text toc figcaption" id="TOC">
+<h3>Contents</h3>
+<ul>
+<li><a href="#common-performance-metrics" id="toc-common-performance-metrics">Common performance metrics</a>
+<ul>
+<li><a href="#concordance-index-c-index" id="toc-concordance-index-c-index">Concordance Index (C-Index)</a></li>
+<li><a href="#brier-score" id="toc-brier-score">Brier Score</a></li>
+<li><a href="#roc-auc-curve" id="toc-roc-auc-curve">ROC AUC Curve</a></li>
+<li><a href="#cumulative-dynamic-auc" id="toc-cumulative-dynamic-auc">Cumulative Dynamic AUC</a></li>
+</ul></li>
+<li><a href="#demonstration" id="toc-demonstration">Demonstration</a>
+<ul>
+<li><a href="#setup-the-environment" id="toc-setup-the-environment">Setup the environment</a></li>
+<li><a href="#import-data" id="toc-import-data">Import Data</a></li>
+<li><a href="#method-1-use-the-formula-from-yardstick-package" id="toc-method-1-use-the-formula-from-yardstick-package">Method 1: Use the formula from <code>yardstick</code> package</a></li>
+<li><a href="#method-2---use-functions-from-survex-package" id="toc-method-2---use-functions-from-survex-package">Method 2 - Use functions from <code>survex</code> package</a></li>
+</ul></li>
+<li><a href="#conclusion" id="toc-conclusion">Conclusion</a></li>
+</ul>
+</nav>
+</div>
+<p>In this post, I will be looking at how to perform model performance on survival models.</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="image/campfire.jpg" width="100%" /></p>
+</div>
+<p>Photo by <a href="https://unsplash.com/@bastienrv?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Bastien Hervé</a> on <a href="https://unsplash.com/photos/bornfire-near-tree-FzAXZSGlftI?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a></p>
+<h1 id="common-performance-metrics">Common performance metrics</h1>
+<p>Below are some of the common performance metrics we will use:</p>
+<ul>
+<li><p>Concordance Index</p></li>
+<li><p>Brier Score</p></li>
+<li><p>ROC AUC Curve</p></li>
+<li><p>Cumulative Dynamic UAC</p></li>
+</ul>
+<h2 id="concordance-index-c-index">Concordance Index (C-Index)</h2>
+<p>One of the common performance metrics used in evaluating survival models is the concordance index.</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="image/concordance-index.png" width="100%" /></p>
+</div>
+<p><em>Taken from this <a href="https://www.mayo.edu/research/documents/bsi-techreport-85/doc-20433003">website</a></em></p>
+<p><span class="citation" data-cites="Hvitfeldt">(<a href="#ref-Hvitfeldt" role="doc-biblioref">Hvitfeldt</a>)</span> explained that the two observations are comparable if:</p>
+<ul>
+<li><p>Both of the observations experienced an event (at different times), or</p></li>
+<li><p>The observation with the shorter observed survival time experienced an event, in which case the event-free subject “outlived” the other.</p></li>
+</ul>
+<p>A pair is not comparable if they experienced events at the same time.</p>
+<p>Following are the interpretations of the model result:</p>
+<p>1: The model can differentiate the risks perfectly</p>
+<p>0.5: The model with random orderings of risk scores</p>
+<p>Some of the issues of the Concordance Index <span class="citation" data-cites="Hartman2023">(<a href="#ref-Hartman2023" role="doc-biblioref">Nicholas et al. 2023</a>)</span>:</p>
+<ul>
+<li><p>Concordance Index is insensitive to the addition of new predictors in a model, even if the new predictors are statistically and clinically significant</p>
+<ul>
+<li>Hence, this metric is not generally not useful in evaluating new risk factors or in model-building</li>
+</ul></li>
+<li><p>Model with inaccurate predictions can have C-indices that are much larger than those from a competing model with more accurate predictions</p></li>
+<li><p>If the populations with mostly low risk subjects, the C-index computation involves many comparisons of two low-risk patients with similar risk probabilities, which may not be the interest of the user</p></li>
+<li><p>Unable to show sensitivity and specificity</p></li>
+</ul>
+<h2 id="brier-score">Brier Score</h2>
+<p>Brier score is one of the performance metrics for classification problems.</p>
+<p>It can be extended to the right censored data:</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="image/brier-score.png" width="100%" /></p>
+</div>
+<p><em>Taken from this <a href="https://scikit-survival.readthedocs.io/en/stable/user_guide/evaluating-survival-models.html#Time-dependent-Brier-Score">website</a></em></p>
+<p>Note that this performance metric does not work on models that cannot produce survival functions (e.g., survival support vector machine).</p>
+<p>For this score, a perfect model has a score of zero, while an uninformative model would have a score of around 1/4.</p>
+<h2 id="roc-auc-curve">ROC AUC Curve</h2>
+<p>This performance metric calculates the predicted survival probabilities that correspond to different time points.</p>
+<h2 id="cumulative-dynamic-auc">Cumulative Dynamic AUC</h2>
+<p>In short, this is the same as AUC, except we are measuring the cumulative events under Cumulative Dynamic AUC.</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="image/cumulative-dynamic-auc.png" width="100%" /></p>
+</div>
+<p><em>Taken from this <a href="https://scikit-survival.readthedocs.io/en/stable/api/generated/sksurv.metrics.cumulative_dynamic_auc.html">website</a></em></p>
+<h1 id="demonstration">Demonstration</h1>
+<p>In this demonstration, I will be using this <a href="https://www.kaggle.com/datasets/shrutimechlearn/churn-modelling">bank dataset</a> from Kaggle.</p>
+<h2 id="setup-the-environment">Setup the environment</h2>
+<p>First, I will load the necessary packages into the environment.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'>pacman</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/pacman/man/p_load.html'>p_load</a></span><span class='op'>(</span><span class='va'>tidyverse</span>, <span class='va'>tidymodels</span>, <span class='va'>censored</span>, <span class='va'>lubridate</span>, <span class='va'>janitor</span>, <span class='va'>survival</span>, <span class='va'>survminer</span>, <span class='va'>survex</span>, <span class='va'>yardstick</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<p>We will use <code>survex</code> package to measure model performance on the Cox proportional hazard model.</p>
+<p>We also set the time points to be used in the calculations later.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>time_points</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>10</span>, by <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<h2 id="import-data">Import Data</h2>
+<p>First I will import the dataset into the environment.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'>read_csv</span><span class='op'>(</span><span class='st'>"https://raw.githubusercontent.com/jasperlok/my-blog/master/_posts/2022-09-10-kaplan-meier/data/Churn_Modelling.csv"</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>clean_names</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>select</span><span class='op'>(</span><span class='op'>-</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>row_number</span>, <span class='va'>customer_id</span>, <span class='va'>surname</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>mutate</span><span class='op'>(</span>has_cr_card <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>has_cr_card</span><span class='op'>)</span>,</span>
+<span>         is_active_member <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>is_active_member</span><span class='op'>)</span>,</span>
+<span>         credit_score <span class='op'>=</span> <span class='va'>credit_score</span><span class='op'>/</span><span class='fl'>100</span>,</span>
+<span>         balance <span class='op'>=</span> <span class='va'>balance</span><span class='op'>/</span><span class='fl'>10000</span>,</span>
+<span>         estimated_salary <span class='op'>=</span> <span class='va'>estimated_salary</span><span class='op'>/</span><span class='fl'>10000</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>tenure</span> <span class='op'>&gt;</span> <span class='fl'>0</span><span class='op'>)</span> <span class='op'>%&gt;%</span> </span>
+<span>  <span class='fu'>mutate</span><span class='op'>(</span>age_square <span class='op'>=</span> <span class='va'>age</span> <span class='op'>^</span> <span class='fl'>2</span></span>
+<span>         ,age_cube <span class='op'>=</span> <span class='va'>age</span> <span class='op'>^</span> <span class='fl'>3</span></span>
+<span>         ,age_gender <span class='op'>=</span> <span class='va'>age</span> <span class='op'>*</span> <span class='fu'>if_else</span><span class='op'>(</span><span class='va'>gender</span> <span class='op'>==</span> <span class='st'>"Male"</span>, <span class='fl'>1</span>, <span class='fl'>0</span><span class='op'>)</span></span>
+<span>         ,age_square_gender <span class='op'>=</span> <span class='va'>age_square</span> <span class='op'>*</span> <span class='fu'>if_else</span><span class='op'>(</span><span class='va'>gender</span> <span class='op'>==</span> <span class='st'>"Male"</span>, <span class='fl'>1</span>, <span class='fl'>0</span><span class='op'>)</span></span>
+<span>         ,age_cube_gender <span class='op'>=</span> <span class='va'>age_cube</span> <span class='op'>*</span> <span class='fu'>if_else</span><span class='op'>(</span><span class='va'>gender</span> <span class='op'>==</span> <span class='st'>"Male"</span>, <span class='fl'>1</span>, <span class='fl'>0</span><span class='op'>)</span></span>
+<span>         ,target <span class='op'>=</span> <span class='fu'>Surv</span><span class='op'>(</span><span class='va'>tenure</span>, <span class='va'>exited</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> </span>
+<span>  <span class='fu'>select</span><span class='op'>(</span><span class='op'>-</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>tenure</span>, <span class='va'>exited</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<h2 id="method-1-use-the-formula-from-yardstick-package">Method 1: Use the formula from <code>yardstick</code> package</h2>
+<p>First I will build a Cox proportional hazard model.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>df_splits</span> <span class='op'>&lt;-</span> <span class='fu'>initial_validation_split</span><span class='op'>(</span><span class='va'>df</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>cox_recipe</span> <span class='op'>&lt;-</span> <span class='fu'>recipe</span><span class='op'>(</span></span>
+<span>  <span class='va'>target</span> <span class='op'>~</span> <span class='va'>.</span>, </span>
+<span>  data <span class='op'>=</span> <span class='fu'>training</span><span class='op'>(</span><span class='va'>df_splits</span><span class='op'>)</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>cox_specs</span> <span class='op'>&lt;-</span></span>
+<span>  <span class='fu'>proportional_hazards</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> </span>
+<span>  <span class='fu'>set_engine</span><span class='op'>(</span><span class='st'>"survival"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> </span>
+<span>  <span class='fu'>set_mode</span><span class='op'>(</span><span class='st'>"censored regression"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>cox_wf</span> <span class='op'>&lt;-</span></span>
+<span>  <span class='fu'>workflow</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> </span>
+<span>  <span class='fu'>add_recipe</span><span class='op'>(</span><span class='va'>cox_recipe</span><span class='op'>)</span> <span class='op'>%&gt;%</span> </span>
+<span>  <span class='fu'>add_model</span><span class='op'>(</span><span class='va'>cox_specs</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<p>Once the information is defined, we can proceed and fit the model.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>cox_fit</span> <span class='op'>&lt;-</span></span>
+<span>  <span class='va'>cox_wf</span> <span class='op'>%&gt;%</span> </span>
+<span>  <span class='fu'>fit</span><span class='op'>(</span>data <span class='op'>=</span> <span class='fu'>training</span><span class='op'>(</span><span class='va'>df_splits</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<p>Then we can generate the predictions from the model.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>cox_pred</span> <span class='op'>&lt;-</span></span>
+<span>  <span class='va'>cox_fit</span> <span class='op'>%&gt;%</span> </span>
+<span>  <span class='fu'>augment</span><span class='op'>(</span><span class='fu'>validation</span><span class='op'>(</span><span class='va'>df_splits</span><span class='op'>)</span>, eval_time <span class='op'>=</span> <span class='va'>time_points</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<p>Then we can use the model performance functions from <code>yardstick</code> package.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>cox_pred</span> <span class='op'>%&gt;%</span> </span>
+<span>  <span class='fu'>brier_survival</span><span class='op'>(</span>truth <span class='op'>=</span> <span class='va'>target</span>, <span class='va'>.pred</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 11 × 4
+   .metric        .estimator .eval_time .estimate
+   &lt;chr&gt;          &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;
+ 1 brier_survival standard            0    0     
+ 2 brier_survival standard            1    0.0210
+ 3 brier_survival standard            2    0.0408
+ 4 brier_survival standard            3    0.0608
+ 5 brier_survival standard            4    0.0794
+ 6 brier_survival standard            5    0.0987
+ 7 brier_survival standard            6    0.114 
+ 8 brier_survival standard            7    0.129 
+ 9 brier_survival standard            8    0.140 
+10 brier_survival standard            9    0.129 
+11 brier_survival standard           10    0.0631</code></pre>
+</div>
+<p>We can pass the result to <code>ggplot</code> function to visualize the result.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>cox_pred</span> <span class='op'>%&gt;%</span> </span>
+<span>  <span class='fu'>brier_survival</span><span class='op'>(</span>truth <span class='op'>=</span> <span class='va'>target</span>, <span class='va'>.pred</span><span class='op'>)</span> <span class='op'>%&gt;%</span> </span>
+<span>  <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span><span class='va'>.eval_time</span>, <span class='va'>.estimate</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>geom_line</span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="survival_survex_files/figure-html5/unnamed-chunk-12-1.png" width="100%" /></p>
+</div>
+<p>We could calculate the Concordance Index by using <code>concordance_survival</code> function.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>cox_pred</span> <span class='op'>%&gt;%</span> </span>
+<span>  <span class='fu'>concordance_survival</span><span class='op'>(</span>truth <span class='op'>=</span> <span class='va'>target</span></span>
+<span>                      ,estimate <span class='op'>=</span> <span class='va'>.pred_time</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 1 × 3
+  .metric              .estimator .estimate
+  &lt;chr&gt;                &lt;chr&gt;          &lt;dbl&gt;
+1 concordance_survival standard       0.766</code></pre>
+</div>
+<p>Based on the result, the model performance deteriorates over time and peaks between time points 7 and 8 before starting to improve again.</p>
+<p>Alternatively, if we want to compute a few performance metrics, we could use <code>metric_set</code> and <code>fit_resamples</code> functions to do so.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># define all the performance metrics to be computed</span></span>
+<span><span class='va'>survival_metrics</span> <span class='op'>&lt;-</span> <span class='fu'>metric_set</span><span class='op'>(</span><span class='va'>brier_survival_integrated</span>, <span class='va'>brier_survival</span>,</span>
+<span>                               <span class='va'>roc_auc_survival</span>, <span class='va'>concordance_survival</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># fit the model</span></span>
+<span><span class='va'>cox_res</span> <span class='op'>&lt;-</span> <span class='fu'>fit_resamples</span><span class='op'>(</span></span>
+<span>  <span class='va'>cox_wf</span>,</span>
+<span>  resamples <span class='op'>=</span> <span class='fu'>validation_set</span><span class='op'>(</span><span class='va'>df_splits</span><span class='op'>)</span>,</span>
+<span>  metrics <span class='op'>=</span> <span class='va'>survival_metrics</span>,</span>
+<span>  eval_time <span class='op'>=</span> <span class='va'>time_points</span>, </span>
+<span>  control <span class='op'>=</span> <span class='fu'>control_resamples</span><span class='op'>(</span>save_pred <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<p>To collect the model performance, we need to pass the fitted object into <code>collect_metrics</code> function.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'>collect_metrics</span><span class='op'>(</span><span class='va'>cox_res</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 24 × 7
+   .metric          .estimator .eval_time   mean     n std_err .config
+   &lt;chr&gt;            &lt;chr&gt;           &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;  
+ 1 brier_survival   standard            0 0          1      NA Prepro…
+ 2 roc_auc_survival standard            0 0.5        1      NA Prepro…
+ 3 brier_survival   standard            1 0.0210     1      NA Prepro…
+ 4 roc_auc_survival standard            1 0.743      1      NA Prepro…
+ 5 brier_survival   standard            2 0.0408     1      NA Prepro…
+ 6 roc_auc_survival standard            2 0.772      1      NA Prepro…
+ 7 brier_survival   standard            3 0.0608     1      NA Prepro…
+ 8 roc_auc_survival standard            3 0.755      1      NA Prepro…
+ 9 brier_survival   standard            4 0.0794     1      NA Prepro…
+10 roc_auc_survival standard            4 0.747      1      NA Prepro…
+# ℹ 14 more rows</code></pre>
+</div>
+<p>We could even pass the model performance to <code>ggplot</code> function to visualize the results.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'>collect_metrics</span><span class='op'>(</span><span class='va'>cox_res</span><span class='op'>)</span> <span class='op'>%&gt;%</span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>.metric</span> <span class='op'>==</span> <span class='st'>"roc_auc_survival"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> </span>
+<span>  <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span><span class='va'>.eval_time</span>, <span class='va'>mean</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>geom_line</span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="survival_survex_files/figure-html5/unnamed-chunk-16-1.png" width="100%" /></p>
+</div>
+<h2 id="method-2---use-functions-from-survex-package">Method 2 - Use functions from <code>survex</code> package</h2>
+<p>Alternatively, we could use <code>survex</code> package to measure the model performance.</p>
+<p>At the point of writing, <code>survex</code> package only supports models from the following packages:</p>
+<ul>
+<li><p><code>mlr3proba</code></p></li>
+<li><p><code>censored</code></p></li>
+<li><p><code>ranger</code></p></li>
+<li><p><code>randomForestSRC</code></p></li>
+<li><p><code>survival</code></p></li>
+</ul>
+<p>In this demonstration, I will first build a Cox Proportional Hazard model by using <code>cox</code> function.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>cox_model</span> <span class='op'>&lt;-</span> <span class='fu'>coxph</span><span class='op'>(</span><span class='va'>target</span> <span class='op'>~</span> <span class='va'>.</span>, </span>
+<span>                   data <span class='op'>=</span> <span class='fu'>training</span><span class='op'>(</span><span class='va'>df_splits</span><span class='op'>)</span>,</span>
+<span>                   model<span class='op'>=</span><span class='cn'>TRUE</span>,</span>
+<span>                   x <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>cox_model</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>Call:
+coxph(formula = target ~ ., data = training(df_splits), model = TRUE, 
+    x = TRUE)
+
+  n= 5752, number of events= 1167 
+
+                        coef  exp(coef)   se(coef)       z Pr(&gt;|z|)
+credit_score      -5.874e-02  9.430e-01  3.014e-02  -1.949  0.05133
+geographyGermany   5.123e-01  1.669e+00  7.246e-02   7.070 1.55e-12
+geographySpain     1.271e-01  1.136e+00  7.948e-02   1.599  0.10975
+genderMale         1.568e+00  4.799e+00  2.818e+00   0.557  0.57785
+age               -4.822e-01  6.174e-01  1.178e-01  -4.092 4.28e-05
+balance            1.603e-02  1.016e+00  5.771e-03   2.777  0.00548
+num_of_products   -4.360e-02  9.573e-01  4.810e-02  -0.906  0.36479
+has_cr_card1      -3.104e-02  9.694e-01  6.425e-02  -0.483  0.62898
+is_active_member1 -6.516e-01  5.212e-01  6.209e-02 -10.495  &lt; 2e-16
+estimated_salary  -4.229e-04  9.996e-01  5.080e-03  -0.083  0.93366
+age_square         1.383e-02  1.014e+00  2.638e-03   5.242 1.59e-07
+age_cube          -1.106e-04  9.999e-01  1.906e-05  -5.803 6.53e-09
+age_gender        -2.117e-01  8.092e-01  1.980e-01  -1.069  0.28504
+age_square_gender  6.206e-03  1.006e+00  4.500e-03   1.379  0.16789
+age_cube_gender   -5.370e-05  9.999e-01  3.308e-05  -1.623  0.10452
+                     
+credit_score      .  
+geographyGermany  ***
+geographySpain       
+genderMale           
+age               ***
+balance           ** 
+num_of_products      
+has_cr_card1         
+is_active_member1 ***
+estimated_salary     
+age_square        ***
+age_cube          ***
+age_gender           
+age_square_gender    
+age_cube_gender      
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+                  exp(coef) exp(-coef) lower .95 upper .95
+credit_score         0.9430     1.0605   0.88886    1.0003
+geographyGermany     1.6691     0.5991   1.44809    1.9238
+geographySpain       1.1355     0.8806   0.97174    1.3269
+genderMale           4.7991     0.2084   0.01916 1202.2916
+age                  0.6174     1.6196   0.49010    0.7779
+balance              1.0162     0.9841   1.00473    1.0277
+num_of_products      0.9573     1.0446   0.87121    1.0520
+has_cr_card1         0.9694     1.0315   0.85473    1.0995
+is_active_member1    0.5212     1.9187   0.46147    0.5886
+estimated_salary     0.9996     1.0004   0.98968    1.0096
+age_square           1.0139     0.9863   1.00870    1.0192
+age_cube             0.9999     1.0001   0.99985    0.9999
+age_gender           0.8092     1.2358   0.54889    1.1930
+age_square_gender    1.0062     0.9938   0.99739    1.0151
+age_cube_gender      0.9999     1.0001   0.99988    1.0000
+
+Concordance= 0.753  (se = 0.008 )
+Likelihood ratio test= 918.4  on 15 df,   p=&lt;2e-16
+Wald test            = 541  on 15 df,   p=&lt;2e-16
+Score (logrank) test = 952.2  on 15 df,   p=&lt;2e-16</code></pre>
+</div>
+<p>Then, we will pass the fitted model into <code>explain</code> function.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>cox_explain</span> <span class='op'>&lt;-</span> </span>
+<span>  <span class='fu'>explain</span><span class='op'>(</span><span class='va'>cox_model</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>Preparation of a new explainer is initiated 
+  -&gt; model label       :  coxph ( [33m default [39m ) 
+  -&gt; data              :  5752  rows  14  cols (  extracted from the model  ) 
+  -&gt; target variable   :  5752  values ( 1167 events and 4585 censored , censoring rate = 0.797 ) (  extracted from the model  ) 
+  -&gt; times             :  10 unique time points , min = 1.5 , median survival time = 10 , max = 10 
+  -&gt; times             :  (  generated from y as uniformly distributed survival quantiles based on Kaplan-Meier estimator  ) 
+  -&gt; predict function  :  predict.coxph with type = &#39;risk&#39; will be used ( [33m default [39m ) 
+  -&gt; predict survival function  :  predictSurvProb.coxph will be used ( [33m default [39m ) 
+  -&gt; predict cumulative hazard function  :  -log(predict_survival_function) will be used ( [33m default [39m ) 
+  -&gt; model_info        :  package survival , ver. 3.5.8 , task survival ( [33m default [39m ) 
+  A new explainer has been created!  </code></pre>
+</div>
+<p>After that, we will compute the model performance.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>cox_perform</span> <span class='op'>&lt;-</span> <span class='fu'>model_performance</span><span class='op'>(</span><span class='va'>cox_explain</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<p>We could visualize the result by plotting the results.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>cox_perform</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="survival_survex_files/figure-html5/unnamed-chunk-20-1.png" width="100%" /></p>
+</div>
+<p>In general, both performance metrics show the same picture, i.e., the model deteriorates across the time points.</p>
+<p>If we want to extract the calculated model performance, we can use the following formula:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># Brier Score</span></span>
+<span><span class='fu'>brier_score</span><span class='op'>(</span><span class='va'>cox_explain</span><span class='op'>$</span><span class='va'>y</span></span>
+<span>            ,<span class='va'>cox_explain</span><span class='op'>$</span><span class='va'>times</span></span>
+<span>            ,<span class='va'>cox_explain</span><span class='op'>$</span><span class='fu'>predict_survival_function</span><span class='op'>(</span><span class='va'>cox_model</span></span>
+<span>                                                   ,<span class='va'>cox_explain</span><span class='op'>$</span><span class='va'>data</span></span>
+<span>                                                   ,<span class='va'>cox_explain</span><span class='op'>$</span><span class='va'>times</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code> [1] 0.02603667 0.04707600 0.07020189 0.09250171 0.11470390 0.13947181
+ [7] 0.16772518 0.20171979 0.22545071 0.17769927</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># CD AUC Curve</span></span>
+<span><span class='fu'>cd_auc</span><span class='op'>(</span>y <span class='op'>=</span> <span class='va'>cox_explain</span><span class='op'>$</span><span class='va'>y</span></span>
+<span>       ,times <span class='op'>=</span> <span class='va'>cox_explain</span><span class='op'>$</span><span class='va'>times</span></span>
+<span>       ,surv <span class='op'>=</span> <span class='va'>cox_explain</span><span class='op'>$</span><span class='fu'>predict_survival_function</span><span class='op'>(</span><span class='va'>cox_model</span></span>
+<span>                                                     ,<span class='va'>cox_explain</span><span class='op'>$</span><span class='va'>data</span></span>
+<span>                                                     ,<span class='va'>cox_explain</span><span class='op'>$</span><span class='va'>times</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code> [1] 0.5202218 0.5084920 0.5076368 0.5039808 0.5016500 0.4976865
+ [7] 0.4915127 0.4771385 0.4776436       NaN</code></pre>
+</div>
+<p>As mentioned above, the functions also work for fitted models from <code>censored</code> package. Below is the demonstration:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># create explainer object</span></span>
+<span><span class='va'>cox_explain_tidym</span> <span class='op'>&lt;-</span> </span>
+<span>  <span class='fu'>explain</span><span class='op'>(</span><span class='va'>cox_fit</span><span class='op'>$</span><span class='va'>fit</span><span class='op'>$</span><span class='va'>fit</span></span>
+<span>          ,data <span class='op'>=</span> <span class='fu'>training</span><span class='op'>(</span><span class='va'>df_splits</span><span class='op'>)</span></span>
+<span>          ,y <span class='op'>=</span> <span class='fu'>training</span><span class='op'>(</span><span class='va'>df_splits</span><span class='op'>)</span><span class='op'>$</span><span class='va'>target</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>Preparation of a new explainer is initiated 
+  -&gt; model label       :  model_fit_coxph ( [33m default [39m ) 
+  -&gt; data              :  5752  rows  15  cols 
+  -&gt; data              :  tibble converted into a data.frame 
+  -&gt; target variable   :  5752  values ( 1167 events and 4585 censored ) 
+  -&gt; times             :  10 unique time points , min = 1.5 , median survival time = 10 , max = 10 
+  -&gt; times             :  (  generated from y as uniformly distributed survival quantiles based on Kaplan-Meier estimator  ) 
+  -&gt; predict function  :  predict.model_fit with type = &#39;linear_pred&#39; will be used ( [33m default [39m ) 
+  -&gt; predict survival function  :  predict.model_fit with type = &#39;survival&#39; will be used ( [33m default [39m ) 
+  -&gt; predict cumulative hazard function  :  -log(predict_survival_function) will be used ( [33m default [39m ) 
+  -&gt; model_info        :  package parsnip , ver. 1.2.1 , task survival ( [33m default [39m ) 
+  A new explainer has been created!  </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># compute model performance</span></span>
+<span><span class='va'>cox_perform_tidym</span> <span class='op'>&lt;-</span> <span class='fu'>model_performance</span><span class='op'>(</span><span class='va'>cox_explain_tidym</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># plot the results</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>cox_perform_tidym</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="survival_survex_files/figure-html5/unnamed-chunk-22-1.png" width="100%" /></p>
+</div>
+<p>I also noted <code>survex</code> package also offers functions to show the relative importance of the variable.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>cox_parts</span> <span class='op'>&lt;-</span> </span>
+<span>  <span class='fu'>model_parts</span><span class='op'>(</span><span class='va'>cox_explain</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<p>To visualize the result, we just need to pass the info into <code>plot</code> function.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>cox_parts</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="survival_survex_files/figure-html5/unnamed-chunk-24-1.png" width="100%" /></p>
+</div>
+<p>As shown above, age square is the most important variable.</p>
+<h1 id="conclusion">Conclusion</h1>
+<p>That’s all for the day!</p>
+<p>Thanks for reading the post until the end.</p>
+<p>Feel free to contact me through <a href="mailto:jasper.jh.lok@gmail.com">email</a> or <a href="https://www.linkedin.com/in/jasper-l-13426232/">LinkedIn</a> if you have any suggestions on future topics to share.</p>
+<p>Refer to this link for the <a href="https://jasperlok.netlify.app/blog_disclaimer.html">blog disclaimer</a>.</p>
+<p>Till next time, happy learning!</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="image/plants.jpg" width="100%" /></p>
+</div>
+<p>Photo by <a href="https://unsplash.com/@miracleday?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Elena Mozhvilo</a> on <a href="https://unsplash.com/photos/green-and-white-plant-on-white-ceramic-bowl-NJM-r6hv6TQ?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a></p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-Hvitfeldt" class="csl-entry" role="listitem">
+Hvitfeldt, Emil. <span>“Concordance Index for Right-Censored Data.”</span> <a href="https://yardstick.tidymodels.org/reference/concordance_survival.html">https://yardstick.tidymodels.org/reference/concordance_survival.html</a>.
+</div>
+<div id="ref-Hartman2023" class="csl-entry" role="listitem">
+Nicholas, Hartman, Kim Sehee, He Kevin, and John D. Kalbfleisch. 2023. <span>“Pitfalls of the Concordance Index for Survival Outcomes.”</span> <a href="https://onlinelibrary.wiley.com/doi/10.1002/sim.9717">https://onlinelibrary.wiley.com/doi/10.1002/sim.9717</a>.
+</div>
+</div>
+<!--radix_placeholder_article_footer-->
+<!--/radix_placeholder_article_footer-->
+</div>
+
+<div class="d-appendix">
+</div>
+
+
+<!--radix_placeholder_site_after_body-->
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_appendices-->
+<div class="appendix-bottom">
+<h3 id="references">References</h3>
+<div id="references-listing"></div>
+</div>
+<!--/radix_placeholder_appendices-->
+<!--radix_placeholder_navigation_after_body-->
+<!--/radix_placeholder_navigation_after_body-->
+
+</body>
+
+</html>
