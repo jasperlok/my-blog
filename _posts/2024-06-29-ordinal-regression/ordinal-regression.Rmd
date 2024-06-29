@@ -1,0 +1,335 @@
+---
+title: "Ordinal Regression"
+description: |
+   When we take into account the inherent ranking
+author:
+  - name: Jasper Lok 
+    url: https://jasperlok.netlify.app/
+date: 06-29-2024
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 4
+    self_contained: false
+bibliography: ["ref.bib"]
+biblio-style: "apa"
+link-citations: true
+categories:
+  - Machine Learning
+  - Supervised Learning
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+pacman::p_load(knitr, kableExtra, tidyverse)
+
+knitr::opts_chunk$set(fig.retina = 3,                       
+                      echo = TRUE,                       
+                      eval = TRUE,                       
+                      message = FALSE,                       
+                      warning = FALSE,
+                      out.width="100%")
+
+```
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/aditya-patil-TZ4LbC0i0Ns-unsplash.jpg")
+
+```
+
+Photo by <a href="https://unsplash.com/@yourvfxhelper?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Aditya Patil</a> on <a href="https://unsplash.com/photos/an-artistic-scene-with-a-stage-and-colorful-circles-TZ4LbC0i0Ns?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+  
+  
+
+# What is ordinal data?
+
+Ordinal data is a form of categorical data that has a meaningful order among its categories [@geeks2023]. 
+
+Following are some examples of ordinal data:
+
+- Likert scales
+
+- Preference of ranking
+
+
+# Why can't we use Ordinary Least Square to analyze ordinal data?
+
+[@ibm2023] explained that usual linear regression does not work well on ordinal data. The usual linear regression assumes the dependent variable is measured on interval scale. 
+
+Linear regression is also sensitive to the way you define categories of the target variable. With an ordinal variable, the important thing is the ordering of categories. So, if you collapse two adjacent categories into one larger category, you are making only a small change, and models built using the old and new categorizations should be very similar. Unfortunately, because linear regression is sensitive to the categorization used, a model built before merging categories could be quite different from one built after.
+
+
+
+# What do we do if the proportional odds assumption does not hold for the fitted model?
+
+Below are some ways to handle when the proportional odds assumption fail [@McNulty2024]:
+
+- Simplify the model by removing the variables (e.g., removing those fail the test)
+
+- Fit other types of models (e.g., multinomial logistic regression, adjacent-category logistic model, continuation-ratio logistic model etc)
+
+
+
+# Demonstration
+
+In this demosntration, I will be using several methods to fit an ordinal logistic regression.
+
+```{r}
+pacman::p_load(tidyverse, tidymodels, janitor, MASS, car, VGAM, brant, gofcat)
+
+```
+
+## Import Data
+
+I will be using this [body performance dataset](https://www.kaggle.com/datasets/kukuroo3/body-performance-data) I found on Kaggle for this demonstration.
+
+```{r}
+df <- read_csv("data/bodyPerformance.csv") %>%
+  clean_names() %>% # clean up the column naming
+  mutate(class = factor(class, levels = c("D", "C", "B", "A"))) # convert the target variable to factor and define the order of the levels
+
+```
+
+## Model Building
+
+Now, let's start building the ordinal logistic regression!
+
+### `polr` function from `MASS` package
+
+First, I will be using the `polr` function from `MASS` package.
+
+```{r}
+polr_fit <-
+  polr(class ~ age
+       + gender 
+       + height_cm 
+       + weight_kg 
+       + body_fat_percent 
+       + diastolic 
+       + systolic 
+       + grip_force 
+       + sit_ups_counts 
+       + broad_jump_cm
+       ,data = df
+       ,Hess = TRUE)
+
+summary(polr_fit)
+
+```
+
+According to the [documentation](https://www.rdocumentation.org/packages/MASS/versions/7.3-60.0.1/topics/polr), this model is also known as 'cumulative link model'.
+
+
+Note that we need to specify `Hess` to be TRUE, so that the standard errors will be computed.
+
+Note that the intercepts also sometimes known as 'cutpoints'.
+
+We can obtain the odd by taking exponential on the coefficients of the variables.
+
+```{r}
+as.data.frame(exp(coef(polr_fit)))
+
+```
+
+Example on how we interpret the results:
+
+-   If all else being equal, switching from female to male, the odd of moving up the class is 0.014
+
+```{r}
+df %>% 
+  group_by(gender, class) %>% 
+  tally() %>% 
+  group_by(gender) %>% 
+  mutate(perc = n/sum(n)) %>% 
+  ggplot(aes(gender, class, fill = perc)) +
+  geom_tile()
+
+```
+
+If we were to visualize the proportion of male and female within each class, we could see that within each gender, the proportion of class A is higher for female.
+
+The function also allows nonlinear transformation on the variable and interactions as shown below.
+
+```{r}
+polr_fit_complex <-
+  polr(class ~ poly(age, 3) * gender
+       + sit_ups_counts 
+       ,data = df
+       ,Hess = TRUE)
+
+polr_fit_complex
+
+```
+
+To compute the anova, the base R `anova` function does not support `polr` object at point of writing, hence we need to use the `Anova` function from `car` package.
+
+Over here, I will use type 2 and I will leave the exploration of different types of anova in future post.
+
+```{r}
+Anova(polr_fit, type = 2)
+
+```
+
+Based on the results from `anova` function, we could see that `sit_ups_counts` is the most importance variable.
+
+### `vglm` function from `VGAM` package
+
+Alternatively, we could use the `vglm` function from `VGAM` package to fit an ordinal logistic regression model.
+
+```{r}
+vglm_fit <-
+  vglm(class ~ age
+       + gender 
+       + height_cm 
+       + weight_kg 
+       + body_fat_percent 
+       + diastolic 
+       + systolic 
+       + grip_force 
+       + sit_ups_counts 
+       + broad_jump_cm
+       ,data = df
+       ,family = cumulative(parallel = TRUE))
+
+summary(vglm_fit)
+
+```
+
+Note that we need to specify the `parallel` is TRUE so that the function will fit a proportional odds ordinal logistic regression, otherwise the coefficients for the variables (i.e., the slopes) would be different for each class.
+
+We could make some variables with different coefficients by indicating `parallel` to FALSE and passing the variables name into `cumulative` argument.
+
+```{r}
+vglm_fit_partial <-
+  vglm(class ~ age
+       + gender 
+       + height_cm 
+       + weight_kg 
+       + body_fat_percent 
+       + diastolic 
+       + systolic 
+       + grip_force 
+       + sit_ups_counts 
+       + broad_jump_cm
+       ,data = df
+       ,family = cumulative(parallel = FALSE ~ gender))
+
+summary(vglm_fit_partial)
+
+```
+
+
+From the result above, we could see that Hauck-Donner effect is checked when fitting the model by using `vglm` function.
+
+
+Especially for categorical regression models such as the binary and polytomous logistic models, problems arise when a part of the covariate space yields an outcome probability of zero or one so that there is perfect separation in a covariate distribution [@Harrell2024].
+
+
+
+`VGAM` package has `anova` function to compute the necessary results.
+
+```{r}
+anova(vglm_fit)
+
+```
+
+## Test Proportional Odds Assumptions
+
+There are a few approaches to check the proportional odds assumption.
+
+### Method 1: Use `anova` to compare the models with proportional odds and without
+
+```{r}
+vglm_fit_same_slope <-
+  vglm(class ~ age 
+       ,data = df
+       ,family = cumulative(parallel = TRUE))
+
+summary(vglm_fit_same_slope)
+
+```
+
+```{r}
+vglm_fit_different_slope <-
+  vglm(class ~ age 
+       ,data = df
+       ,family = cumulative(parallel = FALSE))
+
+summary(vglm_fit_different_slope)
+
+```
+
+```{r}
+anova(vglm_fit_same_slope, vglm_fit_different_slope, type = 1)
+
+```
+
+### Method 2: Use other packages to check
+
+However, these functions have some limitations at the point of writing:
+
+-   `brant` function is not able to support models in S4 class
+
+-   Both functions seem to be unable to handle `poly` function, but interactions are fine
+
+```{r}
+gofcat::brant.test(vglm_fit)
+brant(polr_fit)
+
+```
+
+From the results above, as p-value is less than 0.05, we would reject null hypothesis and conclude that there is statistical evidence that proportional odds assumption does not hold.
+
+The test also shows us which variable does not fulfill the proportional odds assumption.
+
+
+### Method 3: Extract the model output to conduct the statistical test
+
+Another apporach to check the proportion odds assumption is by using the formula below mentioned on [this course website](https://online.stat.psu.edu/stat504/lesson/8/8.5).
+
+
+```{r}
+g2_prop = 2*(logLik(vglm_fit_different_slope) - logLik(vglm_fit_same_slope))
+df_prop = df.residual(vglm_fit_same_slope) - df.residual(vglm_fit_different_slope)
+1 - pchisq(g2_prop, df_prop)
+
+```
+
+Again the p-value is less than 0.05, we would reject null hypothesis.
+
+
+
+## Helpful resource
+
+These are some of the other helpful online resources I referred to when I was studying on ordinal regression.
+
+[UCLA - Ordinal regression](https://stats.oarc.ucla.edu/r/dae/ordinal-logistic-regression/)
+
+[Post on Ordinal Logistic regression](https://education.illinois.edu/docs/default-source/carolyn-anderson/edpsy589/lectures/8_Multicategory_logit/ordinal_logistic_post.pdf) 
+
+[Ordinal logistic regression in R](https://www.geeksforgeeks.org/ordinal-logistic-regression-in-r/)
+
+[Ordinal regression](https://bookdown.org/rwnahhas/RMPH/blr-ordinal.html)
+
+[SPSS - Ordinal Regression](https://www.ibm.com/docs/en/spss-statistics/saas?topic=edition-ordinal-regression)
+
+# Conclusion
+
+That's all for the day!
+
+Thanks for reading the post until the end.
+
+Feel free to contact me through [email](mailto:jasper.jh.lok@gmail.com) or [LinkedIn](https://www.linkedin.com/in/jasper-l-13426232/) if you have any suggestions on future topics to share.
+
+Refer to this link for the [blog disclaimer](https://jasperlok.netlify.app/blog_disclaimer.html).
+
+Till next time, happy learning!
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/pexels-enginakyurt-1552617.jpg")
+
+```
+
+Photo by [Engin Akyurt](https://www.pexels.com/photo/black-and-white-dartboard-1552617/)
+  
