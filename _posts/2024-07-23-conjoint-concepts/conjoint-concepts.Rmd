@@ -1,0 +1,161 @@
+---
+title: "Conjoint Analysis - Concepts"
+description: |
+   Going back to the concepts
+author:
+  - name: Jasper Lok 
+    url: https://jasperlok.netlify.app/
+date: 07-23-2024
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 4
+    self_contained: false
+bibliography: ["ref.bib"]
+biblio-style: "apa"
+link-citations: true
+categories:
+  - Experiemental Design
+  - Concepts
+  
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+pacman::p_load(knitr, kableExtra, tidyverse)
+
+knitr::opts_chunk$set(fig.retina = 3,                       
+                      echo = TRUE,                       
+                      eval = TRUE,                       
+                      message = FALSE,                       
+                      warning = FALSE,
+                      out.width="100%")
+
+```
+
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/letizia-bordoni-IZGNcO_8CDg-unsplash.jpg")
+
+```
+
+Photo by <a href="https://unsplash.com/@letyi?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Letizia Bordoni</a> on <a href="https://unsplash.com/photos/woman-with-jacket-on-front-of-concrete-building-IZGNcO_8CDg?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+  
+  
+Recently, I have worked with the president of Singapore Actuarial Society in performing conjoint analysis.
+
+Hence, in this post, I will summarize what I have learnt about conjoint analysis. There will be no demonstration in this post.
+
+
+
+# What is "conjoint analysis"?
+
+Conjoint analysis is a form of statistical analysis that firms use in market research to understand how customers value different components or features of their products or services. It’s based on the principle that any product can be broken down into a set of attributes that ultimately impact users’ perceived value of an item or service [@Stobierski].
+
+
+[@heiss2023] also explained that conjoint experiments are a special kind of randomized experiment where study participants are asked questions that have experimental manipulations. However, unlike a standard randomized experiment where one feature of interest is manipulated (like in an A/B test), conjoint experiments are choose-your-own-adventure randomized experiments.
+
+
+
+
+# Different types of conjoint analysis
+
+[@Stobierski] listed the different types of conjoint analysis:
+
+```{r, echo = FALSE}
+conjoint_df <-
+  tibble(`Conjoint Analysis` = c("Choice-Based Conjoint (CBC) Analysis"
+                                 ,"Adaptive Conjoint Analysis (ACA)"
+                                 ,"Full-Profile Conjoint Analysis"
+                                 ,"MaxDiff Conjoint Analysis")
+         ,Description = c("This is one of the most common forms of conjoint analysis and is used to identify how a respondent values combinations of features."
+                          ,"This form of analysis customizes each respondent's survey experience based on their answers to early questions. It’s often leveraged in studies where several features or attributes are being evaluated to streamline the process and extract the most valuable insights from each respondent."
+                          ,"This form of analysis presents the respondent with a series of full product descriptions and asks them to select the one they’d be most inclined to buy."
+                          ,"This form of analysis presents multiple options to the respondent, which they’re asked to organize on a scale of “best” to “worst” (or “most likely to buy” to “least likely to buy”)."))
+
+conjoint_df %>%
+  kbl() %>%
+  kable_paper("hover", full_width = F, html_font = "Cambria", font_size = 15)
+
+```
+
+
+
+
+# Areas conjoint analysis can be applied
+
+Conjoint analysis can be applied in the following areas [@Stobierski]:
+
+- Pricing
+
+- Sales & marketing
+
+- Research & development
+
+
+# Some of the important concepts under conjoint analysis
+
+
+**Variable importance**
+
+Similar to how it works in a machine learning context, this measurement will show which variable is more important in explaining the result.
+
+**Part-worth/utility values**
+
+This would show the amount of weight an attribute level carries with a respondent [@Singh].
+
+
+**Minimum number of responses to be considered as credible**
+
+To be able to conclude the results are credible, below is the formula to compute how many responses we need from the conjoint analysis [@Qualtrics]:
+
+$$Minimum\ number\ of\ response\ =\frac{Constant\times Maximum\ number\ of\ levels\ in\ any\ feature}{Number\ of\ choices\ per\ question\times\ Number\ of\ question}$$
+
+Where the constant is 750 if the total number of levels across all features is less than or equal to 10, and 1,000 if the total number of levels across all features is greater than 10.
+
+Below are what we could do if we felt the minimum number of responses required is too high:
+
+- Increase the number of questions
+
+- Increase of the choices per question
+
+- Decrease the maximum number of levels in the feature
+
+
+# Helpful materials
+
+Following are some of the helpful materials I found online:
+
+[How to interpret utility score](https://sawtoothsoftware.com/the-basics-of-interpreting-conjoint-utilities)
+
+[Conjoint analysis in R](https://www.andrewheiss.com/blog/2023/07/25/conjoint-bayesian-frequentist-guide/)
+
+
+
+# Conclusion
+
+That's all for the day!
+
+Thanks for reading the post until the end.
+
+Feel free to contact me through [email](mailto:jasper.jh.lok@gmail.com) or [LinkedIn](https://www.linkedin.com/in/jasper-l-13426232/) if you have any suggestions on future topics to share.
+
+Refer to this link for the [blog disclaimer](https://jasperlok.netlify.app/blog_disclaimer.html).
+
+Till next time, happy learning!
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/gregoire-jeanneau-0StwxZ4NigE-unsplash.jpg")
+
+```
+
+Photo by <a href="https://unsplash.com/@gregjeanneau?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Gregoire Jeanneau</a> on <a href="https://unsplash.com/photos/beige-and-green-concrete-spiral-stairs-beside-building-0StwxZ4NigE?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+  
+  
+  
+  
+  
+
+
+
