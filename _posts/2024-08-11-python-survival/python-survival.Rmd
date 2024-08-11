@@ -1,0 +1,317 @@
+---
+title: "Survival Analysis in Python"
+description: |
+   My first Python post! Still surviving!
+author:
+  - name: Jasper Lok 
+    url: https://jasperlok.netlify.app/
+date: 08-11-2024
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 4
+    self_contained: false
+bibliography: ["ref.bib"]
+biblio-style: "apa"
+link-citations: true
+categories:
+  - Survival Model
+  - Python
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+pacman::p_load(knitr, kableExtra, tidyverse)
+
+knitr::opts_chunk$set(fig.retina = 3,                       
+                      echo = TRUE,                       
+                      eval = TRUE,                       
+                      message = FALSE,                       
+                      warning = FALSE,
+                      out.width="100%")
+
+```
+
+
+  
+```{r, echo = FALSE}
+knitr::include_graphics("image/tobias-tullius-TEDf7Pg5OFc-unsplash.jpg")
+
+```
+  
+Photo by <a href="https://unsplash.com/@tobiastu?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Tobias Tullius</a> on <a href="https://unsplash.com/photos/person-sitting-on-rock-during-daytime-TEDf7Pg5OFc?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+  
+
+In this post, I will be exploring how to fit the survival model by using Python packages.
+
+
+As I have explored the concepts for survival models, so I will skip the discussions on the concepts.
+
+Refer to my previous posts on the concepts of survival models.
+
+- [Kaplan meier](https://jasperlok.netlify.app/posts/2022-09-10-kaplan-meier/)
+
+- [Cox proportional hazard](https://jasperlok.netlify.app/posts/2023-01-10-cox-ph/)
+
+- [Model performance on survival models](https://jasperlok.netlify.app/posts/2024-05-12-survival-survex/)
+
+# Demonstration
+
+In this demonstration, I will be using different approaches to fit survival models.
+
+```{r}
+pacman::p_load(reticulate)
+
+```
+
+## Import Data
+
+First, I will import the base Python packages.
+
+```{python}
+import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
+
+```
+
+
+Next, I will import the data into the environment.
+
+```{python}
+df = pd.read_csv("https://raw.githubusercontent.com/jasperlok/my-blog/master/_posts/2022-09-10-kaplan-meier/data/Churn_Modelling.csv")
+
+```
+
+I will perform some data wrangling.
+
+```{python}
+df = df[df["Tenure"] > 0]
+df["CreditScore"] = df["CreditScore"]/100
+df["Balance"] = df["Balance"]/10000
+df["EstimatedSalary"] = df["EstimatedSalary"]/10000
+df["Exited"] = df['Exited'].astype(bool)
+#df["IsActiveMember"] = df["IsActiveMember"].astype(bool)
+df["Male_ind"] = np.where(df["Gender"] == "Male", True, False)
+df.drop(['RowNumber', 'CustomerId', 'Surname'],axis = 1, inplace = True)
+
+```
+
+
+```{python}
+df.info()
+
+```
+
+## Method 1: Use 'Scikit Survival' package
+
+In this first method, I will be using functions from `scikit survival` package to fit the survival models.
+
+### Kaplan Meier
+
+First, I will fit a Kaplan Meier model.
+
+```{python}
+from sksurv.nonparametric import kaplan_meier_estimator
+
+time, survival_prob = kaplan_meier_estimator(
+    df["Exited"], df["Tenure"]
+)
+```
+
+Then, I will plot the survival curve.
+
+```{python}
+plt.clf()
+plt.step(time, survival_prob, where = "post")
+plt.ylim(0.4, 1)
+plt.title('Kaplan Meier Survival Curve')
+plt.ylabel(r"est. probability of survival $\hat{S}(t)$")
+plt.xlabel("time $t$")
+plt.show()
+
+```
+
+We could also produce the survival curves split by variable.
+
+Over here, I split the survival curve by gender.
+
+```{python}
+plt.clf()
+
+for value in df["Gender"].unique():
+    mask = df["Gender"] == value
+    time_gender, survival_prob_gender = kaplan_meier_estimator(
+        df["Exited"][mask], df["Tenure"][mask]
+    )
+    plt.step(time_gender, survival_prob_gender, where = "post", label = f"{value} (n = {mask.sum()})")
+
+plt.ylim(0.35, 1)
+plt.title('Kaplan Meier Survival Curve - Split by Gender')
+plt.ylabel(r"est. probability of survival $\hat{S}(t)$")
+plt.xlabel("time $t$")
+plt.legend(loc="best")
+plt.show()
+
+```
+
+We can only split by more than one variable.
+
+```{python}
+plt.clf()
+
+for value in df["Gender"].unique():
+  mask = df["Gender"] == value
+  for value_2 in df["IsActiveMember"].unique():
+    mask_2 = df["IsActiveMember"] == value_2
+    time_gender, survival_prob_gender = kaplan_meier_estimator(
+        df["Exited"][mask][mask_2], df["Tenure"][mask][mask_2]
+    )
+    plt.step(time_gender, survival_prob_gender, where = "post", label = f"{value, value_2} (n = {mask.sum()})")
+
+plt.ylim(0.35, 1)
+plt.title('Kaplan Meier Survival Curve - Split by Gender & Active Member')
+plt.ylabel(r"est. probability of survival $\hat{S}(t)$")
+plt.xlabel("time $t$")
+plt.legend(loc="best")
+plt.show()
+
+```
+
+### Cox Proportional Hazard
+
+Next, I will fit the cox proportional hazard model.
+
+```{python}
+from sksurv.linear_model import CoxPHSurvivalAnalysis
+
+```
+
+First, we will convert the data frame into the necessary format.
+
+```{python}
+df_x = df.loc[:, ~df.columns.isin(['Tenure', 'Exited', 'Gender'])]
+
+
+# convert the target into a structure array
+raw_df_y = df[['Exited', 'Tenure']].to_numpy()
+aux = [(e1,e2) for e1,e2 in raw_df_y]
+#Structured array
+df_y = np.array(aux, dtype=[('Status', '?'), ('Survival_in_days', '<f8')])
+
+```
+
+We will also need to convert the categorical variable into numeric columns.
+
+```{python}
+#categorical_cols = ['Geography', 'IsActiveMember', 'Gender']
+categorical_cols = ['Geography']
+df_x = pd.get_dummies(df_x, columns = categorical_cols)
+df_x.drop(['Geography_France'],axis = 1, inplace = True)
+
+```
+
+Then, I will fit a cox proportional hazard model.
+
+```{python}
+estimator = CoxPHSurvivalAnalysis()
+estimator.fit(df_x, df_y)
+
+```
+
+Below is how we could extract the coefficients from the fitted model:
+
+```{python}
+pd.Series(estimator.coef_, index=df_x.columns)
+
+```
+
+We can only calculate the C-index by using the function in the package.
+
+```{python}
+from sksurv.metrics import concordance_index_censored
+
+prediction = estimator.predict(df_x)
+result = concordance_index_censored(df_y["Status"], df_y["Survival_in_days"], prediction)
+result[0]
+
+```
+
+## Method 2: Use `lifelines` package
+
+Another popular package to fit the survival model is to use `lifelines` package.
+
+### Kaplan Meier
+
+As usual, I will first fit a Kaplan Meier model.
+
+```{python}
+from lifelines import KaplanMeierFitter
+kmf = KaplanMeierFitter()
+
+kmf.fit(df['Tenure'], event_observed = df['Exited'])
+```
+
+Then, I will visualize the survival curve.
+
+```{python}
+plt.clf()
+kmf.survival_function_.plot()
+plt.title('Survival function')
+plt.show()
+
+kmf.plot_survival_function()
+
+```
+
+### Cox Proportional Hazard
+
+Next, I will fit a cox proportional hazard model.
+
+```{python}
+from lifelines import CoxPHFitter
+coxf = CoxPHFitter()
+
+# convert the categorical variables into numeric variable
+categorical_cols = ['Geography']
+df_num = pd.get_dummies(df, columns = categorical_cols)
+df_num.drop(['Geography_France', 'Gender'],axis = 1, inplace = True)
+
+```
+
+
+```{python}
+coxf.fit(df_num, "Tenure", "Exited")
+
+```
+
+To extract the hazard ratio, we could call `.hazard_ratios_` from the fitted model.
+
+```{python}
+coxf.hazard_ratios_
+
+```
+
+
+
+
+# Conclusion
+
+That's all for the day!
+
+Thanks for reading the post until the end.
+
+Feel free to contact me through [email](mailto:jasper.jh.lok@gmail.com) or [LinkedIn](https://www.linkedin.com/in/jasper-l-13426232/) if you have any suggestions on future topics to share.
+
+Refer to this link for the [blog disclaimer](https://jasperlok.netlify.app/blog_disclaimer.html).
+
+Till next time, happy learning!
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/markus-spiske-1S0-pHmQ-TY-unsplash.jpg")
+
+```
+
+Photo by <a href="https://unsplash.com/@markusspiske?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Markus Spiske</a> on <a href="https://unsplash.com/photos/two-people-on-forest-1S0-pHmQ-TY?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+  
