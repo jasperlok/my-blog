@@ -1,5 +1,27 @@
 [
   {
+    "path": "past_proj/2024-08-SAS-SAC/",
+    "title": "Sharing at Singapore Actuarial Conference 2024",
+    "description": {},
+    "author": [
+      {
+        "name": "Jasper Lok",
+        "url": {}
+      }
+    ],
+    "date": "2024-08-28",
+    "categories": [
+      "Past Talk",
+      "Machine Learning",
+      "Actuarial Science",
+      "Insurance"
+    ],
+    "contents": "\r\n\r\n\r\n\r\nBrief Description of the Sharing\r\nI am honored to be selected to present at upcoming actuarial conference. The title of the presentation is “Finding the black sheep”.\r\nDetails\r\nThe details of the event can be found under this link.\r\n\r\n\r\n\r\n",
+    "preview": "past_proj/2024-08-SAS-SAC/distill-preview.png",
+    "last_modified": "2024-08-16T23:21:29+08:00",
+    "input_file": "sas-sac.knit.md"
+  },
+  {
     "path": "past_proj/2021-09-TechInnovation2021/",
     "title": "Sharing at TechInnovation 2021",
     "description": {},

@@ -1,0 +1,37 @@
+---
+title: "Sharing at Singapore Actuarial Conference 2024"
+description: 
+  
+url: {}
+author:
+  - name: Jasper Lok
+date: 08-28-2024
+output:
+  distill::distill_article
+categories:
+  - Past Talk
+  - Machine Learning
+  - Actuarial Science
+  - Insurance
+
+---
+
+
+```{r, echo = FALSE, out.width = "120%"}
+knitr::include_graphics("image/screenshot.png")
+
+```
+
+
+
+
+## Brief Description of the Sharing
+
+I am honored to be selected to present at upcoming actuarial conference. The title of the presentation is "Finding the black sheep".
+
+
+## Details
+
+The details of the event can be found under this [link](https://www.actuaries.org.sg/events/singapore-actuarial-conference-2024).
+
+

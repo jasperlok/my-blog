@@ -1,0 +1,271 @@
+---
+title: "Zero-Inflated Poisson"
+description: |
+   Too many zeros!
+author:
+  - name: Jasper Lok 
+    url: https://jasperlok.netlify.app/
+date: 09-14-2024
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 4
+    self_contained: false
+bibliography: ["ref.bib"]
+biblio-style: "apa"
+link-citations: true
+categories:
+  - Machine Learning
+  - Supervised Learning
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+pacman::p_load(captioner, knitr, kableExtra, tidyverse)
+
+knitr::opts_chunk$set(fig.retina = 3,                       
+                      echo = TRUE,                       
+                      eval = TRUE,                       
+                      message = FALSE,                       
+                      warning = FALSE,
+                      out.width="100%")
+
+```
+
+In this post, I will be exploring how to check the dispersion and how to build a zero-inflated model.
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/pickled-stardust-m3Oe8vSE88Y-unsplash.jpg")
+
+```
+
+Photo by <a href="https://unsplash.com/@pickledstardust?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Pickled Stardust</a> on <a href="https://unsplash.com/photos/brown-ceramic-teapot-with-white-string-lights-m3Oe8vSE88Y?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+  
+
+# What is overdispersion?
+
+Overdispersion describes the observation that variation is higher than would be expected [@Dormann].
+
+Often overdispersion can be a result of missing predictors or a misspecified model structure.
+
+
+This overdispersion scenario is common in the insurance dataset as the policies made a claim is likely to be just a small set of the total portfolio.
+
+# Why do we care about overdispersion?
+
+If overdispersion is present in a dataset, the estimated standard errors and test statistics of the overall goodness-of-fit will be distorted and adjustments must be made [@Statonline].
+
+
+In this post, I will be exploring how to use a zero-inflated model to fix the overdispersion issue in the model.
+
+# Zero-inflated model
+
+Zero-inflated model is a type of multi-level model. It comprises two components.
+
+- One determines whether the outcome is zero or a positive value
+
+- Another part is the count process (e.g., Poisson distribution)
+
+# Other important notes
+
+One of the posts I came across is the misuse of Vuong test for non-nested models to test for zero-inflation.
+
+[@Wilson] suggested that it's incorrect to use Vuong test to check whether a zero-inflated model is a better fit for count distribution (e.g., Poisson distribution).
+
+# Demonstration
+
+First, I will import the necessary packages into the environment.
+
+```{r}
+pacman::p_load(tidyverse, tidymodels, poissonreg, pscl, DHARMa, AER)
+
+```
+
+
+```{r, echo = FALSE}
+library(CASdatasets)
+
+```
+
+
+In this demonstration, I will be using this car insurance dataset from `CASdatasets` package.
+
+```{r}
+data(pg17trainpol)
+data(pg17trainclaim)
+
+pol_df <- pg17trainpol
+rm(pg17trainpol)
+
+clm_df <- pg17trainclaim
+rm(pg17trainclaim)
+
+```
+
+I will perform some data wrangling before model building.
+
+```{r}
+# claim count
+clm_cnt <-
+  clm_df %>% 
+  group_by(id_client, id_vehicle) %>% 
+  summarise(tot_clm_cnt = sum(claim_nb),
+            tot_clm_amt = sum(claim_amount))
+
+# join policy and claim data
+pol_clm_df <-
+  pol_df %>% 
+  left_join(clm_cnt
+            ,by = c("id_client", "id_vehicle")) %>% 
+  mutate_at(c("tot_clm_cnt", "tot_clm_amt")
+            ,function(x) replace_na(x, 0))
+
+```
+
+Below is the claim count distribution:
+
+```{r}
+pol_clm_df %>% 
+  ggplot(aes(as.character(tot_clm_cnt))) +
+  geom_histogram(stat = "count") +
+  scale_y_continuous(labels = scales::comma) +
+  xlab("Claim Count") +
+  ylab("Frequency") +
+  labs(title = "Claim Distribution")
+
+```
+
+Based on the graph, it looks like the claim count is zero-inflated.
+
+Nevertheless, let's look at how to check over dispersion.
+
+# How to check overdispersion
+
+First, I will build a Poisson model.
+
+```{r}
+glm_model <-
+  glm(tot_clm_cnt ~ 
+             drv_age1 
+           + vh_age 
+           + pol_bonus 
+           + pol_usage 
+           + drv_drv2 
+           + pol_duration
+           + vh_type
+           + vh_speed
+      ,offset = log(pol_duration)
+      ,family = poisson
+      ,data = pol_clm_df)
+
+```
+
+
+### Method 1: Use `dispersiontest` function from `AER` package
+
+Next, I will use `dispersiontest` function to check there is any sign of over dispersion.
+
+```{r}
+dispersiontest(glm_model)
+
+```
+
+### Method 2: Use the `testOverdispersion` function from `DHARMa` package
+
+Another way to check for over dispersion is to use `testOverdispersion` function.
+
+```{r}
+sim_fmp <- simulateResiduals(glm_model) 
+testOverdispersion(sim_fmp)
+
+```
+
+
+
+If we generate the QQ plot and residuals vs predicted plot, we can see from the results that poisson distribution is not appropriate. There is statistical evidence that the overdispersion exists in the dataset.
+
+```{r}
+plotSimulatedResiduals(sim_fmp)
+
+```
+
+Note that the `testOverdispersion` function does not work on quasi distributions at the point of writing.
+
+## Zero-inflated model
+
+Good! We have set the context and now we will look at how to fit zero inflated model.
+
+### Method 1: Use `pscl` package
+
+Next, I will be building the zero-inflated model by using `zeroinfl` function from `pscl` package.
+
+```{r}
+clm_cnt_pscl <-
+  zeroinfl(tot_clm_cnt ~ 
+             drv_age1 
+           + vh_age 
+           + pol_bonus 
+           + pol_usage 
+           + drv_drv2 
+           + pol_duration
+           + vh_type
+           + vh_speed
+           | pol_bonus
+      ,data = pol_clm_df)
+
+```
+
+We can pass the fitted object into `summary` function to extract the coefficients.
+
+```{r}
+summary(clm_cnt_pscl)
+
+```
+
+### Method 2: Use `tidymodels` package
+
+I will be exploring how to build zero inflated model by using functions from `tidymodels` package.
+
+```{r}
+clm_cnt_spec_poisson <- 
+  poisson_reg() %>% 
+  set_engine("zeroinfl", dist = "poisson")
+
+clm_cnt_fit_possion <-
+  clm_cnt_spec_poisson %>% 
+  fit(tot_clm_cnt ~ drv_age1 + vh_age + pol_bonus + pol_usage + drv_drv2 + pol_duration + vh_type + vh_speed | pol_bonus
+      ,data = pol_clm_df)
+
+clm_cnt_fit_possion
+
+```
+
+
+```{r}
+summary(clm_cnt_fit_possion$fit)
+
+```
+
+
+# Conclusion
+
+That's all for the day!
+
+Thanks for reading the post until the end.
+
+Feel free to contact me through [email](mailto:jasper.jh.lok@gmail.com) or [LinkedIn](https://www.linkedin.com/in/jasper-l-13426232/) if you have any suggestions on future topics to share.
+
+Refer to this link for the [blog disclaimer](https://jasperlok.netlify.app/blog_disclaimer.html).
+
+Till next time, happy learning!
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/tim-foster-Odhl-kitI2c-unsplash.jpg")
+
+```
+
+Photo by <a href="https://unsplash.com/@timberfoster?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Tim Foster</a> on <a href="https://unsplash.com/photos/space-gray-aluminum-case-apple-watch-Odhl-kitI2c?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+  
+
+
