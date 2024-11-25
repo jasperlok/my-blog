@@ -1,0 +1,266 @@
+---
+title: "Latent Class Analysis"
+description: |
+   Finding the unseen
+author:
+  - name: Jasper Lok 
+    url: https://jasperlok.netlify.app/
+date: 11-25-2024
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 4
+    self_contained: false
+bibliography: ["ref.bib"]
+biblio-style: "apa"
+link-citations: true
+categories:
+  - Unsupervised Learning
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+pacman::p_load(knitr, kableExtra, tidyverse)
+
+knitr::opts_chunk$set(fig.retina = 3,                       
+                      echo = TRUE,                       
+                      eval = TRUE,                       
+                      message = FALSE,                       
+                      warning = FALSE,
+                      out.width="100%")
+
+```
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/brandi-redd-aJTiW00qqtI-unsplash.jpg")
+
+```
+
+Photo by <a href="https://unsplash.com/@brandi1?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Brandi Redd</a> on <a href="https://unsplash.com/photos/scattered-sheets-of-white-paper-covering-the-entire-frame-aJTiW00qqtI?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+      
+
+# What is latent class analysis?
+
+
+LCA models work on the assumption that the observed distribution of the variables is the result of a finite latent (unobserved) mixture of underlying distributions [@Sinha2021].
+
+# Difference between latent class analysis and cluster analysis
+
+Although this method sounds similar to the traditional clustering analysis, there are some differences between the two methods [@Stackexchange]:
+
+- Latent class analysis is a finite mixture model
+
+- It uses probabilistic models to describe the distribution of the data
+
+- Latent class analysis starts with describing the distribution of the data, whereas the clustering analysis attempts to find similarities between cases
+
+- As we are using a statistical model to select the model, assessing goodness of fit is possible
+
+- This method also allows us to extend the analysis to others (e.g., include prior distribution into the analysis)
+
+
+# Considerations when using latent class analysis
+
+The authors have listed a whole list of considerations when building a LCA model. Refer to [this website](https://pmc.ncbi.nlm.nih.gov/articles/PMC7746621/) for the considerations.
+
+# Demonstration
+
+In this demonstration, I will be using `poLCA` package in performing principal component analysis.
+
+```{r}
+pacman::p_load(tidyverse, tidymodels, janitor, poLCA, foreach, doParallel)
+
+```
+
+## Import Data
+
+I will be using this [breast cancer dataset](https://www.kaggle.com/datasets/uciml/breast-cancer-wisconsin-data) for the demonstration.
+
+```{r}
+df <- 
+  read_csv("data/data.csv") %>% 
+  dplyr::select(-c(`...33`, id)) %>% 
+  clean_names()
+
+```
+
+## Data wrangling
+
+Next, I will scale the numerical figures to have a mean of 0 and a standard deviation of 1 so that it does not affect the model results.
+
+```{r}
+gen_norm <-
+  recipe(diagnosis ~ ., data = df) %>% 
+  step_normalize(all_numeric_predictors()) %>% 
+  prep()
+
+df_norm <-
+  bake(gen_norm, new_data = df)
+
+```
+
+
+As LCA can only accept categorical variables, I will bin all the numeric variables into different groups.
+
+```{r}
+df_norm_grp <-
+  df_norm %>% 
+  mutate(across(!diagnosis, function(x) cut_interval(x, n = 5)))
+
+```
+
+## Build LCA model
+
+Okay, let's start our modeling!
+
+I will first define the formula for the latent class model.
+
+
+```{r}
+formula_lca <- cbind(radius_mean
+                    ,texture_mean
+                    ,perimeter_mean
+                    ,area_mean
+                    ,smoothness_mean
+                    ,compactness_mean
+                    ,concavity_mean
+                    ,concave_points_mean
+                    ,symmetry_mean
+                    ,fractal_dimension_mean
+                    ,radius_se
+                    ,texture_se
+                    ,perimeter_se
+                    ,area_se
+                    ,smoothness_se
+                    ,compactness_se
+                    ,concavity_se
+                    ,concave_points_se
+                    ,symmetry_se
+                    ,fractal_dimension_se
+                    ,radius_worst
+                    ,texture_worst
+                    ,perimeter_worst
+                    ,area_worst
+                    ,smoothness_worst
+                    ,compactness_worst
+                    ,concavity_worst
+                    ,concave_points_worst
+                    ,symmetry_worst
+                    ,fractal_dimension_worst) ~ 1
+```
+
+
+Then, I will build a latent class model.
+
+In this example, I will specify the `nclass` to be 2.
+
+```{r}
+lca_fit <- poLCA(formula_lca,
+               maxiter = 1000,
+               nclass = 2,
+               nrep = 10,
+               data = df_norm_grp)
+
+```
+
+
+From the results, we could see the following:
+
+- The proportion of each category within each class
+
+- There are also different performance metrics (e.g., AIC, BIC) and the proportion of predicted classes
+
+## Predictions
+
+We could generate the predicted class by using `augment` function.
+
+```{r}
+lca_pred <- 
+  augment(lca_fit, df_norm_grp) %>% 
+  mutate(.class = factor(.class, levels = c("2", "1")))
+
+lca_pred
+
+```
+
+## Graph - Proportion of categories within each class
+
+We could also visualize the proportion of categories within each class to understand the characteristics of each class.
+
+To do so, I will first extract the column names.
+
+```{r}
+variable_name_list <- 
+  lca_pred %>% 
+  dplyr::select(-c(diagnosis, .class, .probability)) %>% 
+  names()
+
+```
+
+After that, I will loop through the variables to visualize the results.
+
+```{r, echo = FALSE}
+gg_list <- list()
+
+for (i in 1:length(variable_name_list)) {
+  temp <- 
+    lca_pred %>% 
+    pivot_longer(!c(diagnosis, .class, .probability)
+                 ,names_to = "variable"
+                 ,values_to = "categories") %>%
+    filter(variable == variable_name_list[i])
+  
+  gg_list[[i]] <- ggplot(temp, aes(.class, fill = categories)) +
+        geom_bar(position = "fill") +
+        coord_flip() +
+        labs(title = variable_name_list[i])
+}
+```
+
+For simplicity, I will plot out the first 3 graphs, otherwise, the post will be way too long.
+
+```{r, echo = FALSE}
+for (i in 1:3) {
+  cat("Graph for", variable_name_list[i],"\n")
+  
+  print(gg_list[[i]])
+  
+  cat('\n\n')
+}
+```
+
+## Graph - Proportion of diagnosis within each class
+
+I will use `ggplot` to plot the graph of class versus diagnosis.
+
+```{r}
+lca_pred %>% 
+  ggplot(aes(.class, fill = diagnosis)) +
+  geom_bar(position = "fill") +
+  coord_flip()
+
+```
+
+
+
+
+# Conclusion
+
+That's all for the day!
+
+Thanks for reading the post until the end.
+
+Feel free to contact me through [email](mailto:jasper.jh.lok@gmail.com) or [LinkedIn](https://www.linkedin.com/in/jasper-l-13426232/) if you have any suggestions on future topics to share.
+
+Refer to this link for the [blog disclaimer](https://jasperlok.netlify.app/blog_disclaimer.html).
+
+Till next time, happy learning!
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/nik-MAgPyHRO0AA-unsplash.jpg")
+
+```
+
+Photo by <a href="https://unsplash.com/@helloimnik?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Nik</a> on <a href="https://unsplash.com/photos/right-arrow-sign-on-wall-MAgPyHRO0AA?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+      
