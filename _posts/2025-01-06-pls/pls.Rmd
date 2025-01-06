@@ -1,0 +1,308 @@
+---
+title: "Partial Least Square"
+description: |
+   Why did the partially blind man fall into the well? He couldn’t see that well.
+author:
+  - name: Jasper Lok 
+    url: https://jasperlok.netlify.app/
+date: 01-06-2025
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 4
+    self_contained: false
+bibliography: ["ref.bib"]
+biblio-style: "apa"
+link-citations: true
+categories:
+  - Supervised Learning
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+pacman::p_load(knitr, kableExtra, tidyverse)
+
+knitr::opts_chunk$set(fig.retina = 3,                       
+                      echo = TRUE,                       
+                      eval = TRUE,                       
+                      message = FALSE,                       
+                      warning = FALSE,
+                      out.width="100%")
+
+```
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/pexels-n-voitkevich-7852564.jpg")
+
+```
+
+Photo by [Nataliya Vaitkevich](https://www.pexels.com/photo/gold-and-silver-round-coins-on-white-ceramic-plate-7852564/)
+
+Recently I was reading on how to perform dimensionality reduction, I happened to come across this technique called `partial least square`.
+
+Before jumping into the concept for partial least square, let's understand the issue of high dimensional data.
+
+# Why is high dimensional data an issue?
+
+High dimensional data issue happens when n (i.e., number of observations) $\ll$ p (i.e., number of features).
+
+The model is likely to overfit the data when this issue occurs. This would result in a poor performing model.
+
+To overcome this, we could use dimension reduction techniques.
+
+
+# What is partial least square?
+
+This approach first identifies a new set of features $Z_{1}$, ..., $Z_{M}$ that are linear combinations of the original features and then fits a linear model using these M new features [@James2021].
+
+In other word, it reduces the dimensions in explaining the target variable.
+
+# Why uses this approach?
+
+The issue with PCR is its a unsupervised learning method. There is no guarantee that the directions that best explain the predictors will also be the best directions to use for predicting the response [@James2021].
+
+# Demonstration
+
+In this demonstration, I will be using `mixOmics` package in performing principal component analysis.
+
+As the package is hosted on BiocManager, instead of R CRAN, so we need to install the package through BiocManager. Below is the code on how to do so.
+
+```{r}
+# if (!require("BiocManager", quietly = TRUE))
+#     install.packages("BiocManager")
+# 
+# BiocManager::install("mixOmics")
+
+```
+
+Once the package is successfully installed, I will call all the necessary packages.
+
+```{r}
+pacman::p_load(tidyverse, tidymodels, mixOmics, plsmod)
+
+tidymodels_prefer()
+
+```
+
+Note that we need to call additional package, `plsmod` so that we could use `tidymodels` packages to build PLS model.
+
+## Import Data
+
+First, I will import the data into the environment.
+
+```{r}
+df <- 
+  read_csv("data/data.csv") %>% 
+  # remove unncessary columns
+  dplyr::select(-c(`...33`, id)) 
+
+```
+
+Okay, now let's build the model!
+
+## Method 1: Use `tidymodels` package
+
+First, I will define the model recipe.
+
+```{r}
+general_recipe <-
+  recipe(diagnosis ~ ., data = df) %>% 
+  step_zv(all_predictors()) %>% 
+  step_normalize(all_numeric_predictors())
+
+```
+
+Next, I will define the model specification.
+
+```{r}
+pls_spec <-
+  pls(num_comp = 5) %>% 
+  set_mode("classification") %>% 
+  set_engine("mixOmics")
+
+```
+
+Then, I will define the model workflow.
+
+```{r}
+pls_wf <-
+  workflow() %>% 
+  add_recipe(general_recipe) %>% 
+  add_model(pls_spec)
+
+```
+
+For simplicity, I will just fit the model without tuning any parameters.
+
+```{r}
+pls_fit <-
+  pls_wf %>% 
+  fit(data = df)
+
+```
+
+We could call the fitted object to check the model details.
+
+```{r}
+pls_fit
+
+```
+
+Different model performance functions can be used in extracting the model performance.
+
+```{r}
+augment(pls_fit, df) %>%
+  mutate(diagnosis = factor(diagnosis)) %>% 
+  roc_auc(truth = diagnosis
+          ,.pred_B)
+
+```
+
+### Variance Explained
+
+One of the important things to check is the how much variance is being explained by different components.
+
+This would help us to determine the number of components should we choose to explain "bulk" of the variance.
+
+This can be done by directly extracted from the fitted object.
+
+```{r}
+as.data.frame(pls_fit$fit$fit$fit$prop_expl_var$X) %>% 
+  rownames_to_column() %>% 
+  rename(explained_var = `pls_fit$fit$fit$fit$prop_expl_var$X`
+         ,component = rowname) %>% 
+  ggplot(aes(component, explained_var)) +
+  geom_point() +
+  geom_line(aes(group = 1))
+
+```
+
+Another way to extract the variance explained by different variates as shown below.
+
+```{r}
+explained_variance(pls_fit$fit$fit$fit$X, pls_fit$fit$fit$fit$variates$X, ncomp = 5)
+
+```
+
+### Loading
+
+To extract the numeric loadings
+
+```{r}
+pls_fit$fit$fit$fit$loadings
+
+```
+
+We can use `plotLoadings` function to visualize how the different variates affect the components.
+
+```{r}
+plotLoadings(pls_fit$fit$fit$fit, comp = 2)
+
+```
+
+I prefer using `ggplot` function to visualize the results so that it gives me the flexibility to modify the graphs.
+
+```{r}
+var_list <- c("comp1", "comp2", "comp3", "comp4", "comp5")
+
+for(i in var_list){
+  print(
+    pls_fit$fit$fit$fit$loadings$X %>% 
+    as.data.frame() %>% 
+    rownames_to_column() %>% 
+    ggplot(aes(!!sym(i), fct_reorder(rowname, -!!sym(i))
+               )) +
+    geom_col()
+  )
+}
+
+  
+```
+
+### Individuals
+
+The package also provides function (i.e., `plotIndiv` function) to show the scatter plots for individuals (experimental units) representation in PLS.
+
+```{r}
+plotIndiv(pls_fit$fit$fit$fit, ind.names = df$diagnosis, legend = TRUE, ellipse =TRUE)
+
+```
+
+We could change the components by passing the components numbers into `comp` argument.
+
+It seems like this argument can only accept two components.
+
+```{r}
+plotIndiv(pls_fit$fit$fit$fit, comp = c(1, 3),ind.names = df$diagnosis, legend = TRUE, ellipse =TRUE)
+
+```
+
+### Variable Importance
+
+The package also offers functions to compute the variable importance in the projection.
+
+```{r}
+vip(pls_fit$fit$fit$fit) %>% 
+  as.data.frame() %>% 
+  rownames_to_column()
+
+```
+
+For illustration, I have illustrated the variable importance under component two.
+
+```{r}
+vip(pls_fit$fit$fit$fit) %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  ggplot(aes(comp2, fct_reorder(rowname, comp2)
+             )) +
+  geom_col()
+
+```
+
+From [this discussion post](https://mixomics-users.discourse.group/t/loadings-vs-vip/285) on the variable importance and loading, it seems like we should use loading vector since the model is using sparse method where variable selection is performed.
+
+## Method 2: Use `mixOmics` package
+
+Alternatively, we can fit the model directly using `mixOmics` package.
+
+First, I will define the X & Y.
+
+```{r}
+X <- df %>% 
+  select(-diagnosis) %>% 
+  as.matrix()
+  
+Y <- df$diagnosis
+
+```
+
+Then, I will use `splsda` function to fit a PLS model.
+
+```{r}
+omics_fit <- 
+  splsda(X, Y, scale = TRUE, ncomp = 5)
+
+```
+
+The rest of analysis is the same as above.
+
+# Conclusion
+
+That's all for the day!
+
+Thanks for reading the post until the end.
+
+Feel free to contact me through [email](mailto:jasper.jh.lok@gmail.com) or [LinkedIn](https://www.linkedin.com/in/jasper-l-13426232/) if you have any suggestions on future topics to share.
+
+Refer to this link for the [blog disclaimer](https://jasperlok.netlify.app/blog_disclaimer.html).
+
+Till next time, happy learning!
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/pexels-n-voitkevich-7852566.jpg")
+
+```
+
+Photo by [Nataliya Vaitkevich](https://www.pexels.com/photo/brown-and-black-round-container-on-white-ceramic-plate-7852566/)

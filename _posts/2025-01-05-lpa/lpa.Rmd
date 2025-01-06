@@ -1,0 +1,238 @@
+---
+title: "Latent Profile Analysis"
+description: |
+   I have many hidden talents...Problem is I don’t know where they are
+author:
+  - name: Jasper Lok 
+    url: https://jasperlok.netlify.app/
+date: 01-05-2025
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 4
+    self_contained: false
+bibliography: ["ref.bib"]
+biblio-style: "apa"
+link-citations: true
+categories:
+  - Principal component analysis
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+pacman::p_load(knitr, kableExtra, tidyverse)
+
+knitr::opts_chunk$set(fig.retina = 3,                       
+                      echo = TRUE,                       
+                      eval = TRUE,                       
+                      message = FALSE,                       
+                      warning = FALSE,
+                      out.width="100%")
+
+```
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/pexels-sebastian-palomino-933481-2847766.jpg")
+
+```
+
+Photo by [Sebastian Palomino](https://www.pexels.com/photo/opened-door-2847766/)
+
+
+In [my previous post](https://jasperlok.netlify.app/posts/2024-11-25-lca/), I have explored how to perform latent class analysis.
+
+However, latent class analysis can be only be used when the variables are categorical. What if the variables are numerical?
+
+In this post, I will be looking at how to perform latent profile analysis (LPA).
+
+# What is latent profile analysis (LPA)?
+
+Latent Profile Analysis is a statistical modeling approach for estimating distinct profiles of variables [@Rosenberg2021].
+
+There are different model types under LPA.
+
+```{r, echo = FALSE}
+model_type <- tibble(
+  `Model Type` = c("Model 1", "Model 2", "Model 3", "Model 4", "Model 5", "Model 6")
+  ,`Variance` = c("Equal", "Varying", "Equal", "Varying", "Equal", "Varying")
+  ,`Covariance` = c("0", "0", "Equal", "Equal", "Varying", "Varying")
+  ,`Also known as` = c("EEI", "VVI", "EEE", "", "", "VVV")
+)
+
+model_type %>% 
+  kbl() %>%
+  kable_paper("hover", full_width = F, html_font = "Cambria", font_size = 15)
+
+```
+
+
+
+
+# Important notes when using latent profile analysis
+
+Below are the points to note when using LPA:
+
+- LPA only works on numeric variables
+
+    - [This post](https://stackoverflow.com/questions/62200015/how-do-i-perform-a-latent-profile-analysis-with-both-categorical-and-continuous) mentioned that it is not appropriate to use LPA when we converted categorical variables to dummy variables
+
+- LPA is sensitive to the scale of the variables
+
+    - Therefore, we will need to normalize the variables
+
+
+# Demonstration
+
+In this demonstration, I will be using `tidylpa` package in performing latent profile analysis.
+
+```{r}
+pacman::p_load(tidyverse, tidymodels, tidyLPA, GGally)
+
+```
+
+## Import Data
+
+```{r}
+df <- 
+  read_csv("data/data.csv") %>% 
+  select(-c(`...33`, id))
+
+```
+
+For simplicity, I will skip the check on the correlations of the variables.
+
+First, I will normalize the numeric variables so that standard deviation of one and mean of zero, otherwise the model results will be affected by the scales of columns.
+
+```{r}
+gen_norm <-
+  recipe(diagnosis ~ ., data = df) %>% 
+  step_normalize(all_numeric_predictors()) %>% 
+  prep()
+
+df_norm <-
+  bake(gen_norm, new_data = df)
+
+```
+
+By default, the function will fit model 1 if any of the arguments on variance, covariance and models are not provided.
+
+```{r}
+lpa_fit_model1 <-
+  df_norm %>%
+  select(-diagnosis) %>% 
+  estimate_profiles(n_profiles = 2:6)
+
+lpa_fit_model1
+
+```
+
+From the results, we can note the following:
+
+- When we add additional component, the p-value is still less than 0.05, indicating that the additional component brings additional information.
+
+- Among all the tested profiles, it seems like 6 classes are the best based on the AIC and BIC results.
+
+We can extract the model performance by using `get_fit` function.
+
+```{r}
+get_fit(lpa_fit_model1)
+
+```
+
+The descriptions of the different measurements can be found under this [link](https://data-edu.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html).
+
+
+We can specify the number of classes to run as follows:
+
+```{r}
+lpa_fit_model1_skip <-
+  df_norm %>%
+  select(-diagnosis) %>% 
+  estimate_profiles(n_profiles = c(2, 4, 6))
+
+lpa_fit_model1_skip
+
+```
+
+We could extract the selected model by using `pluck` function.
+
+```{r}
+lpa_fit_model1_skip %>% 
+  pluck("model_1_class_4")
+
+```
+
+We can also change the model we would like to build by either passing relevant info into variance and covariance arguments or indicate under model argument.
+
+```{r}
+lpa_fit_model2 <-
+  df_norm %>%
+  select(-diagnosis) %>% 
+  estimate_profiles(n_profiles = 2:6, models = 2)
+
+lpa_fit_model2
+
+```
+
+To visualize the results, we could use `plot_profiles` function to do so.
+
+Note on the following:
+
+- In order to use `plot_profiles` function to visualize, we will need to convert the necessary data into matrix format.
+
+- We can use `ggplot` functions to further modify the charts.
+
+```{r}
+ df_norm %>%
+  select(-diagnosis) %>%
+  as.matrix() %>% 
+  estimate_profiles(3) %>% 
+  tidyLPA::plot_profiles() +
+  coord_flip()
+
+```
+
+It seems like this chart will be quite hard to read when we have too many variables.
+
+Alternatively, we could use the parallel coordinate plot to illustrate the estimated values under each group. This is probably easier to compare the different under each group.
+
+This can be done by using `ggparcoord` function from `GGally` package.
+
+```{r}
+ df_norm %>%
+  select(-diagnosis) %>%
+  as.matrix() %>% 
+  estimate_profiles(3) %>% 
+  get_estimates() %>%
+  filter(Category == "Means") %>% 
+  select(c(Estimate, Parameter, Class)) %>% 
+  pivot_wider(names_from = Parameter
+              ,values_from = Estimate) %>%
+  mutate(Class = as.factor(Class)) %>% 
+  ggparcoord(columns = 2:14, groupColumn = 1) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+It seems like there are some differences in characteristics among the different profiles. 
+
+
+# Conclusion
+
+That's all for the day!
+
+Thanks for reading the post until the end.
+
+Feel free to contact me through [email](mailto:jasper.jh.lok@gmail.com) or [LinkedIn](https://www.linkedin.com/in/jasper-l-13426232/) if you have any suggestions on future topics to share.
+
+Refer to this link for the [blog disclaimer](https://jasperlok.netlify.app/blog_disclaimer.html).
+
+Till next time, happy learning!
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/pexels-pixabay-208849.jpg")
+
+```
+
+Photo by [Pixabay](https://www.pexels.com/photo/brown-cat-208849/)
