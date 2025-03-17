@@ -1,0 +1,33 @@
+---
+title: "Sharing at National University of Singapore"
+description: 
+  
+url: {}
+author:
+  - name: Jasper Lok
+date: 03-17-2025
+output:
+  distill::distill_article
+categories:
+  - Past Talk
+  - Survival Models
+  - Actuarial Science
+  - Insurance
+
+---
+
+
+```{r, echo = FALSE, out.width = "120%"}
+knitr::include_graphics("image/screenshot.png")
+
+```
+
+
+
+
+## Brief Description of the Sharing
+
+In this sharing, I shared about how survival model techniques are being used in practice to solve business problems.
+
+
+

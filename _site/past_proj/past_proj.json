@@ -1,5 +1,27 @@
 [
   {
+    "path": "past_proj/2025-03-NUS-sharing/",
+    "title": "Sharing at National University of Singapore",
+    "description": {},
+    "author": [
+      {
+        "name": "Jasper Lok",
+        "url": {}
+      }
+    ],
+    "date": "2025-03-17",
+    "categories": [
+      "Past Talk",
+      "Survival Models",
+      "Actuarial Science",
+      "Insurance"
+    ],
+    "contents": "\r\n\r\n\r\n\r\nBrief Description of the Sharing\r\nIn this sharing, I shared about how survival model techniques are being used in practice to solve business problems.\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2025-03-17T20:53:06+08:00",
+    "input_file": "nus_share.knit.md"
+  },
+  {
     "path": "past_proj/2024-08-SAS-SAC/",
     "title": "Sharing at Singapore Actuarial Conference 2024",
     "description": {},
@@ -17,8 +39,8 @@
       "Insurance"
     ],
     "contents": "\r\n\r\n\r\n\r\nBrief Description of the Sharing\r\nI am honored to be selected to present at upcoming actuarial conference. The title of the presentation is “Finding the black sheep”.\r\nDetails\r\nThe details of the event can be found under this link.\r\n\r\n\r\n\r\n",
-    "preview": "past_proj/2024-08-SAS-SAC/distill-preview.png",
-    "last_modified": "2024-08-16T23:21:29+08:00",
+    "preview": {},
+    "last_modified": "2025-03-17T20:50:36+08:00",
     "input_file": "sas-sac.knit.md"
   },
   {
