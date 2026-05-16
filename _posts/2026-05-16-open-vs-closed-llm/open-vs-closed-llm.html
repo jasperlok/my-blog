@@ -1,0 +1,2655 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <meta name="generator" content="distill" />
+
+  <style type="text/css">
+  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
+  body {
+    visibility: hidden;
+  }
+  </style>
+
+ <!--radix_placeholder_import_source-->
+ <!--/radix_placeholder_import_source-->
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  { color: #00769e; background-color: #f1f3f5; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span { color: #00769e; } /* Normal */
+code span.al { color: #ad0000; } /* Alert */
+code span.an { color: #5e5e5e; } /* Annotation */
+code span.at { color: #657422; } /* Attribute */
+code span.bn { color: #ad0000; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #00769e; } /* ControlFlow */
+code span.ch { color: #20794d; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #5e5e5e; } /* Comment */
+code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+code span.dt { color: #ad0000; } /* DataType */
+code span.dv { color: #ad0000; } /* DecVal */
+code span.er { color: #ad0000; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #ad0000; } /* Float */
+code span.fu { color: #4758ab; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #5e5e5e; } /* Information */
+code span.kw { color: #00769e; } /* Keyword */
+code span.op { color: #5e5e5e; } /* Operator */
+code span.ot { color: #00769e; } /* Other */
+code span.pp { color: #ad0000; } /* Preprocessor */
+code span.sc { color: #5e5e5e; } /* SpecialChar */
+code span.ss { color: #20794d; } /* SpecialString */
+code span.st { color: #20794d; } /* String */
+code span.va { color: #111111; } /* Variable */
+code span.vs { color: #20794d; } /* VerbatimString */
+code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+</style>
+
+
+  <!--radix_placeholder_meta_tags-->
+  <title>Open vs Closed LLMs</title>
+
+  <meta property="description" itemprop="description" content="Open vs closed LLMs, decoded without the corporate fog: what they are, why the internet keeps arguing about them, and how to think about the trade-offs without losing the plot."/>
+
+
+  <!--  https://schema.org/Article -->
+  <meta property="article:published" itemprop="datePublished" content="2026-05-16"/>
+  <meta property="article:created" itemprop="dateCreated" content="2026-05-16"/>
+  <meta name="article:author" content="Jasper Lok"/>
+
+  <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
+  <meta property="og:title" content="Open vs Closed LLMs"/>
+  <meta property="og:type" content="article"/>
+  <meta property="og:description" content="Open vs closed LLMs, decoded without the corporate fog: what they are, why the internet keeps arguing about them, and how to think about the trade-offs without losing the plot."/>
+  <meta property="og:locale" content="en_US"/>
+
+  <!--  https://dev.twitter.com/cards/types/summary -->
+  <meta property="twitter:card" content="summary"/>
+  <meta property="twitter:title" content="Open vs Closed LLMs"/>
+  <meta property="twitter:description" content="Open vs closed LLMs, decoded without the corporate fog: what they are, why the internet keeps arguing about them, and how to think about the trade-offs without losing the plot."/>
+
+  <!--/radix_placeholder_meta_tags-->
+  <!--radix_placeholder_rmarkdown_metadata-->
+
+  <script type="text/json" id="radix-rmarkdown-metadata">
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","categories"]}},"value":[{"type":"character","attributes":{},"value":["Open vs Closed LLMs"]},{"type":"character","attributes":{},"value":["Open vs closed LLMs, decoded without the corporate fog: what they are, why the internet keeps arguing about them, and how to think about the trade-offs without losing the plot.\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Jasper Lok"]},{"type":"character","attributes":{},"value":["https://jasperlok.netlify.app/"]}]}]},{"type":"character","attributes":{},"value":["2026-05-16"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","toc_depth","self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[4]},{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["Artificial Intelligence","Large Language Models","Generative AI"]}]}
+  </script>
+  <!--/radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["image/finn-hackshaw-FQgI8AD-BSg-unsplash.jpg","image/tim-mossholder-v5re1loi264-unsplash.jpg","open-vs-closed-llm_files/anchor/anchor.min.js","open-vs-closed-llm_files/bowser/bowser.min.js","open-vs-closed-llm_files/bsTable/bootstrapTable.js","open-vs-closed-llm_files/bsTable/bootstrapTable.min.css","open-vs-closed-llm_files/distill/template.v2.js","open-vs-closed-llm_files/header-attrs/header-attrs.js","open-vs-closed-llm_files/jquery/jquery-3.6.0.js","open-vs-closed-llm_files/jquery/jquery-3.6.0.min.js","open-vs-closed-llm_files/jquery/jquery-3.6.0.min.map","open-vs-closed-llm_files/kePrint/kePrint.js","open-vs-closed-llm_files/lightable/lightable.css","open-vs-closed-llm_files/popper/popper.min.js","open-vs-closed-llm_files/tippy/tippy-bundle.umd.min.js","open-vs-closed-llm_files/tippy/tippy-light-border.css","open-vs-closed-llm_files/tippy/tippy.css","open-vs-closed-llm_files/tippy/tippy.umd.min.js","open-vs-closed-llm_files/webcomponents/webcomponents.js"]}
+  </script>
+  <!--radix_placeholder_navigation_in_header-->
+  <!--/radix_placeholder_navigation_in_header-->
+  <!--radix_placeholder_distill-->
+
+  <style type="text/css">
+
+  body {
+    background-color: white;
+  }
+
+  .pandoc-table {
+    width: 100%;
+  }
+
+  .pandoc-table>caption {
+    margin-bottom: 10px;
+  }
+
+  .pandoc-table th:not([align]) {
+    text-align: left;
+  }
+
+  .pagedtable-footer {
+    font-size: 15px;
+  }
+
+  d-byline .byline {
+    grid-template-columns: 2fr 2fr;
+  }
+
+  d-byline .byline h3 {
+    margin-block-start: 1.5em;
+  }
+
+  d-byline .byline .authors-affiliations h3 {
+    margin-block-start: 0.5em;
+  }
+
+  .authors-affiliations .orcid-id {
+    width: 16px;
+    height:16px;
+    margin-left: 4px;
+    margin-right: 4px;
+    vertical-align: middle;
+    padding-bottom: 2px;
+  }
+
+  d-title .dt-tags {
+    margin-top: 1em;
+    grid-column: text;
+  }
+
+  .dt-tags .dt-tag {
+    text-decoration: none;
+    display: inline-block;
+    color: rgba(0,0,0,0.6);
+    padding: 0em 0.4em;
+    margin-right: 0.5em;
+    margin-bottom: 0.4em;
+    font-size: 70%;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  d-article table.gt_table td,
+  d-article table.gt_table th {
+    border-bottom: none;
+    font-size: 100%;
+  }
+
+  .html-widget {
+    margin-bottom: 2.0em;
+  }
+
+  .l-screen-inset {
+    padding-right: 16px;
+  }
+
+  .l-screen .caption {
+    margin-left: 10px;
+  }
+
+  .shaded {
+    background: rgb(247, 247, 247);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .shaded .html-widget {
+    margin-bottom: 0;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .shaded .shaded-content {
+    background: white;
+  }
+
+  .text-output {
+    margin-top: 0;
+    line-height: 1.5em;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  hr.section-separator {
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    margin: 0px;
+  }
+
+
+  d-byline {
+    border-top: none;
+  }
+
+  d-article {
+    padding-top: 2.5rem;
+    padding-bottom: 30px;
+    border-top: none;
+  }
+
+  d-appendix {
+    padding-top: 30px;
+  }
+
+  d-article>p>img {
+    width: 100%;
+  }
+
+  d-article h2 {
+    margin: 1rem 0 1.5rem 0;
+  }
+
+  d-article h3 {
+    margin-top: 1.5rem;
+  }
+
+  d-article iframe {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 2.0em;
+    width: 100%;
+  }
+
+  /* Tweak code blocks */
+
+  d-article div.sourceCode code,
+  d-article pre code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  d-article pre,
+  d-article div.sourceCode,
+  d-article div.sourceCode pre {
+    overflow: auto;
+  }
+
+  d-article div.sourceCode {
+    background-color: white;
+  }
+
+  d-article div.sourceCode pre {
+    padding-left: 10px;
+    font-size: 12px;
+    border-left: 2px solid rgba(0,0,0,0.1);
+  }
+
+  d-article pre {
+    font-size: 12px;
+    color: black;
+    background: none;
+    margin-top: 0;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+
+  d-article pre a {
+    border-bottom: none;
+  }
+
+  d-article pre a:hover {
+    border-bottom: none;
+    text-decoration: underline;
+  }
+
+  d-article details {
+    grid-column: text;
+    margin-bottom: 0.8em;
+  }
+
+  @media(min-width: 768px) {
+
+  d-article pre,
+  d-article div.sourceCode,
+  d-article div.sourceCode pre {
+    overflow: visible !important;
+  }
+
+  d-article div.sourceCode pre {
+    padding-left: 18px;
+    font-size: 14px;
+  }
+
+  /* tweak for Pandoc numbered line within distill */
+  d-article pre.numberSource code > span {
+      left: -2em;
+  }
+
+  d-article pre {
+    font-size: 14px;
+  }
+
+  }
+
+  figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+
+  /* CSS for d-contents */
+
+  .d-contents {
+    grid-column: text;
+    color: rgba(0,0,0,0.8);
+    font-size: 0.9em;
+    padding-bottom: 1em;
+    margin-bottom: 1em;
+    padding-bottom: 0.5em;
+    margin-bottom: 1em;
+    padding-left: 0.25em;
+    justify-self: start;
+  }
+
+  @media(min-width: 1000px) {
+    .d-contents.d-contents-float {
+      height: 0;
+      grid-column-start: 1;
+      grid-column-end: 4;
+      justify-self: center;
+      padding-right: 3em;
+      padding-left: 2em;
+    }
+  }
+
+  .d-contents nav h3 {
+    font-size: 18px;
+    margin-top: 0;
+    margin-bottom: 1em;
+  }
+
+  .d-contents li {
+    list-style-type: none
+  }
+
+  .d-contents nav > ul {
+    padding-left: 0;
+  }
+
+  .d-contents ul {
+    padding-left: 1em
+  }
+
+  .d-contents nav ul li {
+    margin-top: 0.6em;
+    margin-bottom: 0.2em;
+  }
+
+  .d-contents nav a {
+    font-size: 13px;
+    border-bottom: none;
+    text-decoration: none
+    color: rgba(0, 0, 0, 0.8);
+  }
+
+  .d-contents nav a:hover {
+    text-decoration: underline solid rgba(0, 0, 0, 0.6)
+  }
+
+  .d-contents nav > ul > li > a {
+    font-weight: 600;
+  }
+
+  .d-contents nav > ul > li > ul {
+    font-weight: inherit;
+  }
+
+  .d-contents nav > ul > li > ul > li {
+    margin-top: 0.2em;
+  }
+
+
+  .d-contents nav ul {
+    margin-top: 0;
+    margin-bottom: 0.25em;
+  }
+
+  .d-article-with-toc h2:nth-child(2) {
+    margin-top: 0;
+  }
+
+
+  /* Figure */
+
+  .figure {
+    position: relative;
+    margin-bottom: 2.5em;
+    margin-top: 1.5em;
+  }
+
+  .figure .caption {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 12px;
+    line-height: 1.5em;
+  }
+
+  .figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+
+  .figure .caption a {
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  .figure .caption b,
+  .figure .caption strong, {
+    font-weight: 600;
+    color: rgba(0, 0, 0, 1.0);
+  }
+
+  /* Citations */
+
+  d-article .citation {
+    color: inherit;
+    cursor: inherit;
+  }
+
+  div.hanging-indent{
+    margin-left: 1em; text-indent: -1em;
+  }
+
+  /* Citation hover box */
+
+  .tippy-box[data-theme~=light-border] {
+    background-color: rgba(250, 250, 250, 0.95);
+  }
+
+  .tippy-content > p {
+    margin-bottom: 0;
+    padding: 2px;
+  }
+
+
+  /* Tweak 1000px media break to show more text */
+
+  @media(min-width: 1000px) {
+    .base-grid,
+    distill-header,
+    d-title,
+    d-abstract,
+    d-article,
+    d-appendix,
+    distill-appendix,
+    d-byline,
+    d-footnote-list,
+    d-citation-list,
+    distill-footer {
+      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 80px [middle-start] 50px [text-start kicker-end] 65px 65px 65px 65px 65px 65px 65px 65px [text-end gutter-start] 65px [middle-end] 65px [page-end gutter-end] 1fr [screen-end];
+      grid-column-gap: 16px;
+    }
+
+    .grid {
+      grid-column-gap: 16px;
+    }
+
+    d-article {
+      font-size: 1.06rem;
+      line-height: 1.7em;
+    }
+    figure .caption, .figure .caption, figure figcaption {
+      font-size: 13px;
+    }
+  }
+
+  @media(min-width: 1180px) {
+    .base-grid,
+    distill-header,
+    d-title,
+    d-abstract,
+    d-article,
+    d-appendix,
+    distill-appendix,
+    d-byline,
+    d-footnote-list,
+    d-citation-list,
+    distill-footer {
+      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
+      grid-column-gap: 32px;
+    }
+
+    .grid {
+      grid-column-gap: 32px;
+    }
+  }
+
+
+  /* Get the citation styles for the appendix (not auto-injected on render since
+     we do our own rendering of the citation appendix) */
+
+  d-appendix .citation-appendix,
+  .d-appendix .citation-appendix {
+    font-size: 11px;
+    line-height: 15px;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    padding-left: 18px;
+    border: 1px solid rgba(0,0,0,0.1);
+    background: rgba(0, 0, 0, 0.02);
+    padding: 10px 18px;
+    border-radius: 3px;
+    color: rgba(150, 150, 150, 1);
+    overflow: hidden;
+    margin-top: -12px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  /* Include appendix styles here so they can be overridden */
+
+  d-appendix {
+    contain: layout style;
+    font-size: 0.8em;
+    line-height: 1.7em;
+    margin-top: 60px;
+    margin-bottom: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    color: rgba(0,0,0,0.5);
+    padding-top: 60px;
+    padding-bottom: 48px;
+  }
+
+  d-appendix h3 {
+    grid-column: page-start / text-start;
+    font-size: 15px;
+    font-weight: 500;
+    margin-top: 1em;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.65);
+  }
+
+  d-appendix h3 + * {
+    margin-top: 1em;
+  }
+
+  d-appendix ol {
+    padding: 0 0 0 15px;
+  }
+
+  @media (min-width: 768px) {
+    d-appendix ol {
+      padding: 0 0 0 30px;
+      margin-left: -30px;
+    }
+  }
+
+  d-appendix li {
+    margin-bottom: 1em;
+  }
+
+  d-appendix a {
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  d-appendix > * {
+    grid-column: text;
+  }
+
+  d-appendix > d-footnote-list,
+  d-appendix > d-citation-list,
+  d-appendix > distill-appendix {
+    grid-column: screen;
+  }
+
+  /* Include footnote styles here so they can be overridden */
+
+  d-footnote-list {
+    contain: layout style;
+  }
+
+  d-footnote-list > * {
+    grid-column: text;
+  }
+
+  d-footnote-list a.footnote-backlink {
+    color: rgba(0,0,0,0.3);
+    padding-left: 0.5em;
+  }
+
+
+
+  /* Anchor.js */
+
+  .anchorjs-link {
+    /*transition: all .25s linear; */
+    text-decoration: none;
+    border-bottom: none;
+  }
+  *:hover > .anchorjs-link {
+    margin-left: -1.125em !important;
+    text-decoration: none;
+    border-bottom: none;
+  }
+
+  /* Social footer */
+
+  .social_footer {
+    margin-top: 30px;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.67);
+  }
+
+  .disqus-comments {
+    margin-right: 30px;
+  }
+
+  .disqus-comment-count {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+  }
+
+  #disqus_thread {
+    margin-top: 30px;
+  }
+
+  .article-sharing a {
+    border-bottom: none;
+    margin-right: 8px;
+  }
+
+  .article-sharing a:hover {
+    border-bottom: none;
+  }
+
+  .sidebar-section.subscribe {
+    font-size: 12px;
+    line-height: 1.6em;
+  }
+
+  .subscribe p {
+    margin-bottom: 0.5em;
+  }
+
+
+  .article-footer .subscribe {
+    font-size: 15px;
+    margin-top: 45px;
+  }
+
+
+  .sidebar-section.custom {
+    font-size: 12px;
+    line-height: 1.6em;
+  }
+
+  .custom p {
+    margin-bottom: 0.5em;
+  }
+
+  /* Styles for listing layout (hide title) */
+  .layout-listing d-title, .layout-listing .d-title {
+    display: none;
+  }
+
+  /* Styles for posts lists (not auto-injected) */
+
+
+  .posts-with-sidebar {
+    padding-left: 45px;
+    padding-right: 45px;
+  }
+
+  .posts-list .description h2,
+  .posts-list .description p {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  }
+
+  .posts-list .description h2 {
+    font-weight: 700;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .posts-list h2.post-tag {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    padding-bottom: 12px;
+  }
+  .posts-list {
+    margin-top: 60px;
+    margin-bottom: 24px;
+  }
+
+  .posts-list .post-preview {
+    text-decoration: none;
+    overflow: hidden;
+    display: block;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 24px 0;
+  }
+
+  .post-preview-last {
+    border-bottom: none !important;
+  }
+
+  .posts-list .posts-list-caption {
+    grid-column: screen;
+    font-weight: 400;
+  }
+
+  .posts-list .post-preview h2 {
+    margin: 0 0 6px 0;
+    line-height: 1.2em;
+    font-style: normal;
+    font-size: 24px;
+  }
+
+  .posts-list .post-preview p {
+    margin: 0 0 12px 0;
+    line-height: 1.4em;
+    font-size: 16px;
+  }
+
+  .posts-list .post-preview .thumbnail {
+    box-sizing: border-box;
+    margin-bottom: 24px;
+    position: relative;
+    max-width: 500px;
+  }
+  .posts-list .post-preview img {
+    width: 100%;
+    display: block;
+  }
+
+  .posts-list .metadata {
+    font-size: 12px;
+    line-height: 1.4em;
+    margin-bottom: 18px;
+  }
+
+  .posts-list .metadata > * {
+    display: inline-block;
+  }
+
+  .posts-list .metadata .publishedDate {
+    margin-right: 2em;
+  }
+
+  .posts-list .metadata .dt-authors {
+    display: block;
+    margin-top: 0.3em;
+    margin-right: 2em;
+  }
+
+  .posts-list .dt-tags {
+    display: block;
+    line-height: 1em;
+  }
+
+  .posts-list .dt-tags .dt-tag {
+    display: inline-block;
+    color: rgba(0,0,0,0.6);
+    padding: 0.3em 0.4em;
+    margin-right: 0.2em;
+    margin-bottom: 0.4em;
+    font-size: 60%;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .posts-list img {
+    opacity: 1;
+  }
+
+  .posts-list img[data-src] {
+    opacity: 0;
+  }
+
+  .posts-more {
+    clear: both;
+  }
+
+
+  .posts-sidebar {
+    font-size: 16px;
+  }
+
+  .posts-sidebar h3 {
+    font-size: 16px;
+    margin-top: 0;
+    margin-bottom: 0.5em;
+    font-weight: 400;
+    text-transform: uppercase;
+  }
+
+  .sidebar-section {
+    margin-bottom: 30px;
+  }
+
+  .categories ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .categories li {
+    color: rgba(0, 0, 0, 0.8);
+    margin-bottom: 0;
+  }
+
+  .categories li>a {
+    border-bottom: none;
+  }
+
+  .categories li>a:hover {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  }
+
+  .categories .active {
+    font-weight: 600;
+  }
+
+  .categories .category-count {
+    color: rgba(0, 0, 0, 0.4);
+  }
+
+
+  @media(min-width: 768px) {
+    .posts-list .post-preview h2 {
+      font-size: 26px;
+    }
+    .posts-list .post-preview .thumbnail {
+      float: right;
+      width: 30%;
+      margin-bottom: 0;
+    }
+    .posts-list .post-preview .description {
+      float: left;
+      width: 45%;
+    }
+    .posts-list .post-preview .metadata {
+      float: left;
+      width: 20%;
+      margin-top: 8px;
+    }
+    .posts-list .post-preview p {
+      margin: 0 0 12px 0;
+      line-height: 1.5em;
+      font-size: 16px;
+    }
+    .posts-with-sidebar .posts-list {
+      float: left;
+      width: 75%;
+    }
+    .posts-with-sidebar .posts-sidebar {
+      float: right;
+      width: 20%;
+      margin-top: 60px;
+      padding-top: 24px;
+      padding-bottom: 24px;
+    }
+  }
+
+
+  /* Improve display for browsers without grid (IE/Edge <= 15) */
+
+  .downlevel {
+    line-height: 1.6em;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+  }
+
+  .downlevel .d-title {
+    padding-top: 6rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .downlevel .d-title h1 {
+    font-size: 50px;
+    font-weight: 700;
+    line-height: 1.1em;
+    margin: 0 0 0.5rem;
+  }
+
+  .downlevel .d-title p {
+    font-weight: 300;
+    font-size: 1.2rem;
+    line-height: 1.55em;
+    margin-top: 0;
+  }
+
+  .downlevel .d-byline {
+    padding-top: 0.8em;
+    padding-bottom: 0.8em;
+    font-size: 0.8rem;
+    line-height: 1.8em;
+  }
+
+  .downlevel .section-separator {
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .downlevel .d-article {
+    font-size: 1.06rem;
+    line-height: 1.7em;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+  }
+
+
+  .downlevel .d-appendix {
+    padding-left: 0;
+    padding-right: 0;
+    max-width: none;
+    font-size: 0.8em;
+    line-height: 1.7em;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.5);
+    padding-top: 40px;
+    padding-bottom: 48px;
+  }
+
+  .downlevel .footnotes ol {
+    padding-left: 13px;
+  }
+
+  .downlevel .base-grid,
+  .downlevel .distill-header,
+  .downlevel .d-title,
+  .downlevel .d-abstract,
+  .downlevel .d-article,
+  .downlevel .d-appendix,
+  .downlevel .distill-appendix,
+  .downlevel .d-byline,
+  .downlevel .d-footnote-list,
+  .downlevel .d-citation-list,
+  .downlevel .distill-footer,
+  .downlevel .appendix-bottom,
+  .downlevel .posts-container {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  @media(min-width: 768px) {
+    .downlevel .base-grid,
+    .downlevel .distill-header,
+    .downlevel .d-title,
+    .downlevel .d-abstract,
+    .downlevel .d-article,
+    .downlevel .d-appendix,
+    .downlevel .distill-appendix,
+    .downlevel .d-byline,
+    .downlevel .d-footnote-list,
+    .downlevel .d-citation-list,
+    .downlevel .distill-footer,
+    .downlevel .appendix-bottom,
+    .downlevel .posts-container {
+    padding-left: 150px;
+    padding-right: 150px;
+    max-width: 900px;
+  }
+  }
+
+  .downlevel pre code {
+    display: block;
+    border-left: 2px solid rgba(0, 0, 0, .1);
+    padding: 0 0 0 20px;
+    font-size: 14px;
+  }
+
+  .downlevel code, .downlevel pre {
+    color: black;
+    background: none;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+
+  .downlevel .posts-list .post-preview {
+    color: inherit;
+  }
+
+
+
+  </style>
+
+  <script type="application/javascript">
+
+  function is_downlevel_browser() {
+    if (bowser.isUnsupportedBrowser({ msie: "12", msedge: "16"},
+                                   window.navigator.userAgent)) {
+      return true;
+    } else {
+      return window.load_distill_framework === undefined;
+    }
+  }
+
+  // show body when load is complete
+  function on_load_complete() {
+
+    // add anchors
+    if (window.anchors) {
+      window.anchors.options.placement = 'left';
+      window.anchors.add('d-article > h2, d-article > h3, d-article > h4, d-article > h5');
+    }
+
+
+    // set body to visible
+    document.body.style.visibility = 'visible';
+
+    // force redraw for leaflet widgets
+    if (window.HTMLWidgets) {
+      var maps = window.HTMLWidgets.findAll(".leaflet");
+      $.each(maps, function(i, el) {
+        var map = this.getMap();
+        map.invalidateSize();
+        map.eachLayer(function(layer) {
+          if (layer instanceof L.TileLayer)
+            layer.redraw();
+        });
+      });
+    }
+
+    // trigger 'shown' so htmlwidgets resize
+    $('d-article').trigger('shown');
+  }
+
+  function init_distill() {
+
+    init_common();
+
+    // create front matter
+    var front_matter = $('<d-front-matter></d-front-matter>');
+    $('#distill-front-matter').wrap(front_matter);
+
+    // create d-title
+    $('.d-title').changeElementType('d-title');
+
+    // separator
+    var separator = '<hr class="section-separator" style="clear: both"/>';
+    // prepend separator above appendix
+    $('.d-byline').before(separator);
+    $('.d-article').before(separator);
+
+    // create d-byline
+    var byline = $('<d-byline></d-byline>');
+    $('.d-byline').replaceWith(byline);
+
+    // create d-article
+    var article = $('<d-article></d-article>');
+    $('.d-article').wrap(article).children().unwrap();
+
+    // move posts container into article
+    $('.posts-container').appendTo($('d-article'));
+
+    // create d-appendix
+    $('.d-appendix').changeElementType('d-appendix');
+
+    // flag indicating that we have appendix items
+    var appendix = $('.appendix-bottom').children('h3').length > 0;
+
+    // replace footnotes with <d-footnote>
+    $('.footnote-ref').each(function(i, val) {
+      appendix = true;
+      var href = $(this).attr('href');
+      var id = href.replace('#', '');
+      var fn = $('#' + id);
+      var fn_p = $('#' + id + '>p');
+      fn_p.find('.footnote-back').remove();
+      var text = fn_p.html();
+      var dtfn = $('<d-footnote></d-footnote>');
+      dtfn.html(text);
+      $(this).replaceWith(dtfn);
+    });
+    // remove footnotes
+    $('.footnotes').remove();
+
+    // move refs into #references-listing
+    $('#references-listing').replaceWith($('#refs'));
+
+    $('h1.appendix, h2.appendix').each(function(i, val) {
+      $(this).changeElementType('h3');
+    });
+    $('h3.appendix').each(function(i, val) {
+      var id = $(this).attr('id');
+      $('.d-contents a[href="#' + id + '"]').parent().remove();
+      appendix = true;
+      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
+    });
+
+    // show d-appendix if we have appendix content
+    $("d-appendix").css('display', appendix ? 'grid' : 'none');
+
+    // localize layout chunks to just output
+    $('.layout-chunk').each(function(i, val) {
+
+      // capture layout
+      var layout = $(this).attr('data-layout');
+
+      // apply layout to markdown level block elements
+      var elements = $(this).children().not('details, div.sourceCode, pre, script');
+      elements.each(function(i, el) {
+        var layout_div = $('<div class="' + layout + '"></div>');
+        if (layout_div.hasClass('shaded')) {
+          var shaded_content = $('<div class="shaded-content"></div>');
+          $(this).wrap(shaded_content);
+          $(this).parent().wrap(layout_div);
+        } else {
+          $(this).wrap(layout_div);
+        }
+      });
+
+
+      // unwrap the layout-chunk div
+      $(this).children().unwrap();
+    });
+
+    // remove code block used to force  highlighting css
+    $('.distill-force-highlighting-css').parent().remove();
+
+    // remove empty line numbers inserted by pandoc when using a
+    // custom syntax highlighting theme, except when numbering line
+    // in code chunk
+    $('pre:not(.numberLines) code.sourceCode a:empty').remove();
+
+    // load distill framework
+    load_distill_framework();
+
+    // wait for window.distillRunlevel == 4 to do post processing
+    function distill_post_process() {
+
+      if (!window.distillRunlevel || window.distillRunlevel < 4)
+        return;
+
+      // hide author/affiliations entirely if we have no authors
+      var front_matter = JSON.parse($("#distill-front-matter").html());
+      var have_authors = front_matter.authors && front_matter.authors.length > 0;
+      if (!have_authors)
+        $('d-byline').addClass('hidden');
+
+      // article with toc class
+      $('.d-contents').parent().addClass('d-article-with-toc');
+
+      // strip links that point to #
+      $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
+
+      // add orcid ids
+      $('.authors-affiliations').find('.author').each(function(i, el) {
+        var orcid_id = front_matter.authors[i].orcidID;
+        var author_name = front_matter.authors[i].author
+        if (orcid_id) {
+          var a = $('<a></a>');
+          a.attr('href', 'https://orcid.org/' + orcid_id);
+          var img = $('<img></img>');
+          img.addClass('orcid-id');
+          img.attr('alt', author_name ? 'ORCID ID for ' + author_name : 'ORCID ID');
+          img.attr('src','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==');
+          a.append(img);
+          $(this).append(a);
+        }
+      });
+
+      // hide elements of author/affiliations grid that have no value
+      function hide_byline_column(caption) {
+        $('d-byline').find('h3:contains("' + caption + '")').parent().css('visibility', 'hidden');
+      }
+
+      // affiliations
+      var have_affiliations = false;
+      for (var i = 0; i<front_matter.authors.length; ++i) {
+        var author = front_matter.authors[i];
+        if (author.affiliation !== "&nbsp;") {
+          have_affiliations = true;
+          break;
+        }
+      }
+      if (!have_affiliations)
+        $('d-byline').find('h3:contains("Affiliations")').css('visibility', 'hidden');
+
+      // published date
+      if (!front_matter.publishedDate)
+        hide_byline_column("Published");
+
+      // document object identifier
+      var doi = $('d-byline').find('h3:contains("DOI")');
+      var doi_p = doi.next().empty();
+      if (!front_matter.doi) {
+        // if we have a citation and valid citationText then link to that
+        if ($('#citation').length > 0 && front_matter.citationText) {
+          doi.html('Citation');
+          $('<a href="#citation"></a>')
+            .text(front_matter.citationText)
+            .appendTo(doi_p);
+        } else {
+          hide_byline_column("DOI");
+        }
+      } else {
+        $('<a></a>')
+           .attr('href', "https://doi.org/" + front_matter.doi)
+           .html(front_matter.doi)
+           .appendTo(doi_p);
+      }
+
+       // change plural form of authors/affiliations
+      if (front_matter.authors.length === 1) {
+        var grid = $('.authors-affiliations');
+        grid.children('h3:contains("Authors")').text('Author');
+        grid.children('h3:contains("Affiliations")').text('Affiliation');
+      }
+
+      // remove d-appendix and d-footnote-list local styles
+      $('d-appendix > style:first-child').remove();
+      $('d-footnote-list > style:first-child').remove();
+
+      // move appendix-bottom entries to the bottom
+      $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
+      $('.appendix-bottom').remove();
+
+      // hoverable references
+      $('span.citation[data-cites]').each(function() {
+        const citeChild = $(this).children()[0]
+        // Do not process if @xyz has been used without escaping and without bibliography activated
+        // https://github.com/rstudio/distill/issues/466
+        if (citeChild === undefined) return true
+
+        if (citeChild.nodeName == "D-FOOTNOTE") {
+          var fn = citeChild
+          $(this).html(fn.shadowRoot.querySelector("sup"))
+          $(this).id = fn.id
+          fn.remove()
+        }
+        var refs = $(this).attr('data-cites').split(" ");
+        var refHtml = refs.map(function(ref) {
+          // Could use CSS.escape too here, we insure backward compatibility in navigator
+          return "<p>" + $('div[id="ref-' + ref + '"]').html() + "</p>";
+        }).join("\n");
+        window.tippy(this, {
+          allowHTML: true,
+          content: refHtml,
+          maxWidth: 500,
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'light-border',
+          placement: 'bottom-start'
+        });
+      });
+
+      // fix footnotes in tables (#411)
+      // replacing broken distill.pub feature
+      $('table d-footnote').each(function() {
+        // we replace internal showAtNode methode which is triggered when hovering a footnote
+        this.hoverBox.showAtNode = function(node) {
+          // ported from https://github.com/distillpub/template/pull/105/files
+          calcOffset = function(elem) {
+              let x = elem.offsetLeft;
+              let y = elem.offsetTop;
+              // Traverse upwards until an `absolute` element is found or `elem`
+              // becomes null.
+              while (elem = elem.offsetParent && elem.style.position != 'absolute') {
+                  x += elem.offsetLeft;
+                  y += elem.offsetTop;
+              }
+
+              return { left: x, top: y };
+          }
+          // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetTop
+          const bbox = node.getBoundingClientRect();
+          const offset = calcOffset(node);
+          this.show([offset.left + bbox.width, offset.top + bbox.height]);
+        }
+      })
+
+      // clear polling timer
+      clearInterval(tid);
+
+      // show body now that everything is ready
+      on_load_complete();
+    }
+
+    var tid = setInterval(distill_post_process, 50);
+    distill_post_process();
+
+  }
+
+  function init_downlevel() {
+
+    init_common();
+
+     // insert hr after d-title
+    $('.d-title').after($('<hr class="section-separator"/>'));
+
+    // check if we have authors
+    var front_matter = JSON.parse($("#distill-front-matter").html());
+    var have_authors = front_matter.authors && front_matter.authors.length > 0;
+
+    // manage byline/border
+    if (!have_authors)
+      $('.d-byline').remove();
+    $('.d-byline').after($('<hr class="section-separator"/>'));
+    $('.d-byline a').remove();
+
+    // remove toc
+    $('.d-contents').remove();
+
+    // move appendix elements
+    $('h1.appendix, h2.appendix').each(function(i, val) {
+      $(this).changeElementType('h3');
+    });
+    $('h3.appendix').each(function(i, val) {
+      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('.d-appendix'));
+    });
+
+
+    // inject headers into references and footnotes
+    var refs_header = $('<h3></h3>');
+    refs_header.text('References');
+    $('#refs').prepend(refs_header);
+
+    var footnotes_header = $('<h3></h3');
+    footnotes_header.text('Footnotes');
+    $('.footnotes').children('hr').first().replaceWith(footnotes_header);
+
+    // move appendix-bottom entries to the bottom
+    $('.appendix-bottom').appendTo('.d-appendix').children().unwrap();
+    $('.appendix-bottom').remove();
+
+    // remove appendix if it's empty
+    if ($('.d-appendix').children().length === 0)
+      $('.d-appendix').remove();
+
+    // prepend separator above appendix
+    $('.d-appendix').before($('<hr class="section-separator" style="clear: both"/>'));
+
+    // trim code
+    $('pre>code').each(function(i, val) {
+      $(this).html($.trim($(this).html()));
+    });
+
+    // move posts-container right before article
+    $('.posts-container').insertBefore($('.d-article'));
+
+    $('body').addClass('downlevel');
+
+    on_load_complete();
+  }
+
+
+  function init_common() {
+
+    // jquery plugin to change element types
+    (function($) {
+      $.fn.changeElementType = function(newType) {
+        var attrs = {};
+
+        $.each(this[0].attributes, function(idx, attr) {
+          attrs[attr.nodeName] = attr.nodeValue;
+        });
+
+        this.replaceWith(function() {
+          return $("<" + newType + "/>", attrs).append($(this).contents());
+        });
+      };
+    })(jQuery);
+
+    // prevent underline for linked images
+    $('a > img').parent().css({'border-bottom' : 'none'});
+
+    // mark non-body figures created by knitr chunks as 100% width
+    $('.layout-chunk').each(function(i, val) {
+      var figures = $(this).find('img, .html-widget');
+      // ignore leaflet img layers (#106)
+      figures = figures.filter(':not(img[class*="leaflet"])')
+      if ($(this).attr('data-layout') !== "l-body") {
+        figures.css('width', '100%');
+      } else {
+        figures.css('max-width', '100%');
+        figures.filter("[width]").each(function(i, val) {
+          var fig = $(this);
+          fig.css('width', fig.attr('width') + 'px');
+        });
+
+      }
+    });
+
+    // auto-append index.html to post-preview links in file: protocol
+    // and in rstudio ide preview
+    $('.post-preview').each(function(i, val) {
+      if (window.location.protocol === "file:")
+        $(this).attr('href', $(this).attr('href') + "index.html");
+    });
+
+    // get rid of index.html references in header
+    if (window.location.protocol !== "file:") {
+      $('.distill-site-header a[href]').each(function(i,val) {
+        $(this).attr('href', $(this).attr('href').replace(/^index[.]html/, "./"));
+      });
+    }
+
+    // add class to pandoc style tables
+    $('tr.header').parent('thead').parent('table').addClass('pandoc-table');
+    $('.kable-table').children('table').addClass('pandoc-table');
+
+    // add figcaption style to table captions
+    $('caption').parent('table').addClass("figcaption");
+
+    // initialize posts list
+    if (window.init_posts_list)
+      window.init_posts_list();
+
+    // implmement disqus comment link
+    $('.disqus-comment-count').click(function() {
+      window.headroom_prevent_pin = true;
+      $('#disqus_thread').toggleClass('hidden');
+      if (!$('#disqus_thread').hasClass('hidden')) {
+        var offset = $(this).offset();
+        $(window).resize();
+        $('html, body').animate({
+          scrollTop: offset.top - 35
+        });
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    if (is_downlevel_browser())
+      init_downlevel();
+    else
+      window.addEventListener('WebComponentsReady', init_distill);
+  });
+
+  </script>
+
+  <!--/radix_placeholder_distill-->
+  <script src="open-vs-closed-llm_files/header-attrs/header-attrs.js"></script>
+  <script src="open-vs-closed-llm_files/kePrint/kePrint.js"></script>
+  <link href="open-vs-closed-llm_files/lightable/lightable.css" rel="stylesheet" />
+  <link href="open-vs-closed-llm_files/bsTable/bootstrapTable.min.css" rel="stylesheet" />
+  <script src="open-vs-closed-llm_files/bsTable/bootstrapTable.js"></script>
+  <script src="open-vs-closed-llm_files/jquery/jquery-3.6.0.min.js"></script>
+  <script src="open-vs-closed-llm_files/popper/popper.min.js"></script>
+  <link href="open-vs-closed-llm_files/tippy/tippy.css" rel="stylesheet" />
+  <link href="open-vs-closed-llm_files/tippy/tippy-light-border.css" rel="stylesheet" />
+  <script src="open-vs-closed-llm_files/tippy/tippy.umd.min.js"></script>
+  <script src="open-vs-closed-llm_files/anchor/anchor.min.js"></script>
+  <script src="open-vs-closed-llm_files/bowser/bowser.min.js"></script>
+  <script src="open-vs-closed-llm_files/webcomponents/webcomponents.js"></script>
+  <script src="open-vs-closed-llm_files/distill/template.v2.js"></script>
+  <!--radix_placeholder_site_in_header-->
+  <!--/radix_placeholder_site_in_header-->
+
+
+</head>
+
+<body>
+
+<!--radix_placeholder_front_matter-->
+
+<script id="distill-front-matter" type="text/json">
+{"title":"Open vs Closed LLMs","description":"Open vs closed LLMs, decoded without the corporate fog: what they are, why the internet keeps arguing about them, and how to think about the trade-offs without losing the plot.","authors":[{"author":"Jasper Lok","authorURL":"https://jasperlok.netlify.app/","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2026-05-16T00:00:00.000+08:00","citationText":"Lok, 2026"}
+</script>
+
+<!--/radix_placeholder_front_matter-->
+<!--radix_placeholder_navigation_before_body-->
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="d-title">
+<h1>Open vs Closed LLMs</h1>
+
+<!--radix_placeholder_categories-->
+<div class="dt-tags">
+<div class="dt-tag">Artificial Intelligence</div>
+<div class="dt-tag">Large Language Models</div>
+<div class="dt-tag">Generative AI</div>
+</div>
+<!--/radix_placeholder_categories-->
+<p><p>Open vs closed LLMs, decoded without the corporate fog: what they are, why the internet keeps arguing about them, and how to think about the trade-offs without losing the plot.</p></p>
+</div>
+
+<div class="d-byline">
+  Jasper Lok <a href="https://jasperlok.netlify.app/" class="uri">https://jasperlok.netlify.app/</a> 
+  
+<br/>2026-05-16
+</div>
+
+<div class="d-article">
+<div class="d-contents d-contents-float">
+<nav class="l-text toc figcaption" id="TOC">
+<h3>Contents</h3>
+<ul>
+<li><a href="#introduction" id="toc-introduction">Introduction</a></li>
+<li><a href="#what-is-an-llm" id="toc-what-is-an-llm">What is an LLM?</a></li>
+<li><a href="#open-vs-closed-llms" id="toc-open-vs-closed-llms">Open vs closed LLMs</a></li>
+<li><a href="#open-does-not-always-mean-open-source" id="toc-open-does-not-always-mean-open-source">Open does not always mean open source</a></li>
+<li><a href="#examples-of-open-llms" id="toc-examples-of-open-llms">Examples of open LLMs</a></li>
+<li><a href="#examples-of-closed-llms" id="toc-examples-of-closed-llms">Examples of closed LLMs</a></li>
+<li><a href="#pros-of-open-llms" id="toc-pros-of-open-llms">Pros of open LLMs</a>
+<ul>
+<li><a href="#more-deployment-control" id="toc-more-deployment-control">More deployment control</a></li>
+<li><a href="#better-customisation" id="toc-better-customisation">Better customisation</a></li>
+<li><a href="#lower-marginal-cost-at-scale" id="toc-lower-marginal-cost-at-scale">Lower marginal cost at scale</a></li>
+<li><a href="#less-vendor-lock-in" id="toc-less-vendor-lock-in">Less vendor lock-in</a></li>
+<li><a href="#more-experimentation" id="toc-more-experimentation">More experimentation</a></li>
+</ul></li>
+<li><a href="#cons-of-open-llms" id="toc-cons-of-open-llms">Cons of open LLMs</a>
+<ul>
+<li><a href="#infrastructure-can-be-painful" id="toc-infrastructure-can-be-painful">Infrastructure can be painful</a></li>
+<li><a href="#performance-may-lag-frontier-closed-models" id="toc-performance-may-lag-frontier-closed-models">Performance may lag frontier closed models</a></li>
+<li><a href="#safety-and-governance-are-on-you" id="toc-safety-and-governance-are-on-you">Safety and governance are on you</a></li>
+<li><a href="#licenses-can-be-tricky" id="toc-licenses-can-be-tricky">Licenses can be tricky</a></li>
+</ul></li>
+<li><a href="#pros-of-closed-llms" id="toc-pros-of-closed-llms">Pros of closed LLMs</a>
+<ul>
+<li><a href="#fastest-path-to-strong-capability" id="toc-fastest-path-to-strong-capability">Fastest path to strong capability</a></li>
+<li><a href="#strong-general-performance" id="toc-strong-general-performance">Strong general performance</a></li>
+<li><a href="#managed-reliability" id="toc-managed-reliability">Managed reliability</a></li>
+<li><a href="#better-product-ecosystem" id="toc-better-product-ecosystem">Better product ecosystem</a></li>
+</ul></li>
+<li><a href="#cons-of-closed-llms" id="toc-cons-of-closed-llms">Cons of closed LLMs</a>
+<ul>
+<li><a href="#less-transparency" id="toc-less-transparency">Less transparency</a></li>
+<li><a href="#vendor-dependence" id="toc-vendor-dependence">Vendor dependence</a></li>
+<li><a href="#data-concerns" id="toc-data-concerns">Data concerns</a></li>
+<li><a href="#cost-can-surprise-you" id="toc-cost-can-surprise-you">Cost can surprise you</a></li>
+</ul></li>
+<li><a href="#important-concepts" id="toc-important-concepts">Important concepts</a>
+<ul>
+<li><a href="#model-weights" id="toc-model-weights">Model weights</a></li>
+<li><a href="#parameters" id="toc-parameters">Parameters</a></li>
+<li><a href="#context-window" id="toc-context-window">Context window</a></li>
+<li><a href="#fine-tuning" id="toc-fine-tuning">Fine-tuning</a></li>
+<li><a href="#retrieval-augmented-generation" id="toc-retrieval-augmented-generation">Retrieval-augmented generation</a></li>
+<li><a href="#distillation" id="toc-distillation">Distillation</a></li>
+<li><a href="#quantisation" id="toc-quantisation">Quantisation</a></li>
+<li><a href="#latency" id="toc-latency">Latency</a></li>
+<li><a href="#evaluation" id="toc-evaluation">Evaluation</a></li>
+</ul></li>
+<li><a href="#key-considerations-when-choosing" id="toc-key-considerations-when-choosing">Key considerations when choosing</a></li>
+<li><a href="#common-patterns-in-practice" id="toc-common-patterns-in-practice">Common patterns in practice</a>
+<ul>
+<li><a href="#pattern-1-closed-model-for-prototype-open-model-for-production" id="toc-pattern-1-closed-model-for-prototype-open-model-for-production">Pattern 1: Closed model for prototype, open model for production</a></li>
+<li><a href="#pattern-2-open-model-for-private-data-closed-model-for-general-reasoning" id="toc-pattern-2-open-model-for-private-data-closed-model-for-general-reasoning">Pattern 2: Open model for private data, closed model for general reasoning</a></li>
+<li><a href="#pattern-3-closed-model-as-teacher-open-model-as-student" id="toc-pattern-3-closed-model-as-teacher-open-model-as-student">Pattern 3: Closed model as teacher, open model as student</a></li>
+<li><a href="#pattern-4-multi-model-routing" id="toc-pattern-4-multi-model-routing">Pattern 4: Multi-model routing</a></li>
+</ul></li>
+<li><a href="#successful-examples-in-practice" id="toc-successful-examples-in-practice">Successful examples in practice</a>
+<ul>
+<li><a href="#closed-model-example-morgan-stanley-and-openai" id="toc-closed-model-example-morgan-stanley-and-openai">Closed model example: Morgan Stanley and OpenAI</a></li>
+<li><a href="#closed-model-example-rakuten-and-claude-code" id="toc-closed-model-example-rakuten-and-claude-code">Closed model example: Rakuten and Claude Code</a></li>
+<li><a href="#open-model-example-llama-in-medicine-and-education" id="toc-open-model-example-llama-in-medicine-and-education">Open model example: Llama in medicine and education</a></li>
+<li><a href="#open-model-example-ibm-granite-for-enterprise-ai" id="toc-open-model-example-ibm-granite-for-enterprise-ai">Open model example: IBM Granite for enterprise AI</a></li>
+<li><a href="#open-model-example-deepseek-r1-and-open-reasoning" id="toc-open-model-example-deepseek-r1-and-open-reasoning">Open model example: DeepSeek-R1 and open reasoning</a></li>
+</ul></li>
+<li><a href="#open-vs-closed-by-use-case" id="toc-open-vs-closed-by-use-case">Open vs closed by use case</a></li>
+<li><a href="#risks-to-keep-in-mind" id="toc-risks-to-keep-in-mind">Risks to keep in mind</a>
+<ul>
+<li><a href="#hallucination" id="toc-hallucination">Hallucination</a></li>
+<li><a href="#prompt-injection" id="toc-prompt-injection">Prompt injection</a></li>
+<li><a href="#data-leakage" id="toc-data-leakage">Data leakage</a></li>
+<li><a href="#bias-and-representational-harm" id="toc-bias-and-representational-harm">Bias and representational harm</a></li>
+<li><a href="#over-automation" id="toc-over-automation">Over-automation</a></li>
+</ul></li>
+<li><a href="#a-simple-decision-framework" id="toc-a-simple-decision-framework">A simple decision framework</a></li>
+<li><a href="#common-internet-takeaways" id="toc-common-internet-takeaways">Common internet takeaways</a></li>
+<li><a href="#helpful-materials" id="toc-helpful-materials">Helpful materials</a></li>
+<li><a href="#conclusion" id="toc-conclusion">Conclusion</a></li>
+</ul>
+</nav>
+</div>
+<h1 id="introduction">Introduction</h1>
+<p>The LLM world has become a bit like choosing between cooking at home and eating at a restaurant.</p>
+<p>With an <strong>open model</strong>, you may get more control. You can download the model weights, run it on your own infrastructure, fine-tune it, inspect more of the system, and build something that is less dependent on one vendor.</p>
+<p>With a <strong>closed model</strong>, you usually get convenience and strong performance. You call an API or use a hosted product, and the model provider takes care of most of the messy parts: training, serving, scaling, updates, safety layers, and sometimes enterprise compliance features.</p>
+<p>Neither option is automatically better. The better question is: <em>better for what?</em></p>
+<p>This post organises the main ideas behind open and closed LLMs: what they mean, examples, pros and cons, important concepts, and how people on the internet commonly talk about choosing and using both approaches in practice.</p>
+<p>One quick note before we start: the word <strong>open</strong> is used quite loosely in AI. Some models are truly open source by a strict definition, some are open-weight, some are research-only, and some are “open-ish” with important license restrictions. That difference matters.</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="image/finn-hackshaw-FQgI8AD-BSg-unsplash.jpg" width="100%" /></p>
+</div>
+<p>Photo by <a href="https://unsplash.com/@finnhackshaw?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Finn Hackshaw</a> on <a href="https://unsplash.com/photos/white-and-orange-open-led-signage-turned-on-FQgI8AD-BSg?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a></p>
+<h1 id="what-is-an-llm">What is an LLM?</h1>
+<p>A <strong>large language model</strong> is a machine learning model trained to predict and generate text. Modern LLMs can write, summarise, translate, classify, answer questions, write code, extract structured data, and act as a reasoning engine inside larger applications.</p>
+<p>The most visible version is a chatbot, but the model itself is often only one layer in a bigger system. A production LLM application may include:</p>
+<ul>
+<li>a model;</li>
+<li>a prompt or instruction template;</li>
+<li>retrieval from documents or databases;</li>
+<li>tools such as search, code execution, or calculators;</li>
+<li>guardrails and filters;</li>
+<li>logging, monitoring, and human review; and</li>
+<li>product workflows around the model.</li>
+</ul>
+<p>So when people say “we are using an LLM”, it is worth asking what they mean. Are they using a hosted chatbot? A model API? A fine-tuned model? A local model? A full agentic system? The answer changes the trade-offs.</p>
+<h1 id="open-vs-closed-llms">Open vs closed LLMs</h1>
+<p>At a high level:</p>
+<ul>
+<li><strong>Open LLMs</strong> make some important model assets available to the public, often including model weights. Depending on the license and release, users may be able to run, modify, fine-tune, redistribute, or commercialise the model.</li>
+<li><strong>Closed LLMs</strong> are controlled by the provider. Users typically access them through an API, web app, or enterprise platform. The model weights, training data, and training process are usually not public.</li>
+</ul>
+<p>Here is a simple comparison.</p>
+<div class="layout-chunk" data-layout="l-body">
+<table class="table" style="color: black; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Dimension
+</th>
+<th style="text-align:left;">
+Open_LLM
+</th>
+<th style="text-align:left;">
+Closed_LLM
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Access
+</td>
+<td style="text-align:left;">
+Usually downloadable weights or public model repositories.
+</td>
+<td style="text-align:left;">
+Usually API, web app, or managed enterprise platform.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Control
+</td>
+<td style="text-align:left;">
+More control over hosting, fine-tuning, and deployment.
+</td>
+<td style="text-align:left;">
+Less control over the underlying model, more control through product/API settings.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Transparency
+</td>
+<td style="text-align:left;">
+Can be higher, but varies a lot by release.
+</td>
+<td style="text-align:left;">
+Usually limited. Providers may publish model cards and safety reports, but not weights or training data.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cost structure
+</td>
+<td style="text-align:left;">
+Infrastructure and engineering costs are on you.
+</td>
+<td style="text-align:left;">
+Pay per token, subscription, seat, or enterprise contract.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Performance
+</td>
+<td style="text-align:left;">
+Can be excellent, especially for smaller or specialised tasks.
+</td>
+<td style="text-align:left;">
+Often strongest at frontier general-purpose capability.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Operational burden
+</td>
+<td style="text-align:left;">
+You manage serving, scaling, optimisation, security, and updates.
+</td>
+<td style="text-align:left;">
+Provider manages most of the heavy lifting.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lock-in
+</td>
+<td style="text-align:left;">
+Lower vendor lock-in if the model can be hosted elsewhere.
+</td>
+<td style="text-align:left;">
+Higher vendor dependence, though APIs can be abstracted.
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>This is not a perfect binary. Many organisations use a <strong>hybrid approach</strong>: closed models for hard general tasks, open models for private or high-volume workflows, and smaller specialised models for cheap classification or extraction.</p>
+<h1 id="open-does-not-always-mean-open-source">Open does not always mean open source</h1>
+<p>This is probably the most important concept in the whole discussion.</p>
+<p>In software, <strong>open source</strong> usually means we can inspect, use, modify, and distribute source code under an approved license. With AI models, the “source” is less obvious. Is it the model weights? The training code? The training data? The data curation process? The evaluation setup?</p>
+<p>The Open Source Initiative released the <strong>Open Source AI Definition 1.0</strong> in October 2024. In simple terms, it says an open source AI system should give people enough access to use, study, modify, and share the system. That is a higher bar than simply releasing model weights.</p>
+<p>Because of this, it is useful to separate a few terms.</p>
+<div class="layout-chunk" data-layout="l-body">
+<table class="table" style="color: black; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Term
+</th>
+<th style="text-align:left;">
+Meaning
+</th>
+<th style="text-align:left;">
+Why_it_matters
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Open source AI
+</td>
+<td style="text-align:left;">
+A system released with enough components and permissions to use, study, modify, and share it under open terms.
+</td>
+<td style="text-align:left;">
+This is the strongest form of openness, but many popular models do not fully meet this standard.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Open-weight model
+</td>
+<td style="text-align:left;">
+The trained model weights are available, but training data, full code, or other details may be missing.
+</td>
+<td style="text-align:left;">
+You can often run and fine-tune the model, but may not be able to fully reproduce it.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Open access model
+</td>
+<td style="text-align:left;">
+The model is available to use, but not necessarily downloadable or modifiable.
+</td>
+<td style="text-align:left;">
+Useful for access, weaker for control.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Research-only model
+</td>
+<td style="text-align:left;">
+The model can be used for research, but commercial use may be restricted.
+</td>
+<td style="text-align:left;">
+Important if the project may become a product.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Permissive license
+</td>
+<td style="text-align:left;">
+A license such as Apache 2.0 or MIT that generally allows commercial use and modification.
+</td>
+<td style="text-align:left;">
+This can make adoption much easier for companies.
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>In casual conversation, people often call Llama, Mistral, Gemma, DeepSeek, Qwen, or Granite “open source models”. A more careful phrase is often <strong>open-weight models</strong>, unless the release includes enough training data, code, documentation, and license freedom to satisfy a stricter open source definition.</p>
+<p>That may sound pedantic, but it is not. If you are using the model in a business, the license and disclosure details can affect legal risk, reproducibility, auditability, and vendor strategy.</p>
+<h1 id="examples-of-open-llms">Examples of open LLMs</h1>
+<p>The open model ecosystem changes quickly, but these are some useful examples as of May 2026.</p>
+<div class="layout-chunk" data-layout="l-body">
+<table class="table" style="color: black; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Model_family
+</th>
+<th style="text-align:left;">
+Developer
+</th>
+<th style="text-align:left;">
+Rough_category
+</th>
+<th style="text-align:left;">
+Notes
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Llama
+</td>
+<td style="text-align:left;">
+Meta
+</td>
+<td style="text-align:left;">
+Open-weight
+</td>
+<td style="text-align:left;">
+One of the most influential open-weight model families. Llama 3.1 included 8B, 70B, and 405B parameter models with a 128K context window.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mistral / Mixtral
+</td>
+<td style="text-align:left;">
+Mistral AI
+</td>
+<td style="text-align:left;">
+Open-weight and commercial API
+</td>
+<td style="text-align:left;">
+Known for efficient open models, including mixture-of-experts models such as Mixtral.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gemma
+</td>
+<td style="text-align:left;">
+Google
+</td>
+<td style="text-align:left;">
+Open model family
+</td>
+<td style="text-align:left;">
+Google’s lightweight open model family, designed for developers and efficient deployment.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DeepSeek-R1
+</td>
+<td style="text-align:left;">
+DeepSeek
+</td>
+<td style="text-align:left;">
+Open-weight reasoning model
+</td>
+<td style="text-align:left;">
+Released with MIT-licensed code and model weights, and became a major example of open reasoning models.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Qwen
+</td>
+<td style="text-align:left;">
+Alibaba Cloud
+</td>
+<td style="text-align:left;">
+Open-weight and hosted models
+</td>
+<td style="text-align:left;">
+Qwen3 models are available as open-weight models, with many releases under Apache 2.0.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Granite
+</td>
+<td style="text-align:left;">
+IBM
+</td>
+<td style="text-align:left;">
+Open model family
+</td>
+<td style="text-align:left;">
+IBM’s enterprise-oriented open models, with several Granite releases under Apache 2.0.
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The key thing is not just the model name. It is the exact version, license, deployment path, context length, supported languages, modality, safety tooling, and whether the model is good enough for the task.</p>
+<p>A small open model that reliably extracts invoice fields may be more valuable than a giant frontier model for that specific workflow.</p>
+<h1 id="examples-of-closed-llms">Examples of closed LLMs</h1>
+<p>Closed models are usually accessed through hosted products or APIs. They are commonly used when teams want strong performance quickly, without having to run the model themselves.</p>
+<div class="layout-chunk" data-layout="l-body">
+<table class="table" style="color: black; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Model_family
+</th>
+<th style="text-align:left;">
+Developer
+</th>
+<th style="text-align:left;">
+Typical_access
+</th>
+<th style="text-align:left;">
+Notes
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+GPT models
+</td>
+<td style="text-align:left;">
+OpenAI
+</td>
+<td style="text-align:left;">
+ChatGPT, API, enterprise offerings
+</td>
+<td style="text-align:left;">
+Examples include GPT-4.1 in the API and other OpenAI models used for coding, reasoning, multimodal, and assistant workflows.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Claude
+</td>
+<td style="text-align:left;">
+Anthropic
+</td>
+<td style="text-align:left;">
+Claude app, API, enterprise offerings
+</td>
+<td style="text-align:left;">
+Claude 4 models were positioned strongly for coding, agents, and long-running tasks.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gemini
+</td>
+<td style="text-align:left;">
+Google DeepMind
+</td>
+<td style="text-align:left;">
+Gemini app, Google AI Studio, Vertex AI
+</td>
+<td style="text-align:left;">
+Gemini 2.5 models introduced stronger reasoning and are integrated across Google’s product and cloud ecosystem.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Grok
+</td>
+<td style="text-align:left;">
+xAI
+</td>
+<td style="text-align:left;">
+X platform and API
+</td>
+<td style="text-align:left;">
+A closed model family tied closely to the X ecosystem.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cohere Command
+</td>
+<td style="text-align:left;">
+Cohere
+</td>
+<td style="text-align:left;">
+API and enterprise platform
+</td>
+<td style="text-align:left;">
+Often positioned for enterprise NLP, retrieval, and business workflows.
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The advantage of closed models is that they are usually easier to start with. The downside is that you are depending on the provider’s pricing, uptime, policies, model updates, and roadmap.</p>
+<h1 id="pros-of-open-llms">Pros of open LLMs</h1>
+<p>Open models are attractive because they give builders more control.</p>
+<h2 id="more-deployment-control">More deployment control</h2>
+<p>If you can run the model yourself, you can decide where it lives:</p>
+<ul>
+<li>local laptop;</li>
+<li>on-premise server;</li>
+<li>private cloud;</li>
+<li>GPU cluster;</li>
+<li>edge device; or</li>
+<li>managed inference provider.</li>
+</ul>
+<p>This matters when data residency, latency, offline use, or internal security rules are important.</p>
+<p>For example, a hospital, bank, or government team may not want sensitive documents sent to an external API unless there is a strong legal and security framework in place. An open model can be deployed closer to the data.</p>
+<h2 id="better-customisation">Better customisation</h2>
+<p>Open models can often be fine-tuned, distilled, quantised, or adapted with methods such as LoRA. This is useful when the task is narrow and repetitive.</p>
+<p>Examples:</p>
+<ul>
+<li>classify support tickets;</li>
+<li>extract fields from contracts;</li>
+<li>generate product descriptions in a house style;</li>
+<li>translate domain-specific terminology;</li>
+<li>answer questions using internal documents; or</li>
+<li>produce code in a specific framework.</li>
+</ul>
+<p>You do not always need a frontier model for these tasks. A smaller model, adapted well, can be cheaper and more predictable.</p>
+<h2 id="lower-marginal-cost-at-scale">Lower marginal cost at scale</h2>
+<p>Closed API pricing is convenient, but high-volume workloads can become expensive. If you are running millions or billions of tokens per day, it may be cheaper to host an open model.</p>
+<p>This is not guaranteed. GPUs, engineers, monitoring, inference optimisation, and downtime also cost money. But at enough scale, owning the serving layer can make sense.</p>
+<h2 id="less-vendor-lock-in">Less vendor lock-in</h2>
+<p>Open models can reduce dependence on a single provider. If a vendor changes prices, rate limits, model behaviour, or terms of service, you have more room to adapt.</p>
+<p>This does not mean open models remove all lock-in. You can still become locked into your own infrastructure, fine-tuning pipeline, prompt formats, evaluation harness, or model-specific behaviour. But you have more exit options.</p>
+<h2 id="more-experimentation">More experimentation</h2>
+<p>Open models are great for learning. You can inspect model cards, run models locally, try quantisation, compare inference engines, fine-tune on toy datasets, and understand the system more deeply.</p>
+<p>For students, researchers, and small teams, this is a big deal. The open ecosystem makes AI feel less like a black box owned by a few labs.</p>
+<h1 id="cons-of-open-llms">Cons of open LLMs</h1>
+<p>Open models are not free magic. They move a lot of responsibility from the provider to you.</p>
+<h2 id="infrastructure-can-be-painful">Infrastructure can be painful</h2>
+<p>Serving LLMs well is non-trivial. You may need to think about:</p>
+<ul>
+<li>GPU memory;</li>
+<li>batching;</li>
+<li>quantisation;</li>
+<li>latency;</li>
+<li>context length;</li>
+<li>autoscaling;</li>
+<li>model loading time;</li>
+<li>observability;</li>
+<li>failures; and</li>
+<li>cost utilisation.</li>
+</ul>
+<p>It is easy to underestimate the operational work. Running a model once in a notebook is different from running it reliably for real users.</p>
+<h2 id="performance-may-lag-frontier-closed-models">Performance may lag frontier closed models</h2>
+<p>Open models have improved dramatically, but the strongest closed models often still lead on broad, difficult, multimodal, or agentic tasks.</p>
+<p>This matters for tasks such as:</p>
+<ul>
+<li>complex coding;</li>
+<li>long-horizon reasoning;</li>
+<li>multimodal understanding;</li>
+<li>difficult instruction following;</li>
+<li>tool-heavy workflows;</li>
+<li>nuanced writing; and</li>
+<li>tasks where reliability matters more than cost.</li>
+</ul>
+<p>The gap may be small for some use cases and large for others. Benchmark scores help, but your own evaluation set matters more.</p>
+<h2 id="safety-and-governance-are-on-you">Safety and governance are on you</h2>
+<p>If you host the model, you also own a lot of the risk.</p>
+<p>You may need to build or buy:</p>
+<ul>
+<li>content filters;</li>
+<li>prompt injection defences;</li>
+<li>personally identifiable information handling;</li>
+<li>abuse monitoring;</li>
+<li>red-teaming;</li>
+<li>logging;</li>
+<li>audit trails;</li>
+<li>access controls; and</li>
+<li>incident response.</li>
+</ul>
+<p>Closed providers usually bundle some safety and compliance features. With open models, you need to make those design choices yourself.</p>
+<h2 id="licenses-can-be-tricky">Licenses can be tricky</h2>
+<p>Open-weight does not always mean unrestricted. Some licenses restrict certain use cases, require attribution, limit use by very large companies, or impose acceptable-use conditions.</p>
+<p>Before using an open model commercially, check:</p>
+<ul>
+<li>commercial use rights;</li>
+<li>redistribution rights;</li>
+<li>attribution requirements;</li>
+<li>acceptable-use restrictions;</li>
+<li>whether derivatives are allowed;</li>
+<li>whether fine-tuned models can be redistributed;</li>
+<li>data and privacy obligations; and</li>
+<li>export control or jurisdiction concerns.</li>
+</ul>
+<p>This is not the glamorous part of AI, but it is the part that can save future headaches.</p>
+<h1 id="pros-of-closed-llms">Pros of closed LLMs</h1>
+<p>Closed models are popular for good reasons.</p>
+<h2 id="fastest-path-to-strong-capability">Fastest path to strong capability</h2>
+<p>For many teams, a closed API is the quickest way to build something useful. You do not need to manage GPUs, inference servers, model optimisation, or frequent model upgrades.</p>
+<p>You can focus on:</p>
+<ul>
+<li>product design;</li>
+<li>prompts;</li>
+<li>retrieval;</li>
+<li>evaluation;</li>
+<li>user experience;</li>
+<li>workflow integration; and</li>
+<li>business value.</li>
+</ul>
+<p>That matters. Many LLM projects fail not because the model is weak, but because the product around the model is unclear.</p>
+<h2 id="strong-general-performance">Strong general performance</h2>
+<p>Closed frontier models from OpenAI, Anthropic, Google, and others are often very strong across many tasks. They may handle ambiguous prompts, complex reasoning, coding, long documents, images, audio, or tool use better than smaller open models.</p>
+<p>If the task is hard and varied, the strongest closed model may be the most economical option even if each token costs more. A cheaper model that fails often can become expensive in a different way.</p>
+<h2 id="managed-reliability">Managed reliability</h2>
+<p>With a closed provider, the serving infrastructure is handled for you. Good providers offer:</p>
+<ul>
+<li>API scaling;</li>
+<li>uptime commitments;</li>
+<li>model documentation;</li>
+<li>enterprise contracts;</li>
+<li>security reviews;</li>
+<li>data retention options;</li>
+<li>support; and</li>
+<li>monitoring tools.</li>
+</ul>
+<p>This can be especially useful when the team does not have deep ML infrastructure experience.</p>
+<h2 id="better-product-ecosystem">Better product ecosystem</h2>
+<p>Closed models often come with surrounding tools: assistants, file search, code execution, function calling, multimodal APIs, agent frameworks, governance dashboards, and enterprise admin controls.</p>
+<p>These extras can matter as much as the base model. The model is the engine, but the product ecosystem is the rest of the car.</p>
+<h1 id="cons-of-closed-llms">Cons of closed LLMs</h1>
+<p>Closed models also come with real trade-offs.</p>
+<h2 id="less-transparency">Less transparency</h2>
+<p>You usually cannot inspect the weights, training data, or full training process. You are trusting the provider’s documentation, evaluations, safety reports, and contractual promises.</p>
+<p>This may be acceptable for many use cases. But for regulated, high-stakes, or scientific work, limited transparency can be a serious concern.</p>
+<h2 id="vendor-dependence">Vendor dependence</h2>
+<p>If your application depends heavily on one provider, you are exposed to changes in:</p>
+<ul>
+<li>pricing;</li>
+<li>rate limits;</li>
+<li>model availability;</li>
+<li>content policies;</li>
+<li>latency;</li>
+<li>terms of service;</li>
+<li>supported regions; and</li>
+<li>model behaviour after updates.</li>
+</ul>
+<p>You can reduce this risk with abstraction layers, evaluation tests, fallback models, and careful contract terms. But the dependency is still there.</p>
+<h2 id="data-concerns">Data concerns</h2>
+<p>Closed providers may offer strong privacy controls, including zero data retention or enterprise data isolation. Still, some organisations are uncomfortable sending sensitive data to an external API.</p>
+<p>The right answer depends on the provider, contract, architecture, jurisdiction, and type of data. “Closed” does not automatically mean unsafe, and “open” does not automatically mean private. A badly secured self-hosted model can be worse than a well-governed enterprise API.</p>
+<h2 id="cost-can-surprise-you">Cost can surprise you</h2>
+<p>API pricing is easy to start with, but token usage can grow quietly.</p>
+<p>Costs increase with:</p>
+<ul>
+<li>long prompts;</li>
+<li>long outputs;</li>
+<li>many retries;</li>
+<li>large document context;</li>
+<li>agent loops;</li>
+<li>tool calls;</li>
+<li>evaluation runs; and</li>
+<li>logging or summarisation pipelines.</li>
+</ul>
+<p>If you use a closed model, track tokens early. Token usage is the new cloud bill.</p>
+<h1 id="important-concepts">Important concepts</h1>
+<p>Across articles, documentation, engineering blogs, and practitioner discussions, these are the concepts that tend to come up when people compare open and closed LLMs.</p>
+<h2 id="model-weights">Model weights</h2>
+<p>Model weights are the learned numerical parameters of the model. If weights are available, you can often run the model yourself.</p>
+<p>This is why “open-weight” is such an important category. It gives practical control, even if the release is not fully open source.</p>
+<h2 id="parameters">Parameters</h2>
+<p>Parameters are the internal numbers learned during training. Bigger parameter counts can mean more capacity, but bigger is not always better.</p>
+<p>A smaller model can be better when it is:</p>
+<ul>
+<li>faster;</li>
+<li>cheaper;</li>
+<li>easier to host;</li>
+<li>fine-tuned for the task;</li>
+<li>less likely to overcomplicate simple work; or</li>
+<li>able to run on local hardware.</li>
+</ul>
+<h2 id="context-window">Context window</h2>
+<p>The context window is how much text, code, image information, or other input the model can consider at once.</p>
+<p>Large context windows are useful for reading long documents, analysing codebases, or working across multiple sources. But large context can also increase cost and latency, and models may still miss details in the middle.</p>
+<h2 id="fine-tuning">Fine-tuning</h2>
+<p>Fine-tuning changes the model using additional training data. It can help with style, format, domain language, or repeated task behaviour.</p>
+<p>A common recommendation online is not to treat fine-tuning as the first move. Many practitioners suggest starting with prompt engineering, retrieval-augmented generation, and evaluation before fine-tuning.</p>
+<h2 id="retrieval-augmented-generation">Retrieval-augmented generation</h2>
+<p><strong>Retrieval-augmented generation</strong>, or RAG, means fetching relevant information from a knowledge base and giving it to the model as context.</p>
+<p>This is useful when the model needs up-to-date, private, or domain-specific information. RAG is often better than fine-tuning for factual knowledge because documents can be updated without retraining the model.</p>
+<h2 id="distillation">Distillation</h2>
+<p>Distillation means using a larger or stronger model to train a smaller model. The smaller model tries to imitate useful behaviour from the larger one.</p>
+<p>This can create cheaper models for high-volume tasks. For example, a frontier closed model might generate labels or reasoning traces, and a smaller open model might learn to perform the narrow task later.</p>
+<h2 id="quantisation">Quantisation</h2>
+<p>Quantisation compresses model weights into lower precision. This reduces memory and can make models easier to run locally or on cheaper hardware.</p>
+<p>The trade-off is that quality may drop, especially if the quantisation is too aggressive.</p>
+<h2 id="latency">Latency</h2>
+<p>Latency is how long the user waits. For chat, low latency feels important. For overnight batch processing, it may matter less.</p>
+<p>Open models can be very fast when hosted close to the user and optimised well. Closed APIs can also be fast, but you depend on network calls and provider load.</p>
+<h2 id="evaluation">Evaluation</h2>
+<p>Evaluation is the discipline of testing whether the model actually works for your task.</p>
+<p>A common internet recommendation is that a good evaluation set should include:</p>
+<ul>
+<li>normal cases;</li>
+<li>edge cases;</li>
+<li>adversarial cases;</li>
+<li>examples from real users;</li>
+<li>expected outputs;</li>
+<li>scoring criteria; and</li>
+<li>regression tests when models or prompts change.</li>
+</ul>
+<p>Without evaluation, model choice becomes vibes with charts.</p>
+<h1 id="key-considerations-when-choosing">Key considerations when choosing</h1>
+<p>A lot of online advice eventually becomes some version of this checklist.</p>
+<div class="layout-chunk" data-layout="l-body">
+<table class="table" style="color: black; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Question
+</th>
+<th style="text-align:left;">
+Why_it_matters
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+How sensitive is the data?
+</td>
+<td style="text-align:left;">
+Highly sensitive data may favour private deployment or enterprise-grade closed APIs.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+How hard is the task?
+</td>
+<td style="text-align:left;">
+Difficult reasoning or multimodal tasks may favour frontier closed models.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+How much volume do we expect?
+</td>
+<td style="text-align:left;">
+High-volume workloads may favour open/self-hosted models if infrastructure is efficient.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Do we need customisation?
+</td>
+<td style="text-align:left;">
+Heavy customisation may favour open models or providers that support fine-tuning.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Do we need auditability?
+</td>
+<td style="text-align:left;">
+Regulated settings may require stronger documentation, logs, and model governance.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+What latency do users expect?
+</td>
+<td style="text-align:left;">
+Real-time products need different choices from batch workflows.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+What is the team’s capability?
+</td>
+<td style="text-align:left;">
+Self-hosting needs ML engineering and operations skills.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+What does the license allow?
+</td>
+<td style="text-align:left;">
+Online guides often stress checking commercial and redistribution rights.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+What happens if the model changes?
+</td>
+<td style="text-align:left;">
+Closed providers may update models; open models give more version control.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+What is the fallback plan?
+</td>
+<td style="text-align:left;">
+Many production guides recommend fallbacks, monitoring, and graceful failure.
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The rough rule of thumb that shows up often online is:</p>
+<ul>
+<li>Use a <strong>closed model</strong> when you need the strongest general capability quickly.</li>
+<li>Use an <strong>open model</strong> when control, privacy, cost at scale, customisation, or independence matters.</li>
+<li>Use a <strong>hybrid setup</strong> when different parts of the workflow have different needs.</li>
+</ul>
+<h1 id="common-patterns-in-practice">Common patterns in practice</h1>
+<p>Most serious systems are more nuanced than “open” or “closed”. A few patterns show up often.</p>
+<h2 id="pattern-1-closed-model-for-prototype-open-model-for-production">Pattern 1: Closed model for prototype, open model for production</h2>
+<p>A team may start with a closed model because it is fast and capable. Once the workflow is understood, they may move repetitive tasks to a smaller open model.</p>
+<p>Example:</p>
+<ul>
+<li>Prototype contract extraction with a strong closed model.</li>
+<li>Build an evaluation set.</li>
+<li>Identify the repeated fields and edge cases.</li>
+<li>Fine-tune or prompt an open model for the stable extraction task.</li>
+<li>Keep the closed model as fallback for difficult cases.</li>
+</ul>
+<p>This gives speed early and cost control later.</p>
+<h2 id="pattern-2-open-model-for-private-data-closed-model-for-general-reasoning">Pattern 2: Open model for private data, closed model for general reasoning</h2>
+<p>Some teams keep sensitive data inside a private environment but still use closed models for non-sensitive tasks.</p>
+<p>Example:</p>
+<ul>
+<li>Use an open model inside the company’s network to summarise internal tickets.</li>
+<li>Use a closed model for public documentation generation or general coding help.</li>
+<li>Route requests based on sensitivity.</li>
+</ul>
+<p>This is more complex, but it avoids pretending that one model has to do everything.</p>
+<h2 id="pattern-3-closed-model-as-teacher-open-model-as-student">Pattern 3: Closed model as teacher, open model as student</h2>
+<p>A stronger model can generate training data, labels, or critiques. A smaller open model can then be trained for a narrow task.</p>
+<p>This can work well when:</p>
+<ul>
+<li>the output format is stable;</li>
+<li>the task is repeated many times;</li>
+<li>quality can be evaluated automatically or semi-automatically; and</li>
+<li>cost per request matters.</li>
+</ul>
+<h2 id="pattern-4-multi-model-routing">Pattern 4: Multi-model routing</h2>
+<p>Not every prompt deserves the same model.</p>
+<p>A router can send:</p>
+<ul>
+<li>simple classification to a small model;</li>
+<li>sensitive work to a private model;</li>
+<li>difficult reasoning to a frontier model;</li>
+<li>long document tasks to a model with a large context window; and</li>
+<li>image or audio tasks to a multimodal model.</li>
+</ul>
+<p>This is probably where many production systems are heading: not one model, but a portfolio of models.</p>
+<h1 id="successful-examples-in-practice">Successful examples in practice</h1>
+<p>Here are some examples that show how open and closed LLMs are being used.</p>
+<h2 id="closed-model-example-morgan-stanley-and-openai">Closed model example: Morgan Stanley and OpenAI</h2>
+<p>Morgan Stanley Wealth Management worked with OpenAI to embed GPT-4 into advisor workflows. The goal was not to replace financial advisors, but to help them search and use the firm’s internal knowledge more effectively.</p>
+<p>This is a classic closed-model enterprise pattern:</p>
+<ul>
+<li>strong hosted model;</li>
+<li>private enterprise deployment;</li>
+<li>retrieval over internal documents;</li>
+<li>workflow integration; and</li>
+<li>security and data controls.</li>
+</ul>
+<p>The interesting lesson is that the value came from the whole system, not just the model. The model helped advisors use existing knowledge faster.</p>
+<h2 id="closed-model-example-rakuten-and-claude-code">Closed model example: Rakuten and Claude Code</h2>
+<p>Rakuten has described using Anthropic’s Claude Code to accelerate software development. This is an example of a closed model being used as an engineering assistant inside a large organisation.</p>
+<p>The appeal is clear: coding work often requires broad reasoning, tool use, refactoring, and understanding messy context. That is where frontier closed models can be especially useful.</p>
+<h2 id="open-model-example-llama-in-medicine-and-education">Open model example: Llama in medicine and education</h2>
+<p>Meta has highlighted organisations using Llama models across education, customer service, research, and medicine. One example is the Meditron project, which fine-tuned Llama models for medical knowledge and assistance.</p>
+<p>This shows one major strength of open models: researchers and domain experts can adapt the model for a specialised setting instead of waiting for a closed provider to build exactly what they need.</p>
+<h2 id="open-model-example-ibm-granite-for-enterprise-ai">Open model example: IBM Granite for enterprise AI</h2>
+<p>IBM’s Granite models are designed around enterprise use cases, with several releases under permissive open licenses such as Apache 2.0.</p>
+<p>The practical pitch is not just “open is nice”. It is:</p>
+<ul>
+<li>more transparency;</li>
+<li>more control;</li>
+<li>easier customisation;</li>
+<li>deployment flexibility; and</li>
+<li>governance features around enterprise AI.</li>
+</ul>
+<p>This is a good reminder that open models are not only for hobbyists. They can be part of serious business infrastructure.</p>
+<h2 id="open-model-example-deepseek-r1-and-open-reasoning">Open model example: DeepSeek-R1 and open reasoning</h2>
+<p>DeepSeek-R1 became a major example of an open reasoning model. Its release showed that advanced reasoning capability was not limited to closed labs.</p>
+<p>Even if a company does not use DeepSeek directly, the broader lesson matters: open-weight releases can pressure the whole market. They push prices down, encourage replication, and give developers more options.</p>
+<h1 id="open-vs-closed-by-use-case">Open vs closed by use case</h1>
+<p>Here is a practical way to think about model choice.</p>
+<div class="layout-chunk" data-layout="l-body">
+<table class="table" style="color: black; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Use_case
+</th>
+<th style="text-align:left;">
+Likely_good_fit
+</th>
+<th style="text-align:left;">
+Reason
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Quick prototype
+</td>
+<td style="text-align:left;">
+Closed
+</td>
+<td style="text-align:left;">
+Fastest way to test whether the idea works.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+High-volume simple classification
+</td>
+<td style="text-align:left;">
+Open
+</td>
+<td style="text-align:left;">
+A small self-hosted model may be cheaper at scale.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sensitive internal documents
+</td>
+<td style="text-align:left;">
+Open or enterprise closed
+</td>
+<td style="text-align:left;">
+Depends on data policy, contracts, and deployment requirements.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Complex coding assistant
+</td>
+<td style="text-align:left;">
+Closed or hybrid
+</td>
+<td style="text-align:left;">
+Frontier models often perform well, but open coding models can help for private codebases.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Customer support chatbot
+</td>
+<td style="text-align:left;">
+Hybrid
+</td>
+<td style="text-align:left;">
+Use retrieval, guardrails, and model routing based on complexity.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Edge or offline application
+</td>
+<td style="text-align:left;">
+Open
+</td>
+<td style="text-align:left;">
+The model needs to run without constant API access.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Regulated decision support
+</td>
+<td style="text-align:left;">
+Depends
+</td>
+<td style="text-align:left;">
+Governance, auditability, validation, and human oversight matter more than model branding.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Research and learning
+</td>
+<td style="text-align:left;">
+Open
+</td>
+<td style="text-align:left;">
+Open models are better for experimentation and understanding.
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h1 id="risks-to-keep-in-mind">Risks to keep in mind</h1>
+<p>Both open and closed LLMs can fail in familiar ways.</p>
+<h2 id="hallucination">Hallucination</h2>
+<p>LLMs can produce confident but incorrect answers. This is especially risky when users assume fluent writing means factual accuracy.</p>
+<p>Mitigations include retrieval, citations, refusal behaviour, calibrated uncertainty, human review, and task-specific evaluation.</p>
+<h2 id="prompt-injection">Prompt injection</h2>
+<p>If the model reads external text, that text may contain instructions that try to hijack the model. This is a major issue for agents and RAG systems.</p>
+<p>Mitigations include separating system instructions from retrieved content, limiting tool permissions, validating outputs, and treating retrieved text as untrusted.</p>
+<h2 id="data-leakage">Data leakage</h2>
+<p>Models can accidentally expose sensitive information through logs, prompts, outputs, or poorly designed retrieval systems.</p>
+<p>This is not only a closed-model issue. Self-hosted systems can leak data too if access controls and logging are weak.</p>
+<h2 id="bias-and-representational-harm">Bias and representational harm</h2>
+<p>Models learn from data created by people, and people are biased. Outputs may reflect stereotypes, cultural blind spots, or uneven performance across languages and groups.</p>
+<p>This matters in both open and closed models. The mitigation is not one magic filter, but careful evaluation, monitoring, and human accountability.</p>
+<h2 id="over-automation">Over-automation</h2>
+<p>The biggest risk is sometimes not that the model is bad, but that people trust it too much.</p>
+<p>For high-stakes use cases, the common advice is that LLMs should usually support human judgement rather than silently replace it.</p>
+<h1 id="a-simple-decision-framework">A simple decision framework</h1>
+<p>A common decision framework from practitioner discussions starts with these questions:</p>
+<ol type="1">
+<li>What is the actual task?</li>
+<li>What quality level is required?</li>
+<li>What happens if the model is wrong?</li>
+<li>What data will be sent to the model?</li>
+<li>Are there legal or regulatory constraints?</li>
+<li>How many tokens will we process per month?</li>
+<li>Do we need to customise the model?</li>
+<li>Do we have the engineering skills to host it?</li>
+<li>How important is vendor independence?</li>
+<li>How will we evaluate the model before and after deployment?</li>
+</ol>
+<p>The last question is the most important. Without evaluation, the open-vs-closed debate becomes too abstract.</p>
+<p>For a real project, many practitioners suggest testing at least:</p>
+<ul>
+<li>one strong closed model;</li>
+<li>one good open model;</li>
+<li>one smaller cheaper model; and</li>
+<li>a baseline non-LLM approach if possible.</li>
+</ul>
+<p>Sometimes the boring baseline wins. That is not failure. That is science doing its job.</p>
+<h1 id="common-internet-takeaways">Common internet takeaways</h1>
+<p>The common takeaway from many online discussions is that <strong>closed models are best for capability, speed, and convenience</strong>, while <strong>open models are best for control, customisation, learning, and strategic flexibility</strong>.</p>
+<p>Closed models are like renting a very powerful machine with a polished interface. Open models are like owning a machine you can take apart, tune, and run wherever you want.</p>
+<p>A repeated theme online is that many mature teams will probably use both.</p>
+<p>The more practical advice is not to ask, “Should we use open or closed LLMs?” as if it is a personality test. Instead, the internet wisdom is to ask:</p>
+<ul>
+<li>Which model is good enough for this task?</li>
+<li>Which deployment is acceptable for this data?</li>
+<li>Which option is affordable at this volume?</li>
+<li>Which system can we monitor and govern?</li>
+<li>Which choice keeps future options open?</li>
+</ul>
+<p>That is a much healthier way to think about it.</p>
+<h1 id="helpful-materials">Helpful materials</h1>
+<p>These are some useful references behind the writeup:</p>
+<ul>
+<li><a href="https://opensource.org/ai/open-source-ai-definition">Open Source Initiative: Open Source AI Definition 1.0</a></li>
+<li><a href="https://ai.meta.com/blog/meta-llama-3-1-ai-responsibility/">Meta: Llama 3.1 responsibility and open model release</a></li>
+<li><a href="https://mistral.ai/en/news/mixtral-8x22b">Mistral AI: Mixtral 8x22B</a></li>
+<li><a href="https://blog.google/innovation-and-ai/technology/developers-tools/gemma-3/">Google: Gemma 3</a></li>
+<li><a href="https://api-docs.deepseek.com/news/news250120">DeepSeek: DeepSeek-R1 release</a></li>
+<li><a href="https://github.com/QwenLM/Qwen3">Qwen GitHub: Qwen3</a></li>
+<li><a href="https://research.ibm.com/topics/granite">IBM Research: Granite models</a></li>
+<li><a href="https://openai.com/index/gpt-4-1/">OpenAI: GPT-4.1 in the API</a></li>
+<li><a href="https://www.anthropic.com/news/claude-4">Anthropic: Claude 4</a></li>
+<li><a href="https://blog.google/technology/google-deepmind/gemini-model-thinking-updates-march-2025/">Google DeepMind: Gemini 2.5</a></li>
+<li><a href="https://openai.com/customer-stories/morgan-stanley">OpenAI customer story: Morgan Stanley</a></li>
+<li><a href="https://www.anthropic.com/customers/rakuten">Anthropic customer story: Rakuten</a></li>
+<li><a href="https://about.fb.com/news/2024/05/how-companies-are-using-meta-llama/">Meta: How companies are using Llama</a></li>
+</ul>
+<h1 id="conclusion">Conclusion</h1>
+<p>Open and closed LLMs are not enemies. They are different ways of packaging capability, control, cost, and responsibility.</p>
+<p>Closed models make it easier to access frontier capability. Open models make it easier to own more of the stack. Closed models reduce operational burden. Open models reduce some forms of dependence. Closed models can be safer to start with if the provider has strong controls. Open models can be safer for sensitive data if they are deployed properly.</p>
+<p>The practical answer is usually not ideological. It depends on the task, the data, the team, the budget, and the risk.</p>
+<p>That is all for the day!</p>
+<p>Thanks for reading the post until the end.</p>
+<p>Feel free to contact me through <a href="mailto:jasper.jh.lok@gmail.com">email</a> or <a href="https://www.linkedin.com/in/jasper-l-13426232/">LinkedIn</a> if you have any suggestions on future topics to share.</p>
+<p>Refer to this link for the <a href="https://jasperlok.netlify.app/blog_disclaimer.html">blog disclaimer</a>.</p>
+<p>Till next time, happy learning!</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="image/tim-mossholder-v5re1loi264-unsplash.jpg" width="100%" /></p>
+</div>
+<p>Photo by <a href="https://unsplash.com/@timmossholder?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Tim Mossholder</a> on <a href="https://unsplash.com/photos/sorry-were-closed-v5re1loi264?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<!--radix_placeholder_article_footer-->
+<!--/radix_placeholder_article_footer-->
+</div>
+
+<div class="d-appendix">
+</div>
+
+
+<!--radix_placeholder_site_after_body-->
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_appendices-->
+<div class="appendix-bottom"></div>
+<!--/radix_placeholder_appendices-->
+<!--radix_placeholder_navigation_after_body-->
+<!--/radix_placeholder_navigation_after_body-->
+
+</body>
+
+</html>

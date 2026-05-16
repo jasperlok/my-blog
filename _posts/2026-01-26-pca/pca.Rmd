@@ -1,0 +1,485 @@
+---
+title: "Principal Component Analysis"
+description: |
+  A practical introduction to PCA: how it works, when it is useful, what to watch out for, and how to implement it in R.
+author:
+  - name: Jasper Lok
+    url: https://jasperlok.netlify.app/
+date: 01-26-2026
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 4
+    self_contained: false
+bibliography: ["ref.bib"]
+biblio-style: "apa"
+link-citations: true
+categories:
+  - Principal component analysis
+  - Dimensionality reduction
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+pacman::p_load(
+  knitr,
+  kableExtra,
+  tidyverse,
+  scales
+)
+
+knitr::opts_chunk$set(
+  fig.retina = 3,
+  echo = TRUE,
+  eval = TRUE,
+  message = FALSE,
+  warning = FALSE,
+  out.width = "100%"
+)
+
+theme_set(theme_minimal(base_size = 12))
+```
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/ryan-fields-Xz7MMD5tZwA-unsplash.jpg")
+```
+
+Photo by <a href="https://unsplash.com/@rfieldss?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Ryan Fields</a> on <a href="https://unsplash.com/photos/boy-playing-cube-on-white-wooden-table-Xz7MMD5tZwA?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+
+# What is principal component analysis?
+
+Principal component analysis (PCA) is a dimensionality reduction technique. It takes a dataset with many numeric variables and creates a smaller set of new variables called *principal components* [@jolliffe2016; @abdi2010].
+
+Each principal component is a weighted combination of the original variables. The first principal component captures the largest possible amount of variation in the data. The second principal component captures the largest possible amount of the remaining variation, while remaining uncorrelated with the first component. The same idea continues for the later components.
+
+The important idea is that PCA does not choose existing variables. Instead, it builds new axes that summarize the main patterns of variation in the original data.
+
+For example, suppose a dataset has several variables related to size, such as radius, perimeter, and area. These variables are likely to move together. PCA can combine them into one component that represents an overall "size" direction. Instead of looking at all three variables separately, we can examine the component score.
+
+# How does PCA work?
+
+At a high level, PCA follows these steps:
+
+1. Start with a numeric dataset.
+2. Center each variable by subtracting its mean.
+3. Usually scale each variable by dividing by its standard deviation.
+4. Find directions in the data where observations vary the most.
+5. Project each observation onto those new directions.
+6. Keep the first few components if they explain enough variation for the task.
+
+In R, `prcomp()` performs PCA using singular value decomposition. This is generally the preferred numerical approach because it is stable and efficient.
+
+Another way to describe PCA is that it studies the covariance or correlation structure of the variables. If the variables are measured on very different scales, PCA is usually performed on the correlation matrix, which is equivalent to scaling the variables first. If the variables are already measured on the same meaningful scale, PCA on the covariance matrix may be appropriate.
+
+Mathematically, PCA finds the *eigenvectors* and *eigenvalues* of the covariance or correlation matrix. The eigenvectors define the directions of the principal components. The eigenvalues tell us how much variance is captured by each component. A larger eigenvalue means that the corresponding component explains more variation in the data.
+
+The main outputs from PCA are:
+
+- **Standard deviations**: the spread of each principal component.
+- **Proportion of variance explained**: how much information each component captures.
+- **Loadings**: how much each original variable contributes to each component.
+- **Scores**: the transformed data values for each observation on the principal components.
+
+Scores and loadings answer different questions. Scores describe where each observation sits on the new PCA axes. Loadings describe how the original variables define those axes.
+
+The loadings are especially useful for interpretation. A high positive or negative loading means the original variable contributes strongly to that principal component. The sign itself is arbitrary: if all signs for a component are flipped, the component still represents the same direction. Therefore, the interpretation should focus on which variables move together and which variables move in opposite directions.
+
+Principal components are orthogonal, meaning that they are uncorrelated with one another. This is one reason PCA can be useful when the original variables are highly correlated.
+
+# Why use PCA?
+
+PCA is useful when a dataset contains many correlated numeric variables. Instead of carrying all variables into an analysis, we can use a smaller number of components that retain most of the original variation.
+
+Common reasons to use PCA include:
+
+- **Visualization**: plot high-dimensional data in two or three dimensions.
+- **Noise reduction**: keep broad signal and remove small unstable variation.
+- **Feature engineering**: create compact inputs for machine learning models.
+- **Collinearity reduction**: replace highly correlated predictors with uncorrelated components.
+- **Data compression**: represent many variables with fewer dimensions.
+
+PCA is an unsupervised method. This means it does not use the outcome variable when creating the components. If the goal is prediction, PCA may or may not improve model performance. The components that explain the most predictor variation are not always the components that best predict the outcome [@james2021].
+
+# Pros and cons of PCA
+
+## Pros
+
+- PCA can simplify a dataset with many correlated variables.
+- The principal components are uncorrelated with one another.
+- It can make high-dimensional patterns easier to visualize.
+- It can reduce noise by focusing on the strongest sources of variation.
+- It is fast and widely available in statistical software.
+
+## Cons
+
+- The components are less interpretable than the original variables.
+- PCA only captures linear combinations of variables.
+- Results are sensitive to scaling.
+- Outliers can strongly influence the components.
+- The components may not align with the outcome you care about.
+
+# Considerations when using PCA
+
+## Use numeric variables
+
+PCA is designed for numeric variables. Categorical variables need to be handled separately, for example by using dummy variables, multiple correspondence analysis, or another method suited to the data type.
+
+## Scale the variables
+
+Scaling is one of the most important choices in PCA. Variables with larger units or wider ranges can dominate the analysis if the data is not scaled.
+
+For most practical use cases, especially when variables are measured in different units, use:
+
+```{r, eval=FALSE}
+prcomp(x, center = TRUE, scale. = TRUE)
+```
+
+## Handle missing values
+
+`prcomp()` cannot handle missing values directly. Missing values need to be removed or imputed before PCA.
+
+## Watch for outliers
+
+PCA is sensitive to outliers because it is based on variance. A small number of unusual observations can change the direction of the principal components.
+
+## Fit preprocessing on training data only
+
+If PCA is part of a predictive modelling workflow, the centering, scaling, and PCA components should be estimated on the training data only. The same transformation should then be applied to the validation or test data. This avoids data leakage.
+
+## Decide how many components to keep
+
+There is no universal rule, but common approaches include:
+
+- keeping enough components to explain a chosen percentage of variance, such as 80% or 90%;
+- inspecting a scree plot and looking for an elbow;
+- choosing the number of components using cross-validation if PCA is part of a model.
+
+# Practical uses of PCA
+
+PCA appears in many applied data science workflows:
+
+- **Exploratory data analysis**: checking whether observations naturally cluster.
+- **Biomedical data**: summarizing many measurements, such as gene expression or imaging features.
+- **Customer analytics**: reducing many behavioural variables into a few behavioural dimensions.
+- **Finance**: extracting common factors from many correlated asset returns.
+- **Image processing**: compressing high-dimensional pixel information.
+- **Machine learning**: reducing predictor dimensions before modelling.
+
+# Demonstration
+
+In this demonstration, we will use the data in the `data` folder. The dataset contains a diagnosis column and 30 numeric measurements. PCA will be performed only on the numeric measurement columns. The diagnosis column will be kept aside and used later to colour the PCA plot.
+
+## Import data
+
+```{r}
+df_raw <-
+  read_csv("data/data.csv", show_col_types = FALSE)
+
+glimpse(df_raw)
+```
+
+The last column in the CSV is an empty column created by a trailing comma. We remove that column and the ID field, then convert the diagnosis variable into a factor.
+
+```{r}
+df <-
+  df_raw %>%
+  select(-id, -`...33`) %>%
+  mutate(
+    diagnosis = factor(
+      diagnosis,
+      levels = c("B", "M"),
+      labels = c("Benign", "Malignant")
+    )
+  )
+
+df %>%
+  count(diagnosis) %>%
+  kbl() %>%
+  kable_styling(full_width = FALSE)
+```
+
+## Prepare numeric variables
+
+PCA should be run on numeric variables only. We separate the numeric measurement columns from the diagnosis label.
+
+```{r}
+pca_data <-
+  df %>%
+  select(where(is.numeric))
+
+pca_data %>%
+  summarise(
+    variables = ncol(pca_data),
+    observations = n()
+  ) %>%
+  kbl() %>%
+  kable_styling(full_width = FALSE)
+```
+
+The variables in this dataset are on different scales. For example, `area_mean` is much larger than `smoothness_mean`. Therefore, we center and scale the variables inside `prcomp()`.
+
+## Run PCA
+
+```{r}
+pca_fit <-
+  prcomp(
+    pca_data,
+    center = TRUE,
+    scale. = TRUE
+  )
+
+pca_fit
+```
+
+## Variance explained
+
+The first question after running PCA is usually: how much variation does each component explain?
+
+```{r}
+pca_variance <-
+  tibble(
+    component = paste0("PC", seq_along(pca_fit$sdev)),
+    eigenvalue = pca_fit$sdev^2,
+    variance_explained = eigenvalue / sum(eigenvalue),
+    cumulative_variance = cumsum(variance_explained)
+  )
+
+pca_variance %>%
+  slice_head(n = 10) %>%
+  mutate(
+    variance_explained = percent(variance_explained, accuracy = 0.1),
+    cumulative_variance = percent(cumulative_variance, accuracy = 0.1)
+  ) %>%
+  kbl() %>%
+  kable_styling(full_width = FALSE)
+```
+
+```{r}
+pca_variance %>%
+  mutate(component_number = row_number()) %>%
+  ggplot(aes(x = component_number, y = variance_explained)) +
+  geom_col(fill = "#2C7FB8") +
+  geom_line(aes(y = cumulative_variance), colour = "#D95F02", linewidth = 1) +
+  geom_point(aes(y = cumulative_variance), colour = "#D95F02", size = 2) +
+  scale_x_continuous(breaks = seq(1, nrow(pca_variance), by = 2)) +
+  scale_y_continuous(labels = percent_format()) +
+  labs(
+    title = "Variance explained by principal components",
+    x = "Principal component",
+    y = "Variance explained",
+    caption = "Bars show individual variance explained. Line shows cumulative variance explained."
+  )
+```
+
+The first principal component explains about 44.3% of the total variance, while the first two principal components explain about 63.2%. The first five components explain about 84.7%, and the first seven components explain about 91.0%.
+
+This tells us that the 30 original numeric measurements contain substantial shared structure. A much smaller number of principal components can summarize most of the variation in the dataset. Later components explain smaller amounts of variation and may contain less useful signal.
+
+## PCA scores
+
+The PCA scores are the coordinates of each observation on the new principal component axes.
+
+```{r}
+pca_scores <-
+  as_tibble(pca_fit$x) %>%
+  bind_cols(diagnosis = df$diagnosis)
+
+pca_scores %>%
+  select(diagnosis, PC1, PC2, PC3) %>%
+  slice_head(n = 10) %>%
+  kbl(digits = 3) %>%
+  kable_styling(full_width = FALSE)
+```
+
+We can plot the first two principal components to visualize the observations in a two-dimensional space.
+
+```{r}
+pca_scores %>%
+  ggplot(aes(x = PC1, y = PC2, colour = diagnosis)) +
+  geom_point(alpha = 0.75, size = 2) +
+  stat_ellipse(linewidth = 0.8) +
+  scale_colour_manual(values = c("Benign" = "#1B9E77", "Malignant" = "#D95F02")) +
+  labs(
+    title = "PCA score plot",
+    subtitle = "Each point is one observation projected onto the first two principal components",
+    x = "PC1",
+    y = "PC2",
+    colour = "Diagnosis"
+  )
+```
+
+This plot is useful for exploration. The benign and malignant observations show visible separation along the first two components, especially along PC1. This suggests that the original numeric measurements contain structure related to diagnosis. However, PCA itself did not use the diagnosis label to find the components, so the plot should be treated as exploratory evidence rather than as a supervised classification result.
+
+## PCA loadings
+
+Loadings show how strongly each original variable contributes to a principal component.
+
+```{r}
+pca_loadings <-
+  as_tibble(
+    pca_fit$rotation,
+    rownames = "variable"
+  )
+
+pca_loadings %>%
+  select(variable, PC1, PC2) %>%
+  mutate(
+    abs_PC1 = abs(PC1),
+    abs_PC2 = abs(PC2)
+  ) %>%
+  arrange(desc(abs_PC1)) %>%
+  select(variable, PC1, PC2) %>%
+  slice_head(n = 10) %>%
+  kbl(digits = 3) %>%
+  kable_styling(full_width = FALSE)
+```
+
+```{r}
+pca_loadings %>%
+  select(variable, PC1, PC2) %>%
+  pivot_longer(
+    cols = c(PC1, PC2),
+    names_to = "component",
+    values_to = "loading"
+  ) %>%
+  group_by(component) %>%
+  slice_max(abs(loading), n = 10) %>%
+  ungroup() %>%
+  mutate(variable = reorder(variable, abs(loading))) %>%
+  ggplot(aes(x = abs(loading), y = variable, fill = component)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~ component, scales = "free_y") +
+  labs(
+    title = "Variables with the largest absolute loadings",
+    x = "Absolute loading",
+    y = NULL
+  )
+```
+
+For this dataset, PC1 is driven strongly by variables related to concavity, concave points, compactness, radius, perimeter, and area. A reasonable interpretation is that PC1 captures a broad tumour size, boundary, and irregularity pattern rather than size alone.
+
+PC2 has a different interpretation. It gives relatively high weight to variables such as fractal dimension, compactness standard error, smoothness standard error, and some size-related measures. This suggests that PC2 captures a contrast between texture or shape-complexity measurements and the broad size-irregularity pattern captured by PC1.
+
+Because the sign of a principal component is arbitrary, the direction of the interpretation should not depend on whether these loadings are positive or negative. The important point is which variables contribute together.
+
+## Biplot
+
+A biplot shows both observations and variable directions. It can be helpful, but it can also become crowded when there are many variables. The code below labels only the variables with the largest combined contribution to PC1 and PC2.
+
+```{r}
+loading_scale <- 6
+
+biplot_loadings <-
+  pca_loadings %>%
+  mutate(contribution = PC1^2 + PC2^2) %>%
+  slice_max(contribution, n = 12) %>%
+  mutate(
+    PC1 = PC1 * loading_scale,
+    PC2 = PC2 * loading_scale
+  )
+
+pca_scores %>%
+  ggplot(aes(x = PC1, y = PC2, colour = diagnosis)) +
+  geom_point(alpha = 0.55, size = 1.8) +
+  stat_ellipse(linewidth = 0.8) +
+  geom_segment(
+    data = biplot_loadings,
+    aes(x = 0, y = 0, xend = PC1, yend = PC2),
+    inherit.aes = FALSE,
+    arrow = arrow(length = grid::unit(0.15, "cm")),
+    colour = "grey30"
+  ) +
+  geom_text(
+    data = biplot_loadings,
+    aes(x = PC1, y = PC2, label = variable),
+    inherit.aes = FALSE,
+    size = 3,
+    colour = "grey20",
+    check_overlap = TRUE
+  ) +
+  scale_colour_manual(values = c("Benign" = "#1B9E77", "Malignant" = "#D95F02")) +
+  labs(
+    title = "PCA biplot",
+    subtitle = "Points show observations; arrows show the strongest variable loading directions",
+    x = "PC1",
+    y = "PC2",
+    colour = "Diagnosis"
+  )
+```
+
+The biplot combines two views: the point positions come from the PCA scores, while the arrows come from the loadings. Variables pointing in a similar direction tend to be positively associated with one another, while variables pointing in opposite directions tend to represent contrasting patterns.
+
+## How many components should we keep?
+
+The answer depends on the purpose of the analysis. If we want a compact representation, we can keep the smallest number of components that explain a target amount of variance.
+
+```{r}
+variance_target <- 0.90
+
+n_components_90 <-
+  pca_variance %>%
+  filter(cumulative_variance >= variance_target) %>%
+  slice_head(n = 1)
+
+n_components_90 %>%
+  mutate(
+    variance_target = percent(variance_target),
+    cumulative_variance = percent(cumulative_variance, accuracy = 0.1)
+  ) %>%
+  select(variance_target, component, cumulative_variance) %>%
+  kbl() %>%
+  kable_styling(full_width = FALSE)
+```
+
+In this example, the number of components required to reach 90% cumulative variance gives a practical starting point. For predictive modelling, this number should be tuned with resampling instead of being chosen only from the scree plot.
+
+## Using PCA components in a model
+
+The PCA scores can be used as features in a downstream model. The example below creates a compact dataset using the first few principal components.
+
+```{r}
+pca_model_data <-
+  pca_scores %>%
+  select(diagnosis, PC1:PC5)
+
+pca_model_data %>%
+  slice_head(n = 10) %>%
+  kbl(digits = 3) %>%
+  kable_styling(full_width = FALSE)
+```
+
+This dataset can now be used in a classification model. In a real modelling workflow, PCA preprocessing should be estimated only on the training set and then applied to the test set.
+
+# Conclusion
+
+PCA is a useful technique for reducing many numeric variables into a smaller set of uncorrelated components. It is especially helpful for exploration, visualization, compression, and feature engineering when the original variables are highly correlated.
+
+The key practical points are:
+
+- scale the variables before PCA unless all variables are already on comparable scales;
+- inspect variance explained and loadings;
+- remember that PCA is unsupervised;
+- remember that high variance is not always the same as high predictive value;
+- be careful with outliers and missing values;
+- avoid data leakage when using PCA before predictive modelling.
+
+In this example, the first two components already explain about 63.2% of the total variance, and the first seven components explain about 91.0%. PC1 mainly reflects tumour size, boundary, and irregularity features, while PC2 captures a different contrast involving fractal dimension, smoothness, compactness, and size-related measurements.
+
+PCA is not a magic replacement for understanding the original variables, but it is a powerful way to summarize complex numeric data when used carefully.
+
+That's all for the day!
+
+Thank you for reading the post until the end.
+
+Feel free to contact me through [email](mailto:jasper.jh.lok@gmail.com) or [LinkedIn](https://www.linkedin.com/in/jasper-l-13426232/) if you have any suggestions on future topics to share.
+
+Refer to this link for the [blog disclaimer](https://jasperlok.netlify.app/blog_disclaimer.html).
+
+Till next time, happy learning!
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/dmitry-mashkin-NBzr3NUnxRg-unsplash.jpg")
+```
+
+Photo by <a href="https://unsplash.com/@artcoastdesign?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Dmitry Mashkin</a> on <a href="https://unsplash.com/photos/white-and-black-lego-blocks-NBzr3NUnxRg?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>

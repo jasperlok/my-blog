@@ -1,0 +1,2391 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <meta name="generator" content="distill" />
+
+  <style type="text/css">
+  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
+  body {
+    visibility: hidden;
+  }
+  </style>
+
+ <!--radix_placeholder_import_source-->
+ <!--/radix_placeholder_import_source-->
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  { color: #00769e; background-color: #f1f3f5; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span { color: #00769e; } /* Normal */
+code span.al { color: #ad0000; } /* Alert */
+code span.an { color: #5e5e5e; } /* Annotation */
+code span.at { color: #657422; } /* Attribute */
+code span.bn { color: #ad0000; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #00769e; } /* ControlFlow */
+code span.ch { color: #20794d; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #5e5e5e; } /* Comment */
+code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+code span.dt { color: #ad0000; } /* DataType */
+code span.dv { color: #ad0000; } /* DecVal */
+code span.er { color: #ad0000; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #ad0000; } /* Float */
+code span.fu { color: #4758ab; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #5e5e5e; } /* Information */
+code span.kw { color: #00769e; } /* Keyword */
+code span.op { color: #5e5e5e; } /* Operator */
+code span.ot { color: #00769e; } /* Other */
+code span.pp { color: #ad0000; } /* Preprocessor */
+code span.sc { color: #5e5e5e; } /* SpecialChar */
+code span.ss { color: #20794d; } /* SpecialString */
+code span.st { color: #20794d; } /* String */
+code span.va { color: #111111; } /* Variable */
+code span.vs { color: #20794d; } /* VerbatimString */
+code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+</style>
+
+
+  <!--radix_placeholder_meta_tags-->
+  <title>Experimental Design - Concepts</title>
+
+  <meta property="description" itemprop="description" content="A casual walkthrough of the main ideas behind experimental design: treatments, randomisation, replication, blocking, confounding, and validity."/>
+
+
+  <!--  https://schema.org/Article -->
+  <meta property="article:published" itemprop="datePublished" content="2025-12-30"/>
+  <meta property="article:created" itemprop="dateCreated" content="2025-12-30"/>
+  <meta name="article:author" content="Jasper Lok"/>
+
+  <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
+  <meta property="og:title" content="Experimental Design - Concepts"/>
+  <meta property="og:type" content="article"/>
+  <meta property="og:description" content="A casual walkthrough of the main ideas behind experimental design: treatments, randomisation, replication, blocking, confounding, and validity."/>
+  <meta property="og:locale" content="en_US"/>
+
+  <!--  https://dev.twitter.com/cards/types/summary -->
+  <meta property="twitter:card" content="summary"/>
+  <meta property="twitter:title" content="Experimental Design - Concepts"/>
+  <meta property="twitter:description" content="A casual walkthrough of the main ideas behind experimental design: treatments, randomisation, replication, blocking, confounding, and validity."/>
+
+  <!--/radix_placeholder_meta_tags-->
+  <!--radix_placeholder_rmarkdown_metadata-->
+
+  <script type="text/json" id="radix-rmarkdown-metadata">
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","categories"]}},"value":[{"type":"character","attributes":{},"value":["Experimental Design - Concepts"]},{"type":"character","attributes":{},"value":["A casual walkthrough of the main ideas behind experimental design: treatments, randomisation, replication, blocking, confounding, and validity.\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Jasper Lok"]},{"type":"character","attributes":{},"value":["https://jasperlok.netlify.app/"]}]}]},{"type":"character","attributes":{},"value":["2025-12-30"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","toc_depth","self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[4]},{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["Experimental Design"]}]}
+  </script>
+  <!--/radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["experimental-design-concepts_files/anchor/anchor.min.js","experimental-design-concepts_files/bowser/bowser.min.js","experimental-design-concepts_files/bsTable/bootstrapTable.js","experimental-design-concepts_files/bsTable/bootstrapTable.min.css","experimental-design-concepts_files/distill/template.v2.js","experimental-design-concepts_files/header-attrs/header-attrs.js","experimental-design-concepts_files/jquery/jquery-3.6.0.js","experimental-design-concepts_files/jquery/jquery-3.6.0.min.js","experimental-design-concepts_files/jquery/jquery-3.6.0.min.map","experimental-design-concepts_files/kePrint/kePrint.js","experimental-design-concepts_files/lightable/lightable.css","experimental-design-concepts_files/popper/popper.min.js","experimental-design-concepts_files/tippy/tippy-bundle.umd.min.js","experimental-design-concepts_files/tippy/tippy-light-border.css","experimental-design-concepts_files/tippy/tippy.css","experimental-design-concepts_files/tippy/tippy.umd.min.js","experimental-design-concepts_files/webcomponents/webcomponents.js","image/pexels-chokniti-khongchum-1197604-2280547.jpg","image/pexels-tara-winstead-7722670.jpg","image/process-experimental-design.png","ref.bib"]}
+  </script>
+  <!--radix_placeholder_navigation_in_header-->
+  <!--/radix_placeholder_navigation_in_header-->
+  <!--radix_placeholder_distill-->
+
+  <style type="text/css">
+
+  body {
+    background-color: white;
+  }
+
+  .pandoc-table {
+    width: 100%;
+  }
+
+  .pandoc-table>caption {
+    margin-bottom: 10px;
+  }
+
+  .pandoc-table th:not([align]) {
+    text-align: left;
+  }
+
+  .pagedtable-footer {
+    font-size: 15px;
+  }
+
+  d-byline .byline {
+    grid-template-columns: 2fr 2fr;
+  }
+
+  d-byline .byline h3 {
+    margin-block-start: 1.5em;
+  }
+
+  d-byline .byline .authors-affiliations h3 {
+    margin-block-start: 0.5em;
+  }
+
+  .authors-affiliations .orcid-id {
+    width: 16px;
+    height:16px;
+    margin-left: 4px;
+    margin-right: 4px;
+    vertical-align: middle;
+    padding-bottom: 2px;
+  }
+
+  d-title .dt-tags {
+    margin-top: 1em;
+    grid-column: text;
+  }
+
+  .dt-tags .dt-tag {
+    text-decoration: none;
+    display: inline-block;
+    color: rgba(0,0,0,0.6);
+    padding: 0em 0.4em;
+    margin-right: 0.5em;
+    margin-bottom: 0.4em;
+    font-size: 70%;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  d-article table.gt_table td,
+  d-article table.gt_table th {
+    border-bottom: none;
+    font-size: 100%;
+  }
+
+  .html-widget {
+    margin-bottom: 2.0em;
+  }
+
+  .l-screen-inset {
+    padding-right: 16px;
+  }
+
+  .l-screen .caption {
+    margin-left: 10px;
+  }
+
+  .shaded {
+    background: rgb(247, 247, 247);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .shaded .html-widget {
+    margin-bottom: 0;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .shaded .shaded-content {
+    background: white;
+  }
+
+  .text-output {
+    margin-top: 0;
+    line-height: 1.5em;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  hr.section-separator {
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    margin: 0px;
+  }
+
+
+  d-byline {
+    border-top: none;
+  }
+
+  d-article {
+    padding-top: 2.5rem;
+    padding-bottom: 30px;
+    border-top: none;
+  }
+
+  d-appendix {
+    padding-top: 30px;
+  }
+
+  d-article>p>img {
+    width: 100%;
+  }
+
+  d-article h2 {
+    margin: 1rem 0 1.5rem 0;
+  }
+
+  d-article h3 {
+    margin-top: 1.5rem;
+  }
+
+  d-article iframe {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 2.0em;
+    width: 100%;
+  }
+
+  /* Tweak code blocks */
+
+  d-article div.sourceCode code,
+  d-article pre code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  d-article pre,
+  d-article div.sourceCode,
+  d-article div.sourceCode pre {
+    overflow: auto;
+  }
+
+  d-article div.sourceCode {
+    background-color: white;
+  }
+
+  d-article div.sourceCode pre {
+    padding-left: 10px;
+    font-size: 12px;
+    border-left: 2px solid rgba(0,0,0,0.1);
+  }
+
+  d-article pre {
+    font-size: 12px;
+    color: black;
+    background: none;
+    margin-top: 0;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+
+  d-article pre a {
+    border-bottom: none;
+  }
+
+  d-article pre a:hover {
+    border-bottom: none;
+    text-decoration: underline;
+  }
+
+  d-article details {
+    grid-column: text;
+    margin-bottom: 0.8em;
+  }
+
+  @media(min-width: 768px) {
+
+  d-article pre,
+  d-article div.sourceCode,
+  d-article div.sourceCode pre {
+    overflow: visible !important;
+  }
+
+  d-article div.sourceCode pre {
+    padding-left: 18px;
+    font-size: 14px;
+  }
+
+  /* tweak for Pandoc numbered line within distill */
+  d-article pre.numberSource code > span {
+      left: -2em;
+  }
+
+  d-article pre {
+    font-size: 14px;
+  }
+
+  }
+
+  figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+
+  /* CSS for d-contents */
+
+  .d-contents {
+    grid-column: text;
+    color: rgba(0,0,0,0.8);
+    font-size: 0.9em;
+    padding-bottom: 1em;
+    margin-bottom: 1em;
+    padding-bottom: 0.5em;
+    margin-bottom: 1em;
+    padding-left: 0.25em;
+    justify-self: start;
+  }
+
+  @media(min-width: 1000px) {
+    .d-contents.d-contents-float {
+      height: 0;
+      grid-column-start: 1;
+      grid-column-end: 4;
+      justify-self: center;
+      padding-right: 3em;
+      padding-left: 2em;
+    }
+  }
+
+  .d-contents nav h3 {
+    font-size: 18px;
+    margin-top: 0;
+    margin-bottom: 1em;
+  }
+
+  .d-contents li {
+    list-style-type: none
+  }
+
+  .d-contents nav > ul {
+    padding-left: 0;
+  }
+
+  .d-contents ul {
+    padding-left: 1em
+  }
+
+  .d-contents nav ul li {
+    margin-top: 0.6em;
+    margin-bottom: 0.2em;
+  }
+
+  .d-contents nav a {
+    font-size: 13px;
+    border-bottom: none;
+    text-decoration: none
+    color: rgba(0, 0, 0, 0.8);
+  }
+
+  .d-contents nav a:hover {
+    text-decoration: underline solid rgba(0, 0, 0, 0.6)
+  }
+
+  .d-contents nav > ul > li > a {
+    font-weight: 600;
+  }
+
+  .d-contents nav > ul > li > ul {
+    font-weight: inherit;
+  }
+
+  .d-contents nav > ul > li > ul > li {
+    margin-top: 0.2em;
+  }
+
+
+  .d-contents nav ul {
+    margin-top: 0;
+    margin-bottom: 0.25em;
+  }
+
+  .d-article-with-toc h2:nth-child(2) {
+    margin-top: 0;
+  }
+
+
+  /* Figure */
+
+  .figure {
+    position: relative;
+    margin-bottom: 2.5em;
+    margin-top: 1.5em;
+  }
+
+  .figure .caption {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 12px;
+    line-height: 1.5em;
+  }
+
+  .figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+
+  .figure .caption a {
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  .figure .caption b,
+  .figure .caption strong, {
+    font-weight: 600;
+    color: rgba(0, 0, 0, 1.0);
+  }
+
+  /* Citations */
+
+  d-article .citation {
+    color: inherit;
+    cursor: inherit;
+  }
+
+  div.hanging-indent{
+    margin-left: 1em; text-indent: -1em;
+  }
+
+  /* Citation hover box */
+
+  .tippy-box[data-theme~=light-border] {
+    background-color: rgba(250, 250, 250, 0.95);
+  }
+
+  .tippy-content > p {
+    margin-bottom: 0;
+    padding: 2px;
+  }
+
+
+  /* Tweak 1000px media break to show more text */
+
+  @media(min-width: 1000px) {
+    .base-grid,
+    distill-header,
+    d-title,
+    d-abstract,
+    d-article,
+    d-appendix,
+    distill-appendix,
+    d-byline,
+    d-footnote-list,
+    d-citation-list,
+    distill-footer {
+      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 80px [middle-start] 50px [text-start kicker-end] 65px 65px 65px 65px 65px 65px 65px 65px [text-end gutter-start] 65px [middle-end] 65px [page-end gutter-end] 1fr [screen-end];
+      grid-column-gap: 16px;
+    }
+
+    .grid {
+      grid-column-gap: 16px;
+    }
+
+    d-article {
+      font-size: 1.06rem;
+      line-height: 1.7em;
+    }
+    figure .caption, .figure .caption, figure figcaption {
+      font-size: 13px;
+    }
+  }
+
+  @media(min-width: 1180px) {
+    .base-grid,
+    distill-header,
+    d-title,
+    d-abstract,
+    d-article,
+    d-appendix,
+    distill-appendix,
+    d-byline,
+    d-footnote-list,
+    d-citation-list,
+    distill-footer {
+      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
+      grid-column-gap: 32px;
+    }
+
+    .grid {
+      grid-column-gap: 32px;
+    }
+  }
+
+
+  /* Get the citation styles for the appendix (not auto-injected on render since
+     we do our own rendering of the citation appendix) */
+
+  d-appendix .citation-appendix,
+  .d-appendix .citation-appendix {
+    font-size: 11px;
+    line-height: 15px;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    padding-left: 18px;
+    border: 1px solid rgba(0,0,0,0.1);
+    background: rgba(0, 0, 0, 0.02);
+    padding: 10px 18px;
+    border-radius: 3px;
+    color: rgba(150, 150, 150, 1);
+    overflow: hidden;
+    margin-top: -12px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  /* Include appendix styles here so they can be overridden */
+
+  d-appendix {
+    contain: layout style;
+    font-size: 0.8em;
+    line-height: 1.7em;
+    margin-top: 60px;
+    margin-bottom: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    color: rgba(0,0,0,0.5);
+    padding-top: 60px;
+    padding-bottom: 48px;
+  }
+
+  d-appendix h3 {
+    grid-column: page-start / text-start;
+    font-size: 15px;
+    font-weight: 500;
+    margin-top: 1em;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.65);
+  }
+
+  d-appendix h3 + * {
+    margin-top: 1em;
+  }
+
+  d-appendix ol {
+    padding: 0 0 0 15px;
+  }
+
+  @media (min-width: 768px) {
+    d-appendix ol {
+      padding: 0 0 0 30px;
+      margin-left: -30px;
+    }
+  }
+
+  d-appendix li {
+    margin-bottom: 1em;
+  }
+
+  d-appendix a {
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  d-appendix > * {
+    grid-column: text;
+  }
+
+  d-appendix > d-footnote-list,
+  d-appendix > d-citation-list,
+  d-appendix > distill-appendix {
+    grid-column: screen;
+  }
+
+  /* Include footnote styles here so they can be overridden */
+
+  d-footnote-list {
+    contain: layout style;
+  }
+
+  d-footnote-list > * {
+    grid-column: text;
+  }
+
+  d-footnote-list a.footnote-backlink {
+    color: rgba(0,0,0,0.3);
+    padding-left: 0.5em;
+  }
+
+
+
+  /* Anchor.js */
+
+  .anchorjs-link {
+    /*transition: all .25s linear; */
+    text-decoration: none;
+    border-bottom: none;
+  }
+  *:hover > .anchorjs-link {
+    margin-left: -1.125em !important;
+    text-decoration: none;
+    border-bottom: none;
+  }
+
+  /* Social footer */
+
+  .social_footer {
+    margin-top: 30px;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.67);
+  }
+
+  .disqus-comments {
+    margin-right: 30px;
+  }
+
+  .disqus-comment-count {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+  }
+
+  #disqus_thread {
+    margin-top: 30px;
+  }
+
+  .article-sharing a {
+    border-bottom: none;
+    margin-right: 8px;
+  }
+
+  .article-sharing a:hover {
+    border-bottom: none;
+  }
+
+  .sidebar-section.subscribe {
+    font-size: 12px;
+    line-height: 1.6em;
+  }
+
+  .subscribe p {
+    margin-bottom: 0.5em;
+  }
+
+
+  .article-footer .subscribe {
+    font-size: 15px;
+    margin-top: 45px;
+  }
+
+
+  .sidebar-section.custom {
+    font-size: 12px;
+    line-height: 1.6em;
+  }
+
+  .custom p {
+    margin-bottom: 0.5em;
+  }
+
+  /* Styles for listing layout (hide title) */
+  .layout-listing d-title, .layout-listing .d-title {
+    display: none;
+  }
+
+  /* Styles for posts lists (not auto-injected) */
+
+
+  .posts-with-sidebar {
+    padding-left: 45px;
+    padding-right: 45px;
+  }
+
+  .posts-list .description h2,
+  .posts-list .description p {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  }
+
+  .posts-list .description h2 {
+    font-weight: 700;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .posts-list h2.post-tag {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    padding-bottom: 12px;
+  }
+  .posts-list {
+    margin-top: 60px;
+    margin-bottom: 24px;
+  }
+
+  .posts-list .post-preview {
+    text-decoration: none;
+    overflow: hidden;
+    display: block;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 24px 0;
+  }
+
+  .post-preview-last {
+    border-bottom: none !important;
+  }
+
+  .posts-list .posts-list-caption {
+    grid-column: screen;
+    font-weight: 400;
+  }
+
+  .posts-list .post-preview h2 {
+    margin: 0 0 6px 0;
+    line-height: 1.2em;
+    font-style: normal;
+    font-size: 24px;
+  }
+
+  .posts-list .post-preview p {
+    margin: 0 0 12px 0;
+    line-height: 1.4em;
+    font-size: 16px;
+  }
+
+  .posts-list .post-preview .thumbnail {
+    box-sizing: border-box;
+    margin-bottom: 24px;
+    position: relative;
+    max-width: 500px;
+  }
+  .posts-list .post-preview img {
+    width: 100%;
+    display: block;
+  }
+
+  .posts-list .metadata {
+    font-size: 12px;
+    line-height: 1.4em;
+    margin-bottom: 18px;
+  }
+
+  .posts-list .metadata > * {
+    display: inline-block;
+  }
+
+  .posts-list .metadata .publishedDate {
+    margin-right: 2em;
+  }
+
+  .posts-list .metadata .dt-authors {
+    display: block;
+    margin-top: 0.3em;
+    margin-right: 2em;
+  }
+
+  .posts-list .dt-tags {
+    display: block;
+    line-height: 1em;
+  }
+
+  .posts-list .dt-tags .dt-tag {
+    display: inline-block;
+    color: rgba(0,0,0,0.6);
+    padding: 0.3em 0.4em;
+    margin-right: 0.2em;
+    margin-bottom: 0.4em;
+    font-size: 60%;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .posts-list img {
+    opacity: 1;
+  }
+
+  .posts-list img[data-src] {
+    opacity: 0;
+  }
+
+  .posts-more {
+    clear: both;
+  }
+
+
+  .posts-sidebar {
+    font-size: 16px;
+  }
+
+  .posts-sidebar h3 {
+    font-size: 16px;
+    margin-top: 0;
+    margin-bottom: 0.5em;
+    font-weight: 400;
+    text-transform: uppercase;
+  }
+
+  .sidebar-section {
+    margin-bottom: 30px;
+  }
+
+  .categories ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .categories li {
+    color: rgba(0, 0, 0, 0.8);
+    margin-bottom: 0;
+  }
+
+  .categories li>a {
+    border-bottom: none;
+  }
+
+  .categories li>a:hover {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  }
+
+  .categories .active {
+    font-weight: 600;
+  }
+
+  .categories .category-count {
+    color: rgba(0, 0, 0, 0.4);
+  }
+
+
+  @media(min-width: 768px) {
+    .posts-list .post-preview h2 {
+      font-size: 26px;
+    }
+    .posts-list .post-preview .thumbnail {
+      float: right;
+      width: 30%;
+      margin-bottom: 0;
+    }
+    .posts-list .post-preview .description {
+      float: left;
+      width: 45%;
+    }
+    .posts-list .post-preview .metadata {
+      float: left;
+      width: 20%;
+      margin-top: 8px;
+    }
+    .posts-list .post-preview p {
+      margin: 0 0 12px 0;
+      line-height: 1.5em;
+      font-size: 16px;
+    }
+    .posts-with-sidebar .posts-list {
+      float: left;
+      width: 75%;
+    }
+    .posts-with-sidebar .posts-sidebar {
+      float: right;
+      width: 20%;
+      margin-top: 60px;
+      padding-top: 24px;
+      padding-bottom: 24px;
+    }
+  }
+
+
+  /* Improve display for browsers without grid (IE/Edge <= 15) */
+
+  .downlevel {
+    line-height: 1.6em;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+  }
+
+  .downlevel .d-title {
+    padding-top: 6rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .downlevel .d-title h1 {
+    font-size: 50px;
+    font-weight: 700;
+    line-height: 1.1em;
+    margin: 0 0 0.5rem;
+  }
+
+  .downlevel .d-title p {
+    font-weight: 300;
+    font-size: 1.2rem;
+    line-height: 1.55em;
+    margin-top: 0;
+  }
+
+  .downlevel .d-byline {
+    padding-top: 0.8em;
+    padding-bottom: 0.8em;
+    font-size: 0.8rem;
+    line-height: 1.8em;
+  }
+
+  .downlevel .section-separator {
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .downlevel .d-article {
+    font-size: 1.06rem;
+    line-height: 1.7em;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+  }
+
+
+  .downlevel .d-appendix {
+    padding-left: 0;
+    padding-right: 0;
+    max-width: none;
+    font-size: 0.8em;
+    line-height: 1.7em;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.5);
+    padding-top: 40px;
+    padding-bottom: 48px;
+  }
+
+  .downlevel .footnotes ol {
+    padding-left: 13px;
+  }
+
+  .downlevel .base-grid,
+  .downlevel .distill-header,
+  .downlevel .d-title,
+  .downlevel .d-abstract,
+  .downlevel .d-article,
+  .downlevel .d-appendix,
+  .downlevel .distill-appendix,
+  .downlevel .d-byline,
+  .downlevel .d-footnote-list,
+  .downlevel .d-citation-list,
+  .downlevel .distill-footer,
+  .downlevel .appendix-bottom,
+  .downlevel .posts-container {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  @media(min-width: 768px) {
+    .downlevel .base-grid,
+    .downlevel .distill-header,
+    .downlevel .d-title,
+    .downlevel .d-abstract,
+    .downlevel .d-article,
+    .downlevel .d-appendix,
+    .downlevel .distill-appendix,
+    .downlevel .d-byline,
+    .downlevel .d-footnote-list,
+    .downlevel .d-citation-list,
+    .downlevel .distill-footer,
+    .downlevel .appendix-bottom,
+    .downlevel .posts-container {
+    padding-left: 150px;
+    padding-right: 150px;
+    max-width: 900px;
+  }
+  }
+
+  .downlevel pre code {
+    display: block;
+    border-left: 2px solid rgba(0, 0, 0, .1);
+    padding: 0 0 0 20px;
+    font-size: 14px;
+  }
+
+  .downlevel code, .downlevel pre {
+    color: black;
+    background: none;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+
+  .downlevel .posts-list .post-preview {
+    color: inherit;
+  }
+
+
+
+  </style>
+
+  <script type="application/javascript">
+
+  function is_downlevel_browser() {
+    if (bowser.isUnsupportedBrowser({ msie: "12", msedge: "16"},
+                                   window.navigator.userAgent)) {
+      return true;
+    } else {
+      return window.load_distill_framework === undefined;
+    }
+  }
+
+  // show body when load is complete
+  function on_load_complete() {
+
+    // add anchors
+    if (window.anchors) {
+      window.anchors.options.placement = 'left';
+      window.anchors.add('d-article > h2, d-article > h3, d-article > h4, d-article > h5');
+    }
+
+
+    // set body to visible
+    document.body.style.visibility = 'visible';
+
+    // force redraw for leaflet widgets
+    if (window.HTMLWidgets) {
+      var maps = window.HTMLWidgets.findAll(".leaflet");
+      $.each(maps, function(i, el) {
+        var map = this.getMap();
+        map.invalidateSize();
+        map.eachLayer(function(layer) {
+          if (layer instanceof L.TileLayer)
+            layer.redraw();
+        });
+      });
+    }
+
+    // trigger 'shown' so htmlwidgets resize
+    $('d-article').trigger('shown');
+  }
+
+  function init_distill() {
+
+    init_common();
+
+    // create front matter
+    var front_matter = $('<d-front-matter></d-front-matter>');
+    $('#distill-front-matter').wrap(front_matter);
+
+    // create d-title
+    $('.d-title').changeElementType('d-title');
+
+    // separator
+    var separator = '<hr class="section-separator" style="clear: both"/>';
+    // prepend separator above appendix
+    $('.d-byline').before(separator);
+    $('.d-article').before(separator);
+
+    // create d-byline
+    var byline = $('<d-byline></d-byline>');
+    $('.d-byline').replaceWith(byline);
+
+    // create d-article
+    var article = $('<d-article></d-article>');
+    $('.d-article').wrap(article).children().unwrap();
+
+    // move posts container into article
+    $('.posts-container').appendTo($('d-article'));
+
+    // create d-appendix
+    $('.d-appendix').changeElementType('d-appendix');
+
+    // flag indicating that we have appendix items
+    var appendix = $('.appendix-bottom').children('h3').length > 0;
+
+    // replace footnotes with <d-footnote>
+    $('.footnote-ref').each(function(i, val) {
+      appendix = true;
+      var href = $(this).attr('href');
+      var id = href.replace('#', '');
+      var fn = $('#' + id);
+      var fn_p = $('#' + id + '>p');
+      fn_p.find('.footnote-back').remove();
+      var text = fn_p.html();
+      var dtfn = $('<d-footnote></d-footnote>');
+      dtfn.html(text);
+      $(this).replaceWith(dtfn);
+    });
+    // remove footnotes
+    $('.footnotes').remove();
+
+    // move refs into #references-listing
+    $('#references-listing').replaceWith($('#refs'));
+
+    $('h1.appendix, h2.appendix').each(function(i, val) {
+      $(this).changeElementType('h3');
+    });
+    $('h3.appendix').each(function(i, val) {
+      var id = $(this).attr('id');
+      $('.d-contents a[href="#' + id + '"]').parent().remove();
+      appendix = true;
+      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
+    });
+
+    // show d-appendix if we have appendix content
+    $("d-appendix").css('display', appendix ? 'grid' : 'none');
+
+    // localize layout chunks to just output
+    $('.layout-chunk').each(function(i, val) {
+
+      // capture layout
+      var layout = $(this).attr('data-layout');
+
+      // apply layout to markdown level block elements
+      var elements = $(this).children().not('details, div.sourceCode, pre, script');
+      elements.each(function(i, el) {
+        var layout_div = $('<div class="' + layout + '"></div>');
+        if (layout_div.hasClass('shaded')) {
+          var shaded_content = $('<div class="shaded-content"></div>');
+          $(this).wrap(shaded_content);
+          $(this).parent().wrap(layout_div);
+        } else {
+          $(this).wrap(layout_div);
+        }
+      });
+
+
+      // unwrap the layout-chunk div
+      $(this).children().unwrap();
+    });
+
+    // remove code block used to force  highlighting css
+    $('.distill-force-highlighting-css').parent().remove();
+
+    // remove empty line numbers inserted by pandoc when using a
+    // custom syntax highlighting theme, except when numbering line
+    // in code chunk
+    $('pre:not(.numberLines) code.sourceCode a:empty').remove();
+
+    // load distill framework
+    load_distill_framework();
+
+    // wait for window.distillRunlevel == 4 to do post processing
+    function distill_post_process() {
+
+      if (!window.distillRunlevel || window.distillRunlevel < 4)
+        return;
+
+      // hide author/affiliations entirely if we have no authors
+      var front_matter = JSON.parse($("#distill-front-matter").html());
+      var have_authors = front_matter.authors && front_matter.authors.length > 0;
+      if (!have_authors)
+        $('d-byline').addClass('hidden');
+
+      // article with toc class
+      $('.d-contents').parent().addClass('d-article-with-toc');
+
+      // strip links that point to #
+      $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
+
+      // add orcid ids
+      $('.authors-affiliations').find('.author').each(function(i, el) {
+        var orcid_id = front_matter.authors[i].orcidID;
+        var author_name = front_matter.authors[i].author
+        if (orcid_id) {
+          var a = $('<a></a>');
+          a.attr('href', 'https://orcid.org/' + orcid_id);
+          var img = $('<img></img>');
+          img.addClass('orcid-id');
+          img.attr('alt', author_name ? 'ORCID ID for ' + author_name : 'ORCID ID');
+          img.attr('src','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==');
+          a.append(img);
+          $(this).append(a);
+        }
+      });
+
+      // hide elements of author/affiliations grid that have no value
+      function hide_byline_column(caption) {
+        $('d-byline').find('h3:contains("' + caption + '")').parent().css('visibility', 'hidden');
+      }
+
+      // affiliations
+      var have_affiliations = false;
+      for (var i = 0; i<front_matter.authors.length; ++i) {
+        var author = front_matter.authors[i];
+        if (author.affiliation !== "&nbsp;") {
+          have_affiliations = true;
+          break;
+        }
+      }
+      if (!have_affiliations)
+        $('d-byline').find('h3:contains("Affiliations")').css('visibility', 'hidden');
+
+      // published date
+      if (!front_matter.publishedDate)
+        hide_byline_column("Published");
+
+      // document object identifier
+      var doi = $('d-byline').find('h3:contains("DOI")');
+      var doi_p = doi.next().empty();
+      if (!front_matter.doi) {
+        // if we have a citation and valid citationText then link to that
+        if ($('#citation').length > 0 && front_matter.citationText) {
+          doi.html('Citation');
+          $('<a href="#citation"></a>')
+            .text(front_matter.citationText)
+            .appendTo(doi_p);
+        } else {
+          hide_byline_column("DOI");
+        }
+      } else {
+        $('<a></a>')
+           .attr('href', "https://doi.org/" + front_matter.doi)
+           .html(front_matter.doi)
+           .appendTo(doi_p);
+      }
+
+       // change plural form of authors/affiliations
+      if (front_matter.authors.length === 1) {
+        var grid = $('.authors-affiliations');
+        grid.children('h3:contains("Authors")').text('Author');
+        grid.children('h3:contains("Affiliations")').text('Affiliation');
+      }
+
+      // remove d-appendix and d-footnote-list local styles
+      $('d-appendix > style:first-child').remove();
+      $('d-footnote-list > style:first-child').remove();
+
+      // move appendix-bottom entries to the bottom
+      $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
+      $('.appendix-bottom').remove();
+
+      // hoverable references
+      $('span.citation[data-cites]').each(function() {
+        const citeChild = $(this).children()[0]
+        // Do not process if @xyz has been used without escaping and without bibliography activated
+        // https://github.com/rstudio/distill/issues/466
+        if (citeChild === undefined) return true
+
+        if (citeChild.nodeName == "D-FOOTNOTE") {
+          var fn = citeChild
+          $(this).html(fn.shadowRoot.querySelector("sup"))
+          $(this).id = fn.id
+          fn.remove()
+        }
+        var refs = $(this).attr('data-cites').split(" ");
+        var refHtml = refs.map(function(ref) {
+          // Could use CSS.escape too here, we insure backward compatibility in navigator
+          return "<p>" + $('div[id="ref-' + ref + '"]').html() + "</p>";
+        }).join("\n");
+        window.tippy(this, {
+          allowHTML: true,
+          content: refHtml,
+          maxWidth: 500,
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'light-border',
+          placement: 'bottom-start'
+        });
+      });
+
+      // fix footnotes in tables (#411)
+      // replacing broken distill.pub feature
+      $('table d-footnote').each(function() {
+        // we replace internal showAtNode methode which is triggered when hovering a footnote
+        this.hoverBox.showAtNode = function(node) {
+          // ported from https://github.com/distillpub/template/pull/105/files
+          calcOffset = function(elem) {
+              let x = elem.offsetLeft;
+              let y = elem.offsetTop;
+              // Traverse upwards until an `absolute` element is found or `elem`
+              // becomes null.
+              while (elem = elem.offsetParent && elem.style.position != 'absolute') {
+                  x += elem.offsetLeft;
+                  y += elem.offsetTop;
+              }
+
+              return { left: x, top: y };
+          }
+          // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetTop
+          const bbox = node.getBoundingClientRect();
+          const offset = calcOffset(node);
+          this.show([offset.left + bbox.width, offset.top + bbox.height]);
+        }
+      })
+
+      // clear polling timer
+      clearInterval(tid);
+
+      // show body now that everything is ready
+      on_load_complete();
+    }
+
+    var tid = setInterval(distill_post_process, 50);
+    distill_post_process();
+
+  }
+
+  function init_downlevel() {
+
+    init_common();
+
+     // insert hr after d-title
+    $('.d-title').after($('<hr class="section-separator"/>'));
+
+    // check if we have authors
+    var front_matter = JSON.parse($("#distill-front-matter").html());
+    var have_authors = front_matter.authors && front_matter.authors.length > 0;
+
+    // manage byline/border
+    if (!have_authors)
+      $('.d-byline').remove();
+    $('.d-byline').after($('<hr class="section-separator"/>'));
+    $('.d-byline a').remove();
+
+    // remove toc
+    $('.d-contents').remove();
+
+    // move appendix elements
+    $('h1.appendix, h2.appendix').each(function(i, val) {
+      $(this).changeElementType('h3');
+    });
+    $('h3.appendix').each(function(i, val) {
+      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('.d-appendix'));
+    });
+
+
+    // inject headers into references and footnotes
+    var refs_header = $('<h3></h3>');
+    refs_header.text('References');
+    $('#refs').prepend(refs_header);
+
+    var footnotes_header = $('<h3></h3');
+    footnotes_header.text('Footnotes');
+    $('.footnotes').children('hr').first().replaceWith(footnotes_header);
+
+    // move appendix-bottom entries to the bottom
+    $('.appendix-bottom').appendTo('.d-appendix').children().unwrap();
+    $('.appendix-bottom').remove();
+
+    // remove appendix if it's empty
+    if ($('.d-appendix').children().length === 0)
+      $('.d-appendix').remove();
+
+    // prepend separator above appendix
+    $('.d-appendix').before($('<hr class="section-separator" style="clear: both"/>'));
+
+    // trim code
+    $('pre>code').each(function(i, val) {
+      $(this).html($.trim($(this).html()));
+    });
+
+    // move posts-container right before article
+    $('.posts-container').insertBefore($('.d-article'));
+
+    $('body').addClass('downlevel');
+
+    on_load_complete();
+  }
+
+
+  function init_common() {
+
+    // jquery plugin to change element types
+    (function($) {
+      $.fn.changeElementType = function(newType) {
+        var attrs = {};
+
+        $.each(this[0].attributes, function(idx, attr) {
+          attrs[attr.nodeName] = attr.nodeValue;
+        });
+
+        this.replaceWith(function() {
+          return $("<" + newType + "/>", attrs).append($(this).contents());
+        });
+      };
+    })(jQuery);
+
+    // prevent underline for linked images
+    $('a > img').parent().css({'border-bottom' : 'none'});
+
+    // mark non-body figures created by knitr chunks as 100% width
+    $('.layout-chunk').each(function(i, val) {
+      var figures = $(this).find('img, .html-widget');
+      // ignore leaflet img layers (#106)
+      figures = figures.filter(':not(img[class*="leaflet"])')
+      if ($(this).attr('data-layout') !== "l-body") {
+        figures.css('width', '100%');
+      } else {
+        figures.css('max-width', '100%');
+        figures.filter("[width]").each(function(i, val) {
+          var fig = $(this);
+          fig.css('width', fig.attr('width') + 'px');
+        });
+
+      }
+    });
+
+    // auto-append index.html to post-preview links in file: protocol
+    // and in rstudio ide preview
+    $('.post-preview').each(function(i, val) {
+      if (window.location.protocol === "file:")
+        $(this).attr('href', $(this).attr('href') + "index.html");
+    });
+
+    // get rid of index.html references in header
+    if (window.location.protocol !== "file:") {
+      $('.distill-site-header a[href]').each(function(i,val) {
+        $(this).attr('href', $(this).attr('href').replace(/^index[.]html/, "./"));
+      });
+    }
+
+    // add class to pandoc style tables
+    $('tr.header').parent('thead').parent('table').addClass('pandoc-table');
+    $('.kable-table').children('table').addClass('pandoc-table');
+
+    // add figcaption style to table captions
+    $('caption').parent('table').addClass("figcaption");
+
+    // initialize posts list
+    if (window.init_posts_list)
+      window.init_posts_list();
+
+    // implmement disqus comment link
+    $('.disqus-comment-count').click(function() {
+      window.headroom_prevent_pin = true;
+      $('#disqus_thread').toggleClass('hidden');
+      if (!$('#disqus_thread').hasClass('hidden')) {
+        var offset = $(this).offset();
+        $(window).resize();
+        $('html, body').animate({
+          scrollTop: offset.top - 35
+        });
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    if (is_downlevel_browser())
+      init_downlevel();
+    else
+      window.addEventListener('WebComponentsReady', init_distill);
+  });
+
+  </script>
+
+  <!--/radix_placeholder_distill-->
+  <script src="experimental-design-concepts_files/header-attrs/header-attrs.js"></script>
+  <script src="experimental-design-concepts_files/kePrint/kePrint.js"></script>
+  <link href="experimental-design-concepts_files/lightable/lightable.css" rel="stylesheet" />
+  <link href="experimental-design-concepts_files/bsTable/bootstrapTable.min.css" rel="stylesheet" />
+  <script src="experimental-design-concepts_files/bsTable/bootstrapTable.js"></script>
+  <script src="experimental-design-concepts_files/jquery/jquery-3.6.0.min.js"></script>
+  <script src="experimental-design-concepts_files/popper/popper.min.js"></script>
+  <link href="experimental-design-concepts_files/tippy/tippy.css" rel="stylesheet" />
+  <link href="experimental-design-concepts_files/tippy/tippy-light-border.css" rel="stylesheet" />
+  <script src="experimental-design-concepts_files/tippy/tippy.umd.min.js"></script>
+  <script src="experimental-design-concepts_files/anchor/anchor.min.js"></script>
+  <script src="experimental-design-concepts_files/bowser/bowser.min.js"></script>
+  <script src="experimental-design-concepts_files/webcomponents/webcomponents.js"></script>
+  <script src="experimental-design-concepts_files/distill/template.v2.js"></script>
+  <!--radix_placeholder_site_in_header-->
+  <!--/radix_placeholder_site_in_header-->
+
+
+</head>
+
+<body>
+
+<!--radix_placeholder_front_matter-->
+
+<script id="distill-front-matter" type="text/json">
+{"title":"Experimental Design - Concepts","description":"A casual walkthrough of the main ideas behind experimental design: treatments, randomisation, replication, blocking, confounding, and validity.","authors":[{"author":"Jasper Lok","authorURL":"https://jasperlok.netlify.app/","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2025-12-30T00:00:00.000+08:00","citationText":"Lok, 2025"}
+</script>
+
+<!--/radix_placeholder_front_matter-->
+<!--radix_placeholder_navigation_before_body-->
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="d-title">
+<h1>Experimental Design - Concepts</h1>
+
+<!--radix_placeholder_categories-->
+<div class="dt-tags">
+<div class="dt-tag">Experimental Design</div>
+</div>
+<!--/radix_placeholder_categories-->
+<p><p>A casual walkthrough of the main ideas behind experimental design: treatments, randomisation, replication, blocking, confounding, and validity.</p></p>
+</div>
+
+<div class="d-byline">
+  Jasper Lok <a href="https://jasperlok.netlify.app/" class="uri">https://jasperlok.netlify.app/</a> 
+  
+<br/>2025-12-30
+</div>
+
+<div class="d-article">
+<div class="d-contents d-contents-float">
+<nav class="l-text toc figcaption" id="TOC">
+<h3>Contents</h3>
+<ul>
+<li><a href="#what-is-experimental-design" id="toc-what-is-experimental-design">What is experimental design?</a></li>
+<li><a href="#experiment-vs-observational-study" id="toc-experiment-vs-observational-study">Experiment vs observational study</a></li>
+<li><a href="#a-running-example" id="toc-a-running-example">A running example</a></li>
+<li><a href="#some-basic-terms" id="toc-some-basic-terms">Some basic terms</a></li>
+<li><a href="#treatment-effects-and-counterfactuals" id="toc-treatment-effects-and-counterfactuals">Treatment effects and counterfactuals</a></li>
+<li><a href="#interference-and-spillover-effects" id="toc-interference-and-spillover-effects">Interference and spillover effects</a></li>
+<li><a href="#why-not-just-compare-averages" id="toc-why-not-just-compare-averages">Why not just compare averages?</a></li>
+<li><a href="#core-principles-of-experimental-design" id="toc-core-principles-of-experimental-design">Core principles of experimental design</a>
+<ul>
+<li><a href="#randomisation" id="toc-randomisation">Randomisation</a></li>
+<li><a href="#replication" id="toc-replication">Replication</a></li>
+<li><a href="#blocking" id="toc-blocking">Blocking</a></li>
+<li><a href="#control" id="toc-control">Control</a></li>
+<li><a href="#placebos-and-blinding" id="toc-placebos-and-blinding">Placebos and blinding</a></li>
+<li><a href="#balance" id="toc-balance">Balance</a></li>
+</ul></li>
+<li><a href="#confounding" id="toc-confounding">Confounding</a></li>
+<li><a href="#factors-levels-and-interactions" id="toc-factors-levels-and-interactions">Factors, levels, and interactions</a></li>
+<li><a href="#choosing-the-response-variable" id="toc-choosing-the-response-variable">Choosing the response variable</a></li>
+<li><a href="#sample-size-and-power" id="toc-sample-size-and-power">Sample size and power</a></li>
+<li><a href="#internal-and-external-validity" id="toc-internal-and-external-validity">Internal and external validity</a></li>
+<li><a href="#common-threats-to-validity" id="toc-common-threats-to-validity">Common threats to validity</a></li>
+<li><a href="#non-compliance-and-intention-to-treat" id="toc-non-compliance-and-intention-to-treat">Non-compliance and intention-to-treat</a></li>
+<li><a href="#putting-the-example-together" id="toc-putting-the-example-together">Putting the example together</a></li>
+<li><a href="#weak-design-vs-stronger-design" id="toc-weak-design-vs-stronger-design">Weak design vs stronger design</a></li>
+<li><a href="#common-experimental-designs" id="toc-common-experimental-designs">Common experimental designs</a></li>
+<li><a href="#analysis-should-follow-the-design" id="toc-analysis-should-follow-the-design">Analysis should follow the design</a></li>
+<li><a href="#pre-analysis-plans-and-multiple-comparisons" id="toc-pre-analysis-plans-and-multiple-comparisons">Pre-analysis plans and multiple comparisons</a></li>
+<li><a href="#pilot-experiments" id="toc-pilot-experiments">Pilot experiments</a></li>
+<li><a href="#ethical-considerations" id="toc-ethical-considerations">Ethical considerations</a></li>
+<li><a href="#practical-checklist" id="toc-practical-checklist">Practical checklist</a></li>
+<li><a href="#helpful-materials" id="toc-helpful-materials">Helpful materials</a></li>
+<li><a href="#conclusion" id="toc-conclusion">Conclusion</a></li>
+</ul>
+</nav>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="image/pexels-chokniti-khongchum-1197604-2280547.jpg" width="100%" /></p>
+</div>
+<p>Photo by <a href="https://www.pexels.com/photo/shallow-focus-photography-of-microscope-2280547/">Chokniti Khongchum</a></p>
+<p>While I was exploring causal inference, I realised that my knowledge of experimental design was still quite patchy. I knew the basic idea: run an experiment, compare outcomes, and try to say something about cause and effect. However, once I started reading more, I noticed that the quality of an experiment depends heavily on small design choices made before any data is collected.</p>
+<p>So this post is my attempt to organise the important concepts in one place.</p>
+<p>This is meant to be a living document. I will come back to update it as I read more material on experimental design.</p>
+<h1 id="what-is-experimental-design">What is experimental design?</h1>
+<p>Experimental design is the process of planning an experiment so that we can answer a research question as clearly and fairly as possible.</p>
+<p>The general idea is simple:</p>
+<ul>
+<li>We deliberately change one or more inputs.</li>
+<li>We observe what happens to one or more outcomes.</li>
+<li>We try to separate the effect of the input from noise, bias, and other explanations.</li>
+</ul>
+<p>In experimental design language, the inputs we change are usually called <strong>factors</strong> or <strong>treatments</strong>, and the outcomes we measure are called <strong>response variables</strong>.</p>
+<p>For example, suppose we want to know whether a new email subject line improves the open rate of a newsletter. The treatment could be the subject line version, the response variable could be whether the email was opened, and the experimental units could be the recipients who receive the email.</p>
+<p>The main reason experimental design is so useful is that a well-designed experiment can support causal conclusions. This is different from simply observing historical data, where many things are usually changing at the same time.</p>
+<h1 id="experiment-vs-observational-study">Experiment vs observational study</h1>
+<p>It is useful to separate experiments from observational studies.</p>
+<p>In an <strong>observational study</strong>, we observe what naturally happened. For example, we may compare customers who used a discount code with customers who did not. The problem is that these two groups may already be different in ways that affect the outcome. Discount-code users may be more price sensitive, more engaged, or from a different marketing channel.</p>
+<p>In an <strong>experiment</strong>, we deliberately assign or manipulate something. For example, we randomly decide which customers receive a discount code. That deliberate assignment is what gives experiments their causal strength.</p>
+<p>This does not mean observational studies are bad. In many cases, they are the only realistic option. However, the causal claim is usually stronger when the treatment assignment is controlled by the researcher rather than chosen naturally by people, markets, or systems.</p>
+<h1 id="a-running-example">A running example</h1>
+<p>To make the ideas less abstract, I will use a simple example throughout this post.</p>
+<p>Suppose an education app wants to test whether a study reminder improves quiz scores.</p>
+<ul>
+<li><strong>Research question:</strong> Does sending a study reminder improve quiz scores?</li>
+<li><strong>Treatment:</strong> A study reminder message.</li>
+<li><strong>Control:</strong> No reminder message.</li>
+<li><strong>Experimental unit:</strong> Student.</li>
+<li><strong>Response variable:</strong> Quiz score.</li>
+<li><strong>Possible blocking variable:</strong> Previous grade band.</li>
+</ul>
+<p>The weak version of this study would be to compare students who voluntarily turned on reminders with students who did not. The problem is that students who turn on reminders may already be more motivated.</p>
+<p>The stronger version is to randomly assign students to receive a reminder or not receive one. If previous academic performance is important, we could randomise within previous grade bands so that each group has a similar mix of stronger and weaker students.</p>
+<p>Below is what the process of experimental design looks like:</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="image/process-experimental-design.png" width="100%" /></p>
+</div>
+<p>Source: <a href="https://www.jmp.com/en_sg/articles/what-is-experimental-design.html">JMP</a></p>
+<p>Based on resources such as <a href="https://online.stat.psu.edu/stat503/">STAT 503 Design of Experiments</a> and <a href="https://emitanaka.org/edibble-book/">Emi Tanaka’s Experimental Design textbook</a>, the practical steps usually look something like this:</p>
+<ul>
+<li>Recognition and statement of the problem</li>
+<li>Choice of factors, levels, and ranges</li>
+<li>Selection of the response variable(s)</li>
+<li>Choice of experimental design</li>
+<li>Conducting the experiment</li>
+<li>Statistical analysis</li>
+<li>Drawing conclusions and making recommendations</li>
+</ul>
+<p>This sounds neat on paper, but in practice there is usually a fair amount of iteration. Sometimes the first version of the research question is too vague, the response variable is hard to measure, or the treatment is not something we can control properly.</p>
+<h1 id="some-basic-terms">Some basic terms</h1>
+<p>Before going deeper, it helps to define a few commonly used terms.</p>
+<div class="layout-chunk" data-layout="l-body">
+<table class="table" style="color: black; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Concept
+</th>
+<th style="text-align:left;">
+Meaning
+</th>
+<th style="text-align:left;">
+Example
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Experimental unit
+</td>
+<td style="text-align:left;">
+The smallest unit that receives a treatment independently.
+</td>
+<td style="text-align:left;">
+A person, plant, machine, classroom, customer, or website visitor.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Treatment
+</td>
+<td style="text-align:left;">
+The condition or intervention applied to an experimental unit.
+</td>
+<td style="text-align:left;">
+New landing page vs existing landing page.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Factor
+</td>
+<td style="text-align:left;">
+A variable controlled by the experimenter.
+</td>
+<td style="text-align:left;">
+Fertiliser type, temperature, price, email subject line.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Level
+</td>
+<td style="text-align:left;">
+A specific value or category of a factor.
+</td>
+<td style="text-align:left;">
+Low / medium / high price.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Response variable
+</td>
+<td style="text-align:left;">
+The outcome we measure after applying the treatment.
+</td>
+<td style="text-align:left;">
+Conversion rate, yield, test score, time taken.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Control group
+</td>
+<td style="text-align:left;">
+A baseline group used for comparison.
+</td>
+<td style="text-align:left;">
+Users who continue seeing the current page.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Replication
+</td>
+<td style="text-align:left;">
+Repeating each treatment on multiple experimental units.
+</td>
+<td style="text-align:left;">
+Showing each page variant to many users.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Randomisation
+</td>
+<td style="text-align:left;">
+Using randomness to assign treatments or run order.
+</td>
+<td style="text-align:left;">
+Randomly assigning users to A or B.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Blocking
+</td>
+<td style="text-align:left;">
+Grouping similar units before randomisation to reduce unwanted variation.
+</td>
+<td style="text-align:left;">
+Randomising within age groups or regions.
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>One easy mistake is to confuse the <strong>experimental unit</strong> with the <strong>measurement unit</strong>. For example, if a school-level teaching method is assigned to entire classrooms, the classroom may be the experimental unit even if the test scores are measured for individual students. This distinction matters during analysis because observations within the same classroom are probably not independent.</p>
+<h1 id="treatment-effects-and-counterfactuals">Treatment effects and counterfactuals</h1>
+<p>The key causal idea behind an experiment is the <strong>treatment effect</strong>.</p>
+<p>A treatment effect is the difference in outcome caused by receiving one treatment instead of another. In the study reminder example, the treatment effect is the difference between:</p>
+<ul>
+<li>a student’s quiz score if they receive the reminder; and</li>
+<li>the same student’s quiz score if they do not receive the reminder.</li>
+</ul>
+<p>The challenge is that we cannot observe both outcomes for the same student at the same time. A student either receives the reminder or does not. The unobserved outcome is called the <strong>counterfactual</strong>.</p>
+<p>This is why experimental design matters. A good experiment creates comparison groups that are similar enough for the control group to act as a reasonable stand-in for the missing counterfactual of the treatment group.</p>
+<p>Randomisation helps with this because it decides treatment assignment using chance rather than student motivation, teacher preference, income level, or some other factor that may also affect quiz scores.</p>
+<h1 id="interference-and-spillover-effects">Interference and spillover effects</h1>
+<p>Many simple explanations of experiments assume that one person’s treatment does not affect another person’s outcome. This assumption is often called <strong>no interference</strong>.</p>
+<p>In practice, this assumption can fail.</p>
+<p>For example, suppose students who receive the study reminder tell their friends in the control group to revise. The control group is no longer a clean comparison because some control students are indirectly affected by the treatment. This is known as a <strong>spillover effect</strong>.</p>
+<p>Spillovers can happen in many settings:</p>
+<ul>
+<li>People share discount codes with friends.</li>
+<li>Students discuss exam preparation with classmates.</li>
+<li>Employees in different treatment groups work together.</li>
+<li>Users see other users’ behaviour on a platform.</li>
+</ul>
+<p>If interference is likely, we may need a different design. For example, instead of randomising individual students, we may randomise by classroom or school. This changes the experimental unit and usually affects the sample size needed.</p>
+<h1 id="why-not-just-compare-averages">Why not just compare averages?</h1>
+<p>At first glance, an experiment may look like a simple comparison:</p>
+<blockquote>
+<p>Group A has an average outcome of 10. Group B has an average outcome of 12. Therefore, treatment B is better.</p>
+</blockquote>
+<p>Possibly, but not necessarily.</p>
+<p>The difference could be due to the treatment, but it could also be caused by:</p>
+<ul>
+<li>Random noise</li>
+<li>Pre-existing differences between the groups</li>
+<li>Measurement problems</li>
+<li>Time effects</li>
+<li>Confounding variables</li>
+<li>Selection bias</li>
+<li>A small sample size</li>
+</ul>
+<p>Experimental design is about reducing these alternative explanations before they become a problem. Good analysis cannot fully rescue a poorly designed experiment. If the data collection process is biased, the model may simply give a polished answer to the wrong question.</p>
+<h1 id="core-principles-of-experimental-design">Core principles of experimental design</h1>
+<p>There are many types of experimental designs, but most of them are built from a few core principles.</p>
+<p>A common way to remember the classical principles is:</p>
+<ul>
+<li><strong>Randomisation:</strong> protects against systematic bias in treatment assignment.</li>
+<li><strong>Replication:</strong> gives us enough repeated evidence to estimate variation and uncertainty.</li>
+<li><strong>Blocking or local control:</strong> reduces unwanted variation by comparing similar units with similar units.</li>
+</ul>
+<p>If I had to simplify experimental design into one sentence, it would be this: create a comparison that is fair, repeated, and controlled enough to support the decision we want to make.</p>
+<h2 id="randomisation">Randomisation</h2>
+<p>Randomisation means using a random process to assign treatments to experimental units or to decide the order in which runs are conducted.</p>
+<p>The purpose of randomisation is not to magically make every group identical. In any one experiment, the groups may still differ slightly. The purpose is to remove systematic assignment bias so that, on average, the treatment groups are comparable.</p>
+<p>For example, if we test two website designs and deliberately show Design A in the morning and Design B at night, any difference in conversion rate may be mixed up with time-of-day behaviour. Randomising visitors between A and B helps avoid this.</p>
+<p>Systematic designs are prone to bias and confounding. Randomisation is one of the main reasons experiments are powerful for causal inference.</p>
+<p>However, randomisation may not always be possible. For example, it would be unethical to randomly assign people to start smoking just to study health outcomes. In these situations, researchers may use <strong>quasi-experiments</strong>, <strong>natural experiments</strong>, or observational causal inference methods instead.</p>
+<h2 id="replication">Replication</h2>
+<p>Replication means applying each treatment to more than one experimental unit.</p>
+<p>This helps us estimate natural variation. If we only test a treatment once, we have no good way to know whether the result is typical or just a lucky/unlucky outcome.</p>
+<p>Replication is also what allows us to estimate uncertainty. In practice, this is where confidence intervals, standard errors, p-values, and Bayesian credible intervals start to become meaningful.</p>
+<p>There is a subtle but important point here: <strong>replication is not the same as repeated measurement</strong>.</p>
+<p>If we measure the same plant ten times after applying one fertiliser treatment, we have more measurements, but not necessarily ten independent experimental units. True replication usually requires multiple independently treated units.</p>
+<h2 id="blocking">Blocking</h2>
+<p>Blocking is used when we know that some source of variation may affect the response, but that source of variation is not the main focus of the experiment.</p>
+<p>The idea is to group similar experimental units together, then randomise treatments within each group.</p>
+<p>For example:</p>
+<ul>
+<li>In an agricultural experiment, we may block by field location because soil quality varies across the field.</li>
+<li>In a medical experiment, we may block by age group or sex.</li>
+<li>In an online experiment, we may block by country, platform, or acquisition channel.</li>
+</ul>
+<p>Blocking helps make treatment comparisons cleaner because we compare units that are more alike. It is a way of controlling for known nuisance variation.</p>
+<h2 id="control">Control</h2>
+<p>A control group gives us a baseline.</p>
+<p>Without a control group, it can be hard to know whether an observed change is due to the treatment or to something else happening at the same time.</p>
+<p>For example, suppose an education app introduces a new learning feature and test scores improve after two months. Did the feature help? Possibly. However, students may already have been improving because exams were approaching, teachers changed their lesson plans, or weaker students stopped using the app.</p>
+<p>A control group helps answer the question: <em>Compared to what?</em></p>
+<h2 id="placebos-and-blinding">Placebos and blinding</h2>
+<p>In some experiments, especially medical and behavioural experiments, people may behave differently simply because they know they are receiving a treatment. This is one reason researchers sometimes use a <strong>placebo</strong>.</p>
+<p>A placebo is an inactive treatment that looks like the real treatment. The goal is to separate the effect of the actual treatment from the effect of expectation, attention, or being observed.</p>
+<p><strong>Blinding</strong> means hiding treatment assignment from people involved in the experiment.</p>
+<ul>
+<li>In a <strong>single-blind</strong> experiment, participants do not know which treatment they received.</li>
+<li>In a <strong>double-blind</strong> experiment, both participants and researchers interacting with them do not know the assignment.</li>
+</ul>
+<p>Blinding is useful because expectations can influence behaviour, measurement, and interpretation. For example, if a teacher knows which students received a new learning intervention, they may unintentionally give those students more encouragement.</p>
+<p>Blinding is not always possible. In an online A/B test, users may clearly see which website version they receive. However, the general idea is still useful: avoid letting knowledge of the treatment assignment influence the outcome or its measurement.</p>
+<h2 id="balance">Balance</h2>
+<p>A design is balanced when each treatment has the same number of experimental units, or at least when the allocation is deliberately controlled.</p>
+<p>Balanced designs are usually easier to analyse and interpret. They also tend to give more stable estimates when treatment comparisons are the main goal.</p>
+<p>That said, perfect balance is not always required. Sometimes we intentionally allocate more units to a treatment that is cheaper, safer, or more important to estimate precisely. The key is that the allocation should be intentional, not accidental.</p>
+<h1 id="confounding">Confounding</h1>
+<p>A confounder is a variable that is related to both the treatment and the response. It creates an alternative explanation for the observed treatment effect.</p>
+<p>For example, suppose we compare the performance of students who attend an optional revision class with those who do not. If the students who attend the class are also more motivated, then motivation is a potential confounder. Better test scores may be due to the class, motivation, or both.</p>
+<p>Refer to my <a href="https://jasperlok.netlify.app/posts/2023-11-05-causal-dag/">previous post</a> for an explanation of confounders using causal DAGs.</p>
+<p>In experimental design, randomisation helps deal with confounding because it breaks the link between treatment assignment and pre-existing characteristics. Blocking and careful measurement can also help.</p>
+<p>The important point is to think about confounding <strong>before</strong> collecting data. Once the experiment is over, we may not have measured the variables needed to diagnose or adjust for the problem.</p>
+<h1 id="factors-levels-and-interactions">Factors, levels, and interactions</h1>
+<p>Many experiments involve more than one factor.</p>
+<p>For example, suppose a cafe wants to improve sales of a drink. It may test:</p>
+<ul>
+<li>Price: low vs regular</li>
+<li>Cup design: plain vs colourful</li>
+<li>Promotion: no promotion vs loyalty points</li>
+</ul>
+<p>If we test one factor at a time, we may miss how the factors work together. This is where <strong>factorial designs</strong> become useful.</p>
+<p>A factorial design tests combinations of factor levels. In the cafe example, a full factorial design would test all combinations of price, cup design, and promotion.</p>
+<p>This lets us estimate:</p>
+<ul>
+<li>The main effect of price</li>
+<li>The main effect of cup design</li>
+<li>The main effect of promotion</li>
+<li>Interactions between factors</li>
+</ul>
+<p>An <strong>interaction</strong> happens when the effect of one factor depends on the level of another factor.</p>
+<p>For example, the colourful cup may increase sales only when paired with loyalty points. If we test factors one at a time, this pattern may be invisible.</p>
+<h1 id="choosing-the-response-variable">Choosing the response variable</h1>
+<p>The response variable should match the question we care about.</p>
+<p>This sounds obvious, but it is a common source of weak experiments.</p>
+<p>For example, if the business question is whether a new onboarding flow improves long-term customer retention, measuring only first-day clicks may be misleading. Clicks are easier to collect, but they may not represent the outcome that matters.</p>
+<p>Some practical questions:</p>
+<ul>
+<li>Is the response variable directly related to the research question?</li>
+<li>Can it be measured consistently?</li>
+<li>Is it sensitive enough to detect meaningful changes?</li>
+<li>Could the measurement process itself change behaviour?</li>
+<li>Are there short-term and long-term outcomes that may point in different directions?</li>
+</ul>
+<p>It is also worth defining the primary response variable before the experiment starts. Otherwise, we may end up trying many outcomes and reporting only the one that looks interesting.</p>
+<h1 id="sample-size-and-power">Sample size and power</h1>
+<p>Sample size planning is about asking: <em>How much data do we need before the experiment has a fair chance of detecting the effect we care about?</em></p>
+<p>A small experiment can still be useful for learning about logistics or checking whether the treatment can be delivered. However, if the goal is statistical evidence, sample size matters.</p>
+<p>The required sample size depends on several things:</p>
+<ul>
+<li>The size of the effect we care about</li>
+<li>The natural variability of the response</li>
+<li>The desired level of uncertainty</li>
+<li>The number of treatment groups</li>
+<li>The design structure, such as blocking or clustering</li>
+</ul>
+<p>The phrase <strong>statistical power</strong> refers to the probability that an experiment will detect an effect if that effect truly exists. Low-powered experiments can be frustrating because a non-significant result may simply mean that the study was too small.</p>
+<p>Another useful concept is the <strong>minimum detectable effect</strong>. This is the smallest effect size that the experiment is realistically able to detect, given the sample size and variability.</p>
+<p>This matters because not every detectable effect is useful. With a very large sample size, we may detect a tiny difference that is statistically significant but practically unimportant. For example, a website change that improves conversion by 0.001 percentage points may be real, but it may not be worth implementing.</p>
+<p>So there are two questions:</p>
+<ul>
+<li><strong>Statistical significance:</strong> Is the observed effect unlikely to be due to random variation alone?</li>
+<li><strong>Practical significance:</strong> Is the effect large enough to matter in the real world?</li>
+</ul>
+<p>In practice, sample size planning is partly statistical and partly practical. Budget, time, ethics, and operational constraints all matter.</p>
+<h1 id="internal-and-external-validity">Internal and external validity</h1>
+<p>Two useful questions to ask about any experiment are:</p>
+<ul>
+<li><strong>Internal validity:</strong> Can we trust the causal conclusion within this experiment?</li>
+<li><strong>External validity:</strong> Does the conclusion generalise beyond this experiment?</li>
+</ul>
+<p>An experiment can have strong internal validity but weak external validity. For example, a tightly controlled lab experiment may provide a clean causal estimate, but the result may not transfer neatly to real-world settings.</p>
+<p>Likewise, a field experiment may feel realistic, but it can be messier and harder to control.</p>
+<p>There is no perfect design. The goal is to understand the trade-offs and be honest about what the experiment can and cannot tell us.</p>
+<h1 id="common-threats-to-validity">Common threats to validity</h1>
+<p>Even when an experiment is well intentioned, several issues can weaken the conclusion.</p>
+<div class="layout-chunk" data-layout="l-body">
+<table class="table" style="color: black; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Threat
+</th>
+<th style="text-align:left;">
+What_it_means
+</th>
+<th style="text-align:left;">
+Example
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Selection bias
+</td>
+<td style="text-align:left;">
+The treatment and control groups differ before treatment.
+</td>
+<td style="text-align:left;">
+Motivated students are more likely to opt into reminders.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Attrition
+</td>
+<td style="text-align:left;">
+Participants drop out unevenly across groups.
+</td>
+<td style="text-align:left;">
+Weaker students stop using the app before the final quiz.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Non-compliance
+</td>
+<td style="text-align:left;">
+Participants do not follow their assigned treatment.
+</td>
+<td style="text-align:left;">
+Some students assigned reminders turn notifications off.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Spillover
+</td>
+<td style="text-align:left;">
+One unit’s treatment affects another unit’s outcome.
+</td>
+<td style="text-align:left;">
+Treated students remind control students to study.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Measurement error
+</td>
+<td style="text-align:left;">
+The response variable is measured noisily or inconsistently.
+</td>
+<td style="text-align:left;">
+Quiz difficulty differs across groups.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hawthorne effect
+</td>
+<td style="text-align:left;">
+People change behaviour because they know they are being studied.
+</td>
+<td style="text-align:left;">
+Students study harder because the app announces a trial.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Multiple testing
+</td>
+<td style="text-align:left;">
+Many outcomes or subgroups are tested until something looks significant.
+</td>
+<td style="text-align:left;">
+Trying ten metrics and only reporting the one that improved.
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>These issues do not automatically invalidate an experiment, but they should be considered during design and analysis.</p>
+<h1 id="non-compliance-and-intention-to-treat">Non-compliance and intention-to-treat</h1>
+<p>In a clean textbook experiment, everyone follows their assigned treatment. In practice, this often does not happen.</p>
+<p>For example, some students assigned to receive reminders may turn off notifications. Some students assigned to the control group may create their own reminders. This is <strong>non-compliance</strong>.</p>
+<p>One common analysis approach is <strong>intention-to-treat</strong> analysis. This means analysing people based on the group they were originally assigned to, regardless of whether they fully followed the treatment.</p>
+<p>This may sound strange at first, but it preserves the benefit of randomisation. If we compare only people who actually used the reminder with people who did not, we may reintroduce selection bias because reminder users may be more motivated.</p>
+<p>There is also <strong>per-protocol</strong> analysis, where we compare people based on what they actually did. This can be useful, but it is usually more vulnerable to bias. In practice, it is helpful to be clear about which analysis answers which question.</p>
+<h1 id="putting-the-example-together">Putting the example together</h1>
+<p>Using the study reminder example, the design could be summarised like this:</p>
+<div class="layout-chunk" data-layout="l-body">
+<table class="table" style="color: black; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Design_decision
+</th>
+<th style="text-align:left;">
+Example_choice
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Research question
+</td>
+<td style="text-align:left;">
+Does sending a study reminder improve quiz scores?
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Experimental unit
+</td>
+<td style="text-align:left;">
+Student
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Treatment
+</td>
+<td style="text-align:left;">
+Reminder message
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Control
+</td>
+<td style="text-align:left;">
+No reminder
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Response variable
+</td>
+<td style="text-align:left;">
+Quiz score
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Randomisation
+</td>
+<td style="text-align:left;">
+Randomly assign students to reminder or no reminder
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Blocking
+</td>
+<td style="text-align:left;">
+Randomise within previous grade bands
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Replication
+</td>
+<td style="text-align:left;">
+Many students in each group
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Analysis
+</td>
+<td style="text-align:left;">
+Compare average quiz scores, adjusting for block if used
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>This is intentionally simple, but it shows the basic structure. The experiment is not just “send some reminders and see what happens”. We need to decide who receives the treatment, what comparison is fair, how the outcome is measured, how much variation we expect, and what could weaken the conclusion.</p>
+<h1 id="weak-design-vs-stronger-design">Weak design vs stronger design</h1>
+<p>Here is a simple comparison using the same study reminder example.</p>
+<div class="layout-chunk" data-layout="l-body">
+<table class="table" style="color: black; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Design
+</th>
+<th style="text-align:left;">
+Main_problem_or_strength
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Weak design
+</td>
+<td style="text-align:left;">
+Compare students who voluntarily turned on reminders with students who did not.
+</td>
+<td style="text-align:left;">
+The groups may differ in motivation before the reminder is even considered.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Better design
+</td>
+<td style="text-align:left;">
+Randomly assign students to reminder or no reminder.
+</td>
+<td style="text-align:left;">
+Randomisation makes the groups more comparable.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Even better design
+</td>
+<td style="text-align:left;">
+Randomly assign students within previous grade bands.
+</td>
+<td style="text-align:left;">
+Blocking improves comparability on an important source of variation.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clearer analysis
+</td>
+<td style="text-align:left;">
+Define quiz score as the primary outcome before running the experiment.
+</td>
+<td style="text-align:left;">
+This reduces the risk of cherry-picking outcomes after seeing the data.
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>This is the main mindset shift for me: experimental design is not just about choosing a statistical test later. It is about creating the conditions for a fair comparison from the start.</p>
+<h1 id="common-experimental-designs">Common experimental designs</h1>
+<p>Here are a few designs that show up often.</p>
+<div class="layout-chunk" data-layout="l-body">
+<table class="table" style="color: black; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Design
+</th>
+<th style="text-align:left;">
+When_it_is_useful
+</th>
+<th style="text-align:left;">
+Simple_description
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Completely randomised design
+</td>
+<td style="text-align:left;">
+When experimental units are fairly similar.
+</td>
+<td style="text-align:left;">
+Randomly assign units to treatments.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Randomised block design
+</td>
+<td style="text-align:left;">
+When there is a known source of variation.
+</td>
+<td style="text-align:left;">
+Group similar units into blocks, then randomise within each block.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Factorial design
+</td>
+<td style="text-align:left;">
+When studying multiple factors and possible interactions.
+</td>
+<td style="text-align:left;">
+Test combinations of factor levels.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Split-plot design
+</td>
+<td style="text-align:left;">
+When some factors are harder to randomise than others.
+</td>
+<td style="text-align:left;">
+Randomise hard-to-change factors at a larger unit level.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Crossover design
+</td>
+<td style="text-align:left;">
+When each unit can receive multiple treatments over time.
+</td>
+<td style="text-align:left;">
+Each unit acts partly as its own control, with careful attention to carryover effects.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Quasi-experiment
+</td>
+<td style="text-align:left;">
+When randomisation is not feasible.
+</td>
+<td style="text-align:left;">
+Use a design that approximates experimental comparison, such as difference-in-differences or regression discontinuity.
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Different designs answer different questions. The right design depends on the research question, constraints, ethical considerations, and how the experiment will be run.</p>
+<h1 id="analysis-should-follow-the-design">Analysis should follow the design</h1>
+<p>One lesson that keeps appearing in experimental design material is this:</p>
+<blockquote>
+<p>Analyse the experiment according to how it was designed.</p>
+</blockquote>
+<p>If the experiment used blocking, the analysis should usually account for blocks. If the data is clustered, the analysis should recognise that observations within a cluster may be correlated. If the design is factorial, the analysis should consider interactions where they are relevant.</p>
+<p>This is why it is helpful to write an analysis plan before running the experiment. The plan does not need to be overly formal for every project, but it should answer questions such as:</p>
+<ul>
+<li>What is the primary response variable?</li>
+<li>What is the main treatment comparison?</li>
+<li>What model or test will be used?</li>
+<li>How will missing data be handled?</li>
+<li>Which subgroup or interaction analyses are planned?</li>
+<li>What result would be considered practically meaningful?</li>
+</ul>
+<p>This reduces the temptation to keep trying different analyses until something interesting appears.</p>
+<h1 id="pre-analysis-plans-and-multiple-comparisons">Pre-analysis plans and multiple comparisons</h1>
+<p>If an experiment has many outcomes, subgroup analyses, or modelling choices, it is easy to wander into <strong>p-hacking</strong> territory. This happens when we try many analyses and focus only on the results that look interesting.</p>
+<p>A <strong>pre-analysis plan</strong> helps reduce this risk. It records the main analysis decisions before looking at the results.</p>
+<p>For a simple blog-style or business experiment, the plan does not need to be a long formal document. It can be a short note that states:</p>
+<ul>
+<li>the primary outcome;</li>
+<li>the main treatment comparison;</li>
+<li>the sample inclusion and exclusion rules;</li>
+<li>the intended model or statistical test;</li>
+<li>the key subgroup analyses, if any; and</li>
+<li>the decision rule or practical threshold.</li>
+</ul>
+<p>This is especially important when there are many possible metrics. For example, an app experiment may track clicks, sessions, retention, revenue, satisfaction, and complaints. If we test everything and report only the most favourable result, the conclusion may be too optimistic.</p>
+<h1 id="pilot-experiments">Pilot experiments</h1>
+<p>A pilot experiment is a small trial run before the main experiment.</p>
+<p>The goal is usually not to prove the main hypothesis. Instead, the goal is to check whether the experiment can run properly.</p>
+<p>A pilot can help answer questions such as:</p>
+<ul>
+<li>Can the treatment be delivered correctly?</li>
+<li>Are participants confused by the instructions?</li>
+<li>Is the response variable captured properly?</li>
+<li>Are there unexpected operational issues?</li>
+<li>Is the observed variability roughly what we expected?</li>
+</ul>
+<p>This is especially useful when the experiment is expensive, complex, or involves real users.</p>
+<h1 id="ethical-considerations">Ethical considerations</h1>
+<p>Experiments involve intervention, so ethics matter.</p>
+<p>Some useful questions:</p>
+<ul>
+<li>Is it acceptable to withhold the treatment from the control group?</li>
+<li>Could the treatment harm participants?</li>
+<li>Do participants need to provide informed consent?</li>
+<li>Are vulnerable groups involved?</li>
+<li>Is personal data being collected or used responsibly?</li>
+<li>Would the experiment still feel reasonable if it were explained publicly?</li>
+</ul>
+<p>For low-risk product experiments, ethics may seem less dramatic than in medical trials, but the same broad principle applies: we should not treat people merely as data points.</p>
+<h1 id="practical-checklist">Practical checklist</h1>
+<p>Before running an experiment, I find it useful to ask:</p>
+<ul>
+<li>What decision will this experiment inform?</li>
+<li>What is the treatment?</li>
+<li>What is the control or baseline?</li>
+<li>What is the experimental unit?</li>
+<li>What is the response variable?</li>
+<li>What treatment effect do we care about?</li>
+<li>Is randomisation possible?</li>
+<li>Do we need blocking?</li>
+<li>How much replication do we need?</li>
+<li>What are the main risks of confounding?</li>
+<li>Could there be spillover or interference?</li>
+<li>Is blinding or a placebo needed?</li>
+<li>What sample size or minimum detectable effect is reasonable?</li>
+<li>What is practically significant, not just statistically significant?</li>
+<li>How will we handle attrition or non-compliance?</li>
+<li>Are there ethical or operational constraints?</li>
+<li>How will we analyse the result?</li>
+<li>Should we run a pilot first?</li>
+<li>What would change our mind?</li>
+</ul>
+<p>The last question is especially important. If no possible result would affect our decision, we may not need an experiment. We may simply need to make the decision using existing information.</p>
+<h1 id="helpful-materials">Helpful materials</h1>
+<p>These are the resources I found helpful while preparing this writeup:</p>
+<ul>
+<li><a href="https://emitanaka.org/edibble-book/">Experimental Design Textbook by Dr Emi Tanaka</a></li>
+<li><a href="https://online.stat.psu.edu/stat503/">STAT 503 Design of Experiments</a></li>
+<li><a href="https://www.jmp.com/en_sg/articles/what-is-experimental-design.html">JMP: What is experimental design?</a></li>
+<li><a href="https://researcher.life/blog/article/what-is-experimental-research-design-definition-examples-types/">Researcher.Life: Experimental research design</a></li>
+</ul>
+<h1 id="conclusion">Conclusion</h1>
+<p>Experimental design is about disciplined comparison.</p>
+<p>A good experiment does not just collect data. It creates a fair setting where the effect of a treatment can be separated from noise, bias, and other explanations. Concepts such as randomisation, replication, blocking, control groups, and confounding may sound technical, but they all serve the same basic purpose: helping us make a more trustworthy comparison.</p>
+<p>That is all for the day!</p>
+<p>Thanks for reading the post until the end.</p>
+<p>Feel free to contact me through <a href="mailto:jasper.jh.lok@gmail.com">email</a> or <a href="https://www.linkedin.com/in/jasper-l-13426232/">LinkedIn</a> if you have any suggestions on future topics to share.</p>
+<p>Refer to this link for the <a href="https://jasperlok.netlify.app/blog_disclaimer.html">blog disclaimer</a>.</p>
+<p>Till next time, happy learning!</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="image/pexels-tara-winstead-7722670.jpg" width="100%" /></p>
+</div>
+<p>Photo by <a href="https://www.pexels.com/photo/clear-glass-bottle-on-table-7722670/">Tara Winstead</a></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<!--radix_placeholder_article_footer-->
+<!--/radix_placeholder_article_footer-->
+</div>
+
+<div class="d-appendix">
+</div>
+
+
+<!--radix_placeholder_site_after_body-->
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_appendices-->
+<div class="appendix-bottom"></div>
+<!--/radix_placeholder_appendices-->
+<!--radix_placeholder_navigation_after_body-->
+<!--/radix_placeholder_navigation_after_body-->
+
+</body>
+
+</html>

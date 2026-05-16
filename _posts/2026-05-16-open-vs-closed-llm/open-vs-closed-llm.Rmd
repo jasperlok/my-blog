@@ -1,0 +1,735 @@
+---
+title: "Open vs Closed LLMs"
+description: |
+  Open vs closed LLMs, decoded without the corporate fog: what they are, why the internet keeps arguing about them, and how to think about the trade-offs without losing the plot.
+author:
+  - name: Jasper Lok
+    url: https://jasperlok.netlify.app/
+date: 2026-05-16
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 4
+    self_contained: false
+categories:
+  - Artificial Intelligence
+  - Large Language Models
+  - Generative AI
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+pacman::p_load(knitr, kableExtra, tidyverse)
+
+knitr::opts_chunk$set(fig.retina = 3,
+                      echo = TRUE,
+                      eval = TRUE,
+                      message = FALSE,
+                      warning = FALSE,
+                      out.width = "100%")
+```
+
+# Introduction
+
+The LLM world has become a bit like choosing between cooking at home and eating at a restaurant.
+
+With an **open model**, you may get more control. You can download the model weights, run it on your own infrastructure, fine-tune it, inspect more of the system, and build something that is less dependent on one vendor.
+
+With a **closed model**, you usually get convenience and strong performance. You call an API or use a hosted product, and the model provider takes care of most of the messy parts: training, serving, scaling, updates, safety layers, and sometimes enterprise compliance features.
+
+Neither option is automatically better. The better question is: *better for what?*
+
+This post organises the main ideas behind open and closed LLMs: what they mean, examples, pros and cons, important concepts, and how people on the internet commonly talk about choosing and using both approaches in practice.
+
+One quick note before we start: the word **open** is used quite loosely in AI. Some models are truly open source by a strict definition, some are open-weight, some are research-only, and some are "open-ish" with important license restrictions. That difference matters.
+
+
+```{r, echo = FALSE}
+include_graphics("image/finn-hackshaw-FQgI8AD-BSg-unsplash.jpg")
+
+```
+
+Photo by <a href="https://unsplash.com/@finnhackshaw?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Finn Hackshaw</a> on <a href="https://unsplash.com/photos/white-and-orange-open-led-signage-turned-on-FQgI8AD-BSg?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+      
+
+# What is an LLM?
+
+A **large language model** is a machine learning model trained to predict and generate text. Modern LLMs can write, summarise, translate, classify, answer questions, write code, extract structured data, and act as a reasoning engine inside larger applications.
+
+The most visible version is a chatbot, but the model itself is often only one layer in a bigger system. A production LLM application may include:
+
+- a model;
+- a prompt or instruction template;
+- retrieval from documents or databases;
+- tools such as search, code execution, or calculators;
+- guardrails and filters;
+- logging, monitoring, and human review; and
+- product workflows around the model.
+
+So when people say "we are using an LLM", it is worth asking what they mean. Are they using a hosted chatbot? A model API? A fine-tuned model? A local model? A full agentic system? The answer changes the trade-offs.
+
+# Open vs closed LLMs
+
+At a high level:
+
+- **Open LLMs** make some important model assets available to the public, often including model weights. Depending on the license and release, users may be able to run, modify, fine-tune, redistribute, or commercialise the model.
+- **Closed LLMs** are controlled by the provider. Users typically access them through an API, web app, or enterprise platform. The model weights, training data, and training process are usually not public.
+
+Here is a simple comparison.
+
+```{r, echo = FALSE}
+tibble::tribble(
+  ~Dimension, ~Open_LLM, ~Closed_LLM,
+  "Access", "Usually downloadable weights or public model repositories.", "Usually API, web app, or managed enterprise platform.",
+  "Control", "More control over hosting, fine-tuning, and deployment.", "Less control over the underlying model, more control through product/API settings.",
+  "Transparency", "Can be higher, but varies a lot by release.", "Usually limited. Providers may publish model cards and safety reports, but not weights or training data.",
+  "Cost structure", "Infrastructure and engineering costs are on you.", "Pay per token, subscription, seat, or enterprise contract.",
+  "Performance", "Can be excellent, especially for smaller or specialised tasks.", "Often strongest at frontier general-purpose capability.",
+  "Operational burden", "You manage serving, scaling, optimisation, security, and updates.", "Provider manages most of the heavy lifting.",
+  "Lock-in", "Lower vendor lock-in if the model can be hosted elsewhere.", "Higher vendor dependence, though APIs can be abstracted."
+) |>
+  kableExtra::kbl() |>
+  kableExtra::kable_styling(full_width = FALSE)
+```
+
+This is not a perfect binary. Many organisations use a **hybrid approach**: closed models for hard general tasks, open models for private or high-volume workflows, and smaller specialised models for cheap classification or extraction.
+
+# Open does not always mean open source
+
+This is probably the most important concept in the whole discussion.
+
+In software, **open source** usually means we can inspect, use, modify, and distribute source code under an approved license. With AI models, the "source" is less obvious. Is it the model weights? The training code? The training data? The data curation process? The evaluation setup?
+
+The Open Source Initiative released the **Open Source AI Definition 1.0** in October 2024. In simple terms, it says an open source AI system should give people enough access to use, study, modify, and share the system. That is a higher bar than simply releasing model weights.
+
+Because of this, it is useful to separate a few terms.
+
+```{r, echo = FALSE}
+tibble::tribble(
+  ~Term, ~Meaning, ~Why_it_matters,
+  "Open source AI", "A system released with enough components and permissions to use, study, modify, and share it under open terms.", "This is the strongest form of openness, but many popular models do not fully meet this standard.",
+  "Open-weight model", "The trained model weights are available, but training data, full code, or other details may be missing.", "You can often run and fine-tune the model, but may not be able to fully reproduce it.",
+  "Open access model", "The model is available to use, but not necessarily downloadable or modifiable.", "Useful for access, weaker for control.",
+  "Research-only model", "The model can be used for research, but commercial use may be restricted.", "Important if the project may become a product.",
+  "Permissive license", "A license such as Apache 2.0 or MIT that generally allows commercial use and modification.", "This can make adoption much easier for companies."
+) |>
+  kableExtra::kbl() |>
+  kableExtra::kable_styling(full_width = FALSE)
+```
+
+In casual conversation, people often call Llama, Mistral, Gemma, DeepSeek, Qwen, or Granite "open source models". A more careful phrase is often **open-weight models**, unless the release includes enough training data, code, documentation, and license freedom to satisfy a stricter open source definition.
+
+That may sound pedantic, but it is not. If you are using the model in a business, the license and disclosure details can affect legal risk, reproducibility, auditability, and vendor strategy.
+
+# Examples of open LLMs
+
+The open model ecosystem changes quickly, but these are some useful examples as of May 2026.
+
+```{r, echo = FALSE}
+tibble::tribble(
+  ~Model_family, ~Developer, ~Rough_category, ~Notes,
+  "Llama", "Meta", "Open-weight", "One of the most influential open-weight model families. Llama 3.1 included 8B, 70B, and 405B parameter models with a 128K context window.",
+  "Mistral / Mixtral", "Mistral AI", "Open-weight and commercial API", "Known for efficient open models, including mixture-of-experts models such as Mixtral.",
+  "Gemma", "Google", "Open model family", "Google's lightweight open model family, designed for developers and efficient deployment.",
+  "DeepSeek-R1", "DeepSeek", "Open-weight reasoning model", "Released with MIT-licensed code and model weights, and became a major example of open reasoning models.",
+  "Qwen", "Alibaba Cloud", "Open-weight and hosted models", "Qwen3 models are available as open-weight models, with many releases under Apache 2.0.",
+  "Granite", "IBM", "Open model family", "IBM's enterprise-oriented open models, with several Granite releases under Apache 2.0."
+) |>
+  kableExtra::kbl() |>
+  kableExtra::kable_styling(full_width = FALSE)
+```
+
+The key thing is not just the model name. It is the exact version, license, deployment path, context length, supported languages, modality, safety tooling, and whether the model is good enough for the task.
+
+A small open model that reliably extracts invoice fields may be more valuable than a giant frontier model for that specific workflow.
+
+# Examples of closed LLMs
+
+Closed models are usually accessed through hosted products or APIs. They are commonly used when teams want strong performance quickly, without having to run the model themselves.
+
+```{r, echo = FALSE}
+tibble::tribble(
+  ~Model_family, ~Developer, ~Typical_access, ~Notes,
+  "GPT models", "OpenAI", "ChatGPT, API, enterprise offerings", "Examples include GPT-4.1 in the API and other OpenAI models used for coding, reasoning, multimodal, and assistant workflows.",
+  "Claude", "Anthropic", "Claude app, API, enterprise offerings", "Claude 4 models were positioned strongly for coding, agents, and long-running tasks.",
+  "Gemini", "Google DeepMind", "Gemini app, Google AI Studio, Vertex AI", "Gemini 2.5 models introduced stronger reasoning and are integrated across Google's product and cloud ecosystem.",
+  "Grok", "xAI", "X platform and API", "A closed model family tied closely to the X ecosystem.",
+  "Cohere Command", "Cohere", "API and enterprise platform", "Often positioned for enterprise NLP, retrieval, and business workflows."
+) |>
+  kableExtra::kbl() |>
+  kableExtra::kable_styling(full_width = FALSE)
+```
+
+The advantage of closed models is that they are usually easier to start with. The downside is that you are depending on the provider's pricing, uptime, policies, model updates, and roadmap.
+
+# Pros of open LLMs
+
+Open models are attractive because they give builders more control.
+
+## More deployment control
+
+If you can run the model yourself, you can decide where it lives:
+
+- local laptop;
+- on-premise server;
+- private cloud;
+- GPU cluster;
+- edge device; or
+- managed inference provider.
+
+This matters when data residency, latency, offline use, or internal security rules are important.
+
+For example, a hospital, bank, or government team may not want sensitive documents sent to an external API unless there is a strong legal and security framework in place. An open model can be deployed closer to the data.
+
+## Better customisation
+
+Open models can often be fine-tuned, distilled, quantised, or adapted with methods such as LoRA. This is useful when the task is narrow and repetitive.
+
+Examples:
+
+- classify support tickets;
+- extract fields from contracts;
+- generate product descriptions in a house style;
+- translate domain-specific terminology;
+- answer questions using internal documents; or
+- produce code in a specific framework.
+
+You do not always need a frontier model for these tasks. A smaller model, adapted well, can be cheaper and more predictable.
+
+## Lower marginal cost at scale
+
+Closed API pricing is convenient, but high-volume workloads can become expensive. If you are running millions or billions of tokens per day, it may be cheaper to host an open model.
+
+This is not guaranteed. GPUs, engineers, monitoring, inference optimisation, and downtime also cost money. But at enough scale, owning the serving layer can make sense.
+
+## Less vendor lock-in
+
+Open models can reduce dependence on a single provider. If a vendor changes prices, rate limits, model behaviour, or terms of service, you have more room to adapt.
+
+This does not mean open models remove all lock-in. You can still become locked into your own infrastructure, fine-tuning pipeline, prompt formats, evaluation harness, or model-specific behaviour. But you have more exit options.
+
+## More experimentation
+
+Open models are great for learning. You can inspect model cards, run models locally, try quantisation, compare inference engines, fine-tune on toy datasets, and understand the system more deeply.
+
+For students, researchers, and small teams, this is a big deal. The open ecosystem makes AI feel less like a black box owned by a few labs.
+
+# Cons of open LLMs
+
+Open models are not free magic. They move a lot of responsibility from the provider to you.
+
+## Infrastructure can be painful
+
+Serving LLMs well is non-trivial. You may need to think about:
+
+- GPU memory;
+- batching;
+- quantisation;
+- latency;
+- context length;
+- autoscaling;
+- model loading time;
+- observability;
+- failures; and
+- cost utilisation.
+
+It is easy to underestimate the operational work. Running a model once in a notebook is different from running it reliably for real users.
+
+## Performance may lag frontier closed models
+
+Open models have improved dramatically, but the strongest closed models often still lead on broad, difficult, multimodal, or agentic tasks.
+
+This matters for tasks such as:
+
+- complex coding;
+- long-horizon reasoning;
+- multimodal understanding;
+- difficult instruction following;
+- tool-heavy workflows;
+- nuanced writing; and
+- tasks where reliability matters more than cost.
+
+The gap may be small for some use cases and large for others. Benchmark scores help, but your own evaluation set matters more.
+
+## Safety and governance are on you
+
+If you host the model, you also own a lot of the risk.
+
+You may need to build or buy:
+
+- content filters;
+- prompt injection defences;
+- personally identifiable information handling;
+- abuse monitoring;
+- red-teaming;
+- logging;
+- audit trails;
+- access controls; and
+- incident response.
+
+Closed providers usually bundle some safety and compliance features. With open models, you need to make those design choices yourself.
+
+## Licenses can be tricky
+
+Open-weight does not always mean unrestricted. Some licenses restrict certain use cases, require attribution, limit use by very large companies, or impose acceptable-use conditions.
+
+Before using an open model commercially, check:
+
+- commercial use rights;
+- redistribution rights;
+- attribution requirements;
+- acceptable-use restrictions;
+- whether derivatives are allowed;
+- whether fine-tuned models can be redistributed;
+- data and privacy obligations; and
+- export control or jurisdiction concerns.
+
+This is not the glamorous part of AI, but it is the part that can save future headaches.
+
+# Pros of closed LLMs
+
+Closed models are popular for good reasons.
+
+## Fastest path to strong capability
+
+For many teams, a closed API is the quickest way to build something useful. You do not need to manage GPUs, inference servers, model optimisation, or frequent model upgrades.
+
+You can focus on:
+
+- product design;
+- prompts;
+- retrieval;
+- evaluation;
+- user experience;
+- workflow integration; and
+- business value.
+
+That matters. Many LLM projects fail not because the model is weak, but because the product around the model is unclear.
+
+## Strong general performance
+
+Closed frontier models from OpenAI, Anthropic, Google, and others are often very strong across many tasks. They may handle ambiguous prompts, complex reasoning, coding, long documents, images, audio, or tool use better than smaller open models.
+
+If the task is hard and varied, the strongest closed model may be the most economical option even if each token costs more. A cheaper model that fails often can become expensive in a different way.
+
+## Managed reliability
+
+With a closed provider, the serving infrastructure is handled for you. Good providers offer:
+
+- API scaling;
+- uptime commitments;
+- model documentation;
+- enterprise contracts;
+- security reviews;
+- data retention options;
+- support; and
+- monitoring tools.
+
+This can be especially useful when the team does not have deep ML infrastructure experience.
+
+## Better product ecosystem
+
+Closed models often come with surrounding tools: assistants, file search, code execution, function calling, multimodal APIs, agent frameworks, governance dashboards, and enterprise admin controls.
+
+These extras can matter as much as the base model. The model is the engine, but the product ecosystem is the rest of the car.
+
+# Cons of closed LLMs
+
+Closed models also come with real trade-offs.
+
+## Less transparency
+
+You usually cannot inspect the weights, training data, or full training process. You are trusting the provider's documentation, evaluations, safety reports, and contractual promises.
+
+This may be acceptable for many use cases. But for regulated, high-stakes, or scientific work, limited transparency can be a serious concern.
+
+## Vendor dependence
+
+If your application depends heavily on one provider, you are exposed to changes in:
+
+- pricing;
+- rate limits;
+- model availability;
+- content policies;
+- latency;
+- terms of service;
+- supported regions; and
+- model behaviour after updates.
+
+You can reduce this risk with abstraction layers, evaluation tests, fallback models, and careful contract terms. But the dependency is still there.
+
+## Data concerns
+
+Closed providers may offer strong privacy controls, including zero data retention or enterprise data isolation. Still, some organisations are uncomfortable sending sensitive data to an external API.
+
+The right answer depends on the provider, contract, architecture, jurisdiction, and type of data. "Closed" does not automatically mean unsafe, and "open" does not automatically mean private. A badly secured self-hosted model can be worse than a well-governed enterprise API.
+
+## Cost can surprise you
+
+API pricing is easy to start with, but token usage can grow quietly.
+
+Costs increase with:
+
+- long prompts;
+- long outputs;
+- many retries;
+- large document context;
+- agent loops;
+- tool calls;
+- evaluation runs; and
+- logging or summarisation pipelines.
+
+If you use a closed model, track tokens early. Token usage is the new cloud bill.
+
+# Important concepts
+
+Across articles, documentation, engineering blogs, and practitioner discussions, these are the concepts that tend to come up when people compare open and closed LLMs.
+
+## Model weights
+
+Model weights are the learned numerical parameters of the model. If weights are available, you can often run the model yourself.
+
+This is why "open-weight" is such an important category. It gives practical control, even if the release is not fully open source.
+
+## Parameters
+
+Parameters are the internal numbers learned during training. Bigger parameter counts can mean more capacity, but bigger is not always better.
+
+A smaller model can be better when it is:
+
+- faster;
+- cheaper;
+- easier to host;
+- fine-tuned for the task;
+- less likely to overcomplicate simple work; or
+- able to run on local hardware.
+
+## Context window
+
+The context window is how much text, code, image information, or other input the model can consider at once.
+
+Large context windows are useful for reading long documents, analysing codebases, or working across multiple sources. But large context can also increase cost and latency, and models may still miss details in the middle.
+
+## Fine-tuning
+
+Fine-tuning changes the model using additional training data. It can help with style, format, domain language, or repeated task behaviour.
+
+A common recommendation online is not to treat fine-tuning as the first move. Many practitioners suggest starting with prompt engineering, retrieval-augmented generation, and evaluation before fine-tuning.
+
+## Retrieval-augmented generation
+
+**Retrieval-augmented generation**, or RAG, means fetching relevant information from a knowledge base and giving it to the model as context.
+
+This is useful when the model needs up-to-date, private, or domain-specific information. RAG is often better than fine-tuning for factual knowledge because documents can be updated without retraining the model.
+
+## Distillation
+
+Distillation means using a larger or stronger model to train a smaller model. The smaller model tries to imitate useful behaviour from the larger one.
+
+This can create cheaper models for high-volume tasks. For example, a frontier closed model might generate labels or reasoning traces, and a smaller open model might learn to perform the narrow task later.
+
+## Quantisation
+
+Quantisation compresses model weights into lower precision. This reduces memory and can make models easier to run locally or on cheaper hardware.
+
+The trade-off is that quality may drop, especially if the quantisation is too aggressive.
+
+## Latency
+
+Latency is how long the user waits. For chat, low latency feels important. For overnight batch processing, it may matter less.
+
+Open models can be very fast when hosted close to the user and optimised well. Closed APIs can also be fast, but you depend on network calls and provider load.
+
+## Evaluation
+
+Evaluation is the discipline of testing whether the model actually works for your task.
+
+A common internet recommendation is that a good evaluation set should include:
+
+- normal cases;
+- edge cases;
+- adversarial cases;
+- examples from real users;
+- expected outputs;
+- scoring criteria; and
+- regression tests when models or prompts change.
+
+Without evaluation, model choice becomes vibes with charts.
+
+# Key considerations when choosing
+
+A lot of online advice eventually becomes some version of this checklist.
+
+```{r, echo = FALSE}
+tibble::tribble(
+  ~Question, ~Why_it_matters,
+  "How sensitive is the data?", "Highly sensitive data may favour private deployment or enterprise-grade closed APIs.",
+  "How hard is the task?", "Difficult reasoning or multimodal tasks may favour frontier closed models.",
+  "How much volume do we expect?", "High-volume workloads may favour open/self-hosted models if infrastructure is efficient.",
+  "Do we need customisation?", "Heavy customisation may favour open models or providers that support fine-tuning.",
+  "Do we need auditability?", "Regulated settings may require stronger documentation, logs, and model governance.",
+  "What latency do users expect?", "Real-time products need different choices from batch workflows.",
+  "What is the team's capability?", "Self-hosting needs ML engineering and operations skills.",
+  "What does the license allow?", "Online guides often stress checking commercial and redistribution rights.",
+  "What happens if the model changes?", "Closed providers may update models; open models give more version control.",
+  "What is the fallback plan?", "Many production guides recommend fallbacks, monitoring, and graceful failure."
+) |>
+  kableExtra::kbl() |>
+  kableExtra::kable_styling(full_width = FALSE)
+```
+
+The rough rule of thumb that shows up often online is:
+
+- Use a **closed model** when you need the strongest general capability quickly.
+- Use an **open model** when control, privacy, cost at scale, customisation, or independence matters.
+- Use a **hybrid setup** when different parts of the workflow have different needs.
+
+# Common patterns in practice
+
+Most serious systems are more nuanced than "open" or "closed". A few patterns show up often.
+
+## Pattern 1: Closed model for prototype, open model for production
+
+A team may start with a closed model because it is fast and capable. Once the workflow is understood, they may move repetitive tasks to a smaller open model.
+
+Example:
+
+- Prototype contract extraction with a strong closed model.
+- Build an evaluation set.
+- Identify the repeated fields and edge cases.
+- Fine-tune or prompt an open model for the stable extraction task.
+- Keep the closed model as fallback for difficult cases.
+
+This gives speed early and cost control later.
+
+## Pattern 2: Open model for private data, closed model for general reasoning
+
+Some teams keep sensitive data inside a private environment but still use closed models for non-sensitive tasks.
+
+Example:
+
+- Use an open model inside the company's network to summarise internal tickets.
+- Use a closed model for public documentation generation or general coding help.
+- Route requests based on sensitivity.
+
+This is more complex, but it avoids pretending that one model has to do everything.
+
+## Pattern 3: Closed model as teacher, open model as student
+
+A stronger model can generate training data, labels, or critiques. A smaller open model can then be trained for a narrow task.
+
+This can work well when:
+
+- the output format is stable;
+- the task is repeated many times;
+- quality can be evaluated automatically or semi-automatically; and
+- cost per request matters.
+
+## Pattern 4: Multi-model routing
+
+Not every prompt deserves the same model.
+
+A router can send:
+
+- simple classification to a small model;
+- sensitive work to a private model;
+- difficult reasoning to a frontier model;
+- long document tasks to a model with a large context window; and
+- image or audio tasks to a multimodal model.
+
+This is probably where many production systems are heading: not one model, but a portfolio of models.
+
+# Successful examples in practice
+
+Here are some examples that show how open and closed LLMs are being used.
+
+## Closed model example: Morgan Stanley and OpenAI
+
+Morgan Stanley Wealth Management worked with OpenAI to embed GPT-4 into advisor workflows. The goal was not to replace financial advisors, but to help them search and use the firm's internal knowledge more effectively.
+
+This is a classic closed-model enterprise pattern:
+
+- strong hosted model;
+- private enterprise deployment;
+- retrieval over internal documents;
+- workflow integration; and
+- security and data controls.
+
+The interesting lesson is that the value came from the whole system, not just the model. The model helped advisors use existing knowledge faster.
+
+## Closed model example: Rakuten and Claude Code
+
+Rakuten has described using Anthropic's Claude Code to accelerate software development. This is an example of a closed model being used as an engineering assistant inside a large organisation.
+
+The appeal is clear: coding work often requires broad reasoning, tool use, refactoring, and understanding messy context. That is where frontier closed models can be especially useful.
+
+## Open model example: Llama in medicine and education
+
+Meta has highlighted organisations using Llama models across education, customer service, research, and medicine. One example is the Meditron project, which fine-tuned Llama models for medical knowledge and assistance.
+
+This shows one major strength of open models: researchers and domain experts can adapt the model for a specialised setting instead of waiting for a closed provider to build exactly what they need.
+
+## Open model example: IBM Granite for enterprise AI
+
+IBM's Granite models are designed around enterprise use cases, with several releases under permissive open licenses such as Apache 2.0.
+
+The practical pitch is not just "open is nice". It is:
+
+- more transparency;
+- more control;
+- easier customisation;
+- deployment flexibility; and
+- governance features around enterprise AI.
+
+This is a good reminder that open models are not only for hobbyists. They can be part of serious business infrastructure.
+
+## Open model example: DeepSeek-R1 and open reasoning
+
+DeepSeek-R1 became a major example of an open reasoning model. Its release showed that advanced reasoning capability was not limited to closed labs.
+
+Even if a company does not use DeepSeek directly, the broader lesson matters: open-weight releases can pressure the whole market. They push prices down, encourage replication, and give developers more options.
+
+# Open vs closed by use case
+
+Here is a practical way to think about model choice.
+
+```{r, echo = FALSE}
+tibble::tribble(
+  ~Use_case, ~Likely_good_fit, ~Reason,
+  "Quick prototype", "Closed", "Fastest way to test whether the idea works.",
+  "High-volume simple classification", "Open", "A small self-hosted model may be cheaper at scale.",
+  "Sensitive internal documents", "Open or enterprise closed", "Depends on data policy, contracts, and deployment requirements.",
+  "Complex coding assistant", "Closed or hybrid", "Frontier models often perform well, but open coding models can help for private codebases.",
+  "Customer support chatbot", "Hybrid", "Use retrieval, guardrails, and model routing based on complexity.",
+  "Edge or offline application", "Open", "The model needs to run without constant API access.",
+  "Regulated decision support", "Depends", "Governance, auditability, validation, and human oversight matter more than model branding.",
+  "Research and learning", "Open", "Open models are better for experimentation and understanding."
+) |>
+  kableExtra::kbl() |>
+  kableExtra::kable_styling(full_width = FALSE)
+```
+
+# Risks to keep in mind
+
+Both open and closed LLMs can fail in familiar ways.
+
+## Hallucination
+
+LLMs can produce confident but incorrect answers. This is especially risky when users assume fluent writing means factual accuracy.
+
+Mitigations include retrieval, citations, refusal behaviour, calibrated uncertainty, human review, and task-specific evaluation.
+
+## Prompt injection
+
+If the model reads external text, that text may contain instructions that try to hijack the model. This is a major issue for agents and RAG systems.
+
+Mitigations include separating system instructions from retrieved content, limiting tool permissions, validating outputs, and treating retrieved text as untrusted.
+
+## Data leakage
+
+Models can accidentally expose sensitive information through logs, prompts, outputs, or poorly designed retrieval systems.
+
+This is not only a closed-model issue. Self-hosted systems can leak data too if access controls and logging are weak.
+
+## Bias and representational harm
+
+Models learn from data created by people, and people are biased. Outputs may reflect stereotypes, cultural blind spots, or uneven performance across languages and groups.
+
+This matters in both open and closed models. The mitigation is not one magic filter, but careful evaluation, monitoring, and human accountability.
+
+## Over-automation
+
+The biggest risk is sometimes not that the model is bad, but that people trust it too much.
+
+For high-stakes use cases, the common advice is that LLMs should usually support human judgement rather than silently replace it.
+
+# A simple decision framework
+
+A common decision framework from practitioner discussions starts with these questions:
+
+1. What is the actual task?
+2. What quality level is required?
+3. What happens if the model is wrong?
+4. What data will be sent to the model?
+5. Are there legal or regulatory constraints?
+6. How many tokens will we process per month?
+7. Do we need to customise the model?
+8. Do we have the engineering skills to host it?
+9. How important is vendor independence?
+10. How will we evaluate the model before and after deployment?
+
+The last question is the most important. Without evaluation, the open-vs-closed debate becomes too abstract.
+
+For a real project, many practitioners suggest testing at least:
+
+- one strong closed model;
+- one good open model;
+- one smaller cheaper model; and
+- a baseline non-LLM approach if possible.
+
+Sometimes the boring baseline wins. That is not failure. That is science doing its job.
+
+# Common internet takeaways
+
+The common takeaway from many online discussions is that **closed models are best for capability, speed, and convenience**, while **open models are best for control, customisation, learning, and strategic flexibility**.
+
+Closed models are like renting a very powerful machine with a polished interface. Open models are like owning a machine you can take apart, tune, and run wherever you want.
+
+A repeated theme online is that many mature teams will probably use both.
+
+The more practical advice is not to ask, "Should we use open or closed LLMs?" as if it is a personality test. Instead, the internet wisdom is to ask:
+
+- Which model is good enough for this task?
+- Which deployment is acceptable for this data?
+- Which option is affordable at this volume?
+- Which system can we monitor and govern?
+- Which choice keeps future options open?
+
+That is a much healthier way to think about it.
+
+# Helpful materials
+
+These are some useful references behind the writeup:
+
+- [Open Source Initiative: Open Source AI Definition 1.0](https://opensource.org/ai/open-source-ai-definition)
+- [Meta: Llama 3.1 responsibility and open model release](https://ai.meta.com/blog/meta-llama-3-1-ai-responsibility/)
+- [Mistral AI: Mixtral 8x22B](https://mistral.ai/en/news/mixtral-8x22b)
+- [Google: Gemma 3](https://blog.google/innovation-and-ai/technology/developers-tools/gemma-3/)
+- [DeepSeek: DeepSeek-R1 release](https://api-docs.deepseek.com/news/news250120)
+- [Qwen GitHub: Qwen3](https://github.com/QwenLM/Qwen3)
+- [IBM Research: Granite models](https://research.ibm.com/topics/granite)
+- [OpenAI: GPT-4.1 in the API](https://openai.com/index/gpt-4-1/)
+- [Anthropic: Claude 4](https://www.anthropic.com/news/claude-4)
+- [Google DeepMind: Gemini 2.5](https://blog.google/technology/google-deepmind/gemini-model-thinking-updates-march-2025/)
+- [OpenAI customer story: Morgan Stanley](https://openai.com/customer-stories/morgan-stanley)
+- [Anthropic customer story: Rakuten](https://www.anthropic.com/customers/rakuten)
+- [Meta: How companies are using Llama](https://about.fb.com/news/2024/05/how-companies-are-using-meta-llama/)
+
+# Conclusion
+
+Open and closed LLMs are not enemies. They are different ways of packaging capability, control, cost, and responsibility.
+
+Closed models make it easier to access frontier capability. Open models make it easier to own more of the stack. Closed models reduce operational burden. Open models reduce some forms of dependence. Closed models can be safer to start with if the provider has strong controls. Open models can be safer for sensitive data if they are deployed properly.
+
+The practical answer is usually not ideological. It depends on the task, the data, the team, the budget, and the risk.
+
+That is all for the day!
+
+Thanks for reading the post until the end.
+
+Feel free to contact me through [email](mailto:jasper.jh.lok@gmail.com) or [LinkedIn](https://www.linkedin.com/in/jasper-l-13426232/) if you have any suggestions on future topics to share.
+
+Refer to this link for the [blog disclaimer](https://jasperlok.netlify.app/blog_disclaimer.html).
+
+Till next time, happy learning!
+
+```{r, echo = FALSE}
+include_graphics("image/tim-mossholder-v5re1loi264-unsplash.jpg")
+
+```
+
+
+Photo by <a href="https://unsplash.com/@timmossholder?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Tim Mossholder</a> on <a href="https://unsplash.com/photos/sorry-were-closed-v5re1loi264?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+      
+

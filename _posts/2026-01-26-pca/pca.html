@@ -1,0 +1,3147 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <meta name="generator" content="distill" />
+
+  <style type="text/css">
+  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
+  body {
+    visibility: hidden;
+  }
+  </style>
+
+ <!--radix_placeholder_import_source-->
+ <!--/radix_placeholder_import_source-->
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  { color: #00769e; background-color: #f1f3f5; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span { color: #00769e; } /* Normal */
+code span.al { color: #ad0000; } /* Alert */
+code span.an { color: #5e5e5e; } /* Annotation */
+code span.at { color: #657422; } /* Attribute */
+code span.bn { color: #ad0000; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #00769e; } /* ControlFlow */
+code span.ch { color: #20794d; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #5e5e5e; } /* Comment */
+code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+code span.dt { color: #ad0000; } /* DataType */
+code span.dv { color: #ad0000; } /* DecVal */
+code span.er { color: #ad0000; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #ad0000; } /* Float */
+code span.fu { color: #4758ab; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #5e5e5e; } /* Information */
+code span.kw { color: #00769e; } /* Keyword */
+code span.op { color: #5e5e5e; } /* Operator */
+code span.ot { color: #00769e; } /* Other */
+code span.pp { color: #ad0000; } /* Preprocessor */
+code span.sc { color: #5e5e5e; } /* SpecialChar */
+code span.ss { color: #20794d; } /* SpecialString */
+code span.st { color: #20794d; } /* String */
+code span.va { color: #111111; } /* Variable */
+code span.vs { color: #20794d; } /* VerbatimString */
+code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+</style>
+
+<style>
+  div.csl-bib-body { }
+  div.csl-entry {
+    clear: both;
+    }
+  .hanging div.csl-entry {
+    margin-left:2em;
+    text-indent:-2em;
+  }
+  div.csl-left-margin {
+    min-width:2em;
+    float:left;
+  }
+  div.csl-right-inline {
+    margin-left:2em;
+    padding-left:1em;
+  }
+  div.csl-indent {
+    margin-left: 2em;
+  }
+</style>
+
+  <!--radix_placeholder_meta_tags-->
+  <title>Principal Component Analysis</title>
+
+  <meta property="description" itemprop="description" content="A practical introduction to PCA: how it works, when it is useful, what to watch out for, and how to implement it in R."/>
+
+
+  <!--  https://schema.org/Article -->
+  <meta property="article:published" itemprop="datePublished" content="2026-01-26"/>
+  <meta property="article:created" itemprop="dateCreated" content="2026-01-26"/>
+  <meta name="article:author" content="Jasper Lok"/>
+
+  <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
+  <meta property="og:title" content="Principal Component Analysis"/>
+  <meta property="og:type" content="article"/>
+  <meta property="og:description" content="A practical introduction to PCA: how it works, when it is useful, what to watch out for, and how to implement it in R."/>
+  <meta property="og:locale" content="en_US"/>
+
+  <!--  https://dev.twitter.com/cards/types/summary -->
+  <meta property="twitter:card" content="summary"/>
+  <meta property="twitter:title" content="Principal Component Analysis"/>
+  <meta property="twitter:description" content="A practical introduction to PCA: how it works, when it is useful, what to watch out for, and how to implement it in R."/>
+
+  <!--/radix_placeholder_meta_tags-->
+  
+  <meta name="citation_reference" content="citation_title=Principal component analysis: A review and recent developments;citation_volume=374;citation_author=Ian T. Jolliffe;citation_author=Jorge Cadima"/>
+  <meta name="citation_reference" content="citation_title=Principal component analysis;citation_volume=2;citation_author=Hervé Abdi;citation_author=Lynne J. Williams"/>
+  <meta name="citation_reference" content="citation_title=An introduction to statistical learning: With applications in r;citation_publisher=Springer;citation_author=Gareth James;citation_author=Daniela Witten;citation_author=Trevor Hastie;citation_author=Robert Tibshirani"/>
+  <!--radix_placeholder_rmarkdown_metadata-->
+
+  <script type="text/json" id="radix-rmarkdown-metadata">
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","bibliography","biblio-style","link-citations","categories"]}},"value":[{"type":"character","attributes":{},"value":["Principal Component Analysis"]},{"type":"character","attributes":{},"value":["A practical introduction to PCA: how it works, when it is useful, what to watch out for, and how to implement it in R.\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Jasper Lok"]},{"type":"character","attributes":{},"value":["https://jasperlok.netlify.app/"]}]}]},{"type":"character","attributes":{},"value":["01-26-2026"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","toc_depth","self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[4]},{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["ref.bib"]},{"type":"character","attributes":{},"value":["apa"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["Principal component analysis","Dimensionality reduction"]}]}
+  </script>
+  <!--/radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["data/data.csv","image/dmitry-mashkin-NBzr3NUnxRg-unsplash.jpg","image/ryan-fields-Xz7MMD5tZwA-unsplash.jpg","pca_files/anchor/anchor.min.js","pca_files/bowser/bowser.min.js","pca_files/bsTable/bootstrapTable.js","pca_files/bsTable/bootstrapTable.min.css","pca_files/distill/template.v2.js","pca_files/figure-html5/unnamed-chunk-10-1.png","pca_files/figure-html5/unnamed-chunk-12-1.png","pca_files/figure-html5/unnamed-chunk-13-1.png","pca_files/figure-html5/unnamed-chunk-8-1.png","pca_files/header-attrs/header-attrs.js","pca_files/jquery/jquery-3.6.0.js","pca_files/jquery/jquery-3.6.0.min.js","pca_files/jquery/jquery-3.6.0.min.map","pca_files/kePrint/kePrint.js","pca_files/lightable/lightable.css","pca_files/popper/popper.min.js","pca_files/tippy/tippy-bundle.umd.min.js","pca_files/tippy/tippy-light-border.css","pca_files/tippy/tippy.css","pca_files/tippy/tippy.umd.min.js","pca_files/webcomponents/webcomponents.js","ref.bib"]}
+  </script>
+  <!--radix_placeholder_navigation_in_header-->
+  <!--/radix_placeholder_navigation_in_header-->
+  <!--radix_placeholder_distill-->
+
+  <style type="text/css">
+
+  body {
+    background-color: white;
+  }
+
+  .pandoc-table {
+    width: 100%;
+  }
+
+  .pandoc-table>caption {
+    margin-bottom: 10px;
+  }
+
+  .pandoc-table th:not([align]) {
+    text-align: left;
+  }
+
+  .pagedtable-footer {
+    font-size: 15px;
+  }
+
+  d-byline .byline {
+    grid-template-columns: 2fr 2fr;
+  }
+
+  d-byline .byline h3 {
+    margin-block-start: 1.5em;
+  }
+
+  d-byline .byline .authors-affiliations h3 {
+    margin-block-start: 0.5em;
+  }
+
+  .authors-affiliations .orcid-id {
+    width: 16px;
+    height:16px;
+    margin-left: 4px;
+    margin-right: 4px;
+    vertical-align: middle;
+    padding-bottom: 2px;
+  }
+
+  d-title .dt-tags {
+    margin-top: 1em;
+    grid-column: text;
+  }
+
+  .dt-tags .dt-tag {
+    text-decoration: none;
+    display: inline-block;
+    color: rgba(0,0,0,0.6);
+    padding: 0em 0.4em;
+    margin-right: 0.5em;
+    margin-bottom: 0.4em;
+    font-size: 70%;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  d-article table.gt_table td,
+  d-article table.gt_table th {
+    border-bottom: none;
+    font-size: 100%;
+  }
+
+  .html-widget {
+    margin-bottom: 2.0em;
+  }
+
+  .l-screen-inset {
+    padding-right: 16px;
+  }
+
+  .l-screen .caption {
+    margin-left: 10px;
+  }
+
+  .shaded {
+    background: rgb(247, 247, 247);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .shaded .html-widget {
+    margin-bottom: 0;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .shaded .shaded-content {
+    background: white;
+  }
+
+  .text-output {
+    margin-top: 0;
+    line-height: 1.5em;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  hr.section-separator {
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    margin: 0px;
+  }
+
+
+  d-byline {
+    border-top: none;
+  }
+
+  d-article {
+    padding-top: 2.5rem;
+    padding-bottom: 30px;
+    border-top: none;
+  }
+
+  d-appendix {
+    padding-top: 30px;
+  }
+
+  d-article>p>img {
+    width: 100%;
+  }
+
+  d-article h2 {
+    margin: 1rem 0 1.5rem 0;
+  }
+
+  d-article h3 {
+    margin-top: 1.5rem;
+  }
+
+  d-article iframe {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 2.0em;
+    width: 100%;
+  }
+
+  /* Tweak code blocks */
+
+  d-article div.sourceCode code,
+  d-article pre code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  d-article pre,
+  d-article div.sourceCode,
+  d-article div.sourceCode pre {
+    overflow: auto;
+  }
+
+  d-article div.sourceCode {
+    background-color: white;
+  }
+
+  d-article div.sourceCode pre {
+    padding-left: 10px;
+    font-size: 12px;
+    border-left: 2px solid rgba(0,0,0,0.1);
+  }
+
+  d-article pre {
+    font-size: 12px;
+    color: black;
+    background: none;
+    margin-top: 0;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+
+  d-article pre a {
+    border-bottom: none;
+  }
+
+  d-article pre a:hover {
+    border-bottom: none;
+    text-decoration: underline;
+  }
+
+  d-article details {
+    grid-column: text;
+    margin-bottom: 0.8em;
+  }
+
+  @media(min-width: 768px) {
+
+  d-article pre,
+  d-article div.sourceCode,
+  d-article div.sourceCode pre {
+    overflow: visible !important;
+  }
+
+  d-article div.sourceCode pre {
+    padding-left: 18px;
+    font-size: 14px;
+  }
+
+  /* tweak for Pandoc numbered line within distill */
+  d-article pre.numberSource code > span {
+      left: -2em;
+  }
+
+  d-article pre {
+    font-size: 14px;
+  }
+
+  }
+
+  figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+
+  /* CSS for d-contents */
+
+  .d-contents {
+    grid-column: text;
+    color: rgba(0,0,0,0.8);
+    font-size: 0.9em;
+    padding-bottom: 1em;
+    margin-bottom: 1em;
+    padding-bottom: 0.5em;
+    margin-bottom: 1em;
+    padding-left: 0.25em;
+    justify-self: start;
+  }
+
+  @media(min-width: 1000px) {
+    .d-contents.d-contents-float {
+      height: 0;
+      grid-column-start: 1;
+      grid-column-end: 4;
+      justify-self: center;
+      padding-right: 3em;
+      padding-left: 2em;
+    }
+  }
+
+  .d-contents nav h3 {
+    font-size: 18px;
+    margin-top: 0;
+    margin-bottom: 1em;
+  }
+
+  .d-contents li {
+    list-style-type: none
+  }
+
+  .d-contents nav > ul {
+    padding-left: 0;
+  }
+
+  .d-contents ul {
+    padding-left: 1em
+  }
+
+  .d-contents nav ul li {
+    margin-top: 0.6em;
+    margin-bottom: 0.2em;
+  }
+
+  .d-contents nav a {
+    font-size: 13px;
+    border-bottom: none;
+    text-decoration: none
+    color: rgba(0, 0, 0, 0.8);
+  }
+
+  .d-contents nav a:hover {
+    text-decoration: underline solid rgba(0, 0, 0, 0.6)
+  }
+
+  .d-contents nav > ul > li > a {
+    font-weight: 600;
+  }
+
+  .d-contents nav > ul > li > ul {
+    font-weight: inherit;
+  }
+
+  .d-contents nav > ul > li > ul > li {
+    margin-top: 0.2em;
+  }
+
+
+  .d-contents nav ul {
+    margin-top: 0;
+    margin-bottom: 0.25em;
+  }
+
+  .d-article-with-toc h2:nth-child(2) {
+    margin-top: 0;
+  }
+
+
+  /* Figure */
+
+  .figure {
+    position: relative;
+    margin-bottom: 2.5em;
+    margin-top: 1.5em;
+  }
+
+  .figure .caption {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 12px;
+    line-height: 1.5em;
+  }
+
+  .figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+
+  .figure .caption a {
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  .figure .caption b,
+  .figure .caption strong, {
+    font-weight: 600;
+    color: rgba(0, 0, 0, 1.0);
+  }
+
+  /* Citations */
+
+  d-article .citation {
+    color: inherit;
+    cursor: inherit;
+  }
+
+  div.hanging-indent{
+    margin-left: 1em; text-indent: -1em;
+  }
+
+  /* Citation hover box */
+
+  .tippy-box[data-theme~=light-border] {
+    background-color: rgba(250, 250, 250, 0.95);
+  }
+
+  .tippy-content > p {
+    margin-bottom: 0;
+    padding: 2px;
+  }
+
+
+  /* Tweak 1000px media break to show more text */
+
+  @media(min-width: 1000px) {
+    .base-grid,
+    distill-header,
+    d-title,
+    d-abstract,
+    d-article,
+    d-appendix,
+    distill-appendix,
+    d-byline,
+    d-footnote-list,
+    d-citation-list,
+    distill-footer {
+      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 80px [middle-start] 50px [text-start kicker-end] 65px 65px 65px 65px 65px 65px 65px 65px [text-end gutter-start] 65px [middle-end] 65px [page-end gutter-end] 1fr [screen-end];
+      grid-column-gap: 16px;
+    }
+
+    .grid {
+      grid-column-gap: 16px;
+    }
+
+    d-article {
+      font-size: 1.06rem;
+      line-height: 1.7em;
+    }
+    figure .caption, .figure .caption, figure figcaption {
+      font-size: 13px;
+    }
+  }
+
+  @media(min-width: 1180px) {
+    .base-grid,
+    distill-header,
+    d-title,
+    d-abstract,
+    d-article,
+    d-appendix,
+    distill-appendix,
+    d-byline,
+    d-footnote-list,
+    d-citation-list,
+    distill-footer {
+      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
+      grid-column-gap: 32px;
+    }
+
+    .grid {
+      grid-column-gap: 32px;
+    }
+  }
+
+
+  /* Get the citation styles for the appendix (not auto-injected on render since
+     we do our own rendering of the citation appendix) */
+
+  d-appendix .citation-appendix,
+  .d-appendix .citation-appendix {
+    font-size: 11px;
+    line-height: 15px;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    padding-left: 18px;
+    border: 1px solid rgba(0,0,0,0.1);
+    background: rgba(0, 0, 0, 0.02);
+    padding: 10px 18px;
+    border-radius: 3px;
+    color: rgba(150, 150, 150, 1);
+    overflow: hidden;
+    margin-top: -12px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  /* Include appendix styles here so they can be overridden */
+
+  d-appendix {
+    contain: layout style;
+    font-size: 0.8em;
+    line-height: 1.7em;
+    margin-top: 60px;
+    margin-bottom: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    color: rgba(0,0,0,0.5);
+    padding-top: 60px;
+    padding-bottom: 48px;
+  }
+
+  d-appendix h3 {
+    grid-column: page-start / text-start;
+    font-size: 15px;
+    font-weight: 500;
+    margin-top: 1em;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.65);
+  }
+
+  d-appendix h3 + * {
+    margin-top: 1em;
+  }
+
+  d-appendix ol {
+    padding: 0 0 0 15px;
+  }
+
+  @media (min-width: 768px) {
+    d-appendix ol {
+      padding: 0 0 0 30px;
+      margin-left: -30px;
+    }
+  }
+
+  d-appendix li {
+    margin-bottom: 1em;
+  }
+
+  d-appendix a {
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  d-appendix > * {
+    grid-column: text;
+  }
+
+  d-appendix > d-footnote-list,
+  d-appendix > d-citation-list,
+  d-appendix > distill-appendix {
+    grid-column: screen;
+  }
+
+  /* Include footnote styles here so they can be overridden */
+
+  d-footnote-list {
+    contain: layout style;
+  }
+
+  d-footnote-list > * {
+    grid-column: text;
+  }
+
+  d-footnote-list a.footnote-backlink {
+    color: rgba(0,0,0,0.3);
+    padding-left: 0.5em;
+  }
+
+
+
+  /* Anchor.js */
+
+  .anchorjs-link {
+    /*transition: all .25s linear; */
+    text-decoration: none;
+    border-bottom: none;
+  }
+  *:hover > .anchorjs-link {
+    margin-left: -1.125em !important;
+    text-decoration: none;
+    border-bottom: none;
+  }
+
+  /* Social footer */
+
+  .social_footer {
+    margin-top: 30px;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.67);
+  }
+
+  .disqus-comments {
+    margin-right: 30px;
+  }
+
+  .disqus-comment-count {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+  }
+
+  #disqus_thread {
+    margin-top: 30px;
+  }
+
+  .article-sharing a {
+    border-bottom: none;
+    margin-right: 8px;
+  }
+
+  .article-sharing a:hover {
+    border-bottom: none;
+  }
+
+  .sidebar-section.subscribe {
+    font-size: 12px;
+    line-height: 1.6em;
+  }
+
+  .subscribe p {
+    margin-bottom: 0.5em;
+  }
+
+
+  .article-footer .subscribe {
+    font-size: 15px;
+    margin-top: 45px;
+  }
+
+
+  .sidebar-section.custom {
+    font-size: 12px;
+    line-height: 1.6em;
+  }
+
+  .custom p {
+    margin-bottom: 0.5em;
+  }
+
+  /* Styles for listing layout (hide title) */
+  .layout-listing d-title, .layout-listing .d-title {
+    display: none;
+  }
+
+  /* Styles for posts lists (not auto-injected) */
+
+
+  .posts-with-sidebar {
+    padding-left: 45px;
+    padding-right: 45px;
+  }
+
+  .posts-list .description h2,
+  .posts-list .description p {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  }
+
+  .posts-list .description h2 {
+    font-weight: 700;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .posts-list h2.post-tag {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    padding-bottom: 12px;
+  }
+  .posts-list {
+    margin-top: 60px;
+    margin-bottom: 24px;
+  }
+
+  .posts-list .post-preview {
+    text-decoration: none;
+    overflow: hidden;
+    display: block;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 24px 0;
+  }
+
+  .post-preview-last {
+    border-bottom: none !important;
+  }
+
+  .posts-list .posts-list-caption {
+    grid-column: screen;
+    font-weight: 400;
+  }
+
+  .posts-list .post-preview h2 {
+    margin: 0 0 6px 0;
+    line-height: 1.2em;
+    font-style: normal;
+    font-size: 24px;
+  }
+
+  .posts-list .post-preview p {
+    margin: 0 0 12px 0;
+    line-height: 1.4em;
+    font-size: 16px;
+  }
+
+  .posts-list .post-preview .thumbnail {
+    box-sizing: border-box;
+    margin-bottom: 24px;
+    position: relative;
+    max-width: 500px;
+  }
+  .posts-list .post-preview img {
+    width: 100%;
+    display: block;
+  }
+
+  .posts-list .metadata {
+    font-size: 12px;
+    line-height: 1.4em;
+    margin-bottom: 18px;
+  }
+
+  .posts-list .metadata > * {
+    display: inline-block;
+  }
+
+  .posts-list .metadata .publishedDate {
+    margin-right: 2em;
+  }
+
+  .posts-list .metadata .dt-authors {
+    display: block;
+    margin-top: 0.3em;
+    margin-right: 2em;
+  }
+
+  .posts-list .dt-tags {
+    display: block;
+    line-height: 1em;
+  }
+
+  .posts-list .dt-tags .dt-tag {
+    display: inline-block;
+    color: rgba(0,0,0,0.6);
+    padding: 0.3em 0.4em;
+    margin-right: 0.2em;
+    margin-bottom: 0.4em;
+    font-size: 60%;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .posts-list img {
+    opacity: 1;
+  }
+
+  .posts-list img[data-src] {
+    opacity: 0;
+  }
+
+  .posts-more {
+    clear: both;
+  }
+
+
+  .posts-sidebar {
+    font-size: 16px;
+  }
+
+  .posts-sidebar h3 {
+    font-size: 16px;
+    margin-top: 0;
+    margin-bottom: 0.5em;
+    font-weight: 400;
+    text-transform: uppercase;
+  }
+
+  .sidebar-section {
+    margin-bottom: 30px;
+  }
+
+  .categories ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .categories li {
+    color: rgba(0, 0, 0, 0.8);
+    margin-bottom: 0;
+  }
+
+  .categories li>a {
+    border-bottom: none;
+  }
+
+  .categories li>a:hover {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  }
+
+  .categories .active {
+    font-weight: 600;
+  }
+
+  .categories .category-count {
+    color: rgba(0, 0, 0, 0.4);
+  }
+
+
+  @media(min-width: 768px) {
+    .posts-list .post-preview h2 {
+      font-size: 26px;
+    }
+    .posts-list .post-preview .thumbnail {
+      float: right;
+      width: 30%;
+      margin-bottom: 0;
+    }
+    .posts-list .post-preview .description {
+      float: left;
+      width: 45%;
+    }
+    .posts-list .post-preview .metadata {
+      float: left;
+      width: 20%;
+      margin-top: 8px;
+    }
+    .posts-list .post-preview p {
+      margin: 0 0 12px 0;
+      line-height: 1.5em;
+      font-size: 16px;
+    }
+    .posts-with-sidebar .posts-list {
+      float: left;
+      width: 75%;
+    }
+    .posts-with-sidebar .posts-sidebar {
+      float: right;
+      width: 20%;
+      margin-top: 60px;
+      padding-top: 24px;
+      padding-bottom: 24px;
+    }
+  }
+
+
+  /* Improve display for browsers without grid (IE/Edge <= 15) */
+
+  .downlevel {
+    line-height: 1.6em;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+  }
+
+  .downlevel .d-title {
+    padding-top: 6rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .downlevel .d-title h1 {
+    font-size: 50px;
+    font-weight: 700;
+    line-height: 1.1em;
+    margin: 0 0 0.5rem;
+  }
+
+  .downlevel .d-title p {
+    font-weight: 300;
+    font-size: 1.2rem;
+    line-height: 1.55em;
+    margin-top: 0;
+  }
+
+  .downlevel .d-byline {
+    padding-top: 0.8em;
+    padding-bottom: 0.8em;
+    font-size: 0.8rem;
+    line-height: 1.8em;
+  }
+
+  .downlevel .section-separator {
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .downlevel .d-article {
+    font-size: 1.06rem;
+    line-height: 1.7em;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+  }
+
+
+  .downlevel .d-appendix {
+    padding-left: 0;
+    padding-right: 0;
+    max-width: none;
+    font-size: 0.8em;
+    line-height: 1.7em;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.5);
+    padding-top: 40px;
+    padding-bottom: 48px;
+  }
+
+  .downlevel .footnotes ol {
+    padding-left: 13px;
+  }
+
+  .downlevel .base-grid,
+  .downlevel .distill-header,
+  .downlevel .d-title,
+  .downlevel .d-abstract,
+  .downlevel .d-article,
+  .downlevel .d-appendix,
+  .downlevel .distill-appendix,
+  .downlevel .d-byline,
+  .downlevel .d-footnote-list,
+  .downlevel .d-citation-list,
+  .downlevel .distill-footer,
+  .downlevel .appendix-bottom,
+  .downlevel .posts-container {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  @media(min-width: 768px) {
+    .downlevel .base-grid,
+    .downlevel .distill-header,
+    .downlevel .d-title,
+    .downlevel .d-abstract,
+    .downlevel .d-article,
+    .downlevel .d-appendix,
+    .downlevel .distill-appendix,
+    .downlevel .d-byline,
+    .downlevel .d-footnote-list,
+    .downlevel .d-citation-list,
+    .downlevel .distill-footer,
+    .downlevel .appendix-bottom,
+    .downlevel .posts-container {
+    padding-left: 150px;
+    padding-right: 150px;
+    max-width: 900px;
+  }
+  }
+
+  .downlevel pre code {
+    display: block;
+    border-left: 2px solid rgba(0, 0, 0, .1);
+    padding: 0 0 0 20px;
+    font-size: 14px;
+  }
+
+  .downlevel code, .downlevel pre {
+    color: black;
+    background: none;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+
+  .downlevel .posts-list .post-preview {
+    color: inherit;
+  }
+
+
+
+  </style>
+
+  <script type="application/javascript">
+
+  function is_downlevel_browser() {
+    if (bowser.isUnsupportedBrowser({ msie: "12", msedge: "16"},
+                                   window.navigator.userAgent)) {
+      return true;
+    } else {
+      return window.load_distill_framework === undefined;
+    }
+  }
+
+  // show body when load is complete
+  function on_load_complete() {
+
+    // add anchors
+    if (window.anchors) {
+      window.anchors.options.placement = 'left';
+      window.anchors.add('d-article > h2, d-article > h3, d-article > h4, d-article > h5');
+    }
+
+
+    // set body to visible
+    document.body.style.visibility = 'visible';
+
+    // force redraw for leaflet widgets
+    if (window.HTMLWidgets) {
+      var maps = window.HTMLWidgets.findAll(".leaflet");
+      $.each(maps, function(i, el) {
+        var map = this.getMap();
+        map.invalidateSize();
+        map.eachLayer(function(layer) {
+          if (layer instanceof L.TileLayer)
+            layer.redraw();
+        });
+      });
+    }
+
+    // trigger 'shown' so htmlwidgets resize
+    $('d-article').trigger('shown');
+  }
+
+  function init_distill() {
+
+    init_common();
+
+    // create front matter
+    var front_matter = $('<d-front-matter></d-front-matter>');
+    $('#distill-front-matter').wrap(front_matter);
+
+    // create d-title
+    $('.d-title').changeElementType('d-title');
+
+    // separator
+    var separator = '<hr class="section-separator" style="clear: both"/>';
+    // prepend separator above appendix
+    $('.d-byline').before(separator);
+    $('.d-article').before(separator);
+
+    // create d-byline
+    var byline = $('<d-byline></d-byline>');
+    $('.d-byline').replaceWith(byline);
+
+    // create d-article
+    var article = $('<d-article></d-article>');
+    $('.d-article').wrap(article).children().unwrap();
+
+    // move posts container into article
+    $('.posts-container').appendTo($('d-article'));
+
+    // create d-appendix
+    $('.d-appendix').changeElementType('d-appendix');
+
+    // flag indicating that we have appendix items
+    var appendix = $('.appendix-bottom').children('h3').length > 0;
+
+    // replace footnotes with <d-footnote>
+    $('.footnote-ref').each(function(i, val) {
+      appendix = true;
+      var href = $(this).attr('href');
+      var id = href.replace('#', '');
+      var fn = $('#' + id);
+      var fn_p = $('#' + id + '>p');
+      fn_p.find('.footnote-back').remove();
+      var text = fn_p.html();
+      var dtfn = $('<d-footnote></d-footnote>');
+      dtfn.html(text);
+      $(this).replaceWith(dtfn);
+    });
+    // remove footnotes
+    $('.footnotes').remove();
+
+    // move refs into #references-listing
+    $('#references-listing').replaceWith($('#refs'));
+
+    $('h1.appendix, h2.appendix').each(function(i, val) {
+      $(this).changeElementType('h3');
+    });
+    $('h3.appendix').each(function(i, val) {
+      var id = $(this).attr('id');
+      $('.d-contents a[href="#' + id + '"]').parent().remove();
+      appendix = true;
+      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
+    });
+
+    // show d-appendix if we have appendix content
+    $("d-appendix").css('display', appendix ? 'grid' : 'none');
+
+    // localize layout chunks to just output
+    $('.layout-chunk').each(function(i, val) {
+
+      // capture layout
+      var layout = $(this).attr('data-layout');
+
+      // apply layout to markdown level block elements
+      var elements = $(this).children().not('details, div.sourceCode, pre, script');
+      elements.each(function(i, el) {
+        var layout_div = $('<div class="' + layout + '"></div>');
+        if (layout_div.hasClass('shaded')) {
+          var shaded_content = $('<div class="shaded-content"></div>');
+          $(this).wrap(shaded_content);
+          $(this).parent().wrap(layout_div);
+        } else {
+          $(this).wrap(layout_div);
+        }
+      });
+
+
+      // unwrap the layout-chunk div
+      $(this).children().unwrap();
+    });
+
+    // remove code block used to force  highlighting css
+    $('.distill-force-highlighting-css').parent().remove();
+
+    // remove empty line numbers inserted by pandoc when using a
+    // custom syntax highlighting theme, except when numbering line
+    // in code chunk
+    $('pre:not(.numberLines) code.sourceCode a:empty').remove();
+
+    // load distill framework
+    load_distill_framework();
+
+    // wait for window.distillRunlevel == 4 to do post processing
+    function distill_post_process() {
+
+      if (!window.distillRunlevel || window.distillRunlevel < 4)
+        return;
+
+      // hide author/affiliations entirely if we have no authors
+      var front_matter = JSON.parse($("#distill-front-matter").html());
+      var have_authors = front_matter.authors && front_matter.authors.length > 0;
+      if (!have_authors)
+        $('d-byline').addClass('hidden');
+
+      // article with toc class
+      $('.d-contents').parent().addClass('d-article-with-toc');
+
+      // strip links that point to #
+      $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
+
+      // add orcid ids
+      $('.authors-affiliations').find('.author').each(function(i, el) {
+        var orcid_id = front_matter.authors[i].orcidID;
+        var author_name = front_matter.authors[i].author
+        if (orcid_id) {
+          var a = $('<a></a>');
+          a.attr('href', 'https://orcid.org/' + orcid_id);
+          var img = $('<img></img>');
+          img.addClass('orcid-id');
+          img.attr('alt', author_name ? 'ORCID ID for ' + author_name : 'ORCID ID');
+          img.attr('src','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==');
+          a.append(img);
+          $(this).append(a);
+        }
+      });
+
+      // hide elements of author/affiliations grid that have no value
+      function hide_byline_column(caption) {
+        $('d-byline').find('h3:contains("' + caption + '")').parent().css('visibility', 'hidden');
+      }
+
+      // affiliations
+      var have_affiliations = false;
+      for (var i = 0; i<front_matter.authors.length; ++i) {
+        var author = front_matter.authors[i];
+        if (author.affiliation !== "&nbsp;") {
+          have_affiliations = true;
+          break;
+        }
+      }
+      if (!have_affiliations)
+        $('d-byline').find('h3:contains("Affiliations")').css('visibility', 'hidden');
+
+      // published date
+      if (!front_matter.publishedDate)
+        hide_byline_column("Published");
+
+      // document object identifier
+      var doi = $('d-byline').find('h3:contains("DOI")');
+      var doi_p = doi.next().empty();
+      if (!front_matter.doi) {
+        // if we have a citation and valid citationText then link to that
+        if ($('#citation').length > 0 && front_matter.citationText) {
+          doi.html('Citation');
+          $('<a href="#citation"></a>')
+            .text(front_matter.citationText)
+            .appendTo(doi_p);
+        } else {
+          hide_byline_column("DOI");
+        }
+      } else {
+        $('<a></a>')
+           .attr('href', "https://doi.org/" + front_matter.doi)
+           .html(front_matter.doi)
+           .appendTo(doi_p);
+      }
+
+       // change plural form of authors/affiliations
+      if (front_matter.authors.length === 1) {
+        var grid = $('.authors-affiliations');
+        grid.children('h3:contains("Authors")').text('Author');
+        grid.children('h3:contains("Affiliations")').text('Affiliation');
+      }
+
+      // remove d-appendix and d-footnote-list local styles
+      $('d-appendix > style:first-child').remove();
+      $('d-footnote-list > style:first-child').remove();
+
+      // move appendix-bottom entries to the bottom
+      $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
+      $('.appendix-bottom').remove();
+
+      // hoverable references
+      $('span.citation[data-cites]').each(function() {
+        const citeChild = $(this).children()[0]
+        // Do not process if @xyz has been used without escaping and without bibliography activated
+        // https://github.com/rstudio/distill/issues/466
+        if (citeChild === undefined) return true
+
+        if (citeChild.nodeName == "D-FOOTNOTE") {
+          var fn = citeChild
+          $(this).html(fn.shadowRoot.querySelector("sup"))
+          $(this).id = fn.id
+          fn.remove()
+        }
+        var refs = $(this).attr('data-cites').split(" ");
+        var refHtml = refs.map(function(ref) {
+          // Could use CSS.escape too here, we insure backward compatibility in navigator
+          return "<p>" + $('div[id="ref-' + ref + '"]').html() + "</p>";
+        }).join("\n");
+        window.tippy(this, {
+          allowHTML: true,
+          content: refHtml,
+          maxWidth: 500,
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'light-border',
+          placement: 'bottom-start'
+        });
+      });
+
+      // fix footnotes in tables (#411)
+      // replacing broken distill.pub feature
+      $('table d-footnote').each(function() {
+        // we replace internal showAtNode methode which is triggered when hovering a footnote
+        this.hoverBox.showAtNode = function(node) {
+          // ported from https://github.com/distillpub/template/pull/105/files
+          calcOffset = function(elem) {
+              let x = elem.offsetLeft;
+              let y = elem.offsetTop;
+              // Traverse upwards until an `absolute` element is found or `elem`
+              // becomes null.
+              while (elem = elem.offsetParent && elem.style.position != 'absolute') {
+                  x += elem.offsetLeft;
+                  y += elem.offsetTop;
+              }
+
+              return { left: x, top: y };
+          }
+          // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetTop
+          const bbox = node.getBoundingClientRect();
+          const offset = calcOffset(node);
+          this.show([offset.left + bbox.width, offset.top + bbox.height]);
+        }
+      })
+
+      // clear polling timer
+      clearInterval(tid);
+
+      // show body now that everything is ready
+      on_load_complete();
+    }
+
+    var tid = setInterval(distill_post_process, 50);
+    distill_post_process();
+
+  }
+
+  function init_downlevel() {
+
+    init_common();
+
+     // insert hr after d-title
+    $('.d-title').after($('<hr class="section-separator"/>'));
+
+    // check if we have authors
+    var front_matter = JSON.parse($("#distill-front-matter").html());
+    var have_authors = front_matter.authors && front_matter.authors.length > 0;
+
+    // manage byline/border
+    if (!have_authors)
+      $('.d-byline').remove();
+    $('.d-byline').after($('<hr class="section-separator"/>'));
+    $('.d-byline a').remove();
+
+    // remove toc
+    $('.d-contents').remove();
+
+    // move appendix elements
+    $('h1.appendix, h2.appendix').each(function(i, val) {
+      $(this).changeElementType('h3');
+    });
+    $('h3.appendix').each(function(i, val) {
+      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('.d-appendix'));
+    });
+
+
+    // inject headers into references and footnotes
+    var refs_header = $('<h3></h3>');
+    refs_header.text('References');
+    $('#refs').prepend(refs_header);
+
+    var footnotes_header = $('<h3></h3');
+    footnotes_header.text('Footnotes');
+    $('.footnotes').children('hr').first().replaceWith(footnotes_header);
+
+    // move appendix-bottom entries to the bottom
+    $('.appendix-bottom').appendTo('.d-appendix').children().unwrap();
+    $('.appendix-bottom').remove();
+
+    // remove appendix if it's empty
+    if ($('.d-appendix').children().length === 0)
+      $('.d-appendix').remove();
+
+    // prepend separator above appendix
+    $('.d-appendix').before($('<hr class="section-separator" style="clear: both"/>'));
+
+    // trim code
+    $('pre>code').each(function(i, val) {
+      $(this).html($.trim($(this).html()));
+    });
+
+    // move posts-container right before article
+    $('.posts-container').insertBefore($('.d-article'));
+
+    $('body').addClass('downlevel');
+
+    on_load_complete();
+  }
+
+
+  function init_common() {
+
+    // jquery plugin to change element types
+    (function($) {
+      $.fn.changeElementType = function(newType) {
+        var attrs = {};
+
+        $.each(this[0].attributes, function(idx, attr) {
+          attrs[attr.nodeName] = attr.nodeValue;
+        });
+
+        this.replaceWith(function() {
+          return $("<" + newType + "/>", attrs).append($(this).contents());
+        });
+      };
+    })(jQuery);
+
+    // prevent underline for linked images
+    $('a > img').parent().css({'border-bottom' : 'none'});
+
+    // mark non-body figures created by knitr chunks as 100% width
+    $('.layout-chunk').each(function(i, val) {
+      var figures = $(this).find('img, .html-widget');
+      // ignore leaflet img layers (#106)
+      figures = figures.filter(':not(img[class*="leaflet"])')
+      if ($(this).attr('data-layout') !== "l-body") {
+        figures.css('width', '100%');
+      } else {
+        figures.css('max-width', '100%');
+        figures.filter("[width]").each(function(i, val) {
+          var fig = $(this);
+          fig.css('width', fig.attr('width') + 'px');
+        });
+
+      }
+    });
+
+    // auto-append index.html to post-preview links in file: protocol
+    // and in rstudio ide preview
+    $('.post-preview').each(function(i, val) {
+      if (window.location.protocol === "file:")
+        $(this).attr('href', $(this).attr('href') + "index.html");
+    });
+
+    // get rid of index.html references in header
+    if (window.location.protocol !== "file:") {
+      $('.distill-site-header a[href]').each(function(i,val) {
+        $(this).attr('href', $(this).attr('href').replace(/^index[.]html/, "./"));
+      });
+    }
+
+    // add class to pandoc style tables
+    $('tr.header').parent('thead').parent('table').addClass('pandoc-table');
+    $('.kable-table').children('table').addClass('pandoc-table');
+
+    // add figcaption style to table captions
+    $('caption').parent('table').addClass("figcaption");
+
+    // initialize posts list
+    if (window.init_posts_list)
+      window.init_posts_list();
+
+    // implmement disqus comment link
+    $('.disqus-comment-count').click(function() {
+      window.headroom_prevent_pin = true;
+      $('#disqus_thread').toggleClass('hidden');
+      if (!$('#disqus_thread').hasClass('hidden')) {
+        var offset = $(this).offset();
+        $(window).resize();
+        $('html, body').animate({
+          scrollTop: offset.top - 35
+        });
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    if (is_downlevel_browser())
+      init_downlevel();
+    else
+      window.addEventListener('WebComponentsReady', init_distill);
+  });
+
+  </script>
+
+  <!--/radix_placeholder_distill-->
+  <script src="pca_files/header-attrs/header-attrs.js"></script>
+  <script src="pca_files/kePrint/kePrint.js"></script>
+  <link href="pca_files/lightable/lightable.css" rel="stylesheet" />
+  <link href="pca_files/bsTable/bootstrapTable.min.css" rel="stylesheet" />
+  <script src="pca_files/bsTable/bootstrapTable.js"></script>
+  <script src="pca_files/jquery/jquery-3.6.0.min.js"></script>
+  <script src="pca_files/popper/popper.min.js"></script>
+  <link href="pca_files/tippy/tippy.css" rel="stylesheet" />
+  <link href="pca_files/tippy/tippy-light-border.css" rel="stylesheet" />
+  <script src="pca_files/tippy/tippy.umd.min.js"></script>
+  <script src="pca_files/anchor/anchor.min.js"></script>
+  <script src="pca_files/bowser/bowser.min.js"></script>
+  <script src="pca_files/webcomponents/webcomponents.js"></script>
+  <script src="pca_files/distill/template.v2.js"></script>
+  <!--radix_placeholder_site_in_header-->
+  <!--/radix_placeholder_site_in_header-->
+
+
+</head>
+
+<body>
+
+<!--radix_placeholder_front_matter-->
+
+<script id="distill-front-matter" type="text/json">
+{"title":"Principal Component Analysis","description":"A practical introduction to PCA: how it works, when it is useful, what to watch out for, and how to implement it in R.","authors":[{"author":"Jasper Lok","authorURL":"https://jasperlok.netlify.app/","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2026-01-26T00:00:00.000+08:00","citationText":"Lok, 2026"}
+</script>
+
+<!--/radix_placeholder_front_matter-->
+<!--radix_placeholder_navigation_before_body-->
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="d-title">
+<h1>Principal Component Analysis</h1>
+
+<!--radix_placeholder_categories-->
+<div class="dt-tags">
+<div class="dt-tag">Principal component analysis</div>
+<div class="dt-tag">Dimensionality reduction</div>
+</div>
+<!--/radix_placeholder_categories-->
+<p><p>A practical introduction to PCA: how it works, when it is useful, what to watch out for, and how to implement it in R.</p></p>
+</div>
+
+<div class="d-byline">
+  Jasper Lok <a href="https://jasperlok.netlify.app/" class="uri">https://jasperlok.netlify.app/</a> 
+  
+<br/>01-26-2026
+</div>
+
+<div class="d-article">
+<div class="d-contents d-contents-float">
+<nav class="l-text toc figcaption" id="TOC">
+<h3>Contents</h3>
+<ul>
+<li><a href="#what-is-principal-component-analysis" id="toc-what-is-principal-component-analysis">What is principal component analysis?</a></li>
+<li><a href="#how-does-pca-work" id="toc-how-does-pca-work">How does PCA work?</a></li>
+<li><a href="#why-use-pca" id="toc-why-use-pca">Why use PCA?</a></li>
+<li><a href="#pros-and-cons-of-pca" id="toc-pros-and-cons-of-pca">Pros and cons of PCA</a>
+<ul>
+<li><a href="#pros" id="toc-pros">Pros</a></li>
+<li><a href="#cons" id="toc-cons">Cons</a></li>
+</ul></li>
+<li><a href="#considerations-when-using-pca" id="toc-considerations-when-using-pca">Considerations when using PCA</a>
+<ul>
+<li><a href="#use-numeric-variables" id="toc-use-numeric-variables">Use numeric variables</a></li>
+<li><a href="#scale-the-variables" id="toc-scale-the-variables">Scale the variables</a></li>
+<li><a href="#handle-missing-values" id="toc-handle-missing-values">Handle missing values</a></li>
+<li><a href="#watch-for-outliers" id="toc-watch-for-outliers">Watch for outliers</a></li>
+<li><a href="#fit-preprocessing-on-training-data-only" id="toc-fit-preprocessing-on-training-data-only">Fit preprocessing on training data only</a></li>
+<li><a href="#decide-how-many-components-to-keep" id="toc-decide-how-many-components-to-keep">Decide how many components to keep</a></li>
+</ul></li>
+<li><a href="#practical-uses-of-pca" id="toc-practical-uses-of-pca">Practical uses of PCA</a></li>
+<li><a href="#demonstration" id="toc-demonstration">Demonstration</a>
+<ul>
+<li><a href="#import-data" id="toc-import-data">Import data</a></li>
+<li><a href="#prepare-numeric-variables" id="toc-prepare-numeric-variables">Prepare numeric variables</a></li>
+<li><a href="#run-pca" id="toc-run-pca">Run PCA</a></li>
+<li><a href="#variance-explained" id="toc-variance-explained">Variance explained</a></li>
+<li><a href="#pca-scores" id="toc-pca-scores">PCA scores</a></li>
+<li><a href="#pca-loadings" id="toc-pca-loadings">PCA loadings</a></li>
+<li><a href="#biplot" id="toc-biplot">Biplot</a></li>
+<li><a href="#how-many-components-should-we-keep" id="toc-how-many-components-should-we-keep">How many components should we keep?</a></li>
+<li><a href="#using-pca-components-in-a-model" id="toc-using-pca-components-in-a-model">Using PCA components in a model</a></li>
+</ul></li>
+<li><a href="#conclusion" id="toc-conclusion">Conclusion</a></li>
+</ul>
+</nav>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="image/ryan-fields-Xz7MMD5tZwA-unsplash.jpg" width="100%" /></p>
+</div>
+<p>Photo by <a href="https://unsplash.com/@rfieldss?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Ryan Fields</a> on <a href="https://unsplash.com/photos/boy-playing-cube-on-white-wooden-table-Xz7MMD5tZwA?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a></p>
+<h1 id="what-is-principal-component-analysis">What is principal component analysis?</h1>
+<p>Principal component analysis (PCA) is a dimensionality reduction technique. It takes a dataset with many numeric variables and creates a smaller set of new variables called <em>principal components</em> <span class="citation" data-cites="jolliffe2016 abdi2010">(<a href="#ref-jolliffe2016" role="doc-biblioref">Jolliffe and Cadima 2016</a>; <a href="#ref-abdi2010" role="doc-biblioref">Abdi and Williams 2010</a>)</span>.</p>
+<p>Each principal component is a weighted combination of the original variables. The first principal component captures the largest possible amount of variation in the data. The second principal component captures the largest possible amount of the remaining variation, while remaining uncorrelated with the first component. The same idea continues for the later components.</p>
+<p>The important idea is that PCA does not choose existing variables. Instead, it builds new axes that summarize the main patterns of variation in the original data.</p>
+<p>For example, suppose a dataset has several variables related to size, such as radius, perimeter, and area. These variables are likely to move together. PCA can combine them into one component that represents an overall “size” direction. Instead of looking at all three variables separately, we can examine the component score.</p>
+<h1 id="how-does-pca-work">How does PCA work?</h1>
+<p>At a high level, PCA follows these steps:</p>
+<ol type="1">
+<li>Start with a numeric dataset.</li>
+<li>Center each variable by subtracting its mean.</li>
+<li>Usually scale each variable by dividing by its standard deviation.</li>
+<li>Find directions in the data where observations vary the most.</li>
+<li>Project each observation onto those new directions.</li>
+<li>Keep the first few components if they explain enough variation for the task.</li>
+</ol>
+<p>In R, <code>prcomp()</code> performs PCA using singular value decomposition. This is generally the preferred numerical approach because it is stable and efficient.</p>
+<p>Another way to describe PCA is that it studies the covariance or correlation structure of the variables. If the variables are measured on very different scales, PCA is usually performed on the correlation matrix, which is equivalent to scaling the variables first. If the variables are already measured on the same meaningful scale, PCA on the covariance matrix may be appropriate.</p>
+<p>Mathematically, PCA finds the <em>eigenvectors</em> and <em>eigenvalues</em> of the covariance or correlation matrix. The eigenvectors define the directions of the principal components. The eigenvalues tell us how much variance is captured by each component. A larger eigenvalue means that the corresponding component explains more variation in the data.</p>
+<p>The main outputs from PCA are:</p>
+<ul>
+<li><strong>Standard deviations</strong>: the spread of each principal component.</li>
+<li><strong>Proportion of variance explained</strong>: how much information each component captures.</li>
+<li><strong>Loadings</strong>: how much each original variable contributes to each component.</li>
+<li><strong>Scores</strong>: the transformed data values for each observation on the principal components.</li>
+</ul>
+<p>Scores and loadings answer different questions. Scores describe where each observation sits on the new PCA axes. Loadings describe how the original variables define those axes.</p>
+<p>The loadings are especially useful for interpretation. A high positive or negative loading means the original variable contributes strongly to that principal component. The sign itself is arbitrary: if all signs for a component are flipped, the component still represents the same direction. Therefore, the interpretation should focus on which variables move together and which variables move in opposite directions.</p>
+<p>Principal components are orthogonal, meaning that they are uncorrelated with one another. This is one reason PCA can be useful when the original variables are highly correlated.</p>
+<h1 id="why-use-pca">Why use PCA?</h1>
+<p>PCA is useful when a dataset contains many correlated numeric variables. Instead of carrying all variables into an analysis, we can use a smaller number of components that retain most of the original variation.</p>
+<p>Common reasons to use PCA include:</p>
+<ul>
+<li><strong>Visualization</strong>: plot high-dimensional data in two or three dimensions.</li>
+<li><strong>Noise reduction</strong>: keep broad signal and remove small unstable variation.</li>
+<li><strong>Feature engineering</strong>: create compact inputs for machine learning models.</li>
+<li><strong>Collinearity reduction</strong>: replace highly correlated predictors with uncorrelated components.</li>
+<li><strong>Data compression</strong>: represent many variables with fewer dimensions.</li>
+</ul>
+<p>PCA is an unsupervised method. This means it does not use the outcome variable when creating the components. If the goal is prediction, PCA may or may not improve model performance. The components that explain the most predictor variation are not always the components that best predict the outcome <span class="citation" data-cites="james2021">(<a href="#ref-james2021" role="doc-biblioref">James et al. 2021</a>)</span>.</p>
+<h1 id="pros-and-cons-of-pca">Pros and cons of PCA</h1>
+<h2 id="pros">Pros</h2>
+<ul>
+<li>PCA can simplify a dataset with many correlated variables.</li>
+<li>The principal components are uncorrelated with one another.</li>
+<li>It can make high-dimensional patterns easier to visualize.</li>
+<li>It can reduce noise by focusing on the strongest sources of variation.</li>
+<li>It is fast and widely available in statistical software.</li>
+</ul>
+<h2 id="cons">Cons</h2>
+<ul>
+<li>The components are less interpretable than the original variables.</li>
+<li>PCA only captures linear combinations of variables.</li>
+<li>Results are sensitive to scaling.</li>
+<li>Outliers can strongly influence the components.</li>
+<li>The components may not align with the outcome you care about.</li>
+</ul>
+<h1 id="considerations-when-using-pca">Considerations when using PCA</h1>
+<h2 id="use-numeric-variables">Use numeric variables</h2>
+<p>PCA is designed for numeric variables. Categorical variables need to be handled separately, for example by using dummy variables, multiple correspondence analysis, or another method suited to the data type.</p>
+<h2 id="scale-the-variables">Scale the variables</h2>
+<p>Scaling is one of the most important choices in PCA. Variables with larger units or wider ranges can dominate the analysis if the data is not scaled.</p>
+<p>For most practical use cases, especially when variables are measured in different units, use:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/stats/prcomp.html'>prcomp</a></span><span class='op'>(</span><span class='va'>x</span>, center <span class='op'>=</span> <span class='cn'>TRUE</span>, scale. <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<h2 id="handle-missing-values">Handle missing values</h2>
+<p><code>prcomp()</code> cannot handle missing values directly. Missing values need to be removed or imputed before PCA.</p>
+<h2 id="watch-for-outliers">Watch for outliers</h2>
+<p>PCA is sensitive to outliers because it is based on variance. A small number of unusual observations can change the direction of the principal components.</p>
+<h2 id="fit-preprocessing-on-training-data-only">Fit preprocessing on training data only</h2>
+<p>If PCA is part of a predictive modelling workflow, the centering, scaling, and PCA components should be estimated on the training data only. The same transformation should then be applied to the validation or test data. This avoids data leakage.</p>
+<h2 id="decide-how-many-components-to-keep">Decide how many components to keep</h2>
+<p>There is no universal rule, but common approaches include:</p>
+<ul>
+<li>keeping enough components to explain a chosen percentage of variance, such as 80% or 90%;</li>
+<li>inspecting a scree plot and looking for an elbow;</li>
+<li>choosing the number of components using cross-validation if PCA is part of a model.</li>
+</ul>
+<h1 id="practical-uses-of-pca">Practical uses of PCA</h1>
+<p>PCA appears in many applied data science workflows:</p>
+<ul>
+<li><strong>Exploratory data analysis</strong>: checking whether observations naturally cluster.</li>
+<li><strong>Biomedical data</strong>: summarizing many measurements, such as gene expression or imaging features.</li>
+<li><strong>Customer analytics</strong>: reducing many behavioural variables into a few behavioural dimensions.</li>
+<li><strong>Finance</strong>: extracting common factors from many correlated asset returns.</li>
+<li><strong>Image processing</strong>: compressing high-dimensional pixel information.</li>
+<li><strong>Machine learning</strong>: reducing predictor dimensions before modelling.</li>
+</ul>
+<h1 id="demonstration">Demonstration</h1>
+<p>In this demonstration, we will use the data in the <code>data</code> folder. The dataset contains a diagnosis column and 30 numeric measurements. PCA will be performed only on the numeric measurement columns. The diagnosis column will be kept aside and used later to colour the PCA plot.</p>
+<h2 id="import-data">Import data</h2>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>df_raw</span> <span class='op'>&lt;-</span></span>
+<span>  <span class='fu'>read_csv</span><span class='op'>(</span><span class='st'>"data/data.csv"</span>, show_col_types <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='fu'>glimpse</span><span class='op'>(</span><span class='va'>df_raw</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>Rows: 568
+Columns: 33
+$ id                      &lt;dbl&gt; 842302, 842517, 84300903, 84348301, …
+$ diagnosis               &lt;chr&gt; &quot;M&quot;, &quot;M&quot;, &quot;M&quot;, &quot;M&quot;, &quot;M&quot;, &quot;M&quot;, &quot;M&quot;, &quot;…
+$ radius_mean             &lt;dbl&gt; 17.990, 20.570, 19.690, 11.420, 20.2…
+$ texture_mean            &lt;dbl&gt; 10.38, 17.77, 21.25, 20.38, 14.34, 1…
+$ perimeter_mean          &lt;dbl&gt; 122.80, 132.90, 130.00, 77.58, 135.1…
+$ area_mean               &lt;dbl&gt; 1001.0, 1326.0, 1203.0, 386.1, 1297.…
+$ smoothness_mean         &lt;dbl&gt; 0.11840, 0.08474, 0.10960, 0.14250, …
+$ compactness_mean        &lt;dbl&gt; 0.27760, 0.07864, 0.15990, 0.28390, …
+$ concavity_mean          &lt;dbl&gt; 0.30010, 0.08690, 0.19740, 0.24140, …
+$ `concave points_mean`   &lt;dbl&gt; 0.14710, 0.07017, 0.12790, 0.10520, …
+$ symmetry_mean           &lt;dbl&gt; 0.2419, 0.1812, 0.2069, 0.2597, 0.18…
+$ fractal_dimension_mean  &lt;dbl&gt; 0.07871, 0.05667, 0.05999, 0.09744, …
+$ radius_se               &lt;dbl&gt; 1.0950, 0.5435, 0.7456, 0.4956, 0.75…
+$ texture_se              &lt;dbl&gt; 0.9053, 0.7339, 0.7869, 1.1560, 0.78…
+$ perimeter_se            &lt;dbl&gt; 8.589, 3.398, 4.585, 3.445, 5.438, 2…
+$ area_se                 &lt;dbl&gt; 153.40, 74.08, 94.03, 27.23, 94.44, …
+$ smoothness_se           &lt;dbl&gt; 0.006399, 0.005225, 0.006150, 0.0091…
+$ compactness_se          &lt;dbl&gt; 0.049040, 0.013080, 0.040060, 0.0745…
+$ concavity_se            &lt;dbl&gt; 0.05373, 0.01860, 0.03832, 0.05661, …
+$ `concave points_se`     &lt;dbl&gt; 0.015870, 0.013400, 0.020580, 0.0186…
+$ symmetry_se             &lt;dbl&gt; 0.03003, 0.01389, 0.02250, 0.05963, …
+$ fractal_dimension_se    &lt;dbl&gt; 0.006193, 0.003532, 0.004571, 0.0092…
+$ radius_worst            &lt;dbl&gt; 25.38, 24.99, 23.57, 14.91, 22.54, 1…
+$ texture_worst           &lt;dbl&gt; 17.33, 23.41, 25.53, 26.50, 16.67, 2…
+$ perimeter_worst         &lt;dbl&gt; 184.60, 158.80, 152.50, 98.87, 152.2…
+$ area_worst              &lt;dbl&gt; 2019.0, 1956.0, 1709.0, 567.7, 1575.…
+$ smoothness_worst        &lt;dbl&gt; 0.1622, 0.1238, 0.1444, 0.2098, 0.13…
+$ compactness_worst       &lt;dbl&gt; 0.6656, 0.1866, 0.4245, 0.8663, 0.20…
+$ concavity_worst         &lt;dbl&gt; 0.71190, 0.24160, 0.45040, 0.68690, …
+$ `concave points_worst`  &lt;dbl&gt; 0.26540, 0.18600, 0.24300, 0.25750, …
+$ symmetry_worst          &lt;dbl&gt; 0.4601, 0.2750, 0.3613, 0.6638, 0.23…
+$ fractal_dimension_worst &lt;dbl&gt; 0.11890, 0.08902, 0.08758, 0.17300, …
+$ ...33                   &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, …</code></pre>
+</div>
+<p>The last column in the CSV is an empty column created by a trailing comma. We remove that column and the ID field, then convert the diagnosis variable into a factor.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>df</span> <span class='op'>&lt;-</span></span>
+<span>  <span class='va'>df_raw</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>select</span><span class='op'>(</span><span class='op'>-</span><span class='va'>id</span>, <span class='op'>-</span><span class='va'>`...33`</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>mutate</span><span class='op'>(</span></span>
+<span>    diagnosis <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span></span>
+<span>      <span class='va'>diagnosis</span>,</span>
+<span>      levels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"B"</span>, <span class='st'>"M"</span><span class='op'>)</span>,</span>
+<span>      labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Benign"</span>, <span class='st'>"Malignant"</span><span class='op'>)</span></span>
+<span>    <span class='op'>)</span></span>
+<span>  <span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>df</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>count</span><span class='op'>(</span><span class='va'>diagnosis</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>kbl</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>kable_styling</span><span class='op'>(</span>full_width <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span></code></pre>
+</div>
+<table class="table" style="color: black; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+diagnosis
+</th>
+<th style="text-align:right;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Benign
+</td>
+<td style="text-align:right;">
+356
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Malignant
+</td>
+<td style="text-align:right;">
+212
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="prepare-numeric-variables">Prepare numeric variables</h2>
+<p>PCA should be run on numeric variables only. We separate the numeric measurement columns from the diagnosis label.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>pca_data</span> <span class='op'>&lt;-</span></span>
+<span>  <span class='va'>df</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>select</span><span class='op'>(</span><span class='fu'>where</span><span class='op'>(</span><span class='va'>is.numeric</span><span class='op'>)</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>pca_data</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>summarise</span><span class='op'>(</span></span>
+<span>    variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>ncol</a></span><span class='op'>(</span><span class='va'>pca_data</span><span class='op'>)</span>,</span>
+<span>    observations <span class='op'>=</span> <span class='fu'>n</span><span class='op'>(</span><span class='op'>)</span></span>
+<span>  <span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>kbl</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>kable_styling</span><span class='op'>(</span>full_width <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span></code></pre>
+</div>
+<table class="table" style="color: black; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+variables
+</th>
+<th style="text-align:right;">
+observations
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+30
+</td>
+<td style="text-align:right;">
+568
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The variables in this dataset are on different scales. For example, <code>area_mean</code> is much larger than <code>smoothness_mean</code>. Therefore, we center and scale the variables inside <code>prcomp()</code>.</p>
+<h2 id="run-pca">Run PCA</h2>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>pca_fit</span> <span class='op'>&lt;-</span></span>
+<span>  <span class='fu'><a href='https://rdrr.io/r/stats/prcomp.html'>prcomp</a></span><span class='op'>(</span></span>
+<span>    <span class='va'>pca_data</span>,</span>
+<span>    center <span class='op'>=</span> <span class='cn'>TRUE</span>,</span>
+<span>    scale. <span class='op'>=</span> <span class='cn'>TRUE</span></span>
+<span>  <span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>pca_fit</span></span></code></pre>
+</div>
+<pre><code>Standard deviations (1, .., p=30):
+ [1] 3.64295244 2.38869143 1.67894368 1.40543946 1.28662224 1.09816012
+ [7] 0.81948734 0.68973063 0.64617612 0.59265704 0.54282363 0.51174870
+[13] 0.49126431 0.39418411 0.30696370 0.28022175 0.24367475 0.22979963
+[19] 0.22256021 0.17656329 0.17286533 0.16546760 0.15628910 0.13442300
+[25] 0.12457521 0.08929458 0.08295289 0.03992805 0.02727751 0.01153443
+
+Rotation (n x k) = (30 x 30):
+                                PC1          PC2          PC3
+radius_mean             -0.21881792  0.234239054 -0.007631417
+texture_mean            -0.10516984  0.059204514  0.060139514
+perimeter_mean          -0.22749134  0.215517827 -0.008474256
+area_mean               -0.22097286  0.231043649  0.029195638
+smoothness_mean         -0.14179517 -0.187425036 -0.103127483
+compactness_mean        -0.23922926 -0.152128477 -0.074383750
+concavity_mean          -0.25845813 -0.060413846  0.002588374
+concave points_mean     -0.26092758  0.034483570 -0.025580609
+symmetry_mean           -0.13791630 -0.190397070 -0.040703541
+fractal_dimension_mean  -0.06397614 -0.366276130 -0.022587094
+radius_se               -0.20647288  0.104938875  0.267523939
+texture_se              -0.01784321 -0.090070005  0.372448884
+perimeter_se            -0.21176806  0.088889906  0.265765872
+area_se                 -0.20311177  0.151752513  0.215546851
+smoothness_se           -0.01456053 -0.204320527  0.308569303
+compactness_se          -0.17007324 -0.232655313  0.155504444
+concavity_se            -0.15325769 -0.197100361  0.177575326
+concave points_se       -0.18300683 -0.130503020  0.227226864
+symmetry_se             -0.04316345 -0.183948547  0.287379772
+fractal_dimension_se    -0.10243919 -0.279754331  0.211854637
+radius_worst            -0.22798701  0.219842246 -0.047385014
+texture_worst           -0.10548434  0.044996460 -0.046664372
+perimeter_worst         -0.23665530  0.199845857 -0.048459160
+area_worst              -0.22492615  0.219090225 -0.012030438
+smoothness_worst        -0.12721259 -0.172738623 -0.260332401
+compactness_worst       -0.20992016 -0.143718586 -0.236879375
+concavity_worst         -0.22865404 -0.098113058 -0.173491141
+concave points_worst    -0.25087269  0.008125428 -0.170441978
+symmetry_worst          -0.12311738 -0.141954940 -0.272969241
+fractal_dimension_worst -0.13149178 -0.275204637 -0.233520028
+                                 PC4          PC5           PC6
+radius_mean              0.040090513 -0.037815260  2.015011e-02
+texture_mean            -0.602609820  0.054570943 -2.885626e-02
+perimeter_mean           0.040816853 -0.037452684  1.854644e-02
+area_mean                0.052977265 -0.010303922 -1.783797e-03
+smoothness_mean          0.158911550  0.368500985 -2.819897e-01
+compactness_mean         0.033426349 -0.012533967 -1.550206e-02
+concavity_mean           0.019595004 -0.086603278 -1.104075e-02
+concave points_mean      0.066459107  0.043582261 -5.247323e-02
+symmetry_mean            0.071338132  0.301802723  3.604197e-01
+fractal_dimension_mean   0.049355816  0.044000935 -1.207142e-01
+radius_se                0.099487741  0.154246070 -2.814973e-02
+texture_se              -0.362830631  0.195931376 -2.101436e-02
+perimeter_se             0.090329043  0.120679451 -7.622993e-04
+area_se                  0.109202805  0.127398593 -4.523055e-02
+smoothness_se            0.042442469  0.234124844 -3.404089e-01
+compactness_se          -0.030521661 -0.279879246  6.788056e-02
+concavity_se            -0.002611836 -0.353510832  5.444491e-02
+concave points_se        0.069039906 -0.195224279 -2.984714e-02
+symmetry_se              0.047477112  0.249262056  4.925274e-01
+fractal_dimension_se     0.012516610 -0.262247823 -5.652298e-02
+radius_worst             0.015617823  0.004352412 -1.693511e-05
+texture_worst           -0.631765192  0.097863254 -4.501373e-02
+perimeter_worst          0.014077494 -0.007620065  8.584123e-03
+area_worst               0.026622033  0.027405636 -2.583405e-02
+smoothness_worst         0.018780680  0.326045176 -3.663533e-01
+compactness_worst       -0.089552344 -0.122819321  4.623765e-02
+concavity_worst         -0.073445239 -0.189049889  2.673057e-02
+concave points_worst     0.006613256 -0.043935341 -3.076074e-02
+symmetry_worst          -0.028505563  0.239038186  5.002492e-01
+fractal_dimension_worst -0.075093596 -0.094858599 -8.292372e-02
+                                  PC7          PC8          PC9
+radius_mean             -0.1210825163  0.004695092 -0.223367522
+texture_mean             0.0104741267 -0.128347246  0.114156824
+perimeter_mean          -0.1116498060  0.016213398 -0.224313463
+area_mean               -0.0506449116 -0.036833252 -0.195214821
+smoothness_mean         -0.1362708084  0.290157864  0.002938972
+compactness_mean         0.0300924469  0.152933522 -0.171656407
+concavity_mean          -0.1105987684  0.078938331  0.036622885
+concave points_mean     -0.1530322533  0.157750531 -0.117100373
+symmetry_mean           -0.0889059857  0.233510165  0.251942541
+fractal_dimension_mean   0.2966495161  0.172898641 -0.125331777
+radius_se                0.3098287370 -0.022961586  0.251959697
+texture_se              -0.0793446886  0.469569971 -0.252045366
+perimeter_se             0.3128292121  0.011235771  0.228758867
+area_se                  0.3450330061 -0.088438658  0.232819495
+smoothness_se           -0.2539394875 -0.570051990 -0.138328581
+compactness_se           0.0261977069 -0.121998445 -0.142837535
+concavity_se            -0.2098142922 -0.054383273  0.357634039
+concave points_se       -0.3694794470  0.115514547  0.270628379
+symmetry_se             -0.0775734863 -0.224210800 -0.300272132
+fractal_dimension_se     0.1927362061 -0.017296303 -0.212058810
+radius_worst            -0.0085852365 -0.045222560 -0.110690806
+texture_worst            0.0118001462 -0.036657534  0.104680407
+perimeter_worst          0.0006675781 -0.032915497 -0.108450604
+area_worst               0.0675606370 -0.082082769 -0.078570028
+smoothness_worst        -0.1140853879 -0.204995591  0.114566318
+compactness_worst        0.1407342332 -0.087446270 -0.098519999
+concavity_worst         -0.0628724524 -0.068753065  0.161940930
+concave points_worst    -0.1701523777  0.040578008  0.058945060
+symmetry_worst          -0.0179730470 -0.229626477  0.068932052
+fractal_dimension_worst  0.3745225516 -0.055690193 -0.130969409
+                                PC10        PC11        PC12
+radius_mean              0.095140499 -0.04134968  0.05153745
+texture_mean             0.240972509  0.30227692  0.25694014
+perimeter_mean           0.086109375 -0.01700203  0.03972942
+area_mean                0.074433373 -0.11027662  0.06715925
+smoothness_mean         -0.069376443  0.13850391  0.31660719
+compactness_mean         0.013815636  0.30446408 -0.10173625
+concavity_mean          -0.135441907 -0.12797662  0.07220610
+concave points_mean      0.008661336  0.06918431  0.04453987
+symmetry_mean            0.572340492 -0.16758684 -0.28549936
+fractal_dimension_mean   0.081548658  0.03690164  0.23634878
+radius_se               -0.049504646  0.02631043 -0.01816796
+texture_se              -0.289389565 -0.34657505 -0.30810322
+perimeter_se            -0.114135292  0.16748073 -0.10325594
+area_se                 -0.092195271 -0.05026378 -0.01738110
+smoothness_se            0.161233625 -0.08606874 -0.29165025
+compactness_se           0.043311594  0.20717615 -0.26339601
+concavity_se            -0.141893459 -0.34915121  0.25521042
+concave points_se        0.087571674  0.34434120 -0.01612393
+symmetry_se             -0.317250438  0.19030106  0.31956203
+fractal_dimension_se     0.366275855 -0.24792901  0.27490631
+radius_worst             0.076961162 -0.10378242  0.03820208
+texture_worst            0.029238767 -0.01188722  0.07827365
+perimeter_worst          0.050223567 -0.05028812 -0.01016145
+area_worst               0.069366868 -0.18322221  0.04751030
+smoothness_worst        -0.127950346 -0.14236445  0.05222978
+compactness_worst       -0.171802740  0.19723287 -0.37205168
+concavity_worst         -0.311841374 -0.18627177 -0.08293128
+concave points_worst    -0.075998946  0.11795598 -0.07286427
+symmetry_worst          -0.029893077 -0.15419262  0.04128698
+fractal_dimension_worst  0.012632883 -0.11634594 -0.03667799
+                                PC13         PC14         PC15
+radius_mean              0.012396516  0.055025428 -0.055454188
+texture_mean             0.203693986 -0.029834626 -0.111928604
+perimeter_mean           0.044552430  0.043897294 -0.043403822
+area_mean                0.065629657  0.007085894  0.009987339
+smoothness_mean          0.048934823  0.442005756 -0.119844893
+compactness_mean         0.229014173  0.011142195  0.237647263
+concavity_mean           0.378992188 -0.188553490 -0.123000108
+concave points_mean      0.122108465 -0.233050979 -0.208528446
+symmetry_mean            0.194363052  0.024911521 -0.077639014
+fractal_dimension_mean   0.096984352 -0.388433284  0.512632356
+radius_se               -0.066593367  0.013824991 -0.107531515
+texture_se              -0.169311797 -0.005108548  0.032532749
+perimeter_se            -0.033938446 -0.046807361 -0.008156501
+area_se                  0.060951234  0.075707134 -0.047515667
+smoothness_se            0.152782284 -0.205730067  0.014160273
+compactness_se           0.025357009  0.490624890  0.174537546
+concavity_se             0.156722951  0.129438112  0.248537331
+concave points_se       -0.494364620 -0.194014242  0.056553923
+symmetry_se              0.006857735 -0.052162932 -0.116631652
+fractal_dimension_se    -0.246596324  0.161242858 -0.344253014
+radius_worst            -0.138946835  0.025134279  0.166034693
+texture_worst           -0.079430686  0.054508904  0.104893974
+perimeter_worst         -0.096905138  0.012997317  0.182525721
+area_worst              -0.103312398 -0.005544014  0.313918006
+smoothness_worst        -0.205487957  0.168620197  0.053649776
+compactness_worst        0.023824297  0.162515725 -0.052708575
+concavity_worst          0.218703278 -0.074047117 -0.210891711
+concave points_worst    -0.259017626 -0.267166881 -0.167529151
+symmetry_worst          -0.256968936  0.012703139  0.144710246
+fractal_dimension_worst -0.174060100 -0.217446340 -0.268104837
+                               PC16         PC17         PC18
+radius_mean             -0.14358839  0.203613164  0.164365922
+texture_mean            -0.15466082 -0.035259916 -0.036672756
+perimeter_mean          -0.10710195  0.194357959  0.175766038
+area_mean               -0.12649020  0.253638393  0.273302158
+smoothness_mean         -0.21216980  0.180531771 -0.349422491
+compactness_mean         0.15363662 -0.016563108  0.023214283
+concavity_mean           0.27925673 -0.010022302 -0.032450972
+concave points_mean      0.38872219  0.025074716 -0.095181666
+symmetry_mean           -0.16267415 -0.193544665  0.167648968
+fractal_dimension_mean  -0.03555338  0.045490001  0.083185503
+radius_se                0.05339836 -0.133481903 -0.229887257
+texture_se              -0.03881154  0.046856344 -0.004965596
+perimeter_se             0.02769637 -0.023350884 -0.010857275
+area_se                  0.05896805  0.321600972  0.290318228
+smoothness_se           -0.05201745  0.144708017 -0.230325964
+compactness_se           0.18343511 -0.016317539  0.085520245
+concavity_se            -0.13619137  0.092365569  0.012373655
+concave points_se       -0.19825979  0.112431955  0.051481166
+symmetry_se             -0.15469161 -0.277103718  0.177730696
+fractal_dimension_se     0.26631419 -0.126478457 -0.061474065
+radius_worst            -0.09547812 -0.231897733 -0.219324340
+texture_worst            0.18844699  0.062837866  0.050593401
+perimeter_worst         -0.06703311 -0.227544281 -0.189414171
+area_worst              -0.10815407 -0.267400337 -0.165540592
+smoothness_worst         0.13609211 -0.287967235  0.506785908
+compactness_worst       -0.15809516  0.003046941 -0.068923389
+concavity_worst         -0.20911141 -0.188095108 -0.110115286
+concave points_worst     0.19130079 -0.086968189  0.054696741
+symmetry_worst           0.25767135  0.433842410 -0.266064510
+fractal_dimension_worst -0.39222314  0.166786671  0.032150956
+                                PC19         PC20          PC21
+radius_mean              0.214705896 -0.043913074 -0.0682390819
+texture_mean             0.030514424 -0.271096264  0.4357280922
+perimeter_mean           0.228979742 -0.011427825 -0.0667040494
+area_mean               -0.047477310 -0.091181648 -0.0282417981
+smoothness_mean         -0.151354737  0.022928033 -0.1181022854
+compactness_mean         0.281576766  0.473201369  0.2183034431
+concavity_mean           0.008807391 -0.033632800  0.0006957246
+concave points_mean     -0.146099342 -0.238699242 -0.0372559141
+symmetry_mean           -0.066777101  0.031013696 -0.0871908440
+fractal_dimension_mean  -0.060602472 -0.164359332 -0.0717613871
+radius_se                0.190511517 -0.096366839  0.0781843438
+texture_se               0.034375016 -0.085521103  0.2131880462
+perimeter_se             0.368995033 -0.153843226 -0.3074603541
+area_se                 -0.434871691  0.261003377  0.2104194996
+smoothness_se           -0.002653827  0.095991649 -0.0621099083
+compactness_se          -0.245052839 -0.452183463 -0.1734120815
+concavity_se             0.120897057  0.057945421  0.0552243358
+concave points_se       -0.018338133  0.062767793  0.0312792534
+symmetry_se             -0.096454243  0.112169139 -0.0950979635
+fractal_dimension_se     0.093736033  0.223881415  0.0917577604
+radius_worst             0.026009291 -0.006646358  0.0051324073
+texture_worst           -0.076267578  0.337404927 -0.5780200228
+perimeter_worst          0.102743064  0.018564367 -0.0873730994
+area_worst              -0.403542254  0.046172466  0.1411240472
+smoothness_worst         0.211733800 -0.140552089  0.1515143331
+compactness_worst        0.021004457  0.217205187  0.1973689072
+concavity_worst         -0.037520601 -0.030317673 -0.1135543575
+concave points_worst    -0.259080369  0.040488574  0.0209125244
+symmetry_worst           0.128958871 -0.125261087  0.1610802637
+fractal_dimension_worst -0.018977724 -0.109462901 -0.1258104515
+                               PC22          PC23         PC24
+radius_mean             -0.07731381 -0.0983949886 -0.182903394
+texture_mean            -0.07822058 -0.0001888397  0.099263358
+perimeter_mean          -0.07824063 -0.0400631736 -0.116294438
+area_mean               -0.10896641  0.0065640660  0.066928802
+smoothness_mean         -0.07304312 -0.0217746598  0.066195167
+compactness_mean         0.11671843  0.0532791141 -0.104176869
+concavity_mean           0.19197873  0.3258872109  0.049957831
+concave points_mean      0.30808462 -0.0511101768  0.084174646
+symmetry_mean            0.01371651 -0.0516774339  0.018963772
+fractal_dimension_mean  -0.29349478 -0.0842161500 -0.133777661
+radius_se                0.15639165 -0.2617733751 -0.558295839
+texture_se              -0.04060584 -0.0006993103  0.024279120
+perimeter_se            -0.17794235  0.0867035878  0.515388816
+area_se                 -0.05019704  0.0996007493 -0.021421013
+smoothness_se           -0.05113984 -0.0599225554  0.015374339
+compactness_se           0.02706653  0.0076933518 -0.123463084
+concavity_se             0.20601924 -0.3887735252  0.187006981
+concave points_se        0.07363305  0.3517522546 -0.108053781
+symmetry_se              0.08204298 -0.0425156577  0.003389405
+fractal_dimension_se    -0.23415559  0.0869911238  0.075938549
+radius_worst             0.09925574 -0.0550973375 -0.156233441
+texture_worst            0.08957331 -0.0093586133 -0.119089189
+perimeter_worst         -0.01848985  0.0627031617  0.238808203
+area_worst               0.10128855  0.1904885262  0.143507786
+smoothness_worst         0.07342549  0.0938674243 -0.009793842
+compactness_worst       -0.01541508 -0.1463081573  0.188913238
+concavity_worst         -0.46741258  0.2868749170 -0.291227555
+concave points_worst    -0.29772778 -0.5675722075  0.104556783
+symmetry_worst          -0.09053819  0.1220271385 -0.014013983
+fractal_dimension_worst  0.45865930  0.0057155638  0.037459520
+                               PC25          PC26         PC27
+radius_mean             -0.01981409 -0.1232418217 -0.143162384
+texture_mean             0.08521837 -0.0204433839 -0.018114324
+perimeter_mean           0.02690767 -0.1161953993 -0.124706604
+area_mean               -0.21094471  0.3179520291  0.490384649
+smoothness_mean          0.02844671 -0.0480792105  0.063252685
+compactness_mean         0.39649533  0.2609169980  0.120927534
+concavity_mean          -0.09485180 -0.5703292747  0.323289088
+concave points_mean     -0.18654987  0.4273833236 -0.420401488
+symmetry_mean           -0.02468804 -0.0163358703 -0.017073944
+fractal_dimension_mean  -0.20817175 -0.0938604563 -0.110626908
+radius_se               -0.17661593  0.0345234592  0.217519071
+texture_se               0.05717817 -0.0104158149 -0.011003662
+perimeter_se             0.07380894  0.1009671732  0.049971715
+area_se                  0.13246591 -0.1307558808 -0.325315292
+smoothness_se            0.03116169 -0.0064433208 -0.009432141
+compactness_se           0.17265266 -0.0581723490  0.040315030
+concavity_se             0.01592020  0.0988038029 -0.076521861
+concave points_se       -0.12896098 -0.0190574727 -0.013331046
+symmetry_se             -0.01950127 -0.0155168941 -0.021223759
+fractal_dimension_se    -0.08412769  0.0386447753 -0.008233602
+radius_worst             0.07049481 -0.1848676858 -0.194630783
+texture_worst           -0.11887409  0.0322723327  0.023246363
+perimeter_worst          0.11912916 -0.2236071160 -0.259248262
+area_worst              -0.03792114  0.2163367359  0.256612789
+smoothness_worst        -0.04752953  0.0170442381 -0.038990807
+compactness_worst       -0.62376682 -0.0939002013 -0.077798361
+concavity_worst          0.11413127  0.2715210343 -0.123911045
+concave points_worst     0.26214974 -0.1512849310  0.219047699
+symmetry_worst           0.04550602  0.0280283551  0.025730739
+fractal_dimension_worst  0.28087322  0.0006004924  0.060492616
+                                 PC28          PC29          PC30
+radius_mean              2.112305e-01  0.2157265753  0.7009834153
+texture_mean            -7.742108e-05 -0.0107432091  0.0003827654
+perimeter_mean           8.370192e-02  0.3826168120 -0.6918171416
+area_mean               -2.724280e-01 -0.4258095956 -0.0305755002
+smoothness_mean          1.647280e-03 -0.0023444101 -0.0051534348
+compactness_mean        -5.853579e-03 -0.0436060026  0.0457397550
+concavity_mean           4.581460e-02 -0.0086001286  0.0248446031
+concave points_mean     -9.184975e-03 -0.0061418488 -0.0004658549
+symmetry_mean            1.503713e-03 -0.0072174675 -0.0013687353
+fractal_dimension_mean  -6.113025e-03  0.0086628671 -0.0052161429
+radius_se               -1.929372e-01  0.1172540869 -0.0087922396
+texture_se              -5.598335e-03 -0.0086687668 -0.0010810217
+perimeter_se             2.635559e-01 -0.0064702573  0.0139473429
+area_se                 -4.173407e-02 -0.0844417994  0.0009433993
+smoothness_se            9.801629e-03  0.0017424752 -0.0016061868
+compactness_se          -1.526524e-02  0.0040654066  0.0016210445
+concavity_se             5.750213e-03  0.0157442026 -0.0089109676
+concave points_se       -2.886294e-02 -0.0234885910 -0.0022052753
+symmetry_se             -7.618583e-03 -0.0051228832  0.0003182504
+fractal_dimension_se     1.971779e-02 -0.0088751571  0.0020034974
+radius_worst             4.135580e-01 -0.6341258071 -0.1339462070
+texture_worst           -4.148289e-04  0.0172968564  0.0009424319
+perimeter_worst         -7.281712e-01  0.0240998236  0.0793828449
+area_worst               2.382200e-01  0.4436203653  0.0386913863
+smoothness_worst        -1.563186e-03  0.0072472318  0.0045994543
+compactness_worst        4.881739e-02  0.0006769587 -0.0130699838
+concavity_worst         -1.771267e-02 -0.0131239376  0.0005715732
+concave points_worst     2.243917e-02  0.0354450961 -0.0024946867
+symmetry_worst           4.833232e-03  0.0129483326  0.0004958940
+fractal_dimension_worst -2.363231e-02  0.0112910198  0.0019128301</code></pre>
+</div>
+<h2 id="variance-explained">Variance explained</h2>
+<p>The first question after running PCA is usually: how much variation does each component explain?</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>pca_variance</span> <span class='op'>&lt;-</span></span>
+<span>  <span class='fu'>tibble</span><span class='op'>(</span></span>
+<span>    component <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"PC"</span>, <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq_along</a></span><span class='op'>(</span><span class='va'>pca_fit</span><span class='op'>$</span><span class='va'>sdev</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span>    eigenvalue <span class='op'>=</span> <span class='va'>pca_fit</span><span class='op'>$</span><span class='va'>sdev</span><span class='op'>^</span><span class='fl'>2</span>,</span>
+<span>    variance_explained <span class='op'>=</span> <span class='va'>eigenvalue</span> <span class='op'>/</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>eigenvalue</span><span class='op'>)</span>,</span>
+<span>    cumulative_variance <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/cumsum.html'>cumsum</a></span><span class='op'>(</span><span class='va'>variance_explained</span><span class='op'>)</span></span>
+<span>  <span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>pca_variance</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>slice_head</span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>mutate</span><span class='op'>(</span></span>
+<span>    variance_explained <span class='op'>=</span> <span class='fu'>percent</span><span class='op'>(</span><span class='va'>variance_explained</span>, accuracy <span class='op'>=</span> <span class='fl'>0.1</span><span class='op'>)</span>,</span>
+<span>    cumulative_variance <span class='op'>=</span> <span class='fu'>percent</span><span class='op'>(</span><span class='va'>cumulative_variance</span>, accuracy <span class='op'>=</span> <span class='fl'>0.1</span><span class='op'>)</span></span>
+<span>  <span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>kbl</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>kable_styling</span><span class='op'>(</span>full_width <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span></code></pre>
+</div>
+<table class="table" style="color: black; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+component
+</th>
+<th style="text-align:right;">
+eigenvalue
+</th>
+<th style="text-align:left;">
+variance_explained
+</th>
+<th style="text-align:left;">
+cumulative_variance
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+PC1
+</td>
+<td style="text-align:right;">
+13.2711024
+</td>
+<td style="text-align:left;">
+44.2%
+</td>
+<td style="text-align:left;">
+44.2%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+PC2
+</td>
+<td style="text-align:right;">
+5.7058468
+</td>
+<td style="text-align:left;">
+19.0%
+</td>
+<td style="text-align:left;">
+63.3%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+PC3
+</td>
+<td style="text-align:right;">
+2.8188519
+</td>
+<td style="text-align:left;">
+9.4%
+</td>
+<td style="text-align:left;">
+72.7%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+PC4
+</td>
+<td style="text-align:right;">
+1.9752601
+</td>
+<td style="text-align:left;">
+6.6%
+</td>
+<td style="text-align:left;">
+79.2%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+PC5
+</td>
+<td style="text-align:right;">
+1.6553968
+</td>
+<td style="text-align:left;">
+5.5%
+</td>
+<td style="text-align:left;">
+84.8%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+PC6
+</td>
+<td style="text-align:right;">
+1.2059557
+</td>
+<td style="text-align:left;">
+4.0%
+</td>
+<td style="text-align:left;">
+88.8%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+PC7
+</td>
+<td style="text-align:right;">
+0.6715595
+</td>
+<td style="text-align:left;">
+2.2%
+</td>
+<td style="text-align:left;">
+91.0%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+PC8
+</td>
+<td style="text-align:right;">
+0.4757283
+</td>
+<td style="text-align:left;">
+1.6%
+</td>
+<td style="text-align:left;">
+92.6%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+PC9
+</td>
+<td style="text-align:right;">
+0.4175436
+</td>
+<td style="text-align:left;">
+1.4%
+</td>
+<td style="text-align:left;">
+94.0%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+PC10
+</td>
+<td style="text-align:right;">
+0.3512424
+</td>
+<td style="text-align:left;">
+1.2%
+</td>
+<td style="text-align:left;">
+95.2%
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>pca_variance</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>mutate</span><span class='op'>(</span>component_number <span class='op'>=</span> <span class='fu'>row_number</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>component_number</span>, y <span class='op'>=</span> <span class='va'>variance_explained</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>geom_col</span><span class='op'>(</span>fill <span class='op'>=</span> <span class='st'>"#2C7FB8"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>geom_line</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>y <span class='op'>=</span> <span class='va'>cumulative_variance</span><span class='op'>)</span>, colour <span class='op'>=</span> <span class='st'>"#D95F02"</span>, linewidth <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>geom_point</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>y <span class='op'>=</span> <span class='va'>cumulative_variance</span><span class='op'>)</span>, colour <span class='op'>=</span> <span class='st'>"#D95F02"</span>, size <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>scale_x_continuous</span><span class='op'>(</span>breaks <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>pca_variance</span><span class='op'>)</span>, by <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>scale_y_continuous</span><span class='op'>(</span>labels <span class='op'>=</span> <span class='fu'>percent_format</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>labs</span><span class='op'>(</span></span>
+<span>    title <span class='op'>=</span> <span class='st'>"Variance explained by principal components"</span>,</span>
+<span>    x <span class='op'>=</span> <span class='st'>"Principal component"</span>,</span>
+<span>    y <span class='op'>=</span> <span class='st'>"Variance explained"</span>,</span>
+<span>    caption <span class='op'>=</span> <span class='st'>"Bars show individual variance explained. Line shows cumulative variance explained."</span></span>
+<span>  <span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="pca_files/figure-html5/unnamed-chunk-8-1.png" width="100%" /></p>
+</div>
+<p>The first principal component explains about 44.3% of the total variance, while the first two principal components explain about 63.2%. The first five components explain about 84.7%, and the first seven components explain about 91.0%.</p>
+<p>This tells us that the 30 original numeric measurements contain substantial shared structure. A much smaller number of principal components can summarize most of the variation in the dataset. Later components explain smaller amounts of variation and may contain less useful signal.</p>
+<h2 id="pca-scores">PCA scores</h2>
+<p>The PCA scores are the coordinates of each observation on the new principal component axes.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>pca_scores</span> <span class='op'>&lt;-</span></span>
+<span>  <span class='fu'>as_tibble</span><span class='op'>(</span><span class='va'>pca_fit</span><span class='op'>$</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>bind_cols</span><span class='op'>(</span>diagnosis <span class='op'>=</span> <span class='va'>df</span><span class='op'>$</span><span class='va'>diagnosis</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>pca_scores</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>select</span><span class='op'>(</span><span class='va'>diagnosis</span>, <span class='va'>PC1</span>, <span class='va'>PC2</span>, <span class='va'>PC3</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>slice_head</span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>kbl</span><span class='op'>(</span>digits <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>kable_styling</span><span class='op'>(</span>full_width <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span></code></pre>
+</div>
+<table class="table" style="color: black; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+diagnosis
+</th>
+<th style="text-align:right;">
+PC1
+</th>
+<th style="text-align:right;">
+PC2
+</th>
+<th style="text-align:right;">
+PC3
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Malignant
+</td>
+<td style="text-align:right;">
+-9.174
+</td>
+<td style="text-align:right;">
+-1.954
+</td>
+<td style="text-align:right;">
+-1.119
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Malignant
+</td>
+<td style="text-align:right;">
+-2.378
+</td>
+<td style="text-align:right;">
+3.770
+</td>
+<td style="text-align:right;">
+-0.517
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Malignant
+</td>
+<td style="text-align:right;">
+-5.724
+</td>
+<td style="text-align:right;">
+1.070
+</td>
+<td style="text-align:right;">
+-0.548
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Malignant
+</td>
+<td style="text-align:right;">
+-7.105
+</td>
+<td style="text-align:right;">
+-10.277
+</td>
+<td style="text-align:right;">
+-3.253
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Malignant
+</td>
+<td style="text-align:right;">
+-3.922
+</td>
+<td style="text-align:right;">
+1.947
+</td>
+<td style="text-align:right;">
+1.410
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Malignant
+</td>
+<td style="text-align:right;">
+-2.365
+</td>
+<td style="text-align:right;">
+-3.952
+</td>
+<td style="text-align:right;">
+-2.932
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Malignant
+</td>
+<td style="text-align:right;">
+-2.230
+</td>
+<td style="text-align:right;">
+2.689
+</td>
+<td style="text-align:right;">
+-1.636
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Malignant
+</td>
+<td style="text-align:right;">
+-2.131
+</td>
+<td style="text-align:right;">
+-2.343
+</td>
+<td style="text-align:right;">
+-0.877
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Malignant
+</td>
+<td style="text-align:right;">
+-3.163
+</td>
+<td style="text-align:right;">
+-3.396
+</td>
+<td style="text-align:right;">
+-3.128
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Malignant
+</td>
+<td style="text-align:right;">
+-6.335
+</td>
+<td style="text-align:right;">
+-7.726
+</td>
+<td style="text-align:right;">
+-4.365
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>We can plot the first two principal components to visualize the observations in a two-dimensional space.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>pca_scores</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>PC1</span>, y <span class='op'>=</span> <span class='va'>PC2</span>, colour <span class='op'>=</span> <span class='va'>diagnosis</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>geom_point</span><span class='op'>(</span>alpha <span class='op'>=</span> <span class='fl'>0.75</span>, size <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>stat_ellipse</span><span class='op'>(</span>linewidth <span class='op'>=</span> <span class='fl'>0.8</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>scale_colour_manual</span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Benign"</span> <span class='op'>=</span> <span class='st'>"#1B9E77"</span>, <span class='st'>"Malignant"</span> <span class='op'>=</span> <span class='st'>"#D95F02"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>labs</span><span class='op'>(</span></span>
+<span>    title <span class='op'>=</span> <span class='st'>"PCA score plot"</span>,</span>
+<span>    subtitle <span class='op'>=</span> <span class='st'>"Each point is one observation projected onto the first two principal components"</span>,</span>
+<span>    x <span class='op'>=</span> <span class='st'>"PC1"</span>,</span>
+<span>    y <span class='op'>=</span> <span class='st'>"PC2"</span>,</span>
+<span>    colour <span class='op'>=</span> <span class='st'>"Diagnosis"</span></span>
+<span>  <span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="pca_files/figure-html5/unnamed-chunk-10-1.png" width="100%" /></p>
+</div>
+<p>This plot is useful for exploration. The benign and malignant observations show visible separation along the first two components, especially along PC1. This suggests that the original numeric measurements contain structure related to diagnosis. However, PCA itself did not use the diagnosis label to find the components, so the plot should be treated as exploratory evidence rather than as a supervised classification result.</p>
+<h2 id="pca-loadings">PCA loadings</h2>
+<p>Loadings show how strongly each original variable contributes to a principal component.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>pca_loadings</span> <span class='op'>&lt;-</span></span>
+<span>  <span class='fu'>as_tibble</span><span class='op'>(</span></span>
+<span>    <span class='va'>pca_fit</span><span class='op'>$</span><span class='va'>rotation</span>,</span>
+<span>    rownames <span class='op'>=</span> <span class='st'>"variable"</span></span>
+<span>  <span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>pca_loadings</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>select</span><span class='op'>(</span><span class='va'>variable</span>, <span class='va'>PC1</span>, <span class='va'>PC2</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>mutate</span><span class='op'>(</span></span>
+<span>    abs_PC1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>abs</a></span><span class='op'>(</span><span class='va'>PC1</span><span class='op'>)</span>,</span>
+<span>    abs_PC2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>abs</a></span><span class='op'>(</span><span class='va'>PC2</span><span class='op'>)</span></span>
+<span>  <span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>arrange</span><span class='op'>(</span><span class='fu'>desc</span><span class='op'>(</span><span class='va'>abs_PC1</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>select</span><span class='op'>(</span><span class='va'>variable</span>, <span class='va'>PC1</span>, <span class='va'>PC2</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>slice_head</span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>kbl</span><span class='op'>(</span>digits <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>kable_styling</span><span class='op'>(</span>full_width <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span></code></pre>
+</div>
+<table class="table" style="color: black; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+variable
+</th>
+<th style="text-align:right;">
+PC1
+</th>
+<th style="text-align:right;">
+PC2
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+concave points_mean
+</td>
+<td style="text-align:right;">
+-0.261
+</td>
+<td style="text-align:right;">
+0.034
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+concavity_mean
+</td>
+<td style="text-align:right;">
+-0.258
+</td>
+<td style="text-align:right;">
+-0.060
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+concave points_worst
+</td>
+<td style="text-align:right;">
+-0.251
+</td>
+<td style="text-align:right;">
+0.008
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+compactness_mean
+</td>
+<td style="text-align:right;">
+-0.239
+</td>
+<td style="text-align:right;">
+-0.152
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+perimeter_worst
+</td>
+<td style="text-align:right;">
+-0.237
+</td>
+<td style="text-align:right;">
+0.200
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+concavity_worst
+</td>
+<td style="text-align:right;">
+-0.229
+</td>
+<td style="text-align:right;">
+-0.098
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+radius_worst
+</td>
+<td style="text-align:right;">
+-0.228
+</td>
+<td style="text-align:right;">
+0.220
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+perimeter_mean
+</td>
+<td style="text-align:right;">
+-0.227
+</td>
+<td style="text-align:right;">
+0.216
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+area_worst
+</td>
+<td style="text-align:right;">
+-0.225
+</td>
+<td style="text-align:right;">
+0.219
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+area_mean
+</td>
+<td style="text-align:right;">
+-0.221
+</td>
+<td style="text-align:right;">
+0.231
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>pca_loadings</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>select</span><span class='op'>(</span><span class='va'>variable</span>, <span class='va'>PC1</span>, <span class='va'>PC2</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>pivot_longer</span><span class='op'>(</span></span>
+<span>    cols <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>PC1</span>, <span class='va'>PC2</span><span class='op'>)</span>,</span>
+<span>    names_to <span class='op'>=</span> <span class='st'>"component"</span>,</span>
+<span>    values_to <span class='op'>=</span> <span class='st'>"loading"</span></span>
+<span>  <span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>component</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>slice_max</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>abs</a></span><span class='op'>(</span><span class='va'>loading</span><span class='op'>)</span>, n <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>ungroup</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>mutate</span><span class='op'>(</span>variable <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/reorder.factor.html'>reorder</a></span><span class='op'>(</span><span class='va'>variable</span>, <span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>abs</a></span><span class='op'>(</span><span class='va'>loading</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>abs</a></span><span class='op'>(</span><span class='va'>loading</span><span class='op'>)</span>, y <span class='op'>=</span> <span class='va'>variable</span>, fill <span class='op'>=</span> <span class='va'>component</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>geom_col</span><span class='op'>(</span>show.legend <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>facet_wrap</span><span class='op'>(</span><span class='op'>~</span> <span class='va'>component</span>, scales <span class='op'>=</span> <span class='st'>"free_y"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>labs</span><span class='op'>(</span></span>
+<span>    title <span class='op'>=</span> <span class='st'>"Variables with the largest absolute loadings"</span>,</span>
+<span>    x <span class='op'>=</span> <span class='st'>"Absolute loading"</span>,</span>
+<span>    y <span class='op'>=</span> <span class='cn'>NULL</span></span>
+<span>  <span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="pca_files/figure-html5/unnamed-chunk-12-1.png" width="100%" /></p>
+</div>
+<p>For this dataset, PC1 is driven strongly by variables related to concavity, concave points, compactness, radius, perimeter, and area. A reasonable interpretation is that PC1 captures a broad tumour size, boundary, and irregularity pattern rather than size alone.</p>
+<p>PC2 has a different interpretation. It gives relatively high weight to variables such as fractal dimension, compactness standard error, smoothness standard error, and some size-related measures. This suggests that PC2 captures a contrast between texture or shape-complexity measurements and the broad size-irregularity pattern captured by PC1.</p>
+<p>Because the sign of a principal component is arbitrary, the direction of the interpretation should not depend on whether these loadings are positive or negative. The important point is which variables contribute together.</p>
+<h2 id="biplot">Biplot</h2>
+<p>A biplot shows both observations and variable directions. It can be helpful, but it can also become crowded when there are many variables. The code below labels only the variables with the largest combined contribution to PC1 and PC2.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>loading_scale</span> <span class='op'>&lt;-</span> <span class='fl'>6</span></span>
+<span></span>
+<span><span class='va'>biplot_loadings</span> <span class='op'>&lt;-</span></span>
+<span>  <span class='va'>pca_loadings</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>mutate</span><span class='op'>(</span>contribution <span class='op'>=</span> <span class='va'>PC1</span><span class='op'>^</span><span class='fl'>2</span> <span class='op'>+</span> <span class='va'>PC2</span><span class='op'>^</span><span class='fl'>2</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>slice_max</span><span class='op'>(</span><span class='va'>contribution</span>, n <span class='op'>=</span> <span class='fl'>12</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>mutate</span><span class='op'>(</span></span>
+<span>    PC1 <span class='op'>=</span> <span class='va'>PC1</span> <span class='op'>*</span> <span class='va'>loading_scale</span>,</span>
+<span>    PC2 <span class='op'>=</span> <span class='va'>PC2</span> <span class='op'>*</span> <span class='va'>loading_scale</span></span>
+<span>  <span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>pca_scores</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>PC1</span>, y <span class='op'>=</span> <span class='va'>PC2</span>, colour <span class='op'>=</span> <span class='va'>diagnosis</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>geom_point</span><span class='op'>(</span>alpha <span class='op'>=</span> <span class='fl'>0.55</span>, size <span class='op'>=</span> <span class='fl'>1.8</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>stat_ellipse</span><span class='op'>(</span>linewidth <span class='op'>=</span> <span class='fl'>0.8</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>geom_segment</span><span class='op'>(</span></span>
+<span>    data <span class='op'>=</span> <span class='va'>biplot_loadings</span>,</span>
+<span>    <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='fl'>0</span>, y <span class='op'>=</span> <span class='fl'>0</span>, xend <span class='op'>=</span> <span class='va'>PC1</span>, yend <span class='op'>=</span> <span class='va'>PC2</span><span class='op'>)</span>,</span>
+<span>    inherit.aes <span class='op'>=</span> <span class='cn'>FALSE</span>,</span>
+<span>    arrow <span class='op'>=</span> <span class='fu'>arrow</span><span class='op'>(</span>length <span class='op'>=</span> <span class='fu'>grid</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/grid/unit.html'>unit</a></span><span class='op'>(</span><span class='fl'>0.15</span>, <span class='st'>"cm"</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span>    colour <span class='op'>=</span> <span class='st'>"grey30"</span></span>
+<span>  <span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>geom_text</span><span class='op'>(</span></span>
+<span>    data <span class='op'>=</span> <span class='va'>biplot_loadings</span>,</span>
+<span>    <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>PC1</span>, y <span class='op'>=</span> <span class='va'>PC2</span>, label <span class='op'>=</span> <span class='va'>variable</span><span class='op'>)</span>,</span>
+<span>    inherit.aes <span class='op'>=</span> <span class='cn'>FALSE</span>,</span>
+<span>    size <span class='op'>=</span> <span class='fl'>3</span>,</span>
+<span>    colour <span class='op'>=</span> <span class='st'>"grey20"</span>,</span>
+<span>    check_overlap <span class='op'>=</span> <span class='cn'>TRUE</span></span>
+<span>  <span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>scale_colour_manual</span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Benign"</span> <span class='op'>=</span> <span class='st'>"#1B9E77"</span>, <span class='st'>"Malignant"</span> <span class='op'>=</span> <span class='st'>"#D95F02"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>labs</span><span class='op'>(</span></span>
+<span>    title <span class='op'>=</span> <span class='st'>"PCA biplot"</span>,</span>
+<span>    subtitle <span class='op'>=</span> <span class='st'>"Points show observations; arrows show the strongest variable loading directions"</span>,</span>
+<span>    x <span class='op'>=</span> <span class='st'>"PC1"</span>,</span>
+<span>    y <span class='op'>=</span> <span class='st'>"PC2"</span>,</span>
+<span>    colour <span class='op'>=</span> <span class='st'>"Diagnosis"</span></span>
+<span>  <span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="pca_files/figure-html5/unnamed-chunk-13-1.png" width="100%" /></p>
+</div>
+<p>The biplot combines two views: the point positions come from the PCA scores, while the arrows come from the loadings. Variables pointing in a similar direction tend to be positively associated with one another, while variables pointing in opposite directions tend to represent contrasting patterns.</p>
+<h2 id="how-many-components-should-we-keep">How many components should we keep?</h2>
+<p>The answer depends on the purpose of the analysis. If we want a compact representation, we can keep the smallest number of components that explain a target amount of variance.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>variance_target</span> <span class='op'>&lt;-</span> <span class='fl'>0.90</span></span>
+<span></span>
+<span><span class='va'>n_components_90</span> <span class='op'>&lt;-</span></span>
+<span>  <span class='va'>pca_variance</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>cumulative_variance</span> <span class='op'>&gt;=</span> <span class='va'>variance_target</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>slice_head</span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>n_components_90</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>mutate</span><span class='op'>(</span></span>
+<span>    variance_target <span class='op'>=</span> <span class='fu'>percent</span><span class='op'>(</span><span class='va'>variance_target</span><span class='op'>)</span>,</span>
+<span>    cumulative_variance <span class='op'>=</span> <span class='fu'>percent</span><span class='op'>(</span><span class='va'>cumulative_variance</span>, accuracy <span class='op'>=</span> <span class='fl'>0.1</span><span class='op'>)</span></span>
+<span>  <span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>select</span><span class='op'>(</span><span class='va'>variance_target</span>, <span class='va'>component</span>, <span class='va'>cumulative_variance</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>kbl</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>kable_styling</span><span class='op'>(</span>full_width <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span></code></pre>
+</div>
+<table class="table" style="color: black; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+variance_target
+</th>
+<th style="text-align:left;">
+component
+</th>
+<th style="text-align:left;">
+cumulative_variance
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+90%
+</td>
+<td style="text-align:left;">
+PC7
+</td>
+<td style="text-align:left;">
+91.0%
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>In this example, the number of components required to reach 90% cumulative variance gives a practical starting point. For predictive modelling, this number should be tuned with resampling instead of being chosen only from the scree plot.</p>
+<h2 id="using-pca-components-in-a-model">Using PCA components in a model</h2>
+<p>The PCA scores can be used as features in a downstream model. The example below creates a compact dataset using the first few principal components.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>pca_model_data</span> <span class='op'>&lt;-</span></span>
+<span>  <span class='va'>pca_scores</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>select</span><span class='op'>(</span><span class='va'>diagnosis</span>, <span class='va'>PC1</span><span class='op'>:</span><span class='va'>PC5</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>pca_model_data</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>slice_head</span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>kbl</span><span class='op'>(</span>digits <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>kable_styling</span><span class='op'>(</span>full_width <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span></code></pre>
+</div>
+<table class="table" style="color: black; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+diagnosis
+</th>
+<th style="text-align:right;">
+PC1
+</th>
+<th style="text-align:right;">
+PC2
+</th>
+<th style="text-align:right;">
+PC3
+</th>
+<th style="text-align:right;">
+PC4
+</th>
+<th style="text-align:right;">
+PC5
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Malignant
+</td>
+<td style="text-align:right;">
+-9.174
+</td>
+<td style="text-align:right;">
+-1.954
+</td>
+<td style="text-align:right;">
+-1.119
+</td>
+<td style="text-align:right;">
+3.682
+</td>
+<td style="text-align:right;">
+1.144
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Malignant
+</td>
+<td style="text-align:right;">
+-2.378
+</td>
+<td style="text-align:right;">
+3.770
+</td>
+<td style="text-align:right;">
+-0.517
+</td>
+<td style="text-align:right;">
+1.112
+</td>
+<td style="text-align:right;">
+-0.632
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Malignant
+</td>
+<td style="text-align:right;">
+-5.724
+</td>
+<td style="text-align:right;">
+1.070
+</td>
+<td style="text-align:right;">
+-0.548
+</td>
+<td style="text-align:right;">
+0.924
+</td>
+<td style="text-align:right;">
+0.165
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Malignant
+</td>
+<td style="text-align:right;">
+-7.105
+</td>
+<td style="text-align:right;">
+-10.277
+</td>
+<td style="text-align:right;">
+-3.253
+</td>
+<td style="text-align:right;">
+0.239
+</td>
+<td style="text-align:right;">
+2.914
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Malignant
+</td>
+<td style="text-align:right;">
+-3.922
+</td>
+<td style="text-align:right;">
+1.947
+</td>
+<td style="text-align:right;">
+1.410
+</td>
+<td style="text-align:right;">
+2.917
+</td>
+<td style="text-align:right;">
+-0.553
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Malignant
+</td>
+<td style="text-align:right;">
+-2.365
+</td>
+<td style="text-align:right;">
+-3.952
+</td>
+<td style="text-align:right;">
+-2.932
+</td>
+<td style="text-align:right;">
+0.970
+</td>
+<td style="text-align:right;">
+1.046
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Malignant
+</td>
+<td style="text-align:right;">
+-2.230
+</td>
+<td style="text-align:right;">
+2.689
+</td>
+<td style="text-align:right;">
+-1.636
+</td>
+<td style="text-align:right;">
+0.156
+</td>
+<td style="text-align:right;">
+-0.043
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Malignant
+</td>
+<td style="text-align:right;">
+-2.131
+</td>
+<td style="text-align:right;">
+-2.343
+</td>
+<td style="text-align:right;">
+-0.877
+</td>
+<td style="text-align:right;">
+-0.115
+</td>
+<td style="text-align:right;">
+1.436
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Malignant
+</td>
+<td style="text-align:right;">
+-3.163
+</td>
+<td style="text-align:right;">
+-3.396
+</td>
+<td style="text-align:right;">
+-3.128
+</td>
+<td style="text-align:right;">
+-0.561
+</td>
+<td style="text-align:right;">
+1.515
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Malignant
+</td>
+<td style="text-align:right;">
+-6.335
+</td>
+<td style="text-align:right;">
+-7.726
+</td>
+<td style="text-align:right;">
+-4.365
+</td>
+<td style="text-align:right;">
+-3.340
+</td>
+<td style="text-align:right;">
+-1.700
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>This dataset can now be used in a classification model. In a real modelling workflow, PCA preprocessing should be estimated only on the training set and then applied to the test set.</p>
+<h1 id="conclusion">Conclusion</h1>
+<p>PCA is a useful technique for reducing many numeric variables into a smaller set of uncorrelated components. It is especially helpful for exploration, visualization, compression, and feature engineering when the original variables are highly correlated.</p>
+<p>The key practical points are:</p>
+<ul>
+<li>scale the variables before PCA unless all variables are already on comparable scales;</li>
+<li>inspect variance explained and loadings;</li>
+<li>remember that PCA is unsupervised;</li>
+<li>remember that high variance is not always the same as high predictive value;</li>
+<li>be careful with outliers and missing values;</li>
+<li>avoid data leakage when using PCA before predictive modelling.</li>
+</ul>
+<p>In this example, the first two components already explain about 63.2% of the total variance, and the first seven components explain about 91.0%. PC1 mainly reflects tumour size, boundary, and irregularity features, while PC2 captures a different contrast involving fractal dimension, smoothness, compactness, and size-related measurements.</p>
+<p>PCA is not a magic replacement for understanding the original variables, but it is a powerful way to summarize complex numeric data when used carefully.</p>
+<p>That’s all for the day!</p>
+<p>Thank you for reading the post until the end.</p>
+<p>Feel free to contact me through <a href="mailto:jasper.jh.lok@gmail.com">email</a> or <a href="https://www.linkedin.com/in/jasper-l-13426232/">LinkedIn</a> if you have any suggestions on future topics to share.</p>
+<p>Refer to this link for the <a href="https://jasperlok.netlify.app/blog_disclaimer.html">blog disclaimer</a>.</p>
+<p>Till next time, happy learning!</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="image/dmitry-mashkin-NBzr3NUnxRg-unsplash.jpg" width="100%" /></p>
+</div>
+<p>Photo by <a href="https://unsplash.com/@artcoastdesign?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Dmitry Mashkin</a> on <a href="https://unsplash.com/photos/white-and-black-lego-blocks-NBzr3NUnxRg?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-abdi2010" class="csl-entry" role="listitem">
+Abdi, Hervé, and Lynne J. Williams. 2010. <span>“Principal Component Analysis.”</span> <em>Wiley Interdisciplinary Reviews: Computational Statistics</em> 2 (4): 433–59. <a href="https://doi.org/10.1002/wics.101">https://doi.org/10.1002/wics.101</a>.
+</div>
+<div id="ref-james2021" class="csl-entry" role="listitem">
+James, Gareth, Daniela Witten, Trevor Hastie, and Robert Tibshirani. 2021. <em>An Introduction to Statistical Learning: With Applications in r</em>. 2nd ed. Springer. <a href="https://www.statlearning.com/">https://www.statlearning.com/</a>.
+</div>
+<div id="ref-jolliffe2016" class="csl-entry" role="listitem">
+Jolliffe, Ian T., and Jorge Cadima. 2016. <span>“Principal Component Analysis: A Review and Recent Developments.”</span> <em>Philosophical Transactions of the Royal Society A</em> 374 (2065). <a href="https://doi.org/10.1098/rsta.2015.0202">https://doi.org/10.1098/rsta.2015.0202</a>.
+</div>
+</div>
+<!--radix_placeholder_article_footer-->
+<!--/radix_placeholder_article_footer-->
+</div>
+
+<div class="d-appendix">
+</div>
+
+
+<!--radix_placeholder_site_after_body-->
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_appendices-->
+<div class="appendix-bottom">
+<h3 id="references">References</h3>
+<div id="references-listing"></div>
+</div>
+<!--/radix_placeholder_appendices-->
+<!--radix_placeholder_navigation_after_body-->
+<!--/radix_placeholder_navigation_after_body-->
+
+</body>
+
+</html>

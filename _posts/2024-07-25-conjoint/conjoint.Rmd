@@ -1,0 +1,491 @@
+---
+title: "Conjoint Analysis in R"
+description: |
+  A practical guide to estimating, coding, and interpreting a simple full-profile conjoint analysis in R.
+author:
+  - name: Jasper Lok
+    url: https://jasperlok.netlify.app/
+date: 2024-07-25
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 4
+    self_contained: false
+bibliography: ["ref.bib"]
+biblio-style: "apa"
+link-citations: true
+categories:
+  - Conjoint Analysis
+  - Marketing Analytics
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+required_packages <- c(
+  "knitr", "kableExtra", "tidyverse", "janitor", "broom", "scales"
+)
+
+missing_packages <- required_packages[
+  !vapply(required_packages, requireNamespace, logical(1), quietly = TRUE)
+]
+
+if (length(missing_packages) > 0) {
+  stop(
+    "Please install these packages before rendering this post: ",
+    paste(missing_packages, collapse = ", ")
+  )
+}
+
+library(knitr)
+library(kableExtra)
+library(tidyverse)
+library(janitor)
+library(broom)
+library(scales)
+
+theme_set(theme_minimal(base_size = 12))
+
+knitr::opts_chunk$set(
+  fig.retina = 3,
+  echo = TRUE,
+  eval = TRUE,
+  message = FALSE,
+  warning = FALSE,
+  out.width = "100%"
+)
+```
+
+
+```{r, echo = FALSE}
+include_graphics("image/holigil-27-nQhKsE9hQAE-unsplash.jpg")
+
+```
+
+Photo by <a href="https://unsplash.com/@holigill?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">holigil 27</a> on <a href="https://unsplash.com/photos/two-blue-signs-pointing-in-opposite-directions-on-a-white-wall-nQhKsE9hQAE?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+      
+
+# What is conjoint analysis?
+
+Conjoint analysis is a survey and modelling technique used to understand how people make trade-offs between product or service features. Instead of asking respondents to rate each feature separately, conjoint analysis presents complete product profiles. A profile might combine brand, price, size, crust, toppings, and other features. The respondent then ranks, rates, or chooses between those profiles.
+
+The vocabulary is important:
+
+- **Attribute**: a product feature, such as `price`, `brand`, or `crust`.
+- **Level**: a possible value of an attribute, such as `$1.00`, `$2.00`, or `thin`.
+- **Profile**: one complete product concept made from several attribute levels.
+- **Part-worth utility**: the estimated contribution of a level to overall preference.
+- **Attribute importance**: how much an attribute can move preference, usually based on the difference between its best and worst part-worth utilities.
+
+This post uses a small pizza dataset to demonstrate the coding workflow. The dataset is a **full-profile ranking-based conjoint** example: each row is one pizza profile, and the outcome is that profile's rank. This is different from **choice-based conjoint**, where respondents repeatedly choose one option from a set of alternatives.
+
+The example uses the Kaggle dataset [Pizza Attributes Dataset for Conjoint Analysis](https://www.kaggle.com/datasets/sachinsin8h/pizza-attributes-dataset-for-conjoint-analysis). Because the dataset has only 16 profiles, the results should be treated as a coding demonstration rather than a reliable market research conclusion.
+
+# Coding the Analysis
+
+## Load the Data
+
+The data contains 16 pizza profiles. Each profile has several attributes and one `ranking` value. A lower ranking means the pizza is more preferred, so rank 1 is the best profile.
+
+```{r load-data}
+pizza_raw <-
+  readr::read_csv("data/pizza_data.csv") %>%
+  janitor::clean_names()
+
+pizza_raw %>%
+  kable() %>%
+  kable_styling(full_width = FALSE)
+```
+
+## Prepare the Variables
+
+The raw `ranking` variable is lower-is-better. For modelling, I convert it into `preference_score`, where higher values mean stronger preference. This makes the coefficients easier to interpret: positive utilities increase predicted preference.
+
+I also set the factor reference levels deliberately. This is better than relying on R's default alphabetical ordering, because every coefficient is interpreted relative to the reference level.
+
+```{r prepare-data}
+attribute_cols <- c(
+  "brand", "price", "weight", "crust", "cheese", "size", "toppings", "spicy"
+)
+
+pizza <-
+  pizza_raw %>%
+  mutate(
+    brand = factor(brand, levels = c("Dominos", "Onesta", "Oven Story", "Pizza hut")),
+    price = factor(price, levels = c("$1.00", "$2.00", "$3.00", "$4.00")),
+    weight = factor(weight, levels = c("100g", "200g", "300g", "400g")),
+    crust = factor(crust, levels = c("thick", "thin")),
+    cheese = factor(cheese, levels = c("Cheddar", "Mozzarella")),
+    size = factor(size, levels = c("large", "regular")),
+    toppings = factor(toppings, levels = c("mushroom", "paneer")),
+    spicy = factor(spicy, levels = c("extra", "normal")),
+    preference_score = max(ranking) + 1 - ranking
+  )
+
+pizza %>%
+  select(all_of(attribute_cols), ranking, preference_score) %>%
+  arrange(ranking) %>%
+  kable() %>%
+  kable_styling(full_width = FALSE)
+```
+
+## Inspect the Design
+
+A conjoint design should contain variation across attribute levels. This quick table checks how often each level appears.
+
+```{r attribute-levels}
+level_summary <-
+  pizza %>%
+  select(all_of(attribute_cols)) %>%
+  pivot_longer(everything(), names_to = "attribute", values_to = "level") %>%
+  count(attribute, level, name = "n_profiles") %>%
+  arrange(attribute, level)
+
+level_summary %>%
+  kable() %>%
+  kable_styling(full_width = FALSE)
+```
+
+The design is balanced in the sense that each level appears multiple times. However, the dataset is still very small. A real conjoint study would normally collect responses from many people and include repeated choice, ranking, or rating tasks.
+
+## Estimate Part-Worth Utilities
+
+For this ranking-based example, I use an additive linear model. The model says that a profile's preference score is the sum of the utilities from its attribute levels.
+
+```{r conjoint-model}
+conjoint_fit <-
+  lm(
+    preference_score ~ brand + price + weight + crust + cheese + size + toppings + spicy,
+    data = pizza
+  )
+
+model_diagnostics <-
+  tibble(
+    n_profiles = nrow(pizza),
+    n_model_parameters = length(coef(conjoint_fit)),
+    residual_degrees_of_freedom = df.residual(conjoint_fit),
+    r_squared = summary(conjoint_fit)$r.squared,
+    adjusted_r_squared = summary(conjoint_fit)$adj.r.squared
+  )
+
+model_diagnostics %>%
+  mutate(across(c(r_squared, adjusted_r_squared), \(x) round(x, 3))) %>%
+  kable() %>%
+  kable_styling(full_width = FALSE)
+```
+
+This diagnostic table is important. The model uses `r length(coef(conjoint_fit))` parameters to explain only `r nrow(pizza)` profiles, leaving `r df.residual(conjoint_fit)` residual degree of freedom. That is why the R-squared is extremely high. The model is useful for learning the workflow, but the p-values and confidence intervals should not be treated as strong evidence.
+
+## Check the Reference Levels
+
+The intercept represents the predicted preference score for the reference profile. The coefficients show changes from that reference profile.
+
+```{r reference-profile}
+reference_profile <-
+  map_dfr(attribute_cols, \(x) {
+    tibble(
+      attribute = x,
+      reference_level = levels(pizza[[x]])[1]
+    )
+  })
+
+reference_profile %>%
+  kable() %>%
+  kable_styling(full_width = FALSE)
+```
+
+The reference pizza is therefore Dominos, `$1.00`, `100g`, thick crust, Cheddar, large size, mushroom topping, and extra spicy. Every estimated utility is relative to these reference levels.
+
+## Tidy the Model Coefficients
+
+The raw `summary()` output is useful for diagnostics, but it is not the clearest way to present conjoint results. I tidy the coefficients and omit p-values from the main table because this example is too small for inferential claims.
+
+```{r tidy-coefficients}
+coef_table <-
+  broom::tidy(conjoint_fit) %>%
+  filter(term != "(Intercept)") %>%
+  mutate(
+    attribute = case_when(
+      str_starts(term, "brand") ~ "brand",
+      str_starts(term, "price") ~ "price",
+      str_starts(term, "weight") ~ "weight",
+      str_starts(term, "crust") ~ "crust",
+      str_starts(term, "cheese") ~ "cheese",
+      str_starts(term, "size") ~ "size",
+      str_starts(term, "toppings") ~ "toppings",
+      str_starts(term, "spicy") ~ "spicy",
+      TRUE ~ "other"
+    ),
+    level = str_remove(term, paste0("^", attribute)),
+    direction = if_else(estimate >= 0, "Higher preference", "Lower preference")
+  ) %>%
+  select(attribute, level, estimate, direction) %>%
+  arrange(attribute, desc(estimate))
+
+coef_table %>%
+  mutate(estimate = round(estimate, 3)) %>%
+  kable() %>%
+  kable_styling(full_width = FALSE)
+```
+
+A positive coefficient means the level increases predicted preference relative to the reference level for the same attribute. A negative coefficient means the level reduces predicted preference relative to the reference level.
+
+## Build the Part-Worth Table
+
+The model output omits the reference levels because their utility is set to zero under dummy coding. For conjoint reporting, I add those levels back into the table.
+
+```{r part-worths}
+reference_levels <-
+  map_dfr(attribute_cols, \(x) {
+    tibble(
+      attribute = x,
+      level = levels(pizza[[x]])[1],
+      utility = 0,
+      coding_note = "Reference level"
+    )
+  })
+
+estimated_levels <-
+  coef_table %>%
+  transmute(
+    attribute,
+    level,
+    utility = estimate,
+    coding_note = "Estimated versus reference"
+  )
+
+part_worths <-
+  bind_rows(reference_levels, estimated_levels) %>%
+  group_by(attribute) %>%
+  mutate(
+    centered_utility = utility - mean(utility)
+  ) %>%
+  ungroup() %>%
+  arrange(attribute, desc(utility))
+
+part_worths %>%
+  mutate(
+    utility = round(utility, 3),
+    centered_utility = round(centered_utility, 3)
+  ) %>%
+  kable() %>%
+  kable_styling(full_width = FALSE)
+```
+
+The `utility` column is directly tied to the regression coding. The `centered_utility` column is often easier to display because utilities within each attribute are centered around zero. Centering changes the presentation, but it does not change the ranking of levels within an attribute.
+
+```{r plot-part-worths, fig.height=6}
+part_worths %>%
+  mutate(
+    attribute = str_to_title(attribute),
+    level = fct_reorder(level, centered_utility)
+  ) %>%
+  ggplot(aes(x = centered_utility, y = level, fill = centered_utility > 0)) +
+  geom_col(show.legend = FALSE) +
+  geom_vline(xintercept = 0, color = "grey50") +
+  facet_wrap(~ attribute, scales = "free_y") +
+  scale_fill_manual(values = c("#e76f51", "#2a9d8f")) +
+  labs(
+    title = "Zero-centered part-worth utilities",
+    x = "Centered utility within attribute",
+    y = NULL
+  )
+```
+
+## Identify the Best and Worst Levels
+
+Within each attribute, the highest utility level is the most preferred level in this model. The lowest utility level is the least preferred.
+
+```{r best-worst-levels}
+level_extremes <-
+  part_worths %>%
+  group_by(attribute) %>%
+  summarise(
+    best_level = level[which.max(utility)],
+    best_utility = max(utility),
+    worst_level = level[which.min(utility)],
+    worst_utility = min(utility),
+    utility_range = best_utility - worst_utility,
+    .groups = "drop"
+  ) %>%
+  arrange(desc(utility_range))
+
+level_extremes %>%
+  mutate(across(c(best_utility, worst_utility, utility_range), \(x) round(x, 3))) %>%
+  kable() %>%
+  kable_styling(full_width = FALSE)
+```
+
+In this dataset, the strongest positive level is `r level_extremes$best_level[1]` for `r level_extremes$attribute[1]`. The largest negative comparison is the worst level within the same attribute.
+
+## Calculate Attribute Importance
+
+Attribute importance is calculated from each attribute's utility range:
+
+$$
+\text{Importance}_j = \frac{\max(U_j) - \min(U_j)}{\sum_j \left[\max(U_j) - \min(U_j)\right]}
+$$
+
+Attributes with wider utility ranges have more influence on predicted preference.
+
+```{r attribute-importance}
+importance <-
+  level_extremes %>%
+  transmute(
+    attribute,
+    utility_range,
+    importance = utility_range / sum(utility_range)
+  ) %>%
+  arrange(desc(importance))
+
+importance %>%
+  mutate(
+    utility_range = round(utility_range, 3),
+    importance = percent(importance, accuracy = 0.1)
+  ) %>%
+  kable() %>%
+  kable_styling(full_width = FALSE)
+```
+
+```{r plot-importance, fig.height=4}
+importance %>%
+  mutate(attribute = fct_reorder(str_to_title(attribute), importance)) %>%
+  ggplot(aes(x = importance, y = attribute)) +
+  geom_col(fill = "#2a9d8f") +
+  scale_x_continuous(labels = percent_format()) +
+  labs(
+    title = "Relative attribute importance",
+    x = "Share of total utility range",
+    y = NULL
+  )
+```
+
+The most important attribute is `r importance$attribute[1]`, which accounts for `r percent(importance$importance[1], accuracy = 0.1)` of the total utility range. It is followed by `r importance$attribute[2]` and `r importance$attribute[3]`.
+
+## Predict Preference for Every Possible Pizza
+
+Once the model is fitted, we can score product profiles that were not directly observed. Here I create every possible combination of the observed attribute levels and predict each profile's preference score.
+
+```{r predict-profiles}
+all_profiles <-
+  expand.grid(
+    brand = levels(pizza$brand),
+    price = levels(pizza$price),
+    weight = levels(pizza$weight),
+    crust = levels(pizza$crust),
+    cheese = levels(pizza$cheese),
+    size = levels(pizza$size),
+    toppings = levels(pizza$toppings),
+    spicy = levels(pizza$spicy),
+    stringsAsFactors = FALSE
+  ) %>%
+  as_tibble() %>%
+  mutate(across(all_of(attribute_cols), \(x) factor(x, levels = levels(pizza[[cur_column()]]))))
+
+profile_predictions <-
+  all_profiles %>%
+  mutate(
+    predicted_preference = predict(conjoint_fit, newdata = all_profiles),
+    predicted_rank = min_rank(desc(predicted_preference))
+  ) %>%
+  arrange(desc(predicted_preference))
+
+top_profile <- profile_predictions %>% slice(1)
+
+profile_predictions %>%
+  slice_head(n = 10) %>%
+  mutate(predicted_preference = round(predicted_preference, 2)) %>%
+  kable(caption = "Top 10 predicted pizza profiles") %>%
+  kable_styling(full_width = FALSE)
+```
+
+The top predicted profile is `r top_profile$brand`, `r top_profile$price`, `r top_profile$weight`, `r top_profile$crust` crust, `r top_profile$cheese`, `r top_profile$size` size, `r top_profile$toppings` topping, and `r top_profile$spicy` spicy.
+
+## Compare Actual and Predicted Rankings
+
+A quick diagnostic is to compare the model's fitted preference score against the original ranking. Since `ranking` is lower-is-better and `preference_score` is higher-is-better, we expect a negative relationship between actual ranking and fitted preference.
+
+```{r model-fit-check}
+fit_check <-
+  pizza %>%
+  mutate(
+    fitted_preference = fitted(conjoint_fit),
+    predicted_rank = min_rank(desc(fitted_preference))
+  )
+
+rank_correlation <-
+  cor(fit_check$ranking, fit_check$predicted_rank, method = "spearman")
+
+fit_check %>%
+  select(ranking, predicted_rank, preference_score, fitted_preference, all_of(attribute_cols)) %>%
+  arrange(ranking) %>%
+  mutate(fitted_preference = round(fitted_preference, 2)) %>%
+  kable() %>%
+  kable_styling(full_width = FALSE)
+```
+
+```{r plot-fit-check, fig.height=4}
+fit_check %>%
+  ggplot(aes(x = ranking, y = fitted_preference)) +
+  geom_point(size = 2.5, color = "#264653") +
+  geom_smooth(method = "lm", se = FALSE, color = "#e76f51") +
+  scale_x_reverse(breaks = sort(unique(fit_check$ranking))) +
+  labs(
+    title = "Actual ranking versus fitted preference",
+    x = "Actual ranking (1 is best)",
+    y = "Fitted preference score"
+  )
+```
+
+The Spearman correlation between the actual ranking and the model's predicted ranking is `r round(rank_correlation, 3)`. This looks strong, but it should be interpreted cautiously because the model is almost saturated.
+
+# Interpretation of the Results
+
+The model suggests that `r importance$attribute[1]` is the biggest preference driver in this small pizza dataset. Its importance is `r percent(importance$importance[1], accuracy = 0.1)`, meaning it accounts for about half of the total utility range. The preferred level for this attribute is `r level_extremes$best_level[level_extremes$attribute == importance$attribute[1]]`.
+
+The next most important attributes are `r importance$attribute[2]` and `r importance$attribute[3]`. In practical terms, the model is saying that heavier pizzas, thin crust, and paneer topping are associated with higher preference scores in this dataset.
+
+The price result needs care. The model estimates `$4.00` as more preferred than `$1.00`. That does not necessarily mean customers truly prefer higher prices. In a small profile design, price may be entangled with other attractive features, and the model may be recovering the pattern in this dataset rather than a realistic economic relationship. In a real study, price should be designed carefully and often modelled in a way that supports willingness-to-pay analysis.
+
+The predicted best pizza combines the highest-utility levels: `r top_profile$brand`, `r top_profile$price`, `r top_profile$weight`, `r top_profile$crust` crust, `r top_profile$cheese`, `r top_profile$size` size, `r top_profile$toppings`, and `r top_profile$spicy` spicy. This is useful as a demonstration of how conjoint results can be translated into product design decisions.
+
+# Notes for Real Projects
+
+This example is intentionally small and code-focused. For a real conjoint study, I would extend the workflow in a few ways:
+
+- Collect data from many respondents.
+- Use respondent IDs and cluster standard errors by respondent.
+- Use choice-based conjoint when respondents choose between alternatives.
+- Randomize profile and task order to reduce ordering bias.
+- Check whether the design is balanced and whether impossible product combinations were excluded.
+- Include holdout tasks or cross-validation to test prediction quality.
+- Estimate subgroup differences if the sample size is large enough.
+- Treat price carefully if the goal is willingness-to-pay estimation.
+
+Choice-based conjoint data is often analysed with models such as logistic regression, multinomial logit, mixed logit, or hierarchical Bayes models. Rating or ranking conjoint data can be analysed with linear models as a simple starting point, but the model should match the way the preference data was collected.
+
+# Conclusion
+
+Conjoint analysis is useful because it turns preferences over complete product profiles into estimated utilities for each feature level. In R, the basic workflow is straightforward: clean the data, define attributes and levels, fit an additive model, extract part-worth utilities, calculate attribute importance, and predict preferred product profiles.
+
+The important coding habit is to keep the direction of the outcome clear. In this example, the raw variable `ranking` is lower-is-better, so I converted it into `preference_score`, where higher is better. I also set reference levels deliberately so the coefficients have a clear interpretation.
+
+The important interpretation habit is to separate demonstration from evidence. This pizza dataset is useful for learning the code, but the very small sample and nearly saturated model mean the results should not be treated as a final market recommendation.
+
+Thanks for reading the post until the end.
+
+Feel free to contact me through [email](mailto:jasper.jh.lok@gmail.com) or [LinkedIn](https://www.linkedin.com/in/jasper-l-13426232/) if you have any suggestions on future topics to share.
+
+Refer to this link for the [blog disclaimer](https://jasperlok.netlify.app/blog_disclaimer.html).
+
+Till next time, happy learning!
+
+
+```{r, echo = FALSE}
+include_graphics("image/nathan-dumlao-TBuuAE1lvqs-unsplash.jpg")
+
+```
+
+Photo by <a href="https://unsplash.com/@nate_dumlao?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Nathan Dumlao</a> on <a href="https://unsplash.com/photos/three-filled-drinking-glasses-on-brown-wooden-panel-TBuuAE1lvqs?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+      
+
