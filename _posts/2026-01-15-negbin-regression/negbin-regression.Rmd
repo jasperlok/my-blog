@@ -1,0 +1,693 @@
+---
+title: "Negative Binomial Regression for Count Data"
+description: |
+  When counts get too negative for Poisson, negative binomial regression can help you model the extra dispersion without losing count.
+author:
+  - name: Jasper Lok
+    url: https://jasperlok.netlify.app/
+date: 2026-01-15
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 4
+    self_contained: false
+bibliography: ["ref.bib"]
+biblio-style: "apa"
+link-citations: true
+categories:
+  - Machine Learning
+  - Supervised Learning
+
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+pacman::p_load(
+  knitr,
+  kableExtra,
+  tidyverse,
+  janitor,
+  MASS,
+  broom,
+  performance,
+  pscl,
+  vcd,
+  lmtest,
+  scales,
+  DHARMa
+)
+
+knitr::opts_chunk$set(
+  fig.retina = 3,
+  echo = TRUE,
+  eval = TRUE,
+  message = FALSE,
+  warning = FALSE,
+  out.width = "100%"
+)
+
+set.seed(1234)
+```
+
+```{r, echo=FALSE}
+knitr::include_graphics("image/immo-wegmann-dbm5Ywq45s8-unsplash.jpg")
+```
+
+Photo by <a href="https://unsplash.com/@tinkerman?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Immo Wegmann</a> on <a href="https://unsplash.com/photos/white-and-red-glass-frame-dbm5Ywq45s8?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+      
+
+      
+
+# Why Count Regression?
+
+Count data appears whenever the target variable is a non-negative integer:
+
+- number of insurance claims;
+- number of customer complaints;
+- number of hospital visits;
+- number of defects in a production batch;
+- number of transactions in a period.
+
+Linear regression is usually a poor fit for these problems because it can predict negative values and assumes constant variance. Count outcomes are typically right-skewed, heteroskedastic, and bounded at zero. A count model handles these features directly.
+
+This post focuses on negative binomial regression. We will use a local copy of the French motor third-party liability insurance frequency dataset and build a model that predicts the number of claims per policy, while adjusting for policy exposure.
+
+# Poisson vs Negative Binomial
+
+## Poisson Regression
+
+Poisson regression is the usual starting point for count modelling. It assumes:
+
+$$Y_i \sim Poisson(\mu_i)$$
+
+with a log link:
+
+$$log(\mu_i) = \beta_0 + \beta_1x_{i1} + ... + \beta_px_{ip}$$
+
+The key Poisson assumption is:
+
+$$E(Y_i) = Var(Y_i) = \mu_i$$
+
+That equality is elegant, but in real data it is often too strict. If the variance is larger than the mean, the data is **over-dispersed**. Over-dispersion can make Poisson standard errors too small, which then makes p-values look more confident than they should.
+
+## Negative Binomial Regression
+
+Negative binomial regression relaxes the Poisson mean-variance assumption:
+
+$$Var(Y_i) = \mu_i + \frac{\mu_i^2}{\theta}$$
+
+where `theta` is the dispersion parameter estimated by the model. A smaller `theta` means more over-dispersion. As `theta` gets very large, the negative binomial model becomes close to a Poisson model.
+
+The model still uses the log link:
+
+$$log(\mu_i) = \beta_0 + \beta_1x_{i1} + ... + \beta_px_{ip}$$
+
+so the interpretation remains similar to Poisson regression: exponentiated coefficients are multiplicative effects on the expected count or rate.
+
+## Exposure and Offset
+
+For claim counts, different policies may be observed for different lengths of time. A policy observed for one full year naturally has more opportunity to produce a claim than a policy observed for one month. We handle this using an offset:
+
+$$log(\mu_i) = log(exposure_i) + \beta_0 + \beta_1x_{i1} + ... + \beta_px_{ip}$$
+
+This converts the model into a claim frequency model. We model the expected number of claims while allowing exposure to scale the expected count.
+
+# Pros and Cons
+
+## Pros
+
+- Handles over-dispersed count data better than Poisson regression.
+- Keeps a familiar GLM structure and log-link interpretation.
+- Predicts non-negative expected counts.
+- Works naturally with exposure offsets for frequency modelling.
+- Often strong as a transparent benchmark before trying more complex machine learning models.
+
+## Cons
+
+- It models the conditional mean, not the exact observed count for each individual record.
+- It does not automatically solve excess zeros. A zero-inflated or hurdle model may be better when there are more zeros than the negative binomial distribution can explain.
+- Coefficients are multiplicative, which can be less intuitive at first than linear effects.
+- Results can be sensitive to feature engineering, outliers, sparse factor levels, and exposure quality.
+- It assumes independent observations unless the modelling structure is extended.
+
+# Practical Considerations
+
+Before using negative binomial regression, check:
+
+- **Outcome type**: the dependent variable should be a count: 0, 1, 2, 3, and so on.
+- **Exposure**: if observations have different risk periods, include an offset such as `log(exposure)`.
+- **Over-dispersion**: compare the residual deviance to residual degrees of freedom, or run a formal check.
+- **Excess zeros**: inspect zero inflation diagnostics.
+- **Factor levels**: rare categories can create unstable estimates.
+- **Outliers and leverage**: large fitted counts or unusual observations can dominate the model.
+- **Train/test split**: evaluate performance on unseen data, not only the training data.
+
+# Modelling Dataset
+
+We will use `freMTPLfreq`, a French motor third-party liability insurance frequency dataset. The outcome is `claim_nb`, the number of claims. The exposure variable is `exposure`. To make the post reproducible in Blogdown, the data is read from a CSV saved in this post folder instead of being loaded from an external R package at knit time.
+
+```{r import-data}
+data_path <- file.path("data", "freMTPLfreq.csv")
+
+if (!file.exists(data_path)) {
+  stop("The modelling dataset is missing. Expected to find data/freMTPLfreq.csv in the post folder.")
+}
+
+df <-
+  readr::read_csv(data_path, show_col_types = FALSE) %>%
+  clean_names() %>%
+  mutate(
+    policy_id = as.character(policy_id),
+    claim_nb = as.integer(claim_nb),
+    across(c(power, brand, gas, region), as.factor)
+  ) %>%
+  filter(exposure > 0)
+
+glimpse(df)
+```
+
+The dataset contains one row per policy record. The target variable, `claim_nb`, is a non-negative count, while `exposure` represents the amount of time the policy was exposed to risk. This makes the dataset a natural candidate for claim frequency modelling with an exposure offset.
+
+```{r outcome-summary}
+df %>%
+  summarise(
+    n = n(),
+    total_claims = sum(claim_nb),
+    mean_claim_count = mean(claim_nb),
+    variance_claim_count = var(claim_nb),
+    share_zero_claim = mean(claim_nb == 0),
+    total_exposure = sum(exposure),
+    claim_frequency = sum(claim_nb) / sum(exposure)
+  ) %>%
+  kable(digits = 4)
+```
+
+The portfolio contains `r scales::comma(nrow(df))` policy records and `r scales::comma(sum(df$claim_nb))` claims. The average claim count per policy is low at `r round(mean(df$claim_nb), 4)`, and `r scales::percent(mean(df$claim_nb == 0), accuracy = 0.1)` of policies have no claims. This confirms that the data is sparse, which is common in insurance frequency modelling.
+
+```{r count-distribution}
+df %>%
+  count(claim_nb) %>%
+  mutate(share = n / sum(n)) %>%
+  kable(digits = 4)
+```
+
+The count table shows that most observations are zeros, with progressively fewer policies recording one, two, or more claims. This pattern is expected for claim frequency data: the individual outcome is usually zero, but the aggregate claim count is still meaningful across a portfolio.
+
+```{r count-chart}
+df %>%
+  mutate(claim_nb_group = if_else(claim_nb >= 5, "5+", as.character(claim_nb))) %>%
+  count(claim_nb_group) %>%
+  mutate(claim_nb_group = factor(claim_nb_group, levels = c("0", "1", "2", "3", "4", "5+"))) %>%
+  ggplot(aes(claim_nb_group, n)) +
+  geom_col(fill = "#2f6f73") +
+  scale_y_continuous(labels = comma) +
+  labs(
+    title = "Distribution of claim counts",
+    x = "Number of claims",
+    y = "Policies"
+  ) +
+  theme_minimal()
+```
+
+The bar chart reinforces the sparsity observed in the table. A standard linear regression would be poorly suited to this shape because it would not respect the non-negative and highly skewed nature of the outcome.
+
+# Distribution Diagnostics
+
+The first quick check is whether the variance is materially larger than the mean. If it is, Poisson regression may be too restrictive.
+
+```{r mean-variance-check}
+df %>%
+  summarise(
+    mean_claim_nb = mean(claim_nb),
+    variance_claim_nb = var(claim_nb),
+    variance_to_mean_ratio = variance_claim_nb / mean_claim_nb
+  ) %>%
+  kable(digits = 4)
+```
+
+The variance-to-mean ratio is `r round(var(df$claim_nb) / mean(df$claim_nb), 3)`. At the raw outcome level, this is only modestly above 1, but the more important check is conditional over-dispersion after accounting for predictors and exposure. We therefore still fit a Poisson benchmark before deciding whether negative binomial regression is warranted.
+
+We can also compare distribution-level goodness-of-fit using rootograms.
+
+```{r distribution-goodfit}
+goodfit_poisson <- goodfit(df$claim_nb, type = "poisson")
+goodfit_negbin <- goodfit(df$claim_nb, type = "nbinomial")
+
+summary(goodfit_poisson)
+summary(goodfit_negbin)
+```
+
+The distribution-level goodness-of-fit test rejects the Poisson distribution but does not reject the negative binomial distribution at conventional significance levels. This is early evidence that the negative binomial distribution captures the marginal claim count distribution more effectively than the Poisson distribution.
+
+```{r rootogram-poisson}
+rootogram(goodfit_poisson, main = "Poisson rootogram")
+```
+
+In the Poisson rootogram, larger deviations from the horizontal reference line indicate that the fitted Poisson distribution is not matching the observed count frequencies well. The visible mismatch is consistent with the formal goodness-of-fit result.
+
+```{r rootogram-negbin}
+rootogram(goodfit_negbin, main = "Negative binomial rootogram")
+```
+
+The negative binomial rootogram should sit closer to the reference line. This does not prove that the final regression model is correct, but it supports using negative binomial regression as a serious candidate model.
+
+# Train, Validation, and Test Split
+
+To make model comparison more honest, we split the data into:
+
+- training data for fitting model parameters;
+- validation data for selecting the model specification;
+- testing data for final back testing.
+
+This dataset does not contain a policy start date suitable for a true time-based back test, so the example uses a reproducible random holdout. In a production time-series or pricing workflow, use a chronological split whenever possible.
+
+The full dataset is large enough that repeated negative binomial fits can take a while on a laptop. To keep the blog post runnable, the modelling section uses a reproducible sample from the same dataset. For production modelling, fit the final specification on the full training dataset once the workflow is settled.
+
+```{r split-data}
+model_n <- min(50000, nrow(df))
+
+df_model <-
+  df %>%
+  slice_sample(n = model_n)
+
+df_split <-
+  df_model %>%
+  mutate(split_id = runif(n()))
+
+train_df <- df_split %>% filter(split_id <= 0.60) %>% dplyr::select(-split_id)
+valid_df <- df_split %>% filter(split_id > 0.60, split_id <= 0.80) %>% dplyr::select(-split_id)
+test_df  <- df_split %>% filter(split_id > 0.80) %>% dplyr::select(-split_id)
+
+tibble(
+  dataset = c("train", "validation", "test"),
+  rows = c(nrow(train_df), nrow(valid_df), nrow(test_df)),
+  exposure = c(sum(train_df$exposure), sum(valid_df$exposure), sum(test_df$exposure)),
+  claims = c(sum(train_df$claim_nb), sum(valid_df$claim_nb), sum(test_df$claim_nb))
+) %>%
+  mutate(claim_frequency = claims / exposure) %>%
+  kable(digits = 4)
+```
+
+The split keeps the exposure and claim frequency reasonably similar across training, validation, and test samples. This is important because a materially different test portfolio could make model comparison difficult to interpret.
+
+# Baseline Models
+
+The baseline model uses the same predictors across Poisson, quasi-Poisson, and negative binomial regression:
+
+```{r formulas}
+base_formula <-
+  claim_nb ~ power + car_age + driver_age + brand + gas + region + density + offset(log(exposure))
+
+expanded_formula <-
+  claim_nb ~ power + car_age + driver_age + brand + gas + region + density +
+  car_age:driver_age + offset(log(exposure))
+```
+
+## Poisson Regression
+
+```{r poisson-model}
+poisson_fit <- glm(
+  formula = base_formula,
+  family = poisson(link = "log"),
+  data = train_df
+)
+
+summary(poisson_fit)
+```
+
+The Poisson model provides a transparent baseline. The coefficients are on the log scale, so their exponentiated values represent multiplicative effects on expected claim frequency. However, the coefficient table should not be interpreted in isolation until we check whether the Poisson variance assumption is reasonable.
+
+```{r poisson-overdispersion}
+check_overdispersion(poisson_fit)
+```
+
+The dispersion ratio is above 1 and the over-dispersion test is statistically significant. This means the observed variability is larger than the Poisson model expects, so the Poisson standard errors are likely to be too optimistic.
+
+## Quasi-Poisson Regression
+
+Quasi-Poisson regression keeps the Poisson mean function but inflates the standard errors to account for over-dispersion. It is useful for inference, but it does not provide a full likelihood, so it is less convenient for likelihood-based model comparison.
+
+```{r quasi-model}
+quasi_fit <- glm(
+  formula = base_formula,
+  family = quasipoisson(link = "log"),
+  data = train_df
+)
+
+summary(quasi_fit)
+```
+
+The quasi-Poisson model adjusts the standard errors for over-dispersion while keeping the same mean structure as the Poisson model. This is useful when the main goal is inference on the average claim frequency, but it does not provide a likelihood-based predictive distribution for log-loss comparison.
+
+## Negative Binomial Regression
+
+```{r nb-model}
+nb_fit <- glm.nb(
+  formula = base_formula,
+  data = train_df
+)
+
+summary(nb_fit)
+```
+
+The negative binomial model estimates the mean structure and the dispersion parameter jointly. Compared with Poisson regression, this gives the model more flexibility to account for extra variation in claim counts.
+
+The fitted `theta` is:
+
+```{r nb-theta}
+nb_fit$theta
+```
+
+The estimated `theta` is `r round(nb_fit$theta, 3)`. Since this is finite rather than extremely large, the model is allowing for meaningful over-dispersion. If `theta` were very large, the fitted model would behave more like a Poisson regression.
+
+# Statistical Tests and Diagnostics
+
+## Test for Over-Dispersion
+
+The most important diagnostic is whether the Poisson model is over-dispersed.
+
+```{r poisson-diagnostics}
+model_performance(poisson_fit)
+check_overdispersion(poisson_fit)
+```
+
+The diagnostic confirms that the Poisson benchmark is over-dispersed after conditioning on the predictors and exposure. This is the key reason to move beyond Poisson regression for this dataset.
+
+## Likelihood Ratio Comparison
+
+Poisson regression is nested inside the negative binomial model as `theta` approaches infinity. A likelihood ratio comparison is commonly used as evidence that the negative binomial model improves the fit, although the boundary condition means the p-value should be interpreted as an approximation.
+
+```{r lr-test}
+lmtest::lrtest(poisson_fit, nb_fit)
+```
+
+The likelihood ratio test strongly favours the negative binomial model over the Poisson model. In practical terms, estimating the additional dispersion parameter improves model fit enough to justify the added complexity.
+
+## Zero Inflation
+
+Negative binomial regression can handle over-dispersion, but it is not automatically a zero-inflated model. If there are too many zeros even after accounting for predictors, consider zero-inflated negative binomial or hurdle models.
+
+```{r zero-inflation-check}
+check_zeroinflation(nb_fit)
+```
+
+The observed and predicted number of zeros are very similar, so there is no strong evidence that a zero-inflated model is required at this stage. This is a useful distinction: the data has many zeros, but the negative binomial model appears able to explain them without adding a separate zero-generating process.
+
+## Multicollinearity
+
+```{r collinearity-check}
+check_collinearity(nb_fit)
+```
+
+The variance inflation factors are low, which suggests that multicollinearity is not a major concern for this specification. This makes the coefficient estimates easier to interpret and reduces the risk that standard errors are inflated by redundant predictors.
+
+## Influential Observations
+
+```{r outlier-check}
+check_outliers(nb_fit)
+```
+
+The outlier diagnostic does not flag influential observations under the selected threshold. This does not remove the need for business review of extreme policies, but it suggests that the fitted model is not being dominated by a small number of unusual records.
+
+# Tuning the Negative Binomial Model
+
+For negative binomial GLMs, tuning usually means:
+
+- choosing predictors and interactions;
+- transforming skewed variables;
+- grouping sparse factor levels;
+- deciding whether to include an offset;
+- comparing candidate models on validation data;
+- checking whether the estimated dispersion remains sensible.
+
+Here we compare a baseline model with a slightly expanded model that adds an interaction between car age and driver age.
+
+```{r candidate-models}
+nb_fit_base <- glm.nb(base_formula, data = train_df)
+nb_fit_expanded <- glm.nb(expanded_formula, data = train_df)
+
+AIC(nb_fit_base, nb_fit_expanded)
+```
+
+The expanded model adds one interaction term. In this run, its AIC is very close to the base model's AIC, so there is limited in-sample evidence that the interaction materially improves fit. The final choice should therefore be guided by validation performance and interpretability, not AIC alone.
+
+The best model by AIC is not always the best model on unseen data, so we also compare validation performance.
+
+```{r metric-functions}
+poisson_log_loss_vec <- function(actual, predicted_mu) {
+  -mean(dpois(x = actual, lambda = predicted_mu, log = TRUE))
+}
+
+nb_log_loss_vec <- function(actual, predicted_mu, theta) {
+  -mean(dnbinom(x = actual, mu = predicted_mu, size = theta, log = TRUE))
+}
+
+evaluate_count_model <- function(model, data, model_type = c("poisson", "nb")) {
+  model_type <- match.arg(model_type)
+  pred_mu <- predict(model, newdata = data, type = "response")
+
+  if (model_type == "nb") {
+    log_loss <- nb_log_loss_vec(data$claim_nb, pred_mu, model$theta)
+  } else {
+    log_loss <- poisson_log_loss_vec(data$claim_nb, pred_mu)
+  }
+
+  tibble(
+    rmse = sqrt(mean((data$claim_nb - pred_mu)^2)),
+    mae = mean(abs(data$claim_nb - pred_mu)),
+    mean_actual = mean(data$claim_nb),
+    mean_predicted = mean(pred_mu),
+    total_actual = sum(data$claim_nb),
+    total_predicted = sum(pred_mu),
+    actual_frequency = sum(data$claim_nb) / sum(data$exposure),
+    predicted_frequency = sum(pred_mu) / sum(data$exposure),
+    log_loss = log_loss
+  )
+}
+```
+
+```{r validation-comparison}
+validation_results <-
+  bind_rows(
+    evaluate_count_model(poisson_fit, valid_df, "poisson") %>%
+      mutate(model = "Poisson"),
+    evaluate_count_model(nb_fit_base, valid_df, "nb") %>%
+      mutate(model = "Negative binomial - base"),
+    evaluate_count_model(nb_fit_expanded, valid_df, "nb") %>%
+      mutate(model = "Negative binomial - expanded")
+  ) %>%
+  relocate(model)
+
+validation_results %>%
+  kable(digits = 4)
+```
+
+The validation results show that all models produce similar RMSE and MAE, which is common in sparse count problems where most individual observations are zero. The more relevant metric here is log loss because it evaluates the full predictive count distribution. On that basis, the negative binomial models perform slightly better than the Poisson benchmark.
+
+```{r select-best-model}
+best_nb_model_name <-
+  validation_results %>%
+  filter(str_detect(model, "Negative binomial")) %>%
+  arrange(log_loss) %>%
+  slice(1) %>%
+  pull(model)
+
+best_nb_model_name
+```
+
+Among the negative binomial candidates, the validation step selects `r best_nb_model_name`. The improvement is small, so this should be viewed as a modest tuning decision rather than strong evidence of a substantially better specification.
+
+For illustration, we continue with the validation winner:
+
+```{r assign-final-model}
+final_nb_fit <-
+  if (best_nb_model_name == "Negative binomial - expanded") {
+    nb_fit_expanded
+  } else {
+    nb_fit_base
+  }
+
+summary(final_nb_fit)
+```
+
+The final model summary is the specification selected from the validation process. Statistical significance should be interpreted alongside effect size, business plausibility, and stability across samples, especially because sparse claim data can make some factor-level estimates noisy.
+
+# Interpreting the Results
+
+Because the model uses a log link, each coefficient is on the log scale. Exponentiating the coefficients converts them into multiplicative effects on expected claim count, holding other variables constant.
+
+```{r tidy-final-model}
+final_nb_fit %>%
+  tidy(conf.int = TRUE) %>%
+  mutate(
+    rate_ratio = exp(estimate),
+    conf.low = exp(conf.low),
+    conf.high = exp(conf.high)
+  ) %>%
+  dplyr::select(term, estimate, rate_ratio, conf.low, conf.high, p.value) %>%
+  arrange(p.value) %>%
+  kable(digits = 4)
+```
+
+The most useful column for interpretation is `rate_ratio`. Values above 1 indicate higher expected claim frequency relative to the reference level or per-unit increase in a numeric variable; values below 1 indicate lower expected claim frequency. Terms with wide confidence intervals or high p-values should be treated cautiously, even if their point estimates look large.
+
+How to read the table:
+
+- `estimate` is the log effect.
+- `rate_ratio` is the multiplicative effect.
+- A `rate_ratio` above 1 means higher expected claim frequency.
+- A `rate_ratio` below 1 means lower expected claim frequency.
+- For categorical variables, each coefficient is relative to the reference category.
+
+For example, a rate ratio of 1.10 means the expected claim count is 10% higher, all else equal. A rate ratio of 0.90 means the expected claim count is 10% lower.
+
+# Back Testing on the Test Dataset
+
+The test set has not been used to fit the models or choose the final specification. This is our holdout back test.
+
+```{r test-performance}
+test_results <-
+  bind_rows(
+    evaluate_count_model(poisson_fit, test_df, "poisson") %>%
+      mutate(model = "Poisson"),
+    evaluate_count_model(final_nb_fit, test_df, "nb") %>%
+      mutate(model = paste("Final", best_nb_model_name))
+  ) %>%
+  relocate(model)
+
+test_results %>%
+  kable(digits = 4)
+```
+
+On the test set, the final negative binomial model and Poisson benchmark have very similar point prediction errors. The negative binomial model has a slightly better log loss, which is consistent with its advantage in modelling the uncertainty around sparse count outcomes rather than only the conditional mean.
+
+```{r test-predictions}
+test_pred <-
+  test_df %>%
+  mutate(
+    pred_claim_nb = predict(final_nb_fit, newdata = test_df, type = "response"),
+    pred_claim_rate = pred_claim_nb / exposure,
+    actual_claim_rate = claim_nb / exposure
+  )
+
+test_pred %>%
+  dplyr::select(policy_id, exposure, claim_nb, pred_claim_nb, actual_claim_rate, pred_claim_rate) %>%
+  arrange(desc(pred_claim_nb)) %>%
+  head(10) %>%
+  kable(digits = 4)
+```
+
+The highest predicted policies are not guaranteed to have claims in the test period; the model is estimating expected claim count, not making a deterministic classification. These records are still useful for ranking because they represent policies with higher estimated claim frequency after adjusting for exposure and policy characteristics.
+
+## Calibration by Prediction Band
+
+For count models, exact individual predictions are difficult because many observations are zero and a few have claims. Calibration by groups is often more useful: do records with higher predicted risk actually have higher realised claim frequency?
+
+```{r calibration-table}
+calibration_df <-
+  test_pred %>%
+  mutate(pred_band = ntile(pred_claim_rate, 10)) %>%
+  group_by(pred_band) %>%
+  summarise(
+    policies = n(),
+    exposure = sum(exposure),
+    actual_claims = sum(claim_nb),
+    predicted_claims = sum(pred_claim_nb),
+    actual_frequency = actual_claims / exposure,
+    predicted_frequency = predicted_claims / exposure,
+    .groups = "drop"
+  )
+
+calibration_df %>%
+  kable(digits = 4)
+```
+
+The calibration table compares actual and predicted claim frequency across deciles of predicted risk. A well-calibrated model should generally show higher actual frequency in higher predicted bands, although some noise is expected because claim counts are sparse.
+
+```{r calibration-chart}
+calibration_df %>%
+  pivot_longer(
+    cols = c(actual_frequency, predicted_frequency),
+    names_to = "metric",
+    values_to = "frequency"
+  ) %>%
+  ggplot(aes(pred_band, frequency, color = metric)) +
+  geom_line(linewidth = 1) +
+  geom_point(size = 2) +
+  scale_y_continuous(labels = number_format(accuracy = 0.001)) +
+  scale_color_manual(values = c(actual_frequency = "#b5493a", predicted_frequency = "#2f6f73")) +
+  labs(
+    title = "Back test calibration by predicted risk band",
+    x = "Predicted risk band",
+    y = "Claim frequency",
+    color = NULL
+  ) +
+  theme_minimal()
+```
+
+The calibration chart is a visual back test of ranking and aggregate fit. The predicted line should track the broad level and direction of the actual line; large systematic gaps would suggest that the model is under- or over-estimating claim frequency for certain risk bands.
+
+## Residual Check
+
+```{r residual-chart}
+augment(final_nb_fit, newdata = test_df, type.predict = "response") %>%
+  mutate(.resid_response = claim_nb - .fitted) %>%
+  ggplot(aes(.fitted, .resid_response)) +
+  geom_point(alpha = 0.25, color = "#3d3d3d") +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "#b5493a") +
+  labs(
+    title = "Test residuals against fitted values",
+    x = "Predicted claim count",
+    y = "Actual minus predicted"
+  ) +
+  theme_minimal()
+```
+
+The residual plot checks whether prediction errors are centred around zero across the fitted range. For sparse count data, the plot will naturally show many observations close to zero fitted values, but strong patterns or widening unexplained structure would point to missing predictors, non-linear effects, or segment-specific calibration issues.
+
+# When to Try Something Else
+
+Negative binomial regression is a good workhorse, but it is not the answer to every count problem.
+
+Consider other models when:
+
+- there are structural zeros: use zero-inflated or hurdle models;
+- observations are correlated: use mixed models, GEE, or clustered standard errors;
+- the relationship is highly non-linear: try splines, GAMs, gradient boosting, or random forests for counts;
+- the target is claim severity rather than claim count: use Gamma, inverse Gaussian, lognormal, or Tweedie models;
+- you need full pricing premium: combine frequency and severity models, or use a Tweedie model.
+
+# Summary
+
+Negative binomial regression is useful when the target is a count and the data is over-dispersed relative to Poisson regression. The modelling workflow is:
+
+1. Confirm that the target is count data.
+2. Include an exposure offset when observations have different observation periods.
+3. Fit a Poisson model as a benchmark.
+4. Diagnose over-dispersion and zero inflation.
+5. Fit a negative binomial model.
+6. Tune predictors and interactions using validation data.
+7. Back test the final model on a holdout test set.
+8. Interpret exponentiated coefficients as multiplicative effects.
+
+The main lesson is simple: if the variance is much larger than the mean, do not stop at Poisson regression. Negative binomial regression often gives a more realistic uncertainty estimate and a better calibrated count model.
+
+# Conclusion
+
+That's all for the day!
+
+Thanks for reading the post until the end.
+
+Feel free to contact me through [email](mailto:jasper.jh.lok@gmail.com) or [LinkedIn](https://www.linkedin.com/in/jasper-l-13426232/) if you have any suggestions on future topics to share.
+
+Refer to this link for the [blog disclaimer](https://jasperlok.netlify.app/blog_disclaimer.html).
+
+Till next time, happy learning!
+
+
+```{r, echo=FALSE}
+knitr::include_graphics("image/scott-rodgerson-OZfhAh52foU-unsplash.jpg")
+```
+
+Photo by <a href="https://unsplash.com/@scottrodgerson?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Scott Rodgerson</a> on <a href="https://unsplash.com/photos/brown-and-black-leather-sandals-OZfhAh52foU?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>

@@ -20,6 +20,7 @@
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -109,9 +110,9 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </style>
 
   <!--radix_placeholder_meta_tags-->
-  <title>Cox Proportional Hazard</title>
+  <title>Cox Proportional Hazards Model</title>
 
-  <meta property="description" itemprop="description" content="One of the popular methods in survival analysis"/>
+  <meta property="description" itemprop="description" content="A practical introduction to one of the most widely used methods in survival analysis"/>
 
 
   <!--  https://schema.org/Article -->
@@ -120,15 +121,15 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <meta name="article:author" content="Jasper Lok"/>
 
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
-  <meta property="og:title" content="Cox Proportional Hazard"/>
+  <meta property="og:title" content="Cox Proportional Hazards Model"/>
   <meta property="og:type" content="article"/>
-  <meta property="og:description" content="One of the popular methods in survival analysis"/>
+  <meta property="og:description" content="A practical introduction to one of the most widely used methods in survival analysis"/>
   <meta property="og:locale" content="en_US"/>
 
   <!--  https://dev.twitter.com/cards/types/summary -->
   <meta property="twitter:card" content="summary"/>
-  <meta property="twitter:title" content="Cox Proportional Hazard"/>
-  <meta property="twitter:description" content="One of the popular methods in survival analysis"/>
+  <meta property="twitter:title" content="Cox Proportional Hazards Model"/>
+  <meta property="twitter:description" content="A practical introduction to one of the most widely used methods in survival analysis"/>
 
   <!--/radix_placeholder_meta_tags-->
   
@@ -138,12 +139,12 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","bibliography","biblio-style","link-citations","categories"]}},"value":[{"type":"character","attributes":{},"value":["Cox Proportional Hazard"]},{"type":"character","attributes":{},"value":["One of the popular methods in survival analysis\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Jasper Lok"]},{"type":"character","attributes":{},"value":["https://jasperlok.netlify.app/"]}]}]},{"type":"character","attributes":{},"value":["01-11-2023"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","toc_depth","self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[4]},{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["ref.bib"]},{"type":"character","attributes":{},"value":["apa"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["Machine Learning","Survival Model"]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","bibliography","biblio-style","link-citations","categories"]}},"value":[{"type":"character","attributes":{},"value":["Cox Proportional Hazards Model"]},{"type":"character","attributes":{},"value":["A practical introduction to one of the most widely used methods in survival analysis\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Jasper Lok"]},{"type":"character","attributes":{},"value":["https://jasperlok.netlify.app/"]}]}]},{"type":"character","attributes":{},"value":["01-11-2023"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","toc_depth","self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[4]},{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["ref.bib"]},{"type":"character","attributes":{},"value":["apa"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["Machine Learning","Survival Model"]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["cox-ph_files/anchor/anchor.min.js","cox-ph_files/bowser/bowser.min.js","cox-ph_files/distill/template.v2.js","cox-ph_files/figure-html5/unnamed-chunk-10-1.png","cox-ph_files/figure-html5/unnamed-chunk-12-1.png","cox-ph_files/figure-html5/unnamed-chunk-13-1.png","cox-ph_files/figure-html5/unnamed-chunk-14-1.png","cox-ph_files/figure-html5/unnamed-chunk-15-1.png","cox-ph_files/figure-html5/unnamed-chunk-16-1.png","cox-ph_files/figure-html5/unnamed-chunk-17-1.png","cox-ph_files/figure-html5/unnamed-chunk-18-1.png","cox-ph_files/figure-html5/unnamed-chunk-8-1.png","cox-ph_files/figure-html5/unnamed-chunk-9-1.png","cox-ph_files/header-attrs/header-attrs.js","cox-ph_files/jquery/jquery-3.6.0.js","cox-ph_files/jquery/jquery-3.6.0.min.js","cox-ph_files/jquery/jquery-3.6.0.min.map","cox-ph_files/popper/popper.min.js","cox-ph_files/tippy/tippy-bundle.umd.min.js","cox-ph_files/tippy/tippy-light-border.css","cox-ph_files/tippy/tippy.css","cox-ph_files/tippy/tippy.umd.min.js","cox-ph_files/webcomponents/webcomponents.js","image/concordance calculation.png","image/friendship.jpg","image/survival-kit.jpg","ref.bib"]}
+  {"type":"character","attributes":{},"value":["cox-ph_files/anchor/anchor.min.js","cox-ph_files/bowser/bowser.min.js","cox-ph_files/distill/template.v2.js","cox-ph_files/figure-html5/unnamed-chunk-10-1.png","cox-ph_files/figure-html5/unnamed-chunk-11-1.png","cox-ph_files/figure-html5/unnamed-chunk-12-1.png","cox-ph_files/figure-html5/unnamed-chunk-13-1.png","cox-ph_files/figure-html5/unnamed-chunk-14-1.png","cox-ph_files/figure-html5/unnamed-chunk-15-1.png","cox-ph_files/figure-html5/unnamed-chunk-16-1.png","cox-ph_files/figure-html5/unnamed-chunk-17-1.png","cox-ph_files/figure-html5/unnamed-chunk-18-1.png","cox-ph_files/figure-html5/unnamed-chunk-20-1.png","cox-ph_files/figure-html5/unnamed-chunk-8-1.png","cox-ph_files/figure-html5/unnamed-chunk-9-1.png","cox-ph_files/header-attrs/header-attrs.js","cox-ph_files/jquery/jquery-3.6.0.js","cox-ph_files/jquery/jquery-3.6.0.min.js","cox-ph_files/jquery/jquery-3.6.0.min.map","cox-ph_files/popper/popper.min.js","cox-ph_files/tippy/tippy-bundle.umd.min.js","cox-ph_files/tippy/tippy-light-border.css","cox-ph_files/tippy/tippy.css","cox-ph_files/tippy/tippy.umd.min.js","cox-ph_files/webcomponents/webcomponents.js","image/concordance calculation.png","image/friendship.jpg","image/survival-kit.jpg","ref.bib"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -255,9 +256,21 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     display: none !important;
   }
 
+  hr.section-separator {
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    margin: 0px;
+  }
+
+
+  d-byline {
+    border-top: none;
+  }
+
   d-article {
     padding-top: 2.5rem;
     padding-bottom: 30px;
+    border-top: none;
   }
 
   d-appendix {
@@ -352,6 +365,11 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   d-article div.sourceCode pre {
     padding-left: 18px;
     font-size: 14px;
+  }
+
+  /* tweak for Pandoc numbered line within distill */
+  d-article pre.numberSource code > span {
+      left: -2em;
   }
 
   d-article pre {
@@ -1113,6 +1131,12 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     // create d-title
     $('.d-title').changeElementType('d-title');
 
+    // separator
+    var separator = '<hr class="section-separator" style="clear: both"/>';
+    // prepend separator above appendix
+    $('.d-byline').before(separator);
+    $('.d-article').before(separator);
+
     // create d-byline
     var byline = $('<d-byline></d-byline>');
     $('.d-byline').replaceWith(byline);
@@ -1190,8 +1214,9 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     $('.distill-force-highlighting-css').parent().remove();
 
     // remove empty line numbers inserted by pandoc when using a
-    // custom syntax highlighting theme
-    $('code.sourceCode a:empty').remove();
+    // custom syntax highlighting theme, except when numbering line
+    // in code chunk
+    $('pre:not(.numberLines) code.sourceCode a:empty').remove();
 
     // load distill framework
     load_distill_framework();
@@ -1217,12 +1242,13 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
       // add orcid ids
       $('.authors-affiliations').find('.author').each(function(i, el) {
         var orcid_id = front_matter.authors[i].orcidID;
+        var author_name = front_matter.authors[i].author
         if (orcid_id) {
           var a = $('<a></a>');
           a.attr('href', 'https://orcid.org/' + orcid_id);
           var img = $('<img></img>');
           img.addClass('orcid-id');
-          img.attr('alt', 'ORCID ID');
+          img.attr('alt', author_name ? 'ORCID ID for ' + author_name : 'ORCID ID');
           img.attr('src','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==');
           a.append(img);
           $(this).append(a);
@@ -1521,7 +1547,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Cox Proportional Hazard","description":"One of the popular methods in survival analysis","authors":[{"author":"Jasper Lok","authorURL":"https://jasperlok.netlify.app/","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2023-01-11T00:00:00.000+08:00","citationText":"Lok, 2023"}
+{"title":"Cox Proportional Hazards Model","description":"A practical introduction to one of the most widely used methods in survival analysis","authors":[{"author":"Jasper Lok","authorURL":"https://jasperlok.netlify.app/","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2023-01-11T00:00:00.000+08:00","citationText":"Lok, 2023"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -1531,14 +1557,15 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--/radix_placeholder_site_before_body-->
 
 <div class="d-title">
-<h1>Cox Proportional Hazard</h1>
+<h1>Cox Proportional Hazards Model</h1>
+
 <!--radix_placeholder_categories-->
 <div class="dt-tags">
 <div class="dt-tag">Machine Learning</div>
 <div class="dt-tag">Survival Model</div>
 </div>
 <!--/radix_placeholder_categories-->
-<p><p>One of the popular methods in survival analysis</p></p>
+<p><p>A practical introduction to one of the most widely used methods in survival analysis</p></p>
 </div>
 
 <div class="d-byline">
@@ -1552,110 +1579,115 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <nav class="l-text toc figcaption" id="TOC">
 <h3>Contents</h3>
 <ul>
-<li><a href="#differences-between-parametric-semi-parametric-and-non-parametric-models" id="toc-differences-between-parametric-semi-parametric-and-non-parametric-models">Differences Between parametric, semi-parametric, and non-parametric models</a></li>
-<li><a href="#cox-proportional-hazard" id="toc-cox-proportional-hazard">Cox Proportional Hazard</a>
+<li><a href="#parametric-semi-parametric-and-non-parametric-models" id="toc-parametric-semi-parametric-and-non-parametric-models">Parametric, Semi-Parametric, and Non-Parametric Models</a></li>
+<li><a href="#cox-proportional-hazards-model" id="toc-cox-proportional-hazards-model">Cox Proportional Hazards Model</a>
 <ul>
-<li><a href="#what-is-cox-proportional-hazard" id="toc-what-is-cox-proportional-hazard">What is Cox proportional hazard?</a></li>
-<li><a href="#how-to-interpret-cox-proportional-hazard" id="toc-how-to-interpret-cox-proportional-hazard">How to interpret Cox Proportional Hazard?</a>
+<li><a href="#what-is-the-cox-proportional-hazards-model" id="toc-what-is-the-cox-proportional-hazards-model">What is the Cox proportional hazards model?</a></li>
+<li><a href="#how-to-interpret-a-cox-model" id="toc-how-to-interpret-a-cox-model">How to interpret a Cox model</a>
 <ul>
 <li><a href="#categorical-variable" id="toc-categorical-variable">Categorical variable</a></li>
 <li><a href="#numerical-variable" id="toc-numerical-variable">Numerical variable</a></li>
 </ul></li>
-<li><a href="#difference-between-cox-proportional-hazard-and-kaplan-meier-survival-curve" id="toc-difference-between-cox-proportional-hazard-and-kaplan-meier-survival-curve">Difference between Cox Proportional Hazard and Kaplan-Meier Survival Curve</a></li>
+<li><a href="#cox-proportional-hazards-model-vs.-kaplan-meier-survival-curve" id="toc-cox-proportional-hazards-model-vs.-kaplan-meier-survival-curve">Cox proportional hazards model vs. Kaplan-Meier survival curve</a></li>
 </ul></li>
 <li><a href="#concordance-index" id="toc-concordance-index">Concordance Index</a></li>
 <li><a href="#demonstration" id="toc-demonstration">Demonstration</a>
 <ul>
 <li><a href="#setup-the-environment" id="toc-setup-the-environment">Setup the environment</a></li>
-<li><a href="#import-data" id="toc-import-data">Import Data</a></li>
-<li><a href="#building-cox-model" id="toc-building-cox-model">Building Cox model</a></li>
+<li><a href="#import-data" id="toc-import-data">Import data</a></li>
+<li><a href="#build-the-cox-model" id="toc-build-the-cox-model">Build the Cox model</a></li>
 <li><a href="#extract-the-results" id="toc-extract-the-results">Extract the results</a></li>
+<li><a href="#check-the-proportional-hazards-assumption" id="toc-check-the-proportional-hazards-assumption">Check the proportional hazards assumption</a></li>
 </ul></li>
-<li><a href="#visualize-the-survival-curve" id="toc-visualize-the-survival-curve">Visualize the survival curve</a>
+<li><a href="#visualise-the-survival-curve" id="toc-visualise-the-survival-curve">Visualise the survival curve</a>
 <ul>
-<li><a href="#visualize-the-cox-proportional-hazard-results" id="toc-visualize-the-cox-proportional-hazard-results">Visualize the cox proportional hazard results</a></li>
-<li><a href="#feature-selection" id="toc-feature-selection">Feature Selection</a></li>
+<li><a href="#visualise-the-cox-proportional-hazards-results" id="toc-visualise-the-cox-proportional-hazards-results">Visualise the Cox proportional hazards results</a></li>
+<li><a href="#feature-selection" id="toc-feature-selection">Feature selection</a></li>
 </ul></li>
 <li><a href="#conclusion" id="toc-conclusion">Conclusion</a></li>
 </ul>
 </nav>
 </div>
-<p>In this post, I will be exploring one of the popular methods for survival analysis, Cox proportional hazard.</p>
+<p>In this post, I will walk through one of the most widely used methods in survival analysis: the Cox proportional hazards model.</p>
 <div class="layout-chunk" data-layout="l-body">
 <p><img src="image/survival-kit.jpg" width="100%" /></p>
 </div>
 <p>Photo by <a href="https://unsplash.com/@alex_andrews?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Alexander Andrews</a> on <a href="https://unsplash.com/photos/X62F1WQhuLI?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a></p>
-<p>Before jumping into cox proportional hazard, let’s take a look what are the differences between parametric, semi-parametric, and non-parametric models.</p>
-<h1 id="differences-between-parametric-semi-parametric-and-non-parametric-models">Differences Between parametric, semi-parametric, and non-parametric models</h1>
-<p>According to the post by Ravi Charan <span class="citation" data-cites="charan2020">(<a href="#ref-charan2020" role="doc-biblioref">Charan 2020</a>)</span>, below are the summary of the differences:</p>
+<p>Before jumping into the Cox model, it is helpful to clarify how parametric, semi-parametric, and non-parametric survival models differ.</p>
+<h1 id="parametric-semi-parametric-and-non-parametric-models">Parametric, Semi-Parametric, and Non-Parametric Models</h1>
+<p>According to Ravi Charan <span class="citation" data-cites="charan2020">(<a href="#ref-charan2020" role="doc-biblioref">Charan 2020</a>)</span>, the models can be summarised as follows:</p>
 <ul>
-<li><p><strong>Non-parametric model</strong>: Make no assumptions about the functional form of <span class="math inline">\(\lambda\)</span> (i.e. hazard function)</p></li>
-<li><p><strong>Parametric model</strong>: Assume the precise functional form of <span class="math inline">\(\lambda\)</span> in modeling</p></li>
-<li><p><strong>Semi-parametric model</strong>: Cox proportional hazard does not make any functional assumptions on the shape of the hazard function</p>
+<li><p><strong>Non-parametric models</strong> make no assumption about the functional form of the hazard function, <span class="math inline">\(\lambda(t)\)</span>. A common example is the Kaplan-Meier estimator.</p></li>
+<li><p><strong>Parametric models</strong> assume a specific distribution for survival time, such as exponential, Weibull, log-normal, or log-logistic. This implies a specific shape for the hazard function.</p></li>
+<li><p><strong>Semi-parametric models</strong> sit between these two approaches. The Cox proportional hazards model does not require us to specify the shape of the baseline hazard function.</p>
 <ul>
-<li>Functional form assumptions are made about the effects of the covariates alone</li>
+<li>Instead, the model focuses on estimating how covariates change the hazard relative to the baseline hazard.</li>
 </ul></li>
 </ul>
-<h1 id="cox-proportional-hazard">Cox Proportional Hazard</h1>
-<h2 id="what-is-cox-proportional-hazard">What is Cox proportional hazard?</h2>
-<p>So, what is cox proportional hazard?</p>
-<p>Cox proportional hazard is a semi-parametric survival model.</p>
-<p>The Cox proportional hazard formula can be written as follows <span class="citation" data-cites="sthda">(<a href="#ref-sthda" role="doc-biblioref">STHDA, n.d.</a>)</span>:</p>
+<h1 id="cox-proportional-hazards-model">Cox Proportional Hazards Model</h1>
+<h2 id="what-is-the-cox-proportional-hazards-model">What is the Cox proportional hazards model?</h2>
+<p>The Cox proportional hazards model is a semi-parametric survival model that estimates the relationship between covariates and the hazard of an event occurring.</p>
+<p>The model can be written as follows <span class="citation" data-cites="sthda">(<a href="#ref-sthda" role="doc-biblioref">STHDA, n.d.</a>)</span>:</p>
 <p><span class="math display">\[h(t) = h_0(t) \times exp(b_1x_1 + b_2x_2 + ... + b_px_p) \]</span></p>
 <p>where</p>
 <ul>
-<li><p>t is the survival time</p></li>
-<li><p>h(t) is the hazard function determined by a set of covariates (<span class="math inline">\(x_1, x_2, ..., x_p\)</span>)</p></li>
-<li><p>the coefficients (<span class="math inline">\(b_1, b_2, ...., b_p\)</span>) measure the impact of covariates</p></li>
-<li><p><span class="math inline">\(h_0\)</span> is the baseline hazard</p></li>
+<li><p><span class="math inline">\(t\)</span> is the survival time</p></li>
+<li><p><span class="math inline">\(h(t)\)</span> is the hazard function for an individual with covariates (<span class="math inline">\(x_1, x_2, ..., x_p\)</span>)</p></li>
+<li><p>(<span class="math inline">\(b_1, b_2, ...., b_p\)</span>) are coefficients that measure the effect of the covariates</p></li>
+<li><p><span class="math inline">\(h_0(t)\)</span> is the baseline hazard, which represents the hazard when all covariates are at zero or at their reference levels</p></li>
 </ul>
-<p>As shown in the formula, Cox proportional hazard model allows the users to assess the effects of multiple risk factors on survival time at the same time.</p>
-<h2 id="how-to-interpret-cox-proportional-hazard">How to interpret Cox Proportional Hazard?</h2>
-<p>One of the key outputs from Cox proportional hazard model is the hazard ratio.</p>
-<p>Below is how one could interpret the hazard ratio:</p>
+<p>The key idea is that covariates multiply the baseline hazard. This allows us to estimate how several risk factors are associated with the event rate at the same time, without having to specify the exact shape of the baseline hazard over time.</p>
+<h2 id="how-to-interpret-a-cox-model">How to interpret a Cox model</h2>
+<p>One of the key outputs from a Cox model is the <strong>hazard ratio</strong>, which is calculated as <span class="math inline">\(exp(coef)\)</span>.</p>
+<p>The hazard ratio is a relative measure. It compares the hazard between two groups, or between two values of a numeric variable, while holding the other variables in the model constant.</p>
 <h3 id="categorical-variable">Categorical variable</h3>
 <ul>
-<li><p>Hazard ratio = 1 —&gt; no effect</p></li>
-<li><p>Hazard ratio &gt; 1 increase relative risk compared to the reference group</p></li>
-<li><p>Hazard ratio &lt; 1 decrease in relative risk compared to the reference group</p></li>
+<li><p>Hazard ratio = 1: no difference in hazard compared with the reference group</p></li>
+<li><p>Hazard ratio &gt; 1: higher hazard compared with the reference group</p></li>
+<li><p>Hazard ratio &lt; 1: lower hazard compared with the reference group</p></li>
 </ul>
 <h3 id="numerical-variable">Numerical variable</h3>
-<p>The hazard ratio represents the increase/decrease in risk for every unit change</p>
-<p>Examples will be provided in the demonstration so that it’s easier to understand the concepts.</p>
-<h2 id="difference-between-cox-proportional-hazard-and-kaplan-meier-survival-curve">Difference between Cox Proportional Hazard and Kaplan-Meier Survival Curve</h2>
+<p>For a numeric variable, the hazard ratio represents the multiplicative change in the hazard for a one-unit increase in that variable, holding the other variables constant.</p>
+<p>For example, if the hazard ratio for age is 1.05, then a one-year increase in age is associated with a 5% higher hazard, all else being equal. This does not mean the probability of the event increases by exactly 5%; it means the instantaneous event rate is 5% higher at a given point in time.</p>
+<h2 id="cox-proportional-hazards-model-vs.-kaplan-meier-survival-curve">Cox proportional hazards model vs. Kaplan-Meier survival curve</h2>
 <p><img src="https://media.giphy.com/media/mRh4cLIYhrs9G/giphy.gif" /></p>
-<p>One of the disadvantages of the Kaplan-Meier survival curve is unable to model numeric variables. Each unique numeric figure will be treated as a separate group when fitting the survival curve under the Kaplan-Meier model.</p>
-<p>Another disadvantage of the Kaplan-Meier model is that model is unable to include many explanatory variables.</p>
-<p>These issues could be overcome if Cox proportional hazard model is used.</p>
+<p>The Kaplan-Meier curve is useful for estimating and visualising survival probabilities over time, especially for a small number of groups. However, it has some practical limitations:</p>
+<ul>
+<li><p>It does not directly model several explanatory variables at once.</p></li>
+<li><p>Numeric variables often need to be grouped before plotting, otherwise each unique value may effectively behave like a separate group.</p></li>
+<li><p>It is mainly descriptive, whereas the Cox model allows us to estimate the association between covariates and the hazard of the event.</p></li>
+</ul>
+<p>These issues can be addressed with the Cox proportional hazards model. However, the Cox model also has its own assumptions, especially the proportional hazards assumption, which we should check before relying on the results.</p>
 <h1 id="concordance-index">Concordance Index</h1>
-<p>Before we move on, it’s important to discuss one of the important performance metrics in the survival model.</p>
-<p>Concordance index (a.k.a. C-index) is one of the commonly used performance measures for survival models.</p>
-<p>This index can be interpreted as the fraction of all pairs of subjects whose predicted survival times are correctly ordered among all subjects that can actually be ordered <span class="citation" data-cites="raykar">(<a href="#ref-raykar" role="doc-biblioref">Raykar et al., n.d.</a>)</span>.</p>
-<p>Below is a chart on how the concordance index is being calculated:</p>
+<p>Before moving to the demonstration, it is useful to introduce one common performance metric for survival models: the concordance index, or C-index.</p>
+<p>The C-index measures how well the model ranks subjects by risk. More specifically, it can be interpreted as the fraction of comparable pairs whose predicted risks are correctly ordered with respect to their observed event times <span class="citation" data-cites="raykar">(<a href="#ref-raykar" role="doc-biblioref">Raykar et al., n.d.</a>)</span>.</p>
+<p>Below is a chart showing how the concordance index is calculated:</p>
 <div class="layout-chunk" data-layout="l-body">
 <p><img src="image/concordance%20calculation.png" width="100%" /></p>
 </div>
 <p><em>Taken from <a href="https://towardsdatascience.com/how-to-evaluate-survival-analysis-models-dd67bc10caae">“How to Evaluate Survival Analysis Models” post</a> by Nicolo Cosimo Albanese</em></p>
-<p>In the post, the author also summarised the interpretation of the concordance index as follows:</p>
+<p>The interpretation can be summarised as follows:</p>
 <ul>
-<li><p>C = 1: perfect concordance between risks and event times.</p></li>
-<li><p>C = 0: perfect anti-concordance between risks and event times.</p></li>
-<li><p>C = 0.5: random assignment. The model predicts the relationship between risk and survival time as well as a coin toss.</p></li>
+<li><p>C = 1: perfect concordance between predicted risk and event time.</p></li>
+<li><p>C = 0.5: no better than random ranking.</p></li>
+<li><p>C = 0: perfect anti-concordance between predicted risk and event time.</p></li>
 </ul>
+<p>In practice, the C-index should not be the only metric used to assess a survival model. It measures ranking performance, but it does not tell us whether the model is well calibrated, whether the proportional hazards assumption is reasonable, or whether the model generalises to new data.</p>
 <h1 id="demonstration">Demonstration</h1>
-<p>In this demonstration, I will be using this <a href="https://www.kaggle.com/datasets/shrutimechlearn/churn-modelling">bank dataset</a> from Kaggle.</p>
+<p>In this demonstration, I will use this <a href="https://www.kaggle.com/datasets/shrutimechlearn/churn-modelling">bank churn dataset</a> from Kaggle.</p>
+<p>One important caveat: this dataset is not a perfect survival dataset. The variable <code>tenure</code> is used as the time variable and <code>exited</code> is used as the event indicator. Customers who have not exited are treated as right-censored at their current tenure. This is a useful way to demonstrate the Cox model mechanics, but in a real churn analysis we would want a proper customer history with start dates, event dates, observation windows, and censoring rules.</p>
 <h2 id="setup-the-environment">Setup the environment</h2>
-<p>In this demonstration, I will be using Cox proportional hazard function from <code>survival</code> package.</p>
-<p>I will be using functions from <code>survminer</code> package to visualize the results.</p>
+<p>In this demonstration, I will use the <code>coxph</code> function from the <code>survival</code> package to build the Cox proportional hazards model.</p>
+<p>I will use functions from the <code>survminer</code> package to visualise the results.</p>
 <p>First, I will load the necessary packages into the environment.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'>pacman</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/pacman/man/p_load.html'>p_load</a></span><span class='op'>(</span><span class='va'>tidyverse</span>, <span class='va'>lubridate</span>, <span class='va'>janitor</span>, <span class='va'>survival</span>, <span class='va'>survminer</span>, <span class='va'>scales</span><span class='op'>)</span></span></code></pre>
 </div>
 </div>
-<h2 id="import-data">Import Data</h2>
+<h2 id="import-data">Import data</h2>
 <p>Next, I will import the dataset into the environment.</p>
-<p>I will also clean the column names, drop the columns I don’t need, and transform the columns to the right format.</p>
+<p>I will also clean the column names, drop columns that are not useful for modelling, and transform selected columns to the right format.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'>read_csv</span><span class='op'>(</span><span class='st'>"https://raw.githubusercontent.com/jasperlok/my-blog/master/_posts/2022-09-10-kaplan-meier/data/Churn_Modelling.csv"</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
@@ -1669,9 +1701,9 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <span>  <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>tenure</span> <span class='op'>&gt;</span> <span class='fl'>0</span><span class='op'>)</span></span></code></pre>
 </div>
 </div>
-<p>Note that I have also scaled <code>credit_score</code>, <code>balance</code>, and <code>estimated_salary</code> in respective units.</p>
-<h2 id="building-cox-model">Building Cox model</h2>
-<p>To build a cox model, I will use <code>coxph</code> function from <code>survival</code> package to build a cox proportional hazard model.</p>
+<p>Note that I have scaled <code>credit_score</code>, <code>balance</code>, and <code>estimated_salary</code>. This makes the model output easier to interpret because the hazard ratios are no longer based on very small unit changes.</p>
+<h2 id="build-the-cox-model">Build the Cox model</h2>
+<p>To build the Cox model, I will use the <code>coxph</code> function from the <code>survival</code> package.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>cox_model</span> <span class='op'>&lt;-</span> <span class='fu'>coxph</span><span class='op'>(</span><span class='fu'>Surv</span><span class='op'>(</span><span class='va'>tenure</span>, <span class='va'>exited</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>.</span>, </span>
@@ -1680,7 +1712,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <span>                   y <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span></code></pre>
 </div>
 </div>
-<p>We could call the fitted model to see the model result.</p>
+<p>We can call the fitted model to see the model result.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>cox_model</span></span></code></pre>
@@ -1704,7 +1736,7 @@ estimated_salary   0.001221  1.001222  0.003926   0.311  0.7558
 Likelihood ratio test=1124  on 10 df, p=&lt; 2.2e-16
 n= 9587, number of events= 1942 </code></pre>
 </div>
-<p>It seems like the <code>summary</code> function would provide more info about the fitted model if we pass the fitted model into the function.</p>
+<p>The <code>summary</code> function provides more detailed information about the fitted model.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>cox_model</span><span class='op'>)</span></span></code></pre>
@@ -1746,14 +1778,15 @@ Likelihood ratio test= 1124  on 10 df,   p=&lt;2e-16
 Wald test            = 1169  on 10 df,   p=&lt;2e-16
 Score (logrank) test = 1211  on 10 df,   p=&lt;2e-16</code></pre>
 </div>
-<p>Note that the hazard ratio would be <code>exp(coef)</code> in the above.</p>
-<p>The three tests at the bottom of the results are the statistical tests for the overall significance of the model, where the null hypothesis of the statistical tests is as follows:</p>
+<p>The hazard ratio is shown as <code>exp(coef)</code> in the output.</p>
+<p>The three tests at the bottom of the results are overall significance tests for the model. The null hypothesis is:</p>
 <p><span class="math inline">\(H_0:\beta = 0\)</span></p>
-<p>As the p-values for all the statistical tests are smaller than 0.05, we reject the null hypothesis.</p>
-<p>For more info on how we could interpret the result, I find this <a href="http://www.sthda.com/english/wiki/cox-proportional-hazards-model">post</a> very helpful.</p>
-<p>Alternatively, chapter 5 of the book <strong>Applied Survival Analysis Using R</strong> by Dirk F. Moore has a quite clear explanation of cox proportional hazards as well.</p>
+<p>In other words, the null hypothesis is that the covariates have no association with the hazard. Since the p-values for all three tests are smaller than 0.05, we reject the null hypothesis and conclude that the model contains at least some useful predictors.</p>
+<p>This does not mean every individual variable is important, nor does it prove causality. It means the model as a whole provides evidence of association between the covariates and churn hazard.</p>
+<p>For more information on how to interpret the result, I find this <a href="http://www.sthda.com/english/wiki/cox-proportional-hazards-model">post</a> very helpful.</p>
+<p>Alternatively, chapter 5 of the book <strong>Applied Survival Analysis Using R</strong> by Dirk F. Moore has a clear explanation of Cox proportional hazards as well.</p>
 <h2 id="extract-the-results">Extract the results</h2>
-<p>The concordance results can be extracted by using the following method:</p>
+<p>The concordance result can be extracted using the following method:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>cox_model</span><span class='op'>$</span><span class='va'>concordance</span><span class='op'>[</span><span class='st'>"concordance"</span><span class='op'>]</span></span></code></pre>
@@ -1761,7 +1794,7 @@ Score (logrank) test = 1211  on 10 df,   p=&lt;2e-16</code></pre>
 <pre><code>concordance 
   0.7204698 </code></pre>
 </div>
-<p>Alternatively, we could extract the concordance index by passing the fitted model into the <code>concordance</code> function from <code>survival</code> package.</p>
+<p>Alternatively, we can extract the concordance index by passing the fitted model into the <code>concordance</code> function from the <code>survival</code> package.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'>concordance</span><span class='op'>(</span><span class='va'>cox_model</span><span class='op'>)</span></span></code></pre>
@@ -1774,19 +1807,47 @@ Concordance= 0.7205 se= 0.006461
 concordant discordant     tied.x     tied.y    tied.xy 
    7192433    2790544          0     193333          0 </code></pre>
 </div>
-<h1 id="visualize-the-survival-curve">Visualize the survival curve</h1>
-<p>Having fit a Cox model to the data, it’s possible to visualize the predicted survival proportion at any given point in time for a particular risk group. The function survfit() estimates the survival proportion, by default at the mean values of covariates.</p>
+<p>The full model has a C-index of approximately 0.72 in the rendered output, which suggests a reasonable ability to rank customers by relative churn risk. However, this is still an in-sample result. For a stronger analysis, we should evaluate the model on a validation or test set.</p>
+<h2 id="check-the-proportional-hazards-assumption">Check the proportional hazards assumption</h2>
+<p>Because the Cox model assumes proportional hazards, we should check whether the effect of each covariate is reasonably constant over time.</p>
+<p>The <code>cox.zph</code> function tests the proportional hazards assumption using Schoenfeld residuals.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>ph_test</span> <span class='op'>&lt;-</span> <span class='fu'>cox.zph</span><span class='op'>(</span><span class='va'>cox_model</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>ph_test</span></span></code></pre>
+</div>
+<pre><code>                    chisq df     p
+credit_score     2.33e-01  1 0.629
+geography        3.88e+00  2 0.144
+gender           1.16e-01  1 0.733
+age              1.34e+00  1 0.246
+balance          4.27e+00  1 0.039
+num_of_products  5.70e-01  1 0.450
+has_cr_card      2.88e-04  1 0.986
+is_active_member 1.84e+00  1 0.174
+estimated_salary 1.07e+00  1 0.301
+GLOBAL           1.29e+01 10 0.232</code></pre>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'>ggcoxzph</span><span class='op'>(</span><span class='va'>ph_test</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="cox-ph_files/figure-html5/unnamed-chunk-11-1.png" width="100%" /></p>
+</div>
+<p>If the test suggests that a variable violates the proportional hazards assumption, we should not ignore it. Possible next steps include adding time-varying effects, stratifying by that variable, transforming variables, or using a different modelling approach.</p>
+<h1 id="visualise-the-survival-curve">Visualise the survival curve</h1>
+<p>After fitting a Cox model, it is possible to visualise the predicted survival proportion at each time point for a given covariate profile. The <code>survfit()</code> function estimates the survival curve from the fitted model. By default, it uses a typical covariate profile based on the covariate values in the data.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'>ggsurvplot</span><span class='op'>(</span><span class='fu'>survfit</span><span class='op'>(</span><span class='va'>cox_model</span><span class='op'>)</span>, </span>
 <span>           data <span class='op'>=</span> <span class='va'>df</span><span class='op'>)</span></span></code></pre>
 </div>
-<p><img src="cox-ph_files/figure-html5/unnamed-chunk-10-1.png" width="100%" /></p>
+<p><img src="cox-ph_files/figure-html5/unnamed-chunk-12-1.png" width="100%" /></p>
 </div>
-<p>To plot the graph, it seems like we need to pass the <code>fit</code> object into <code>survfit</code> function</p>
-<p><code>ggsurvplot</code> also supports multiple datasets.</p>
-<p>To do so, we need to combine the different <code>survfit</code> objects into a list.</p>
-<p>For demonstration, I will first split the dataset by gender.</p>
+<p>To plot the graph, we pass the fitted Cox model into the <code>survfit</code> function.</p>
+<p><code>ggsurvplot</code> also supports multiple survival curves.</p>
+<p>To demonstrate this, I will split the dataset by gender.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>df_male</span> <span class='op'>&lt;-</span></span>
@@ -1800,7 +1861,7 @@ concordant discordant     tied.x     tied.y    tied.xy
 <span>  <span class='fu'>select</span><span class='op'>(</span><span class='op'>-</span><span class='va'>gender</span><span class='op'>)</span></span></code></pre>
 </div>
 </div>
-<p>Then, I will fit two cox proportional hazard models based on each dataset.</p>
+<p>Then, I will fit two Cox proportional hazards models based on each dataset.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>survfit_male</span> <span class='op'>&lt;-</span></span>
@@ -1812,7 +1873,7 @@ concordant discordant     tied.x     tied.y    tied.xy
 <span>        data <span class='op'>=</span> <span class='va'>df_female</span><span class='op'>)</span></span></code></pre>
 </div>
 </div>
-<p>Then, I will create the “list” before passing the list into <code>ggsurvplot</code> function.</p>
+<p>Then, I will create a list before passing it into the <code>ggsurvplot</code> function.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>surv_fit_list</span> <span class='op'>&lt;-</span> </span>
@@ -1824,59 +1885,85 @@ concordant discordant     tied.x     tied.y    tied.xy
 <span>           conf.int <span class='op'>=</span> <span class='cn'>TRUE</span>,</span>
 <span>           ylim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.35</span>, <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
 </div>
-<p><img src="cox-ph_files/figure-html5/unnamed-chunk-13-1.png" width="100%" /></p>
+<p><img src="cox-ph_files/figure-html5/unnamed-chunk-15-1.png" width="100%" /></p>
 </div>
-<h2 id="visualize-the-cox-proportional-hazard-results">Visualize the cox proportional hazard results</h2>
-<p>Next, I will visualize the fitted model results by using <code>ggforest</code> function.</p>
+<p>This comparison is useful for demonstration, but it should be interpreted carefully. Since the male and female models are fitted separately, the curves are not simply showing the isolated effect of gender from a single model. Another approach would be to create specific covariate profiles and use <code>survfit(cox_model, newdata = ...)</code> to compare predicted survival curves while holding other variables fixed.</p>
+<h2 id="visualise-the-cox-proportional-hazards-results">Visualise the Cox proportional hazards results</h2>
+<p>Next, I will visualise the fitted model results with a forest plot of the hazard ratios.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'>ggforest</span><span class='op'>(</span><span class='va'>cox_model</span><span class='op'>)</span></span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>plot_hazard_ratios</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>model</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span>  <span class='va'>model_summary</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>model</span><span class='op'>)</span></span>
+<span>  </span>
+<span>  <span class='va'>hazard_ratios</span> <span class='op'>&lt;-</span></span>
+<span>    <span class='fu'>as_tibble</span><span class='op'>(</span><span class='va'>model_summary</span><span class='op'>$</span><span class='va'>conf.int</span>, rownames <span class='op'>=</span> <span class='st'>"term"</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>    <span class='fu'>select</span><span class='op'>(</span><span class='va'>term</span>,</span>
+<span>           hazard_ratio <span class='op'>=</span> <span class='va'>`exp(coef)`</span>,</span>
+<span>           lower_ci <span class='op'>=</span> <span class='va'>`lower .95`</span>,</span>
+<span>           upper_ci <span class='op'>=</span> <span class='va'>`upper .95`</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>    <span class='fu'>left_join</span><span class='op'>(</span></span>
+<span>      <span class='fu'>as_tibble</span><span class='op'>(</span><span class='va'>model_summary</span><span class='op'>$</span><span class='va'>coefficients</span>, rownames <span class='op'>=</span> <span class='st'>"term"</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>        <span class='fu'>transmute</span><span class='op'>(</span><span class='va'>term</span>, p_value <span class='op'>=</span> <span class='va'>`Pr(&gt;|z|)`</span><span class='op'>)</span>,</span>
+<span>      by <span class='op'>=</span> <span class='st'>"term"</span></span>
+<span>    <span class='op'>)</span> <span class='op'>%&gt;%</span></span>
+<span>    <span class='fu'>mutate</span><span class='op'>(</span>term <span class='op'>=</span> <span class='fu'>fct_reorder</span><span class='op'>(</span><span class='va'>term</span>, <span class='va'>hazard_ratio</span><span class='op'>)</span><span class='op'>)</span></span>
+<span>  </span>
+<span>  <span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>hazard_ratios</span>,</span>
+<span>         <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>hazard_ratio</span>,</span>
+<span>             y <span class='op'>=</span> <span class='va'>term</span>,</span>
+<span>             xmin <span class='op'>=</span> <span class='va'>lower_ci</span>,</span>
+<span>             xmax <span class='op'>=</span> <span class='va'>upper_ci</span>,</span>
+<span>             color <span class='op'>=</span> <span class='va'>p_value</span> <span class='op'>&lt;</span> <span class='fl'>0.05</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>    <span class='fu'>geom_vline</span><span class='op'>(</span>xintercept <span class='op'>=</span> <span class='fl'>1</span>, linetype <span class='op'>=</span> <span class='st'>"dashed"</span>, color <span class='op'>=</span> <span class='st'>"grey50"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>    <span class='fu'>geom_pointrange</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>    <span class='fu'>scale_x_log10</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>    <span class='fu'>scale_color_manual</span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"grey50"</span>, <span class='st'>"#0072B2"</span><span class='op'>)</span>, guide <span class='op'>=</span> <span class='st'>"none"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>    <span class='fu'>labs</span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>"Hazard ratio (log scale)"</span>,</span>
+<span>         y <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></span>
+<span><span class='op'>}</span></span>
+<span></span>
+<span><span class='fu'>plot_hazard_ratios</span><span class='op'>(</span><span class='va'>cox_model</span><span class='op'>)</span></span></code></pre>
 </div>
-<p><img src="cox-ph_files/figure-html5/unnamed-chunk-14-1.png" width="100%" /></p>
+<p><img src="cox-ph_files/figure-html5/unnamed-chunk-16-1.png" width="100%" /></p>
 </div>
-<p>This graph contains the different variables used in fitting Cox model and the different categories within the categorical variables.</p>
-<p>On the right side of the graph, we have the hazard ratio, the confidence interval for the different hazard ratios, and p-value for each variable.</p>
-<p>As discussed earlier, the higher the hazard ratio, the riskier the customer is, compared to the reference group.</p>
-<p>For example, on average a male customer is 32% less risky than a female customer.</p>
-<p>Meanwhile, for the numerical variable, we could interpret the hazard ratio as the change in relative risk for every unit change.</p>
-<p>For example, for every increase in 1 for age, the risk would increase approximately by 5%.</p>
-<p>Nevertheless, below are what we could observe from the cox model result:</p>
+<p>This graph contains the variables used in the Cox model and the categories within categorical variables.</p>
+<p>On the right side of the graph, we have the hazard ratio, the confidence interval, and the p-value for each variable.</p>
+<p>As discussed earlier, a higher hazard ratio indicates a higher hazard of churn, while a lower hazard ratio indicates a lower hazard of churn, conditional on the other variables in the model.</p>
+<p>For example, the rendered model output shows that <code>genderMale</code> has a hazard ratio of approximately 0.68. This suggests that, holding the other variables constant, male customers have about 32% lower churn hazard than the reference group, which is female customers.</p>
+<p>For a numerical variable, the hazard ratio can be interpreted as the change in hazard for every one-unit increase in that variable. For example, the rendered model output shows an age hazard ratio of approximately 1.05. This means a one-year increase in age is associated with about a 5% higher churn hazard, holding the other variables constant.</p>
+<p>Based on the Cox model result, several patterns stand out:</p>
 <ul>
-<li>Interestingly enough that in general, the churn increases when the age increases</li>
+<li>Churn hazard appears to increase with age.</li>
 </ul>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>df</span>, <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>age</span>, fill <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='va'>exited</span><span class='op'>)</span>, alpha <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span>  <span class='fu'>geom_histogram</span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
 </div>
-<p><img src="cox-ph_files/figure-html5/unnamed-chunk-15-1.png" width="100%" /></p>
+<p><img src="cox-ph_files/figure-html5/unnamed-chunk-17-1.png" width="100%" /></p>
 </div>
 <ul>
-<li><p>The likelihood of churning also depends on whether the customer is being tagged as an active member</p>
+<li><p>Churn hazard differs by active membership status. Customers tagged as inactive have a higher churn risk, so the company may want to design campaigns to re-engage inactive customers.</p></li>
+<li><p>Customers from Germany are more likely to churn compared with customers from France, while Spain does not appear materially different from France in the fitted model.</p>
 <ul>
-<li>The company could run some campaigns to engage the non-active customers to reduce the churn rate</li>
-</ul></li>
-<li><p>The customers from Germany are more likely to churn, compared to France and Spain</p>
-<ul>
-<li><p>This is consistent with what we observe in the dataset</p></li>
-<li><p>It is probably worthwhile to understand further whether there are any reasons why customers from Germany are more likely to churn.</p></li>
+<li><p>This is consistent with what we observe in the dataset.</p></li>
+<li><p>It is worth investigating why Germany has a higher churn rate.</p></li>
 </ul>
-<p>For example, it could be the customers from Germany are mostly from a certain industry, resulting in a higher churn rate.</p>
-<p>This is to help us to spot whether any customer characteristics that are not captured in the dataset.</p></li>
+<p>For example, German customers may differ by product mix, acquisition channel, pricing, service experience, or another characteristic not captured in the dataset.</p>
+<p>This additional analysis would help determine whether geography itself is important, or whether it is acting as a proxy for another customer characteristic.</p></li>
 </ul>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>df</span>, <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>geography</span>, fill <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='va'>exited</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span>  <span class='fu'>geom_bar</span><span class='op'>(</span>position <span class='op'>=</span> <span class='st'>"fill"</span><span class='op'>)</span></span></code></pre>
 </div>
-<p><img src="cox-ph_files/figure-html5/unnamed-chunk-16-1.png" width="100%" /></p>
+<p><img src="cox-ph_files/figure-html5/unnamed-chunk-18-1.png" width="100%" /></p>
 </div>
-<p>I find that visualizing the results as follows makes it easier to understand.</p>
-<h2 id="feature-selection">Feature Selection</h2>
-<p>We could take one step further to perform feature selection on the variables to be used in cox proportional hazard modeling.</p>
-<p>Over here, I will be using <code>step</code> function from <code>stats</code> package in performing stepwise feature selection.</p>
-<p>Note that this method uses AIC in selecting the model.</p>
-<p>I will also indicate that the direction should be “both”, i.e. the model could include or exclude variables at each step.</p>
+<h2 id="feature-selection">Feature selection</h2>
+<p>We can take one step further by performing feature selection on the variables used in the Cox proportional hazards model.</p>
+<p>Here, I will use the <code>step</code> function from the <code>stats</code> package to perform stepwise feature selection.</p>
+<p>Note that this method uses AIC to select the model.</p>
+<p>I will also indicate that the direction should be <code>"both"</code>, meaning the model can include or exclude variables at each step.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'>stats</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/stats/step.html'>step</a></span><span class='op'>(</span></span>
@@ -1963,13 +2050,13 @@ is_active_member1 -0.757448  0.468862  0.048702 -15.553  &lt; 2e-16
 Likelihood ratio test=1120  on 7 df, p=&lt; 2.2e-16
 n= 9587, number of events= 1942 </code></pre>
 </div>
-<p>From the result, we see that the following variables are being dropped in the feature selection:</p>
+<p>From the result, the following variables are dropped during feature selection:</p>
 <ul>
 <li><p>num_of_products</p></li>
 <li><p>has_cr_card</p></li>
 <li><p>estimated_salary</p></li>
 </ul>
-<p>With this, I will rebuild the cox proportional hazard model with lesser variables.</p>
+<p>With this, I will rebuild the Cox proportional hazards model with fewer variables.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>cox_model_sub</span> <span class='op'>&lt;-</span> </span>
@@ -1978,9 +2065,9 @@ n= 9587, number of events= 1942 </code></pre>
 <span>        x <span class='op'>=</span> <span class='cn'>TRUE</span>, </span>
 <span>        y <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
 <span></span>
-<span><span class='fu'>ggforest</span><span class='op'>(</span><span class='va'>cox_model_sub</span><span class='op'>)</span></span></code></pre>
+<span><span class='fu'>plot_hazard_ratios</span><span class='op'>(</span><span class='va'>cox_model_sub</span><span class='op'>)</span></span></code></pre>
 </div>
-<p><img src="cox-ph_files/figure-html5/unnamed-chunk-18-1.png" width="100%" /></p>
+<p><img src="cox-ph_files/figure-html5/unnamed-chunk-20-1.png" width="100%" /></p>
 </div>
 <p>Next, I will extract the concordance index of the new model.</p>
 <div class="layout-chunk" data-layout="l-body">
@@ -1990,10 +2077,22 @@ n= 9587, number of events= 1942 </code></pre>
 <pre><code>concordance 
   0.7200558 </code></pre>
 </div>
-<p>The new model requires fewer variables in predicting the outcome although there is a slight drop in the concordance index in the new model.</p>
+<p>The new model requires fewer variables, while the concordance index only drops slightly.</p>
 <p>The concordance index dropped by 0.06%.</p>
+<p>That said, stepwise selection should be used carefully. It can produce unstable variable selections, especially when predictors are correlated. A more complete modelling workflow would also consider:</p>
+<ul>
+<li><p>domain knowledge and whether each variable is available at prediction time</p></li>
+<li><p>train/test or cross-validation performance</p></li>
+<li><p>proportional hazards diagnostics</p></li>
+<li><p>non-linear effects, such as using splines for age or balance</p></li>
+<li><p>interactions, such as whether age behaves differently by geography or active membership status</p></li>
+<li><p>calibration, not only ranking performance</p></li>
+<li><p>business usefulness, such as whether the model can support targeted churn-prevention actions</p></li>
+</ul>
 <h1 id="conclusion">Conclusion</h1>
-<p>That’s all for the day!</p>
+<p>The Cox proportional hazards model is a useful tool when we want to understand how different variables are associated with the timing of an event. Its main strength is that it can model multiple covariates while leaving the baseline hazard unspecified.</p>
+<p>In this example, the model suggests that churn hazard is associated with age, geography, gender, balance, and active membership status. The model also achieves an in-sample C-index of around 0.72, suggesting reasonable ranking ability.</p>
+<p>However, a complete survival analysis should go beyond fitting the model. We should check the proportional hazards assumption, validate performance on unseen data, consider calibration, and confirm that the time and censoring definitions are appropriate for the business problem.</p>
 <p>Thanks for reading the post until the end.</p>
 <p>Feel free to contact me through <a href="mailto:jasper.jh.lok@gmail.com">email</a> or <a href="https://www.linkedin.com/in/jasper-l-13426232/">LinkedIn</a> if you have any suggestions on future topics to share.</p>
 <p>Refer to this link for the <a href="https://jasperlok.netlify.app/blog_disclaimer.html">blog disclaimer</a>.</p>
@@ -2002,16 +2101,16 @@ n= 9587, number of events= 1942 </code></pre>
 <p><img src="image/friendship.jpg" width="100%" /></p>
 </div>
 <p>Photo by <a href="https://www.pexels.com/photo/anonymous-friends-standing-together-at-sunset-in-mountains-4453153/">Helena Lopes</a></p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
-<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
-<div id="ref-charan2020" class="csl-entry" role="doc-biblioentry">
-Charan, Ravi. 2020. <span>“The Cox Proportional Hazards Model.”</span> <a href="https://towardsdatascience.com/the-cox-proportional-hazards-model-35e60e554d8f">https://towardsdatascience.com/the-cox-proportional-hazards-model-35e60e554d8f</a>.
+<div class="sourceCode" id="cb9"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-charan2020" class="csl-entry" role="listitem">
+Charan, Ravi. 2020. <em>The Cox Proportional Hazards Model</em>. <a href="https://towardsdatascience.com/the-cox-proportional-hazards-model-35e60e554d8f">https://towardsdatascience.com/the-cox-proportional-hazards-model-35e60e554d8f</a>.
 </div>
-<div id="ref-raykar" class="csl-entry" role="doc-biblioentry">
-Raykar, Vikas C., Harald Steck, Balaji Krishnapuram, Cary Dehing-Oberije, and Philippe Lambin. n.d. <span>“On Ranking in Survival Analysis: Bounds on the Concordance Index.”</span> <a href="https://proceedings.neurips.cc/paper/2007/file/33e8075e9970de0cfea955afd4644bb2-Paper.pdf">https://proceedings.neurips.cc/paper/2007/file/33e8075e9970de0cfea955afd4644bb2-Paper.pdf</a>.
+<div id="ref-raykar" class="csl-entry" role="listitem">
+Raykar, Vikas C., Harald Steck, Balaji Krishnapuram, Cary Dehing-Oberije, and Philippe Lambin. n.d. <em>On Ranking in Survival Analysis: Bounds on the Concordance Index</em>. <a href="https://proceedings.neurips.cc/paper/2007/file/33e8075e9970de0cfea955afd4644bb2-Paper.pdf">https://proceedings.neurips.cc/paper/2007/file/33e8075e9970de0cfea955afd4644bb2-Paper.pdf</a>.
 </div>
-<div id="ref-sthda" class="csl-entry" role="doc-biblioentry">
-STHDA. n.d. <span>“Cox Proportional-Hazards Model.”</span> <a href="http://www.sthda.com/english/wiki/cox-proportional-hazards-model">http://www.sthda.com/english/wiki/cox-proportional-hazards-model</a>.
+<div id="ref-sthda" class="csl-entry" role="listitem">
+STHDA. n.d. <em>Cox Proportional-Hazards Model</em>. <a href="http://www.sthda.com/english/wiki/cox-proportional-hazards-model">http://www.sthda.com/english/wiki/cox-proportional-hazards-model</a>.
 </div>
 </div>
 <!--radix_placeholder_article_footer-->

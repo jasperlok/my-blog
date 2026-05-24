@@ -20,6 +20,7 @@
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -88,9 +89,9 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
 
   <!--radix_placeholder_meta_tags-->
-  <title>Survival on Gradient Boosting Regression Model</title>
+  <title>Survival Analysis with Gradient Boosting Models</title>
 
-  <meta property="description" itemprop="description" content="Learn from the mistake!"/>
+  <meta property="description" itemprop="description" content="A practical walk-through of fitting and interpreting a GBM survival model in R."/>
 
 
   <!--  https://schema.org/Article -->
@@ -99,26 +100,26 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <meta name="article:author" content="Jasper Lok"/>
 
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
-  <meta property="og:title" content="Survival on Gradient Boosting Regression Model"/>
+  <meta property="og:title" content="Survival Analysis with Gradient Boosting Models"/>
   <meta property="og:type" content="article"/>
-  <meta property="og:description" content="Learn from the mistake!"/>
+  <meta property="og:description" content="A practical walk-through of fitting and interpreting a GBM survival model in R."/>
   <meta property="og:locale" content="en_US"/>
 
   <!--  https://dev.twitter.com/cards/types/summary -->
   <meta property="twitter:card" content="summary"/>
-  <meta property="twitter:title" content="Survival on Gradient Boosting Regression Model"/>
-  <meta property="twitter:description" content="Learn from the mistake!"/>
+  <meta property="twitter:title" content="Survival Analysis with Gradient Boosting Models"/>
+  <meta property="twitter:description" content="A practical walk-through of fitting and interpreting a GBM survival model in R."/>
 
   <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","link-citations","categories"]}},"value":[{"type":"character","attributes":{},"value":["Survival on Gradient Boosting Regression Model"]},{"type":"character","attributes":{},"value":["Learn from the mistake!\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Jasper Lok"]},{"type":"character","attributes":{},"value":["https://jasperlok.netlify.app/"]}]}]},{"type":"character","attributes":{},"value":["03-30-2024"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","toc_depth","self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[4]},{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["Machine Learning","Survival Model"]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","link-citations","categories"]}},"value":[{"type":"character","attributes":{},"value":["Survival Analysis with Gradient Boosting Models"]},{"type":"character","attributes":{},"value":["A practical walk-through of fitting and interpreting a GBM survival model in R.\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Jasper Lok"]},{"type":"character","attributes":{},"value":["https://jasperlok.netlify.app/"]}]}]},{"type":"character","attributes":{},"value":["03-30-2024"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","toc_depth","self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[4]},{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["Machine Learning","Survival Model"]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["image/coffee.jpg","image/mistake.jpg","survival_gbm_files/figure-html5/unnamed-chunk-10-1.png","survival_gbm_files/figure-html5/unnamed-chunk-12-1.png","survival_gbm_files/figure-html5/unnamed-chunk-13-1.png","survival_gbm_files/figure-html5/unnamed-chunk-15-1.png","survival_gbm_files/figure-html5/unnamed-chunk-16-1.png","survival_gbm_files/figure-html5/unnamed-chunk-17-1.png","survival_gbm_files/figure-html5/unnamed-chunk-18-1.png"]}
+  {"type":"character","attributes":{},"value":["image/coffee.jpg","image/leaf.jpg","image/mistake.jpg","image/screenshot_rpart.png","image/screenshot_rpart_section.png","image/tree.jpg","ref.bib","survival_gbm_files/anchor/anchor.min.js","survival_gbm_files/bowser/bowser.min.js","survival_gbm_files/distill/template.v2.js","survival_gbm_files/figure-html5/unnamed-chunk-10-1.png","survival_gbm_files/figure-html5/unnamed-chunk-12-1.png","survival_gbm_files/figure-html5/unnamed-chunk-13-1.png","survival_gbm_files/figure-html5/unnamed-chunk-15-1.png","survival_gbm_files/figure-html5/unnamed-chunk-16-1.png","survival_gbm_files/figure-html5/unnamed-chunk-17-1.png","survival_gbm_files/figure-html5/unnamed-chunk-18-1.png","survival_gbm_files/figure-html5/unnamed-chunk-8-1.png","survival_gbm_files/header-attrs/header-attrs.js","survival_gbm_files/jquery/jquery-3.6.0.js","survival_gbm_files/jquery/jquery-3.6.0.min.js","survival_gbm_files/jquery/jquery-3.6.0.min.map","survival_gbm_files/popper/popper.min.js","survival_gbm_files/tippy/tippy-bundle.umd.min.js","survival_gbm_files/tippy/tippy-light-border.css","survival_gbm_files/tippy/tippy.css","survival_gbm_files/tippy/tippy.umd.min.js","survival_gbm_files/webcomponents/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1521,7 +1522,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Survival on Gradient Boosting Regression Model","description":"Learn from the mistake!","authors":[{"author":"Jasper Lok","authorURL":"https://jasperlok.netlify.app/","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2024-03-30T00:00:00.000+08:00","citationText":"Lok, 2024"}
+{"title":"Survival Analysis with Gradient Boosting Models","description":"A practical walk-through of fitting and interpreting a GBM survival model in R.","authors":[{"author":"Jasper Lok","authorURL":"https://jasperlok.netlify.app/","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2024-03-30T00:00:00.000+08:00","citationText":"Lok, 2024"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -1531,7 +1532,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--/radix_placeholder_site_before_body-->
 
 <div class="d-title">
-<h1>Survival on Gradient Boosting Regression Model</h1>
+<h1>Survival Analysis with Gradient Boosting Models</h1>
 
 <!--radix_placeholder_categories-->
 <div class="dt-tags">
@@ -1539,7 +1540,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <div class="dt-tag">Survival Model</div>
 </div>
 <!--/radix_placeholder_categories-->
-<p><p>Learn from the mistake!</p></p>
+<p><p>A practical walk-through of fitting and interpreting a GBM survival model in R.</p></p>
 </div>
 
 <div class="d-byline">
@@ -1555,11 +1556,11 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <ul>
 <li><a href="#demonstration" id="toc-demonstration">Demonstration</a>
 <ul>
-<li><a href="#setup-the-environment" id="toc-setup-the-environment">Setup the environment</a></li>
+<li><a href="#set-up-the-environment" id="toc-set-up-the-environment">Set Up the Environment</a></li>
 <li><a href="#import-data" id="toc-import-data">Import Data</a></li>
 <li><a href="#model-building" id="toc-model-building">Model Building</a></li>
+<li><a href="#cross-validation" id="toc-cross-validation">Cross-Validation</a></li>
 <li><a href="#model-performance" id="toc-model-performance">Model Performance</a></li>
-<li><a href="#cross-validation" id="toc-cross-validation">Cross Validation</a></li>
 <li><a href="#interaction" id="toc-interaction">Interaction</a></li>
 <li><a href="#variable-importance" id="toc-variable-importance">Variable Importance</a>
 <ul>
@@ -1576,20 +1577,21 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <p><img src="image/coffee.jpg" width="100%" /></p>
 </div>
 <p>Photo by <a href="https://unsplash.com/@nixcreative?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Tyler Nix</a> on <a href="https://unsplash.com/photos/person-pouring-liquid-on-drinking-glass-yKalliZTaQU?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a></p>
-<p>Previously I have explored how to perform survival analysis.</p>
-<p>In this post, I will continue the quest by using GBM models to perform survival analysis.</p>
+<p>Previously, I explored the basics of survival analysis.</p>
+<p>In this post, I will continue that journey by fitting a gradient boosting model for survival analysis. Instead of assuming a linear relationship between the predictors and the log-hazard, a gradient boosting model can learn non-linear patterns and interactions between variables.</p>
+<p>The example below uses a customer churn dataset. One important caveat: this dataset was not originally collected as a full survival dataset with a clearly observed start date, event date, and censoring process. I use <code>tenure</code> as the time variable and <code>exited</code> as the event indicator for demonstration purposes, but the results should be interpreted as a modelling exercise rather than as a definitive customer lifetime analysis.</p>
 <h1 id="demonstration">Demonstration</h1>
-<p>In this demonstration, I will be using this <a href="https://www.kaggle.com/datasets/shrutimechlearn/churn-modelling">bank dataset</a> from Kaggle.</p>
-<h2 id="setup-the-environment">Setup the environment</h2>
-<p>First, I will load the necessary packages into the environment.</p>
+<p>In this demonstration, I will use this <a href="https://www.kaggle.com/datasets/shrutimechlearn/churn-modelling">bank dataset</a> from Kaggle.</p>
+<h2 id="set-up-the-environment">Set Up the Environment</h2>
+<p>First, I will load the necessary packages.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'>pacman</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/pacman/man/p_load.html'>p_load</a></span><span class='op'>(</span><span class='va'>tidyverse</span>, <span class='va'>lubridate</span>, <span class='va'>janitor</span>, <span class='va'>survival</span>, <span class='va'>survminer</span>, <span class='va'>censored</span>, <span class='va'>gbm</span>, <span class='va'>Hmisc</span><span class='op'>)</span></span></code></pre>
 </div>
 </div>
 <h2 id="import-data">Import Data</h2>
-<p>First I will import the dataset into the environment.</p>
-<p>I will also clean the column names, drop the columns I don’t need, and transform the columns to be the right format.</p>
+<p>Next, I will import the dataset.</p>
+<p>I will clean the column names, remove identifiers that should not be used as predictors, filter out records with zero tenure, and convert categorical variables into factors.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'>read_csv</span><span class='op'>(</span><span class='st'>"https://raw.githubusercontent.com/jasperlok/my-blog/master/_posts/2022-09-10-kaplan-meier/data/Churn_Modelling.csv"</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
@@ -1599,10 +1601,10 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <span>  <span class='fu'>mutate</span><span class='op'>(</span><span class='fu'>across</span><span class='op'>(</span><span class='op'>!</span><span class='fu'>where</span><span class='op'>(</span><span class='va'>is.numeric</span><span class='op'>)</span>, <span class='va'>as.factor</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
 </div>
 </div>
-<p>Note that GBM algorithm is unable to accept character variables, hence I have converted all the characters into factors.</p>
-<p>Now, let’s start building the GBM model!</p>
+<p>The <code>gbm</code> algorithm cannot use character variables directly, so categorical columns need to be converted to factors before modelling.</p>
+<p>Now, let’s start building the GBM model.</p>
 <h2 id="model-building">Model Building</h2>
-<p>For producibility purpose, I will specify the random seed.</p>
+<p>For reproducibility, I will set the random seed before fitting the model.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>1234</span><span class='op'>)</span></span>
@@ -1617,9 +1619,9 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <span>      ,n.cores <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span></span></code></pre>
 </div>
 </div>
-<p>Note that I have specified the <code>interaction.depth</code> to be 2. This is to allow interaction terms within the model, otherwise the algorithm will assume an additive model as explained in the GBM documentation.</p>
-<p>I have also specified <code>cv.folds</code> and <code>n.cores</code> to use multiple cores to perform cross-validation.</p>
-<p>If the distribution is not specified, the algorithm will take a guess what is the appropriate distribution for this problem.</p>
+<p>Here, <code>distribution = "coxph"</code> tells <code>gbm</code> to optimize the Cox proportional hazards loss function. The model estimates a relative risk score rather than a direct survival probability.</p>
+<p>I set <code>interaction.depth = 2</code> to allow two-way interactions between predictors. If <code>interaction.depth = 1</code>, the boosted trees are stumps and the model behaves more like an additive model. I also use <code>cv.folds = 5</code> to estimate the best number of trees through cross-validation, and <code>n.cores = 5</code> to speed up the calculation.</p>
+<p>If the distribution is not specified, <code>gbm</code> will try to infer a suitable distribution from the response. For survival modelling, I prefer to specify <code>"coxph"</code> explicitly so the modelling intent is clear.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>gbm_fit_noDist</span> <span class='op'>&lt;-</span></span>
@@ -1632,7 +1634,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 <pre><code>Distribution not specified, assuming coxph ...</code></pre>
 </div>
-<p>Nevertheless, let’s go back to the original fitted model.</p>
+<p>Now, let’s go back to the original fitted model.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>gbm_fit</span></span></code></pre>
@@ -1645,9 +1647,8 @@ A gradient boosted model with coxph loss function.
 The best cross-validation iteration was 149.
 There were 9 predictors of which 8 had non-zero influence.</code></pre>
 </div>
-<p>From the result, we can see which iteration gave the best result and how many variables were kept in the final model.</p>
-<p>We can see that one of the variables is not significant.</p>
-<p>Alternatively, we will get the same result if we pass the fitted object into <code>print</code> function.</p>
+<p>The printed output confirms the model specification, the number of boosting iterations, and how many predictors were used. This output does not provide conventional regression coefficients or p-values. For boosted tree models, interpretation usually relies on model performance, variable importance, interaction strength, and partial dependence plots.</p>
+<p>We get the same output if we pass the fitted object to the <code>print</code> function.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>gbm_fit</span><span class='op'>)</span></span></code></pre>
@@ -1660,16 +1661,29 @@ A gradient boosted model with coxph loss function.
 The best cross-validation iteration was 149.
 There were 9 predictors of which 8 had non-zero influence.</code></pre>
 </div>
+<h2 id="cross-validation">Cross-Validation</h2>
+<p>The cross-validation curve helps us choose the number of trees. Too few trees may underfit, while too many trees may overfit.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>best_iter</span> <span class='op'>&lt;-</span> <span class='fu'>gbm.perf</span><span class='op'>(</span><span class='va'>gbm_fit</span>, method <span class='op'>=</span> <span class='st'>'cv'</span><span class='op'>)</span></span></code></pre>
+</div>
+<img src="survival_gbm_files/figure-html5/unnamed-chunk-8-1.png" width="100%" />
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>best_iter</span></span></code></pre>
+</div>
+<pre><code>[1] 149</code></pre>
+</div>
+<p>The plot shows the cross-validated loss across boosting iterations. The blue dotted line marks the iteration with the best cross-validation performance.</p>
 <h2 id="model-performance">Model Performance</h2>
-<p>One of the common methods in measuring how good is the fitted model is to calculate the C Index.</p>
-<p>Before doing that, we need to generate the predicted values.</p>
+<p>A common performance metric for survival models is Harrell’s concordance index, or C-index. It measures whether the model correctly ranks subjects by risk. A value of 0.5 is similar to random ranking, while a value closer to 1 indicates better concordance.</p>
+<p>Before calculating the C-index, we need to generate predicted values using the cross-validated number of trees.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>gbm_predict</span> <span class='op'>&lt;-</span></span>
-<span>  <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>gbm_fit</span>, <span class='va'>df</span><span class='op'>)</span></span></code></pre>
+<span>  <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>gbm_fit</span>, <span class='va'>df</span>, n.trees <span class='op'>=</span> <span class='va'>best_iter</span><span class='op'>)</span></span></code></pre>
 </div>
 </div>
-<p>Then, we will use <code>rcorr.cens</code> function from <code>Hmisc</code> package to compute the C Index.</p>
+<p>For a Cox GBM model, the prediction is on the log relative-hazard scale: a higher value means higher estimated event risk. The <code>rcorr.cens</code> function expects higher scores to indicate longer survival, so I multiply the prediction by <code>-1</code> before computing the C-index.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'>rcorr.cens</span><span class='op'>(</span><span class='op'>-</span><span class='va'>gbm_predict</span>, <span class='fu'>Surv</span><span class='op'>(</span><span class='va'>df</span><span class='op'>$</span><span class='va'>tenure</span>, <span class='va'>df</span><span class='op'>$</span><span class='va'>exited</span><span class='op'>)</span><span class='op'>)</span><span class='op'>[</span><span class='st'>"C Index"</span><span class='op'>]</span></span></code></pre>
@@ -1677,29 +1691,18 @@ There were 9 predictors of which 8 had non-zero influence.</code></pre>
 <pre><code>C Index 
 0.80961 </code></pre>
 </div>
-<h2 id="cross-validation">Cross Validation</h2>
-<div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>best_iter</span> <span class='op'>&lt;-</span> <span class='fu'>gbm.perf</span><span class='op'>(</span><span class='va'>gbm_fit</span>, method <span class='op'>=</span> <span class='st'>'cv'</span><span class='op'>)</span></span></code></pre>
-</div>
-<img src="survival_gbm_files/figure-html5/unnamed-chunk-10-1.png" width="100%" />
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>best_iter</span></span></code></pre>
-</div>
-<pre><code>[1] 149</code></pre>
-</div>
-<p>The plot shows us the number for the best iteration, which is the blue dotted line.</p>
+<p>This gives a quick sense of ranking performance. However, the score above is calculated on the same data used to train the model, so it is likely to be optimistic. For a production or research analysis, I would evaluate the model on a separate test set or use repeated cross-validation, and I would tune other hyperparameters such as <code>shrinkage</code>, <code>interaction.depth</code>, <code>n.minobsinnode</code>, and <code>n.trees</code>.</p>
 <h2 id="interaction">Interaction</h2>
-<p><code>gbm</code> package also has a function to help us estimate the strength of the interaction effect.</p>
-<p>To do this, we will specify which interaction effect we would like to estimate.</p>
-<p>For example, I would like to estimate the interaction effect between age and geography.</p>
+<p>The <code>gbm</code> package also includes a function for estimating the strength of interaction effects.</p>
+<p>To do this, we specify the pair of variables we want to check.</p>
+<p>For example, I would like to estimate the interaction effect between <code>age</code> and <code>geography</code>.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'>interact.gbm</span><span class='op'>(</span><span class='va'>gbm_fit</span>, <span class='va'>df</span>, i.var <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"age"</span>, <span class='st'>"geography"</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
 </div>
-<pre><code>[1] 0.04414741</code></pre>
+<pre><code>[1] 0.04668534</code></pre>
 </div>
-<p>Alternatively, we would run a loop to estimate the interaction effects of all the variables.</p>
+<p>Alternatively, we can estimate interaction effects for all unique pairs of predictors.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>var_list</span> <span class='op'>&lt;-</span></span>
@@ -1708,26 +1711,17 @@ There were 9 predictors of which 8 had non-zero influence.</code></pre>
 <span>            ,<span class='va'>exited</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> </span>
 <span>  <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='op'>)</span></span>
 <span></span>
-<span><span class='va'>interact_result</span> <span class='op'>&lt;-</span></span>
-<span>  <span class='fu'>tibble</span><span class='op'>(</span>variable_1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span></span>
-<span>         ,variable_2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span></span>
-<span>         ,interaction <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>numeric</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+<span><span class='va'>pairs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/utils/combn.html'>combn</a></span><span class='op'>(</span><span class='va'>var_list</span>, <span class='fl'>2</span>, simplify <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
 <span></span>
-<span><span class='kw'>for</span><span class='op'>(</span><span class='va'>i</span> <span class='kw'>in</span> <span class='va'>var_list</span><span class='op'>)</span><span class='op'>{</span></span>
-<span>  <span class='kw'>for</span><span class='op'>(</span><span class='va'>j</span> <span class='kw'>in</span> <span class='va'>var_list</span><span class='op'>)</span><span class='op'>{</span></span>
-<span>    <span class='kw'>if</span><span class='op'>(</span><span class='va'>i</span> <span class='op'>!=</span> <span class='va'>j</span><span class='op'>)</span><span class='op'>{</span></span>
-<span>      <span class='va'>interact_result</span> <span class='op'>&lt;-</span></span>
-<span>        <span class='va'>interact_result</span> <span class='op'>%&gt;%</span> </span>
-<span>        <span class='fu'>add_row</span><span class='op'>(</span></span>
-<span>          variable_1 <span class='op'>=</span> <span class='va'>i</span></span>
-<span>          ,variable_2 <span class='op'>=</span> <span class='va'>j</span></span>
-<span>          ,interaction <span class='op'>=</span> <span class='fu'>interact.gbm</span><span class='op'>(</span><span class='va'>gbm_fit</span></span>
-<span>                                      ,<span class='va'>df</span></span>
-<span>                                      ,i.var <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>i</span>, <span class='va'>j</span><span class='op'>)</span><span class='op'>)</span></span>
-<span>        <span class='op'>)</span></span>
-<span>    <span class='op'>}</span></span>
-<span>  <span class='op'>}</span></span>
-<span><span class='op'>}</span></span>
+<span><span class='va'>interact_result</span> <span class='op'>&lt;-</span></span>
+<span>  <span class='fu'>map_dfr</span><span class='op'>(</span></span>
+<span>    <span class='va'>pairs</span>,</span>
+<span>    <span class='op'>~</span> <span class='fu'>tibble</span><span class='op'>(</span></span>
+<span>      variable_1 <span class='op'>=</span> <span class='va'>.x</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span>,</span>
+<span>      variable_2 <span class='op'>=</span> <span class='va'>.x</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span>,</span>
+<span>      interaction <span class='op'>=</span> <span class='fu'>interact.gbm</span><span class='op'>(</span><span class='va'>gbm_fit</span>, <span class='va'>df</span>, i.var <span class='op'>=</span> <span class='va'>.x</span><span class='op'>)</span></span>
+<span>    <span class='op'>)</span></span>
+<span>  <span class='op'>)</span></span>
 <span></span>
 <span><span class='va'>interact_result</span> <span class='op'>%&gt;%</span> </span>
 <span>  <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span><span class='va'>variable_1</span>, <span class='va'>variable_2</span>, fill <span class='op'>=</span> <span class='va'>interaction</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
@@ -1736,9 +1730,10 @@ There were 9 predictors of which 8 had non-zero influence.</code></pre>
 </div>
 <p><img src="survival_gbm_files/figure-html5/unnamed-chunk-12-1.png" width="100%" /></p>
 </div>
+<p>The larger the estimated value, the stronger the interaction signal. This is useful for exploration, but it should not be treated as a formal hypothesis test. It is also worth checking whether highly ranked interactions make business sense and whether they are stable across resamples.</p>
 <h2 id="variable-importance">Variable Importance</h2>
-<p>Another awesome feature of <code>gbm</code> package is the algorithm will estimate variable importance of all the variables.</p>
-<p>There are a few methods to obtain the variable importance results.</p>
+<p>Another useful feature of the <code>gbm</code> package is that it estimates the relative influence of each predictor.</p>
+<p>There are a few ways to obtain the variable importance results.</p>
 <h3 id="method-1-use-summary-function">Method 1: Use <code>summary</code> function</h3>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
@@ -1769,7 +1764,7 @@ has_cr_card           has_cr_card  0.4380509</code></pre>
 estimated_salary 
         55.72705 </code></pre>
 </div>
-<p>Personally, I prefer method 2 as this would allow me to pass the result to <code>ggplot</code> function and visualize the result as shown below.</p>
+<p>Personally, I prefer Method 2 because it is easier to pass the result to <code>ggplot</code> and customize the visualization.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span><span class='op'>(</span><span class='fu'>relative.influence</span><span class='op'>(</span><span class='va'>gbm_fit</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span></span>
@@ -1781,8 +1776,9 @@ estimated_salary
 <pre><code>n.trees not given. Using 149 trees.</code></pre>
 <p><img src="survival_gbm_files/figure-html5/unnamed-chunk-15-1.png" width="100%" /></p>
 </div>
+<p>Variable importance is helpful for ranking predictors, but it does not show the direction or shape of each relationship. A variable can be important because its effect is non-linear, because it interacts with other variables, or because it acts as a proxy for another predictor. For that reason, it should be read together with partial dependence plots, interaction checks, and domain knowledge.</p>
 <h2 id="partial-dependence">Partial Dependence</h2>
-<p><code>gbm</code> package also has a function to help the users to generate a partial dependence plot to understand the marginal effect of the variable.</p>
+<p>The <code>gbm</code> package can generate partial dependence plots to help us understand the marginal relationship between a predictor and the model’s estimated risk score.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>gbm_fit</span></span>
@@ -1790,8 +1786,8 @@ estimated_salary
 </div>
 <p><img src="survival_gbm_files/figure-html5/unnamed-chunk-16-1.png" width="100%" /></p>
 </div>
-<p>However, I prefer using <code>ggplot</code> function to plot the chart.</p>
-<p>Hence, I will specify <code>return.grid</code> to be TRUE so that the function will return the estimated results.</p>
+<p>However, I prefer using <code>ggplot</code> to create the chart.</p>
+<p>Therefore, I will specify <code>return.grid = TRUE</code> so the function returns the estimated values.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>gbm_fit</span></span>
@@ -1807,7 +1803,7 @@ estimated_salary
 </div>
 <p><img src="survival_gbm_files/figure-html5/unnamed-chunk-17-1.png" width="100%" /></p>
 </div>
-<p>If we would like to perform partial dependence on more than one variable, we just need to specify that in the <code>i.var</code> argument.</p>
+<p>If we would like to compute partial dependence for more than one variable, we can pass multiple variables to the <code>i.var</code> argument.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># partial dependence of two variables</span></span>
@@ -1817,16 +1813,19 @@ estimated_salary
 <span>  <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span><span class='va'>balance</span>, <span class='va'>y</span>, color <span class='op'>=</span> <span class='va'>geography</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span>  <span class='fu'>geom_line</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span>  <span class='fu'>ylab</span><span class='op'>(</span><span class='st'>""</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'>labs</span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Partial Dependence Plot for Age"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>labs</span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Partial Dependence Plot for Balance and Geography"</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span>  <span class='fu'>theme_minimal</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span>  <span class='fu'>theme</span><span class='op'>(</span>axis.text.y <span class='op'>=</span> <span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span></span>
 <span>        ,axis.ticks.y <span class='op'>=</span> <span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
 </div>
 <p><img src="survival_gbm_files/figure-html5/unnamed-chunk-18-1.png" width="100%" /></p>
 </div>
-<p>Viola! That is how GBM can be used to perform survival analysis.</p>
+<p>Partial dependence plots are useful, but they should be interpreted carefully. They show the average model response after varying selected predictors, which means they may be misleading when predictors are strongly correlated or when some combinations of values are unrealistic.</p>
+<p>That is how GBM can be used to perform survival analysis.</p>
 <h1 id="conclusion">Conclusion</h1>
-<p>That’s all for the day!</p>
+<p>In this post, we fitted a GBM survival model using the Cox loss function, selected the number of trees using cross-validation, evaluated the model with the C-index, and explored the model using interaction strength, variable importance, and partial dependence plots.</p>
+<p>The main point to remember is that survival modelling is not only about the algorithm. We also need to define the time origin, event indicator, censoring mechanism, evaluation strategy, and interpretation framework carefully. For this churn example, the dataset is useful for demonstrating the mechanics of a survival GBM, but a real customer survival analysis would require stronger event-time data and a more rigorous validation design.</p>
+<p>That’s all for the day.</p>
 <p>Thanks for reading the post until the end.</p>
 <p>Feel free to contact me through <a href="mailto:jasper.jh.lok@gmail.com">email</a> or <a href="https://www.linkedin.com/in/jasper-l-13426232/">LinkedIn</a> if you have any suggestions on future topics to share.</p>
 <p>Refer to this link for the <a href="https://jasperlok.netlify.app/blog_disclaimer.html">blog disclaimer</a>.</p>

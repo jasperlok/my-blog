@@ -1,7 +1,7 @@
 ---
-title: "Survival on Gradient Boosting Regression Model"
+title: "Survival Analysis with Gradient Boosting Models"
 description: |
-   Learn from the mistake!
+   A practical walk-through of fitting and interpreting a GBM survival model in R.
 author:
   - name: Jasper Lok 
     url: https://jasperlok.netlify.app/
@@ -38,17 +38,19 @@ knitr::include_graphics("image/coffee.jpg")
 
 Photo by <a href="https://unsplash.com/@nixcreative?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Tyler Nix</a> on <a href="https://unsplash.com/photos/person-pouring-liquid-on-drinking-glass-yKalliZTaQU?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
 
-Previously I have explored how to perform survival analysis.
+Previously, I explored the basics of survival analysis.
 
-In this post, I will continue the quest by using GBM models to perform survival analysis.
+In this post, I will continue that journey by fitting a gradient boosting model for survival analysis. Instead of assuming a linear relationship between the predictors and the log-hazard, a gradient boosting model can learn non-linear patterns and interactions between variables.
+
+The example below uses a customer churn dataset. One important caveat: this dataset was not originally collected as a full survival dataset with a clearly observed start date, event date, and censoring process. I use `tenure` as the time variable and `exited` as the event indicator for demonstration purposes, but the results should be interpreted as a modelling exercise rather than as a definitive customer lifetime analysis.
 
 # Demonstration
 
-In this demonstration, I will be using this [bank dataset](https://www.kaggle.com/datasets/shrutimechlearn/churn-modelling) from Kaggle.
+In this demonstration, I will use this [bank dataset](https://www.kaggle.com/datasets/shrutimechlearn/churn-modelling) from Kaggle.
 
-## Setup the environment
+## Set Up the Environment
 
-First, I will load the necessary packages into the environment.
+First, I will load the necessary packages.
 
 ```{r}
 pacman::p_load(tidyverse, lubridate, janitor, survival, survminer, censored, gbm, Hmisc)
@@ -57,9 +59,9 @@ pacman::p_load(tidyverse, lubridate, janitor, survival, survminer, censored, gbm
 
 ## Import Data
 
-First I will import the dataset into the environment.
+Next, I will import the dataset.
 
-I will also clean the column names, drop the columns I don't need, and transform the columns to be the right format.
+I will clean the column names, remove identifiers that should not be used as predictors, filter out records with zero tenure, and convert categorical variables into factors.
 
 ```{r}
 df <- read_csv("https://raw.githubusercontent.com/jasperlok/my-blog/master/_posts/2022-09-10-kaplan-meier/data/Churn_Modelling.csv") %>%
@@ -70,13 +72,13 @@ df <- read_csv("https://raw.githubusercontent.com/jasperlok/my-blog/master/_post
 
 ```
 
-Note that GBM algorithm is unable to accept character variables, hence I have converted all the characters into factors.
+The `gbm` algorithm cannot use character variables directly, so categorical columns need to be converted to factors before modelling.
 
-Now, let's start building the GBM model!
+Now, let's start building the GBM model.
 
 ## Model Building
 
-For producibility purpose, I will specify the random seed.
+For reproducibility, I will set the random seed before fitting the model.
 
 ```{r}
 set.seed(1234)
@@ -92,11 +94,11 @@ gbm_fit <-
 
 ```
 
-Note that I have specified the `interaction.depth` to be 2. This is to allow interaction terms within the model, otherwise the algorithm will assume an additive model as explained in the GBM documentation.
+Here, `distribution = "coxph"` tells `gbm` to optimize the Cox proportional hazards loss function. The model estimates a relative risk score rather than a direct survival probability.
 
-I have also specified `cv.folds` and `n.cores` to use multiple cores to perform cross-validation.
+I set `interaction.depth = 2` to allow two-way interactions between predictors. If `interaction.depth = 1`, the boosted trees are stumps and the model behaves more like an additive model. I also use `cv.folds = 5` to estimate the best number of trees through cross-validation, and `n.cores = 5` to speed up the calculation.
 
-If the distribution is not specified, the algorithm will take a guess what is the appropriate distribution for this problem.
+If the distribution is not specified, `gbm` will try to infer a suitable distribution from the response. For survival modelling, I prefer to specify `"coxph"` explicitly so the modelling intent is clear.
 
 ```{r}
 gbm_fit_noDist <-
@@ -109,44 +111,25 @@ gbm_fit_noDist <-
 
 ```
 
-Nevertheless, let's go back to the original fitted model.
+Now, let's go back to the original fitted model.
 
 ```{r}
 gbm_fit
 
 ```
 
-From the result, we can see which iteration gave the best result and how many variables were kept in the final model.
+The printed output confirms the model specification, the number of boosting iterations, and how many predictors were used. This output does not provide conventional regression coefficients or p-values. For boosted tree models, interpretation usually relies on model performance, variable importance, interaction strength, and partial dependence plots.
 
-We can see that one of the variables is not significant.
-
-Alternatively, we will get the same result if we pass the fitted object into `print` function.
+We get the same output if we pass the fitted object to the `print` function.
 
 ```{r}
 print(gbm_fit)
 
 ```
 
-## Model Performance
+## Cross-Validation
 
-One of the common methods in measuring how good is the fitted model is to calculate the C Index.
-
-Before doing that, we need to generate the predicted values.
-
-```{r}
-gbm_predict <-
-  predict(gbm_fit, df)
-
-```
-
-Then, we will use `rcorr.cens` function from `Hmisc` package to compute the C Index.
-
-```{r}
-rcorr.cens(-gbm_predict, Surv(df$tenure, df$exited))["C Index"]
-
-```
-
-## Cross Validation
+The cross-validation curve helps us choose the number of trees. Too few trees may underfit, while too many trees may overfit.
 
 ```{r}
 best_iter <- gbm.perf(gbm_fit, method = 'cv')
@@ -154,22 +137,43 @@ best_iter
 
 ```
 
-The plot shows us the number for the best iteration, which is the blue dotted line.
+The plot shows the cross-validated loss across boosting iterations. The blue dotted line marks the iteration with the best cross-validation performance.
+
+## Model Performance
+
+A common performance metric for survival models is Harrell's concordance index, or C-index. It measures whether the model correctly ranks subjects by risk. A value of 0.5 is similar to random ranking, while a value closer to 1 indicates better concordance.
+
+Before calculating the C-index, we need to generate predicted values using the cross-validated number of trees.
+
+```{r}
+gbm_predict <-
+  predict(gbm_fit, df, n.trees = best_iter)
+
+```
+
+For a Cox GBM model, the prediction is on the log relative-hazard scale: a higher value means higher estimated event risk. The `rcorr.cens` function expects higher scores to indicate longer survival, so I multiply the prediction by `-1` before computing the C-index.
+
+```{r}
+rcorr.cens(-gbm_predict, Surv(df$tenure, df$exited))["C Index"]
+
+```
+
+This gives a quick sense of ranking performance. However, the score above is calculated on the same data used to train the model, so it is likely to be optimistic. For a production or research analysis, I would evaluate the model on a separate test set or use repeated cross-validation, and I would tune other hyperparameters such as `shrinkage`, `interaction.depth`, `n.minobsinnode`, and `n.trees`.
 
 ## Interaction
 
-`gbm` package also has a function to help us estimate the strength of the interaction effect.
+The `gbm` package also includes a function for estimating the strength of interaction effects.
 
-To do this, we will specify which interaction effect we would like to estimate.
+To do this, we specify the pair of variables we want to check.
 
-For example, I would like to estimate the interaction effect between age and geography.
+For example, I would like to estimate the interaction effect between `age` and `geography`.
 
 ```{r}
 interact.gbm(gbm_fit, df, i.var = c("age", "geography"))
 
 ```
 
-Alternatively, we would run a loop to estimate the interaction effects of all the variables.
+Alternatively, we can estimate interaction effects for all unique pairs of predictors.
 
 ```{r}
 var_list <-
@@ -178,26 +182,17 @@ var_list <-
             ,exited)) %>% 
   names()
 
-interact_result <-
-  tibble(variable_1 = character()
-         ,variable_2 = character()
-         ,interaction = numeric())
+pairs <- combn(var_list, 2, simplify = FALSE)
 
-for(i in var_list){
-  for(j in var_list){
-    if(i != j){
-      interact_result <-
-        interact_result %>% 
-        add_row(
-          variable_1 = i
-          ,variable_2 = j
-          ,interaction = interact.gbm(gbm_fit
-                                      ,df
-                                      ,i.var = c(i, j))
-        )
-    }
-  }
-}
+interact_result <-
+  map_dfr(
+    pairs,
+    ~ tibble(
+      variable_1 = .x[1],
+      variable_2 = .x[2],
+      interaction = interact.gbm(gbm_fit, df, i.var = .x)
+    )
+  )
 
 interact_result %>% 
   ggplot(aes(variable_1, variable_2, fill = interaction)) +
@@ -206,11 +201,13 @@ interact_result %>%
 
 ```
 
+The larger the estimated value, the stronger the interaction signal. This is useful for exploration, but it should not be treated as a formal hypothesis test. It is also worth checking whether highly ranked interactions make business sense and whether they are stable across resamples.
+
 ## Variable Importance
 
-Another awesome feature of `gbm` package is the algorithm will estimate variable importance of all the variables.
+Another useful feature of the `gbm` package is that it estimates the relative influence of each predictor.
 
-There are a few methods to obtain the variable importance results.
+There are a few ways to obtain the variable importance results.
 
 ### Method 1: Use `summary` function
 
@@ -226,7 +223,7 @@ relative.influence(gbm_fit)
 
 ```
 
-Personally, I prefer method 2 as this would allow me to pass the result to `ggplot` function and visualize the result as shown below.
+Personally, I prefer Method 2 because it is easier to pass the result to `ggplot` and customize the visualization.
 
 ```{r}
 as.data.frame(relative.influence(gbm_fit)) %>%
@@ -237,9 +234,11 @@ as.data.frame(relative.influence(gbm_fit)) %>%
   
 ```
 
+Variable importance is helpful for ranking predictors, but it does not show the direction or shape of each relationship. A variable can be important because its effect is non-linear, because it interacts with other variables, or because it acts as a proxy for another predictor. For that reason, it should be read together with partial dependence plots, interaction checks, and domain knowledge.
+
 ## Partial Dependence
 
-`gbm` package also has a function to help the users to generate a partial dependence plot to understand the marginal effect of the variable.
+The `gbm` package can generate partial dependence plots to help us understand the marginal relationship between a predictor and the model's estimated risk score.
 
 ```{r}
 plot(gbm_fit
@@ -247,9 +246,9 @@ plot(gbm_fit
 
 ```
 
-However, I prefer using `ggplot` function to plot the chart.
+However, I prefer using `ggplot` to create the chart.
 
-Hence, I will specify `return.grid` to be TRUE so that the function will return the estimated results.
+Therefore, I will specify `return.grid = TRUE` so the function returns the estimated values.
 
 ```{r}
 plot(gbm_fit
@@ -265,7 +264,7 @@ plot(gbm_fit
 
 ```
 
-If we would like to perform partial dependence on more than one variable, we just need to specify that in the `i.var` argument.
+If we would like to compute partial dependence for more than one variable, we can pass multiple variables to the `i.var` argument.
 
 ```{r}
 # partial dependence of two variables
@@ -275,18 +274,24 @@ plot(gbm_fit
   ggplot(aes(balance, y, color = geography)) +
   geom_line() +
   ylab("") +
-  labs(title = "Partial Dependence Plot for Age") +
+  labs(title = "Partial Dependence Plot for Balance and Geography") +
   theme_minimal() +
   theme(axis.text.y = element_blank()
         ,axis.ticks.y = element_blank())
 
 ```
 
-Viola! That is how GBM can be used to perform survival analysis.
+Partial dependence plots are useful, but they should be interpreted carefully. They show the average model response after varying selected predictors, which means they may be misleading when predictors are strongly correlated or when some combinations of values are unrealistic.
+
+That is how GBM can be used to perform survival analysis.
 
 # Conclusion
 
-That's all for the day!
+In this post, we fitted a GBM survival model using the Cox loss function, selected the number of trees using cross-validation, evaluated the model with the C-index, and explored the model using interaction strength, variable importance, and partial dependence plots.
+
+The main point to remember is that survival modelling is not only about the algorithm. We also need to define the time origin, event indicator, censoring mechanism, evaluation strategy, and interpretation framework carefully. For this churn example, the dataset is useful for demonstrating the mechanics of a survival GBM, but a real customer survival analysis would require stronger event-time data and a more rigorous validation design.
+
+That's all for the day.
 
 Thanks for reading the post until the end.
 
